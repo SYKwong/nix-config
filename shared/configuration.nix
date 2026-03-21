@@ -30,9 +30,11 @@
     ];
   };
 
+  networking.wireless.enable = true; 
+
   programs.firefox.enable = true;
   environment.systemPackages = with pkgs; [
-    vim
+    neovim
     wget
     foot
     waybar
