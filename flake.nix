@@ -2,6 +2,7 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "nixpkgs/nixos-stable"
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -17,7 +18,7 @@
 
 };
 
-  outputs = { self, nixpkgs, home-manager, nixos-hardware, disko, ... }: {
+  outputs = { self, nixpkgs, nixpkgs-stable,home-manager, nixos-hardware, disko, ... }:{
     nixosConfigurations.framework16 = nixpkgs.lib.nixosSystem {
       modules = [
         ./shared/configuration.nix
