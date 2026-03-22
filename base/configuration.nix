@@ -1,11 +1,6 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-    ];
-
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -16,11 +11,7 @@
 
   time.timeZone = "America/Los_Angeles";
 
-  programs.hyprland = {
-    enable = true;
-    withUWSM = true;
-    xwayland.enable = true;
-  };
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   users.users.kyle = {
     isNormalUser = true;
@@ -41,7 +32,12 @@
     kitty
   ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  programs.hyprland = {
+    enable = true;
+    withUWSM = true;
+    xwayland.enable = true;
+  };
+
   system.stateVersion = "25.11";
 
 }

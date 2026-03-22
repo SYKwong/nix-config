@@ -24,8 +24,10 @@
       modules = [
 
         ./base/configuration.nix
-        disko.nixosModules.disko
         ./hosts/framework16/framework16-luks.nix
+        ./hosts/framework16/hardware-configuration.nix
+        
+        disko.nixosModules.disko
         nixos-hardware.nixosModules.framework-16-7040-amd
         
         home-manager.nixosModules.home-manager {
