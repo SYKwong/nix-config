@@ -1,8 +1,14 @@
 { config, lib, pkgs, ... }:
 
 {
+  security.tpm2.enable = true;
+
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.initrd.luks.devices."crypted" = {
+    device = "/dev/disk/by-partlabel/disk-main-luks"; # Double check this path!
+    crypttabExtraOpts = [ "tpm2-device=auto" ];
+  };
 
   services.getty.autologinUser = "kyle";
 
