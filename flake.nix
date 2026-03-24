@@ -23,7 +23,7 @@
   let
     hosts = {
         fw16 = {name = "fw16-kyle";};
-      }
+    };
   in {
     nixosConfigurations.framework16 = nixpkgs.lib.nixosSystem {
       specialArgs = { username = hosts.fw16.name; };
