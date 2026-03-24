@@ -9,7 +9,6 @@
     device = "/dev/disk/by-partlabel/disk-main-luks"; # Double check this path!
     crypttabExtraOpts = [ "tpm2-device=auto" ];
   };
-  boot.initrd.luks.devices."crypted".crypttabExtraOpts = [ "tpm2-device=auto" ];
 
   services.getty.autologinUser = "${username}";
 
