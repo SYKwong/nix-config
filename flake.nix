@@ -18,8 +18,18 @@
 
   };
 
-  outputs = { self, nixpkgs, nixpkgs-stable,home-manager, nixos-hardware, disko, ... }:{
+
+  outputs = { self, nixpkgs, nixpkgs-stable,home-manager, nixos-hardware, disko, ... } @ inputs : 
+  let
+    hosts = {
+        fw16 = {name = "fw16-kyle";};
+    };
+  in {
     nixosConfigurations.framework16 = nixpkgs.lib.nixosSystem {
+      specialArgs = { 
+        inherit inputs;
+        username = hosts.fw16.name; 
+      };
 
       modules = [
 
@@ -36,7 +46,11 @@
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            users.kyle = import ./hosts/framework16/home.nix;
+            extraSpecialArgs = {
+              inherit inputs;
+              username = hosts.fw16.name;
+            };
+            users."${hosts.fw16.name}" = import ./hosts/framework16/home.nix;
             backupFileExtension = "backup";
           };
         }

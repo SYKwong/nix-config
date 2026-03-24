@@ -16,9 +16,13 @@ Also because I wrote my `framework16-luks.nix`, which is a [disko](https://githu
 
 ```
 nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- --mode destroy,format,mount ./hosts/framework16/framework16-luks.nix --yes-wipe-all-disks  
-nixos-install --flakes .#framework16  
+nixos-install --flake .#framework16  
 nixos-enter --root /mnt -c 'passwd "your_user_name"'
 reboot
-sudo systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=0+7 /dev/<device>
+```
+
+After reboot
+```
+sudo systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=0+7 /dev/disk/by-partlabel/disk-main-luks
 ```
 
