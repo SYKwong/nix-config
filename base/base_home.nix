@@ -1,8 +1,8 @@
-{ config, pkgs, ... }:
+{ config, pkgs, username, ... }:
 
 {
-  home.username = "kyle";
-  home.homeDirectory = "/home/kyle";
+  home.username = "${username}";
+  home.homeDirectory = "/home/${username}";
   home.stateVersion = "25.11";
 
   wayland.windowManager.hyprland.systemd.enable = false;

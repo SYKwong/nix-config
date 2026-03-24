@@ -18,9 +18,10 @@
 
   };
 
+
   outputs = { self, nixpkgs, nixpkgs-stable,home-manager, nixos-hardware, disko, ... }:{
     nixosConfigurations.framework16 = nixpkgs.lib.nixosSystem {
-
+      specialArgs = { username = kyle}
       modules = [
 
         ./base/configuration.nix
@@ -36,7 +37,7 @@
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            users.kyle = import ./hosts/framework16/home.nix;
+            users."${username}" = import ./hosts/framework16/home.nix;
             backupFileExtension = "backup";
           };
         }

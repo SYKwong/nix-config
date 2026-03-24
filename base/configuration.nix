@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, username, ... }:
 
 {
   security.tpm2.enable = true;
@@ -9,8 +9,9 @@
     device = "/dev/disk/by-partlabel/disk-main-luks"; # Double check this path!
     crypttabExtraOpts = [ "tpm2-device=auto" ];
   };
+  boot.initrd.luks.devices."crypted".crypttabExtraOpts = [ "tpm2-device=auto" ];
 
-  services.getty.autologinUser = "kyle";
+  services.getty.autologinUser = "${username}";
 
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;
@@ -19,7 +20,7 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  users.users.kyle = {
+  users.users."${username}" = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
     packages = with pkgs; [
