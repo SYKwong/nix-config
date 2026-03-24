@@ -50,7 +50,7 @@
               inherit inputs;
               username = hosts.fw16.name;
             };
-            users."${host.fw16.name}" = import ./hosts/framework16/home.nix;
+            users."${hosts.fw16.name}" = import ./hosts/framework16/home.nix;
             backupFileExtension = "backup";
           };
         }
