@@ -21,7 +21,7 @@
 
   outputs = { self, nixpkgs, nixpkgs-stable,home-manager, nixos-hardware, disko, ... }:{
     nixosConfigurations.framework16 = nixpkgs.lib.nixosSystem {
-      specialArgs = { username = kyle; };
+      specialArgs = { username = "kyle"; };
       modules = [
 
         ./base/configuration.nix
