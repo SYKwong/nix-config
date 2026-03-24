@@ -48,7 +48,7 @@
             useUserPackages = true;
             extraSpecialArgs = {
               inherit inputs;
-              username = host.fw16.name;
+              username = hosts.fw16.name;
             };
             users."${host.fw16.name}" = import ./hosts/framework16/home.nix;
             backupFileExtension = "backup";
