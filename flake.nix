@@ -26,7 +26,11 @@
     };
   in {
     nixosConfigurations.framework16 = nixpkgs.lib.nixosSystem {
-      specialArgs = { username = hosts.fw16.name; };
+      specialArgs = { 
+        inherit inputs;
+        username = hosts.fw16.name; 
+      };
+
       modules = [
 
         ./base/configuration.nix
@@ -42,6 +46,10 @@
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
+            extraSpecialArgs = {
+              inherit inputs;
+              username = host.fw16.name;
+            };
             users."${host.fw16.name}" = import ./hosts/framework16/home.nix;
             backupFileExtension = "backup";
           };
