@@ -10,9 +10,6 @@
   programs.git.enable = true;
   programs.bash = {
     enable = true;
-    shellAliases = {
-      btw = "echo i use nixos, btw";
-    };
     profileExtra = ''
       if uwsm check may-start && uwsm select; then
 	      exec uwsm start default

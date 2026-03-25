@@ -37,6 +37,8 @@
         ./hosts/framework16/framework16-luks.nix
         ./hosts/framework16/hardware-configuration.nix
         
+        ./modules/hyprland.nix
+
         disko.nixosModules.disko
         nixos-hardware.nixosModules.framework-16-7040-amd
 
@@ -52,6 +54,7 @@
             };
             users."${hosts.fw16.name}" = import ./hosts/framework16/home.nix;
             backupFileExtension = "backup";
+
           };
         }
 

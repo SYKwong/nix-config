@@ -34,9 +34,6 @@
   environment.systemPackages = with pkgs; [
     neovim
     wget
-    foot
-    waybar
-    kitty
   ];
 
   programs.hyprland = {
