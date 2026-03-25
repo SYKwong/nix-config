@@ -13,5 +13,5 @@
     grim
     slurp
     kitty
-  ]
+  ];
 }
