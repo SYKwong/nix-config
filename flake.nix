@@ -38,11 +38,11 @@
         ./hosts/framework16/hardware-configuration.nix
         
         ./modules/hyprland.nix
+        ./modules/wifi.nix
+        ./modules/bluetooth.nix
 
         disko.nixosModules.disko
         nixos-hardware.nixosModules.framework-16-7040-amd
-
-        { networking.wireless.enable = true; }
 
         home-manager.nixosModules.home-manager {
           home-manager = {
