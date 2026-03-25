@@ -36,11 +36,11 @@
     wget
   ];
 
-  programs.hyprland = {
-    enable = true;
-    withUWSM = true;
-    xwayland.enable = true;
-  };
+  #programs.hyprland = {
+  #  enable = true;
+  #  withUWSM = true;
+  #  xwayland.enable = true;
+  #};
 
   system.stateVersion = "25.11";
 
