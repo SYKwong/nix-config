@@ -43,7 +43,6 @@
         disko.nixosModules.disko
         nixos-hardware.nixosModules.framework-16-7040-amd
 
-        { networking.wireless.enable = true; }
 
         home-manager.nixosModules.home-manager {
           home-manager = {
