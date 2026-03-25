@@ -38,6 +38,7 @@
         ./hosts/framework16/hardware-configuration.nix
         
         ./modules/hyprland.nix
+        ./modules/wireless.nix
 
         disko.nixosModules.disko
         nixos-hardware.nixosModules.framework-16-7040-amd
