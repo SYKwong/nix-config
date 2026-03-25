@@ -7,7 +7,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.luks.devices."crypted" = {
-    device = "/dev/disk/by-partlabel/disk-main-luks"; # Double check this path!
+    device = "/dev/disk/by-partlabel/disk-main-luks";
     crypttabExtraOpts = [ "tpm2-device=auto" ];
   };
 
@@ -15,6 +15,7 @@
 
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;
+  networking.wireless.enable = true; 
 
   time.timeZone = "America/Los_Angeles";
 
@@ -24,23 +25,15 @@
     isNormalUser = true;
     extraGroups = [ "wheel" ];
     packages = with pkgs; [
-      tree
     ];
   };
-
-  networking.wireless.enable = true; 
 
   programs.firefox.enable = true;
   environment.systemPackages = with pkgs; [
     neovim
     wget
+    tree
   ];
-
-  #programs.hyprland = {
-  #  enable = true;
-  #  withUWSM = true;
-  #  xwayland.enable = true;
-  #};
 
   system.stateVersion = "25.11";
 
