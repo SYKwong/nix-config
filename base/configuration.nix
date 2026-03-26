@@ -15,18 +15,15 @@
       "rd.systemd.show_status=false"
       "rd.udev.log_level=3"
       "udev.log_priority=3"
-            "nowatchdog"
+      "nowatchdog"
       "modprobe.blacklist=sp5100_tco" 
-      "modprobe.blacklist=iTCO_wdt" 
+      "modprobe.blacklist=iTCO_wdt"
+      "systemd.show_status=false"
     ];
     loader.timeout = 5;
     plymouth.enable = true;
   };
-
-  systemd.extraConfig = ''
-    ShowStatus=no
-    DefaultTimeoutStopSec=10s
-  '';
+  initrd.systemd.showStatus = false;
 
   services.getty.autologinUser = "${username}";
 
