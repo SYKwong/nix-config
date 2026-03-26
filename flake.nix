@@ -34,9 +34,11 @@
       modules = [
 
         ./base/configuration.nix
+
         ./hosts/framework16/framework16-luks.nix
         ./hosts/framework16/hardware-configuration.nix
-        
+        ./hosts/framework16/luks.nix
+
         ./modules/hyprland.nix
         ./modules/wifi.nix
         ./modules/bluetooth.nix
