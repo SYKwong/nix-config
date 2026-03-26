@@ -2,11 +2,9 @@
 
 {
    environment.systemPackages = with pkgs; [
-    btop
     eza
     fastfetch
     fzf
-    git
     lazygit
     neovim
     tree
@@ -17,5 +15,7 @@
 
   programs = {
     bat.enable = true;
+    gh.enable = true;
+    git.enable = true;
   };
 }
