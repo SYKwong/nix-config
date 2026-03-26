@@ -2,16 +2,17 @@
 
 {
    environment.systemPackages = with pkgs; [
-    wiremix
-    neovim
-    wget
-    tree
-    git
     bat
-    eza
-    fzf
     btop
-    zoxide
+    eza
+    fastfetch
+    fzf
+    git
     lazygit
+    neovim
+    tree
+    wget
+    wiremix
+    zoxide
   ];
 }
