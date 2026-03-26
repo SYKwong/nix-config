@@ -20,6 +20,10 @@
     plymouth.enable = true;
   };
 
+  systemd.extraConfig = ''
+    ShowStatus=no
+  '';
+
   services.getty.autologinUser = "${username}";
 
   networking.hostName = "nixos";
