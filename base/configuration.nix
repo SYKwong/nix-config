@@ -7,7 +7,6 @@
   boot = {
     consoleLogLevel = 0;
     initrd.verbose = false;
-    initrd.systemd.showStatus = false;
     kernelParams = [
       "quiet"
       "splash"
