@@ -16,6 +16,6 @@
   ];
 
   programs = {
-    bat = enable;
+    bat.enable = true;
   };
 }
