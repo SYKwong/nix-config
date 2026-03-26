@@ -7,6 +7,7 @@
   boot = {
     consoleLogLevel = 0;
     initrd.verbose = false;
+    initrd.systemd.showStatus = false;
     kernelParams = [
       "quiet"
       "splash"
@@ -23,7 +24,6 @@
     loader.timeout = 5;
     plymouth.enable = true;
   };
-  initrd.systemd.showStatus = false;
 
   services.getty.autologinUser = "${username}";
 
