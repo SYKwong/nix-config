@@ -3,35 +3,28 @@
 {
   boot.initrd.systemd.enable = true;
   boot.loader.systemd-boot.enable = true;
-  
+ 
+### For Silent Boot 
+### Silent Power Down Cannot Be Done Because of initrd 
   boot = {
-    consoleLogLevel = 0;
+    consoleLogLevel = 3;
     initrd.verbose = false;
     kernelParams = [
       "quiet"
       "splash"
-      "boot.shell_on_fail"
       "loglevel=3"
       "rd.systemd.show_status=false"
       "rd.udev.log_level=3"
       "udev.log_priority=3"
       "nowatchdog"
-      "modprobe.blacklist=sp5100_tco" 
-      "modprobe.blacklist=iTCO_wdt"
       "systemd.show_status=false"
       "vt.global_cursor_default=0"
-      "console=null"
     ];
     loader.timeout = 5;
     plymouth.enable = true;
-  
-
-    kernel.sysctl = {
-      "kernel.printk" = "0 0 0 0"; 
-      "kernel.watchdog" = 0;
-    };
+    blacklistedKernelModules = [ "sp5100_tco" "iTCO_wdt" ];
   };
-
+###
 
   services.getty.autologinUser = "${username}";
 
