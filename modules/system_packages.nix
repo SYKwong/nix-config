@@ -15,7 +15,7 @@
     zoxide
   ];
 
-  programs.{
+  programs = {
     bat = enable;
   };
 }
