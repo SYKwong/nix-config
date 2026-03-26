@@ -25,7 +25,7 @@
   
 
     kernel.sysctl = {
-      "kernel.printk" = "3 3 3 3"; 
+      "kernel.printk" = "0 0 0 0"; 
       "kernel.watchdog" = 0;
     };
   };
