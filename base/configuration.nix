@@ -45,18 +45,10 @@
     optimise.automatic = true;
   };
 
-
   users.users."${username}" = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
   };
-
-  programs.firefox.enable = true;
-  environment.systemPackages = with pkgs; [
-    neovim
-    wget
-    tree
-  ];
 
   system.stateVersion = "25.11";
 
