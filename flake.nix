@@ -42,6 +42,7 @@
         ./modules/hyprland.nix
         ./modules/wifi.nix
         ./modules/bluetooth.nix
+        ./modules/system_packages.nix
 
         disko.nixosModules.disko
         nixos-hardware.nixosModules.framework-16-7040-amd
