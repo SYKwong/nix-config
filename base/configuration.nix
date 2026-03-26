@@ -22,12 +22,14 @@
     ];
     loader.timeout = 5;
     plymouth.enable = true;
+  
+
+    kernel.sysctl = {
+      "kernel.printk" = "3 3 3 3"; 
+      "kernel.watchdog" = 0;
+    };
   };
 
-  kernel.sysctl = {
-    "kernel.printk" = "3 3 3 3"; 
-    "kernel.watchdog" = 0;
-  };
 
   services.getty.autologinUser = "${username}";
 
