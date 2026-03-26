@@ -18,13 +18,22 @@
 
   time.timeZone = "America/Los_Angeles";
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix = {
+    settings = {
+      experimental-features = [ "nix-command" "flakes" ];
+    };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 7d";
+    };
+    optimise.automatic = true;
+  };
+
 
   users.users."${username}" = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
-    packages = with pkgs; [
-    ];
   };
 
   programs.firefox.enable = true;
