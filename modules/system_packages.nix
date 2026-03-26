@@ -2,7 +2,6 @@
 
 {
    environment.systemPackages = with pkgs; [
-    bat
     btop
     eza
     fastfetch
@@ -15,4 +14,8 @@
     wiremix
     zoxide
   ];
+
+  program.{
+    bat = enable;
+  };
 }
