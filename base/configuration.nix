@@ -20,6 +20,8 @@
       "modprobe.blacklist=iTCO_wdt"
       "systemd.show_status=false"
       "vt.global_cursor_default=0"
+      "console=ttyS0"
+      "console=tty1"
     ];
     loader.timeout = 5;
     plymouth.enable = true;
