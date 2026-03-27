@@ -23,6 +23,10 @@ reboot
 
 After reboot
 ```
-sudo systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=0+7 /dev/disk/by-partlabel/disk-main-luks
+sudo sbctl create-keys
+Reboot and go to BIOS and enable secure boot, then exit
+sudo sbctl enroll-keys -m
+sudo nixos-rebuild switch --flake .
+sudo systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=7 /dev/disk/by-partlabel/disk-main-luks
 ```
 

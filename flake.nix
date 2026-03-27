@@ -20,6 +20,11 @@
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v0.4.1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
 
@@ -31,7 +36,7 @@
   in {
     nixosConfigurations.framework16 = nixpkgs.lib.nixosSystem {
       specialArgs = { 
-        inherit inputs;
+        inherit inputs lanzaboote;
         username = hosts.fw16.name; 
       };
 

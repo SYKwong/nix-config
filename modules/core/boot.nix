@@ -1,8 +1,20 @@
-{pkg, lib, username, ...}:
+{pkg, lib, username, lanzaboote, ...}:
 
 {
-  boot.initrd.systemd.enable = true;
-  boot.loader.systemd-boot.enable = true;
+  imports = [ lanzaboote.nixosModules.lanzaboote ];
+  
+  boot = {
+    initrd.systemd.enable = true;
+    loader.systemd-boot.enable = false;
+    lanzaboote = {
+      enable = true;
+      pkiBundle = "/var/lib/sbctl";
+    };
+  };
+  
+  # For secure boot keys
+  environment.systemPackages = [ pkgs.sbctl ];
+
  
 ### For Silent Boot 
 ### Silent Power Down Cannot Be Done Because of initrd 
