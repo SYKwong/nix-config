@@ -32,9 +32,9 @@ reboot
 
 After reboot
 ```
-Reboot and go to BIOS and enable secure boot, then exit
-sudo sbctl enroll-keys -m
-sudo nixos-rebuild switch --flake .
+sudo sbctl enroll-keys --microsoft
 sudo systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=7 /dev/disk/by-partlabel/disk-main-luks
+reboot and enable secure boot in BIOS
+if LUKS is not auto unlocking, enroll again
 ```
 
