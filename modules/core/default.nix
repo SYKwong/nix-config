@@ -1,8 +1,11 @@
-{ ... }: 
+{ config, lib, pkgs, username, ... }:
 
 {
   imports = [
-    ./bluetooth.nix
-    ./btop.nix
-  ];
+    ./boot.nix
+    ./networking.nix
+    ./system.nix
+    ./user.nix
+  ]
 }
+

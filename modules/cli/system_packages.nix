@@ -2,12 +2,9 @@
 
 {
    environment.systemPackages = with pkgs; [
-    eza
-    fastfetch
     fzf
-    lazygit
     neovim
-    tree
+    tre-command
     wget
     wiremix
     zoxide
@@ -15,7 +12,5 @@
 
   programs = {
     bat.enable = true;
-    gh.enable = true;
-    git.enable = true;
   };
 }

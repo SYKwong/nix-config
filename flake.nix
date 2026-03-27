@@ -33,15 +33,16 @@
 
       modules = [
 
-        ./base/configuration.nix
+        ./modules/core/configuration.nix
 
         ./hosts/framework16/framework16-luks.nix
         ./hosts/framework16/hardware-configuration.nix
         ./hosts/framework16/luks.nix
+        
+        ./modules/essentials/
 
         ./modules/hyprland.nix
         ./modules/wifi.nix
-        ./modules/bluetooth.nix
         ./modules/system_packages.nix
 
         disko.nixosModules.disko

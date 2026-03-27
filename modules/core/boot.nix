@@ -1,4 +1,4 @@
-{ config, lib, pkgs, username, ... }:
+{pkg, lib, ...}
 
 {
   boot.initrd.systemd.enable = true;
@@ -25,32 +25,6 @@
     blacklistedKernelModules = [ "sp5100_tco" "iTCO_wdt" ];
   };
 ###
-
   services.getty.autologinUser = "${username}";
-
-  networking.hostName = "nixos";
-  networking.networkmanager.enable = true;
-
-  time.timeZone = "America/Los_Angeles";
-
-  nix = {
-    settings = {
-      experimental-features = [ "nix-command" "flakes" ];
-    };
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 7d";
-    };
-    optimise.automatic = true;
-  };
-
-  users.users."${username}" = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-  };
-
-  system.stateVersion = "25.11";
-
 }
 
