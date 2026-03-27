@@ -33,9 +33,10 @@
       };
 
       modules = [
+        ./hosts/framework16
 
         ./modules/core
-        ./hosts/framework16
+        ./modules/framework/framework-tool-tui.nix
         ./modules/wireless/bluetooth.nix
         ./modules/wireless/wifi.nix
         ./modules/hyprland.nix
