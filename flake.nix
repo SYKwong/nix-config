@@ -52,7 +52,7 @@
         disko.nixosModules.disko
         nixos-hardware.nixosModules.framework-16-7040-amd
         stylix.nixosModules.stylix
-
+        
         home-manager.nixosModules.home-manager {
           home-manager = {
             useGlobalPkgs = true;
@@ -66,6 +66,18 @@
 
           };
         }
+
+        lanzaboote.nixosModules.lanzaboote
+
+        ({ pkgs, lib, ... }: {
+
+          environment.systemPackages = [ pkgs.sbctl ];
+          boot.loader.systemd-boot.enable = lib.mkForce false;
+          boot.lanzaboote = {
+            enable = true;
+            pkiBundle = "/var/lib/sbctl";
+          };
+        })
 
       ];
     };

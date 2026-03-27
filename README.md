@@ -1,6 +1,12 @@
 # nix-config
 ## How to use
 
+## Step 0 on framework16
+1. Boot to BIOS
+2. Administer Secure Boot
+3. Erase all Secure Boot Settings
+
+
 ```
 sudo su  
 echo "your-super-secure-password" > /tmp/secret.key  
@@ -16,6 +22,9 @@ Also because I wrote my `framework16-luks.nix`, which is a [disko](https://githu
 
 ```
 nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- --mode destroy,format,mount ./hosts/framework16/framework16-luks.nix --yes-wipe-all-disks  
+nix-shell -p sbctl
+mkdir -p /mnt/var/lib/sbctl
+sbctl create-keys --export /mnt/var/lib/sbctl/keys
 nixos-install --flake .#framework16  
 nixos-enter --root /mnt -c 'passwd "your_user_name"'
 reboot
@@ -23,7 +32,6 @@ reboot
 
 After reboot
 ```
-sudo sbctl create-keys
 Reboot and go to BIOS and enable secure boot, then exit
 sudo sbctl enroll-keys -m
 sudo nixos-rebuild switch --flake .
