@@ -34,8 +34,8 @@
 
       modules = [
 
-        ./modules/core/
-        ./hosts/framework16/      
+        ./modules/core
+        ./hosts/framework16
         ./modules/wireless/bluetooth.nix
         ./modules/wireless/wifi.nix
         ./modules/hyprland.nix
