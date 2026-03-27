@@ -23,7 +23,7 @@
   };
 
 
-  outputs = { self, nixpkgs, nixpkgs-stable,home-manager, nixos-hardware, disko, stylix... } @ inputs : 
+  outputs = { self, nixpkgs, nixpkgs-stable,home-manager, nixos-hardware, disko, stylix, ... } @ inputs : 
   let
     hosts = {
         fw16 = {name = "fw16-kyle";};
