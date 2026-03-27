@@ -1,7 +1,7 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, username, ... }:
 
 {
-   environment.systemPackages = with pkgs; [
+  home.packages = with pkgs; [
     fzf
     neovim
     tre-command
