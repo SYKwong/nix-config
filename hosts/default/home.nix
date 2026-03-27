@@ -5,11 +5,13 @@
     ./../../modules/home/cli 
   ];
 
+  wayland.windowManager.hyprland.systemd.enable = false;
+
   programs.bash = {
     enable = true;
     profileExtra = ''
-      if [ -z "$WAYLAND_DISPLAY" ] && [ "$XDG_VTNR" = 1 ]; then
-        exec hyprland
+      if uwsm check may-start; then
+        exec uwsm start hyprland.desktop
       fi
     '';
   };
