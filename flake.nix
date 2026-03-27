@@ -42,9 +42,8 @@
 
       modules = [
         ./hosts/framework16
-
         ./modules/core
-        ./modules/framework/framework-tool-tui.nix
+        ./modules/framework
         ./modules/wireless/bluetooth.nix
         ./modules/wireless/wifi.nix
         ./modules/hyprland.nix
