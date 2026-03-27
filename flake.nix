@@ -28,7 +28,7 @@
   };
 
 
-  outputs = { self, nixpkgs, nixpkgs-stable,home-manager, nixos-hardware, disko, stylix, ... } @ inputs : 
+  outputs = { self, nixpkgs, nixpkgs-stable,home-manager, nixos-hardware, disko, stylix, lanzaboote, ... } @ inputs : 
   let
     hosts = {
         fw16 = {name = "fw16-kyle";};
@@ -36,8 +36,7 @@
   in {
     nixosConfigurations.framework16 = nixpkgs.lib.nixosSystem {
       specialArgs = { 
-        inherit inputs;
-        inherit lanzabooote;
+        inherit inputs lanzabooote 
         username = hosts.fw16.name; 
       };
 
