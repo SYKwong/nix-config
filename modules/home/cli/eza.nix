@@ -19,9 +19,9 @@
     ];
   };
   home.shellAliases = {
-    ls = "eza";
+    ls = "eza -lh --group-directories-first";
     lt = "eza --tree --level=2";
-    ll = "eza  -lh --no-user --long";
+    ll = "eza -lh --no-user --long";
     la = "eza -lah ";
     tree = "eza --tree ";
   };
