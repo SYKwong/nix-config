@@ -1,8 +1,10 @@
-{pkg, lib, username, ...}:
+{ pkgs, lib, username, lanzaboote, ...}:
 
 {
-  boot.initrd.systemd.enable = true;
-  boot.loader.systemd-boot.enable = true;
+  boot = {
+    initrd.systemd.enable = true;
+    loader.systemd-boot.enable = true;
+  };
  
 ### For Silent Boot 
 ### Silent Power Down Cannot Be Done Because of initrd 

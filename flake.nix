@@ -20,10 +20,15 @@
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v1.0.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
 
-  outputs = { self, nixpkgs, nixpkgs-stable,home-manager, nixos-hardware, disko, stylix, ... } @ inputs : 
+  outputs = { self, nixpkgs, nixpkgs-stable,home-manager, nixos-hardware, disko, stylix, lanzaboote, ... } @ inputs : 
   let
     hosts = {
         fw16 = {name = "fw16-kyle";};
@@ -31,8 +36,8 @@
   in {
     nixosConfigurations.framework16 = nixpkgs.lib.nixosSystem {
       specialArgs = { 
-        inherit inputs;
-        username = hosts.fw16.name; 
+        inherit inputs lanzaboote;
+        username = hosts.fw16.name;
       };
 
       modules = [
@@ -47,7 +52,7 @@
         disko.nixosModules.disko
         nixos-hardware.nixosModules.framework-16-7040-amd
         stylix.nixosModules.stylix
-
+        
         home-manager.nixosModules.home-manager {
           home-manager = {
             useGlobalPkgs = true;
@@ -61,6 +66,18 @@
 
           };
         }
+
+        lanzaboote.nixosModules.lanzaboote
+
+        ({ pkgs, lib, ... }: {
+
+          environment.systemPackages = [ pkgs.sbctl ];
+          boot.loader.systemd-boot.enable = lib.mkForce false;
+          boot.lanzaboote = {
+            enable = true;
+            pkiBundle = "/var/lib/sbctl";
+          };
+        })
 
       ];
     };
