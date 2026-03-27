@@ -1,7 +1,7 @@
 # nix-config
 ## How to use
 
-## Step 0 on framework16
+### Step 0 on framework16
 1. Boot to BIOS
 2. Administer Secure Boot
 3. Erase all Secure Boot Settings
