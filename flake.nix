@@ -48,7 +48,7 @@
         ./modules/lanzaboote
         ./modules/wireless/bluetooth.nix
         ./modules/wireless/wifi.nix
-        ./modules/hyprland.nix
+        ./modules/hyprland
 
         disko.nixosModules.disko
         nixos-hardware.nixosModules.framework-16-7040-amd
