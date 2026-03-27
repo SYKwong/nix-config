@@ -36,7 +36,7 @@
   in {
     nixosConfigurations.framework16 = nixpkgs.lib.nixosSystem {
       specialArgs = { 
-        inherit inputs lanzabooote;
+        inherit inputs lanzaboote;
         username = hosts.fw16.name;
       };
 
