@@ -1,6 +1,10 @@
 { config, pkgs, username, ... }:
 
 {
+  imports = [ 
+    ./../../modules/home/cli 
+  ];
+
   home.username = "${username}";
   home.homeDirectory = "/home/${username}";
   home.stateVersion = "25.11";

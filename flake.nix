@@ -1,5 +1,6 @@
 {
 
+
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "nixpkgs/nixos-25.11";
@@ -33,17 +34,11 @@
 
       modules = [
 
-        ./modules/core/configuration.nix
-
-        ./hosts/framework16/framework16-luks.nix
-        ./hosts/framework16/hardware-configuration.nix
-        ./hosts/framework16/luks.nix
-        
-        ./modules/essentials/
-
+        ./modules/core/
+        ./hosts/framework16/      
+        ./modules/wireless/bluetooth.nix
+        ./modules/wireless/wifi.nix
         ./modules/hyprland.nix
-        ./modules/wifi.nix
-        ./modules/system_packages.nix
 
         disko.nixosModules.disko
         nixos-hardware.nixosModules.framework-16-7040-amd
