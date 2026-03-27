@@ -2,7 +2,7 @@
 
 {
   # Styling Options
-  programs.stylix = {
+  stylix = {
     enable = true;
     # base16Scheme = {
     #   base00 = "282936";
