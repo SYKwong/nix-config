@@ -31,19 +31,21 @@
   outputs = { self, nixpkgs, nixpkgs-stable,home-manager, nixos-hardware, disko, stylix, lanzaboote, ... } @ inputs : 
   let
     hosts = {
-        fw16 = {name = "fw16-kyle";};
+        fw16 = { username = "fw16-kyle"; hostname = "framework16"; };
     };
   in {
     nixosConfigurations.framework16 = nixpkgs.lib.nixosSystem {
       specialArgs = { 
         inherit inputs lanzaboote;
-        username = hosts.fw16.name;
+        inherit (hosts.fw16) username hostname;
       };
 
       modules = [
         ./hosts/framework16
         ./modules/core
         ./modules/framework
+        ./modules/home-manager
+        ./modules/lanzaboote
         ./modules/wireless/bluetooth.nix
         ./modules/wireless/wifi.nix
         ./modules/hyprland.nix
@@ -51,33 +53,7 @@
         disko.nixosModules.disko
         nixos-hardware.nixosModules.framework-16-7040-amd
         stylix.nixosModules.stylix
-        
-        home-manager.nixosModules.home-manager {
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            extraSpecialArgs = {
-              inherit inputs;
-              username = hosts.fw16.name;
-            };
-            users."${hosts.fw16.name}" = import ./hosts/framework16/home.nix;
-            backupFileExtension = "backup";
-
-          };
-        }
-
         lanzaboote.nixosModules.lanzaboote
-
-        ({ pkgs, lib, ... }: {
-
-          environment.systemPackages = [ pkgs.sbctl ];
-          boot.loader.systemd-boot.enable = lib.mkForce false;
-          boot.lanzaboote = {
-            enable = true;
-            pkiBundle = "/var/lib/sbctl";
-          };
-        })
-
       ];
     };
   };
