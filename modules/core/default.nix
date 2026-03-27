@@ -6,6 +6,6 @@
     ./networking.nix
     ./system.nix
     ./user.nix
-  ]
+  ];
 }
 
