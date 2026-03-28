@@ -3,6 +3,7 @@
 {
   imports = [
     ./hyprland.nix
+    ./hyprlock.nix
   ];
 
   environment.systemPackages = with pkgs; [
