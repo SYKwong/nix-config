@@ -1,13 +1,9 @@
-{ config, pkgs, username, ... }:
+{ config, pkgs, ... }:
 
 {
   imports = [ 
     ./../../modules/home/cli 
   ];
-
-  home.username = "${username}";
-  home.homeDirectory = "/home/${username}";
-  home.stateVersion = "26.05";
 
   programs.bash = {
     enable = true;
