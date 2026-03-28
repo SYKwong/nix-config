@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, hostname, ... }:
 
 {
   imports = [ 
@@ -7,7 +7,9 @@
 
   wayland.windowManager.hyprland.systemd.enable = false;
   
-  home.file.".config/hypr".source = ./../../config/hypr;
+  home.file.".config/hypr/hyprland.conf".source = ./../../config/hypr/hosts/${hostname}.conf;
+  home.file.".config/hypr/common".source = ./../../config/hypr/common;
+
   home.file.".config/waybar".source = ./../../config/waybar;
 
 
