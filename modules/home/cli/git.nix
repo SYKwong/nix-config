@@ -10,6 +10,4 @@
     lazygit.enable = true;
   };
 }
-  
-
 
