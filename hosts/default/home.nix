@@ -12,6 +12,8 @@
 
   xdg.configFile."waybar".source = ./../../config/waybar;
 
+  home.file."debug_hostname.txt".text = "Hostname is: ${hostname}";
+
   programs.bash = {
     enable = true;
     profileExtra = ''
