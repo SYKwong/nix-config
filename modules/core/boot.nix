@@ -1,4 +1,4 @@
-{ pkgs, lib, username, lanzaboote, ...}:
+{ username, ... }:
 
 {
   boot = {

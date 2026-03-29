@@ -1,11 +1,12 @@
-{ pkgs, ... }:
+{ pkgs, ... }: 
 
 {
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-  };
-  
+  imports = [
+    ./hyprland.nix
+    ./hyprlock.nix
+    ./walker.nix
+  ];
+
   environment.systemPackages = with pkgs; [
     hypridle
     hyprpolkitagent

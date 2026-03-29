@@ -1,5 +1,3 @@
-{ pkgs, ... }:
-
 {
   programs = {
     git = {
@@ -10,6 +8,4 @@
     lazygit.enable = true;
   };
 }
-  
-
 

@@ -1,5 +1,5 @@
 {
-
+  outputs = inputs: import ./outputs.nix inputs;
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
@@ -25,37 +25,17 @@
       url = "github:nix-community/lanzaboote/v1.0.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-  };
 
-
-  outputs = { self, nixpkgs, nixpkgs-stable,home-manager, nixos-hardware, disko, stylix, lanzaboote, ... } @ inputs : 
-  let
-    hosts = {
-        fw16 = { username = "fw16-kyle"; hostname = "framework16"; };
+    walker = {
+      url = "github:abenz1267/walker";
+      inputs.nixpkgs.follows = "nixpkgs"; 
+      inputs.elephant.follows = "elephant";
     };
-  in {
-    nixosConfigurations.framework16 = nixpkgs.lib.nixosSystem {
-      specialArgs = { 
-        inherit inputs lanzaboote;
-        inherit (hosts.fw16) username hostname;
-      };
-
-      modules = [
-        ./hosts/framework16
-        ./modules/core
-        ./modules/framework
-        ./modules/home-manager
-        ./modules/lanzaboote
-        ./modules/wireless/bluetooth.nix
-        ./modules/wireless/wifi.nix
-        ./modules/hyprland.nix
-
-        disko.nixosModules.disko
-        nixos-hardware.nixosModules.framework-16-7040-amd
-        stylix.nixosModules.stylix
-        lanzaboote.nixosModules.lanzaboote
-      ];
+  
+    elephant = {
+      url = "github:abenz1267/elephant";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
-  };
 
+  };
 }

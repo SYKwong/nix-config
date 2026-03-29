@@ -1,5 +1,5 @@
 {
-  programs.fish = {
+  programs.hyprlock = {
     enable = true;
   };
 }

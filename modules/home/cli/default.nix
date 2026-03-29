@@ -1,5 +1,3 @@
-{ ... }: 
-
 {
   imports = [
     ./bat.nix
@@ -8,7 +6,7 @@
     ./fastfetch.nix
     ./fzf.nix
     ./git.nix
-    ./system_packages.nix
+    ./yazi.nix
     ./zoxide.nix
   ];
 }

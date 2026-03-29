@@ -1,5 +1,3 @@
-{ ... }: 
-
 {
   imports = [
     ./framework16-luks.nix
