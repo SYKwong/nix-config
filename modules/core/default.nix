@@ -1,5 +1,3 @@
-{ config, lib, pkgs, username, ... }:
-
 {
   imports = [
     ./boot.nix

@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, lib, ... }:
 
 let
   accent = "#" + config.lib.stylix.colors.base0D;

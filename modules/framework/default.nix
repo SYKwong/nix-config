@@ -1,5 +1,3 @@
-{ ... }: 
-
 {
   imports = [
     ./framework-tool-tui.nix
