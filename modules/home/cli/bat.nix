@@ -19,15 +19,14 @@
     ];
   };
 
-  home = {
-    sessionVariables = {
+  home.sessionVariables = {
       MANPAGER = "sh -c 'col -bx | bat -l man -p'";
       MANROFFOPT = "-c";
-    };
-
-    shellAliases = {
-      cat = "bat";
-    };
   };
+
+  home.shellAliases = {
+      cat = "bat";
+  };
+
 }
 
