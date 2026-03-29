@@ -7,11 +7,9 @@
 
   wayland.windowManager.hyprland.systemd.enable = false;
   
-  #home.file.".config/hypr/hyprland.conf".source = ./../../config/hypr/hosts/${hostname}.conf;
-
-  #home.file.".config/hypr/common".source = ./../../config/hypr/common;
-
-  #xdg.configFile."waybar".source = ./../../config/waybar;
+  xdg.configFile."hypr/hyprland.conf".source = ./../../config/hypr/hosts/${hostname}.conf;
+  xdg.configFile."hypr/common".source = ./../../config/hypr/common;
+  xdg.configFile."waybar".source = ./../../config/waybar;
 
   home.file."debug_hostname.txt".text = "Hostname is: ${hostname}";
 
