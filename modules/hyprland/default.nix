@@ -14,5 +14,6 @@
     slurp
     kitty
     rofi
+    satty
   ];
 }
