@@ -4,6 +4,7 @@
   imports = [
     ./hyprland.nix
     ./hyprlock.nix
+    ./screenshot.nix
   ];
 
   environment.systemPackages = with pkgs; [
