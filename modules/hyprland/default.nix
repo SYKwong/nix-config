@@ -39,13 +39,12 @@
   };
 
   environment.systemPackages = with pkgs; [
-    hypridle
-    hyprpolkitagent
+    hypridle hyprpolkitagent
     waybar
-    grim
-    slurp
+    grim slurp
     kitty
     rofi
     satty
+    swayosd
   ];
 }
