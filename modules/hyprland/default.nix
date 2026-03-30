@@ -45,6 +45,6 @@
     kitty
     rofi
     satty
-    swayosd
+    swayosd playerctl brightnessctl
   ];
 }
