@@ -1,7 +1,7 @@
 inputs:
 
 let
-  inherit (inputs) nixpkgs nixpkgs-stable home-manager nixos-hardware disko stylix lanzaboote walker;
+  inherit (inputs) nixpkgs nixpkgs-stable home-manager nixos-hardware disko stylix lanzaboote;
 
   hosts = {
       fw16 = { username = "fw16-kyle"; hostname = "framework16"; };
@@ -29,7 +29,6 @@ in {
       lanzaboote.nixosModules.lanzaboote
       nixos-hardware.nixosModules.framework-16-7040-amd
       stylix.nixosModules.stylix
-      walker.nixosModules.default
     ];
   };
 }

@@ -4,7 +4,6 @@
   imports = [
     ./hyprland.nix
     ./hyprlock.nix
-    ./walker.nix
   ];
 
   environment.systemPackages = with pkgs; [
@@ -14,5 +13,7 @@
     grim
     slurp
     kitty
+    rofi
+    satty
   ];
 }
