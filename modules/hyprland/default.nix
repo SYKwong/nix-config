@@ -29,21 +29,6 @@
   systemd.services."autovt@tty1".enable = false;
 
   services.udev.packages = [ pkgs.swayosd ];
-  systemd.user.services.swayosd = {
-    description = "SwayOSD Display Daemon";
-  
-    # Ensure it only starts after the graphical session is ready
-    partOf = [ "graphical-session.target" ];
-    after = [ "graphical-session.target" ];
-    wantedBy = [ "graphical-session.target" ];
-
-    serviceConfig = {
-      Type = "simple";
-      ExecStart = "${pkgs.swayosd}/bin/swayosd-server";
-      Restart = "always";
-      RestartSec = "3";
-    };
-  };
 
   programs = {
     hyprland = {
