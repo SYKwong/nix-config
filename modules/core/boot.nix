@@ -11,6 +11,7 @@
   boot = {
     consoleLogLevel = 3;
     initrd.verbose = false;
+    initrd.systemd.services.systemd-vconsole-setup.enable = false;
     kernelParams = [
       "quiet"
       "splash"
@@ -25,6 +26,7 @@
     loader.timeout = 5;
     plymouth.enable = true;
     blacklistedKernelModules = [ "sp5100_tco" "iTCO_wdt" ];
+    
   };
 ###
 }
