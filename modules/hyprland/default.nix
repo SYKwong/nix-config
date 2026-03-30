@@ -11,8 +11,8 @@
     hypridle
     hyprpolkitagent
     waybar
-    #grim
-    #slurp
+    grim
+    slurp
     kitty
     rofi
     satty
