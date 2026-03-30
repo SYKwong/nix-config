@@ -5,11 +5,11 @@
     enable = true;
     settings = {
       initial_session = {
-        command = "start-hyprland";
+        command = "start-hyprland &>/dev/null";
         user = "${username}";
       };
       default_session = {
-        command = "start-hyprland";
+        command = "start-hyprland &>/dev/null";
         user = "${username}";
       };
     };
