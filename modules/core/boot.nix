@@ -27,6 +27,5 @@
     blacklistedKernelModules = [ "sp5100_tco" "iTCO_wdt" ];
   };
 ###
-  services.getty.autologinUser = "${username}";
 }
 
