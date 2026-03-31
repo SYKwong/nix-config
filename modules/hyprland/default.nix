@@ -1,6 +1,8 @@
 { pkgs, lib, username, ... }: 
-
+  
 {
+  imports = [./kb-light-manager.nix];
+
   services.greetd = {
     enable = true;
     settings = {
@@ -49,4 +51,5 @@
     satty
     swayosd playerctl brightnessctl
   ];
+
 }
