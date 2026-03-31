@@ -9,7 +9,7 @@
         pkgs.gnugrep 
         pkgs.coreutils
       ];
-      text = builtins.readFile ./kb-light-manager.sh;
+      text = builtins.readFile ./scripts/kb-light-manager.sh;
     })
   ];
 }
