@@ -26,7 +26,8 @@
   ];
 
   hardware.keyboard.qmk.enable = true;
-  environment.systemPackages = [
-    pkgs.qmk_hid
+  environment.systemPackages = with pkgs; [
+    qmk
+    qmk_hid
   ];
 }
