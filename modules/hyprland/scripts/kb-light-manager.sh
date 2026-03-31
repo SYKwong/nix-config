@@ -3,7 +3,7 @@
 # Usage: kb-light-manager <action> <backend> <vid> <pid>
 ACTION="$1"   # off | on
 VID="$2"      # e.g., 32ac
-PID="$2"      # e.g., 0012
+PID="$3"      # e.g., 0012
 
 # Generate a unique state file per device to avoid collisions
 # Example: /tmp/kb_state_qmk_32ac_0012
