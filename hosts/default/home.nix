@@ -8,6 +8,7 @@
   wayland.windowManager.hyprland.systemd.enable = false;
   
   xdg.configFile."hypr/hyprland.conf".source = ./../../config/hypr/hosts/${hostname}.conf;
+  xdg.configFile."hypr/hypridle.conf".source = ./../../config/hypr/hypridle.conf;
   xdg.configFile."hypr/common".source = ./../../config/hypr/common;
   xdg.configFile."waybar".source = ./../../config/waybar;
 
