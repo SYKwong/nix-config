@@ -1,3 +1,5 @@
+{ username, ... }:
+
 {
   imports = [
     ./disko.nix
@@ -10,4 +12,5 @@
   ];
 
   system.stateVersion = "26.05";
+  nix.settings.trusted-users = [ username ];
 }
