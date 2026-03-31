@@ -1,4 +1,4 @@
-{ username, ... }:
+{ pkgs, username, ... }:
 
 {
   imports = [
@@ -26,4 +26,7 @@
   ];
 
   hardware.keyboard.qmk.enable = true;
+  environment.systemPackages = [
+    pkgs.qmk_hid
+  ];
 }
