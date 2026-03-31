@@ -19,5 +19,3 @@ else
     VAL=$(cat "$STATE_FILE" 2>/dev/null || echo 100)
     qmk_hid --vid "$VID" --pid "$PID" via --backlight "$VAL"
 fi
-;;
-esac
