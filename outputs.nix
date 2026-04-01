@@ -1,7 +1,15 @@
 inputs:
 
 let
-  inherit (inputs) nixpkgs nixpkgs-stable home-manager nixos-hardware disko stylix lanzaboote;
+  inherit (inputs) 
+  nixpkgs nixpkgs-stable 
+  home-manager 
+  nixos-hardware 
+  disko 
+  stylix 
+  lanzaboote
+  impermanence
+  ;
 
   hosts = {
       fw16 = { username = "fw16-kyle"; hostname = "framework16"; };
@@ -26,6 +34,7 @@ in {
 
       disko.nixosModules.disko
       home-manager.nixosModules.home-manager
+      impermanence.nixosModules.impermanence
       lanzaboote.nixosModules.lanzaboote
       nixos-hardware.nixosModules.framework-16-7040-amd
       stylix.nixosModules.stylix
