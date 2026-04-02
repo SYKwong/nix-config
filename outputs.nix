@@ -12,33 +12,42 @@ let
   ;
 
   hosts = {
-      fw16 = { username = "fw16-kyle"; hostname = "framework16"; };
+    framework16 = { 
+      username = "fw16-kyle";
+      extraModules = [
+        nixos-hardware.nixosModules.framework-16-7040-amd
+        lanzaboote.nixosModules.lanzaboote
+      ];
+    };
   };
 
 in {
-  nixosConfigurations.framework16 = nixpkgs.lib.nixosSystem {
-    specialArgs = { 
-      inherit inputs lanzaboote;
-      inherit (hosts.fw16) username hostname;
-    };
+  # Expose hosts for Bash
+  hostInfo = hosts;
 
-    modules = [
-      ./hosts/framework16
-      ./modules/core
-      ./modules/framework
-      ./modules/home-manager
-      ./modules/lanzaboote
-      ./modules/wireless/bluetooth.nix
-      ./modules/wireless/wifi.nix
-      ./modules/hyprland
+  nixosConfigurations = nixpkgs.lib.mapAttrs (name: info: 
+    nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = { 
+          inherit inputs; 
+          inherit (info) username;
+          hostname = name;
+        };
 
-      disko.nixosModules.disko
-      home-manager.nixosModules.home-manager
-      impermanence.nixosModules.impermanence
-      lanzaboote.nixosModules.lanzaboote
-      nixos-hardware.nixosModules.framework-16-7040-amd
-      stylix.nixosModules.stylix
-    ];
-  };
+      modules = [
+        disko.nixosModules.disko
+        home-manager.nixosModules.home-manager
+        stylix.nixosModules.stylix
+        impermanence.nixosModules.impermanence
+
+        ./modules/core
+        ./modules/home-manager
+        ./modules/hyprland
+        ./modules/wireless
+
+        ./hosts/${name}
+
+      ] ++ info.extraModules;
+    }
+  ) hosts;
 }
-
