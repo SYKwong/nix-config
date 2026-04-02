@@ -26,10 +26,10 @@ user_name=""
 if [ ! -f "./hosts/${host_name}/disko.nix" ]; then
   echo "Error: ./hosts/${host_name}/disko.nix does not exist."
   exit 1
-fi
+fi 
 
 # Fetch username from the Flake
-if fetched_user=$(nix eval --raw ".#hosts.${host_name}.username" 2>/dev/null); then
+if fetched_user=$(nix eval --raw ".#hostInfo.${host_name}.username" 2>/dev/null); then
     echo "Found user: $fetched_user"
     user_name=$fetched_user
 else
@@ -37,20 +37,21 @@ else
     exit 1
 fi
 
+disko_partition(){
+  echo "Using ./hosts/${host_name}/disko.nix to partition your drive"
+  nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- \
+      --mode destroy,format,mount "./hosts/${host_name}/disko.nix" --yes-wipe-all-disks
+}
+
 set_up_partitions() {
   if [ -n "$luks_password" ]; then
     echo "LUKS password provided. Creating secret key..."
     echo "$luks_password" > /tmp/secret.key
-    
-    nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- \
-      --mode destroy,format,mount "./hosts/${host_name}/disko.nix" --yes-wipe-all-disks
-    
-    echo "Setting up Secure Boot keys..."
+    disko_partition   
     nix shell nixpkgs#sbctl --command sbctl create-keys --export /mnt/var/lib/sbctl/keys
   else
     echo "No LUKS password provided. Skipping encryption setup..."
-    nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- \
-      --mode destroy,format,mount "./hosts/${host_name}/disko.nix" --yes-wipe-all-disks
+    disko_partition
   fi
 }
 
@@ -70,6 +71,7 @@ copy_config_to_host(){
   nixos-enter --root /mnt -c "chown -R $user_name:users /$config_dir"
   echo "Flake successfully copied."
 }
+
 
 set_up_partitions
 install_nixos
