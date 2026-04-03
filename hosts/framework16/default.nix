@@ -1,8 +1,8 @@
 {
   imports = [
-    ./framework16-lvm-luks.nix
-    ./impermanence.nix
+    ./disko.nix
     ./hardware-configuration.nix
+    ./impermanence.nix
     ./luks.nix
     ./zram.nix
 
