@@ -48,8 +48,9 @@ set_up_partitions() {
   if [ -n "$luks_password" ]; then
     echo "LUKS password provided. Creating secret key..."
     echo "$luks_password" > /tmp/secret.key
-    disko_partition   
-    nix shell nixpkgs#sbctl --command sbctl create-keys --export /mnt/var/lib/sbctl/keys
+    disko_partition
+    mkdir -p /mnt/var/lib/sbctl/keys
+    nix run nixpkgs#sbctl -- create-keys --export /mnt/var/lib/sbctl/keys
   else
     echo "No LUKS password provided. Skipping encryption setup..."
     disko_partition

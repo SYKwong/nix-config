@@ -16,6 +16,7 @@
             content = {
               type = "luks";
               name = "crypted";
+              passwordFile = "/tmp/secret.key";
               content = { type = "lvm_pv"; vg = "pool"; };
             };
           };
