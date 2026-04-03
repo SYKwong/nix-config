@@ -73,11 +73,10 @@ copy_config_to_host(){
   echo "Flake successfully copied."
 }
 
-
-#set_up_partitions
-#install_nixos
-#copy_config_to_host
-#echo "Installation finished! Rebooting..."
-#sleep 5
-#reboot
+set_up_partitions
+install_nixos
+copy_config_to_host
+echo "Installation finished! Rebooting..."
+sleep 5
+reboot
 
