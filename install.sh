@@ -70,7 +70,7 @@ copy_config_to_host(){
   echo "Flake successfully copied."
 }
 
-set_up_partitions
+set_up_full_disk_encryption
 disko_partition
 install_nixos
 copy_config_to_host
