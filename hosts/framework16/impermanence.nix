@@ -1,12 +1,6 @@
 { username, ... }:
 
 {
-  fileSystems."/" = {
-    device = "none";
-    fsType = "tmpfs";
-    options = [ "size=8G" "mode=755" ];
-  };
-
   environment.persistence."/persist" = {
     hideMounts = true;
     directories = [
@@ -17,7 +11,6 @@
     ];
     files = [ "/etc/machine-id" ];
 
-    # SELECTIVE HOME: List exactly what you want to keep
     users.${username} = {
       directories = [
         "Documents"

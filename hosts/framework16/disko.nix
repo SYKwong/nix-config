@@ -1,5 +1,13 @@
 {
   disko.devices = {
+    nodev."/" = {
+      type = "tmpfs";
+      mountOptions = [
+        "size=8G"
+        "mode=755"
+      ];
+    };
+
     disk.main = {
       type = "disk";
       device = "/dev/disk/by-id/nvme-Samsung_SSD_990_PRO_4TB_S7KGNJ0W903445L";
