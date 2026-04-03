@@ -2,6 +2,7 @@
 
 set -euo pipefail
 trap 'rm -f /tmp/secret.key' EXIT
+export NIX_CONFIG="experimental-features = nix-command flakes" 
 
 # Checks if the user provided at least host_name and user_password
 if [ "$#" -lt 2 ]; then
@@ -73,10 +74,10 @@ copy_config_to_host(){
 }
 
 
-set_up_partitions
-install_nixos
-copy_config_to_host
-echo "Installation finished! Rebooting..."
-sleep 5
-reboot
+#set_up_partitions
+#install_nixos
+#copy_config_to_host
+#echo "Installation finished! Rebooting..."
+#sleep 5
+#reboot
 
