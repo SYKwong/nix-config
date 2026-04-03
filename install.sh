@@ -44,17 +44,12 @@ disko_partition(){
       --mode destroy,format,mount "./hosts/${host_name}/disko.nix" --yes-wipe-all-disks
 }
 
-set_up_partitions() {
+set_up_full_disk_encryption() {
   if [ -n "$luks_password" ]; then
     echo "LUKS password provided. Creating secret key..."
     echo "$luks_password" > /tmp/secret.key
-    disko_partition
-    mkdir -p /mnt/var/lib/sbctl/keys
-    nix-env -iA nixpkgs.sbctl
-    sbctl create-keys --export /mnt/var/lib/sbctl/keys
   else
     echo "No LUKS password provided. Skipping encryption setup..."
-    disko_partition
   fi
 }
 
@@ -76,6 +71,7 @@ copy_config_to_host(){
 }
 
 set_up_partitions
+disko_partition
 install_nixos
 copy_config_to_host
 echo "Installation finished! Rebooting..."
