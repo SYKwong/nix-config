@@ -1,9 +1,10 @@
 {
   disko.devices = {
     nodev."/" = {
-      type = "tmpfs";
+      fsType = "tmpfs";
       mountOptions = [
         "size=8G"
+        "defaults"
         "mode=755"
       ];
     };
