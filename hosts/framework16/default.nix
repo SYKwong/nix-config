@@ -11,5 +11,4 @@
   ];
 
   system.stateVersion = "26.05";
-  boot.resumeDevice = "/dev/mapper/pool-swap";
 }
