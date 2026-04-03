@@ -40,7 +40,7 @@ fi
 
 disko_partition(){
   echo "Using ./hosts/${host_name}/disko.nix to partition your drive"
-  nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- \
+  nix run github:nix-community/disko/latest -- \
       --mode destroy,format,mount "./hosts/${host_name}/disko.nix" --yes-wipe-all-disks
 }
 
