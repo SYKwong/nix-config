@@ -53,6 +53,12 @@ set_up_full_disk_encryption() {
   fi
 }
 
+create_boot_entry_for_secureboot(){
+  if [ -n "$luks_password" ]; then
+    bootctl --esp-path=/mnt/boot install
+  fi
+}
+
 install_nixos(){
   echo "Starting NixOS installation..."
   nixos-install --no-root-password --flake ".#${host_name}"  
@@ -61,6 +67,7 @@ install_nixos(){
   echo "root:$user_password" | nixos-enter --root /mnt -c "chpasswd"
   echo "$user_name:$user_password" | nixos-enter --root /mnt -c "chpasswd"
 }
+
 
 copy_config_to_host(){
   local config_dir="home/$user_name/nix-config"
@@ -73,6 +80,7 @@ copy_config_to_host(){
 
 set_up_full_disk_encryption
 disko_partition
+create_boot_entry_for_secureboot
 install_nixos
 copy_config_to_host
 echo "Installation finished! Please reboot..."
