@@ -54,14 +54,22 @@ set_up_full_disk_encryption() {
 }
 
 create_boot_entry_for_secureboot(){
+  local OLD_ENTRIES=$(efibootmgr | grep "Linux Boot Manager" | cut -d' ' -f1 | cut -d't' -f2 | tr -d '*')
+
+  for entry in $OLD_ENTRIES; do
+    echo "Cleaning up stale boot entry: Boot$entry"
+    efibootmgr -b "$entry" -B
+  done
+
   if [ -n "$luks_password" ]; then
-    bootctl --esp-path=/mnt/boot install
+    #bootctl --esp-path=/mnt/boot install
+    ;
   fi
 }
 
 install_nixos(){
   echo "Starting NixOS installation..."
-  nixos-install --no-root-password --flake ".#${host_name}"  
+  nixos-install --install-bootloader --no-root-password --flake ".#${host_name}"  
  
   echo "Setting password for user: $user_name"
   echo "root:$user_password" | nixos-enter --root /mnt -c "chpasswd"
