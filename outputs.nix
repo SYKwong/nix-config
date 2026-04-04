@@ -8,7 +8,6 @@ let
   disko 
   stylix 
   lanzaboote
-  impermanence
   ;
 
   hosts = {
@@ -17,7 +16,6 @@ let
       extraModules = [
         nixos-hardware.nixosModules.framework-16-7040-amd
         lanzaboote.nixosModules.lanzaboote
-        impermanence.nixosModules.impermanence
       ];
     };
   };

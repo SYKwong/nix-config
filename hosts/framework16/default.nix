@@ -2,7 +2,6 @@
   imports = [
     ./disko.nix
     ./hardware-configuration.nix
-    ./impermanence.nix
     ./luks.nix
     ./zram.nix
 
