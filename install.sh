@@ -62,14 +62,13 @@ create_boot_entry_for_secureboot(){
   done
 
   if [ -n "$luks_password" ]; then
-    #bootctl --esp-path=/mnt/boot install
-    :
+    bootctl --esp-path=/mnt/boot install
   fi
 }
 
 install_nixos(){
   echo "Starting NixOS installation..."
-  nixos-install --install-bootloader --no-root-password --flake ".#${host_name}"  
+  nixos-install --no-root-password --flake ".#${host_name}"
  
   echo "Setting password for user: $user_name"
   echo "root:$user_password" | nixos-enter --root /mnt -c "chpasswd"
