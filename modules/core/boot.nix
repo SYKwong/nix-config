@@ -4,6 +4,7 @@
   boot = {
     initrd.systemd.enable = true;
     loader.systemd-boot.enable = true;
+    loader.grub.enable = false;
   };
 ### For Silent Boot 
 ### Silent Power Down Cannot Be Done Because of initrd 
