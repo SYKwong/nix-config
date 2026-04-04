@@ -63,7 +63,7 @@ create_boot_entry_for_secureboot(){
 
   if [ -n "$luks_password" ]; then
     #bootctl --esp-path=/mnt/boot install
-    ;
+    :
   fi
 }
 
