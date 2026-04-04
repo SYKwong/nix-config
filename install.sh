@@ -55,9 +55,10 @@ set_up_full_disk_encryption() {
 
 install_nixos(){
   echo "Starting NixOS installation..."
-  nixos-install --flake ".#${host_name}"  
+  nixos-install --no-root-password --flake ".#${host_name}"  
  
   echo "Setting password for user: $user_name"
+  echo "root:$user_password" | nixos-enter --root /mnt -c "chpasswd"
   echo "$user_name:$user_password" | nixos-enter --root /mnt -c "chpasswd"
 }
 
@@ -74,7 +75,7 @@ set_up_full_disk_encryption
 disko_partition
 install_nixos
 copy_config_to_host
-echo "Installation finished! Rebooting..."
-sleep 5
-reboot
+echo "Installation finished! Please reboot..."
+#sleep 5
+#reboot
 
