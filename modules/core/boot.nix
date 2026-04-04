@@ -5,8 +5,8 @@
     initrd.systemd.enable = true;
     loader.systemd-boot.enable = true;
     loader.grub.enable = false;
+    loader.efi.efiSysMountPoint = "/boot";
   };
-
 ### For Silent Boot 
 ### Silent Power Down Cannot Be Done Because of initrd 
   boot = {

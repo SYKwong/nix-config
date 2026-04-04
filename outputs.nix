@@ -17,6 +17,7 @@ let
       extraModules = [
         nixos-hardware.nixosModules.framework-16-7040-amd
         lanzaboote.nixosModules.lanzaboote
+        impermanence.nixosModules.impermanence
       ];
     };
   };
@@ -38,7 +39,6 @@ in {
         disko.nixosModules.disko
         home-manager.nixosModules.home-manager
         stylix.nixosModules.stylix
-        impermanence.nixosModules.impermanence
 
         ./modules/core
         ./modules/home-manager
