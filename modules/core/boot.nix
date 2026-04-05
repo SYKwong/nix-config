@@ -1,5 +1,3 @@
-{ username, ... }:
-
 {
   boot = {
     initrd.systemd.enable = true;
