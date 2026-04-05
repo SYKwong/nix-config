@@ -16,6 +16,10 @@ let
       extraModules = [
         nixos-hardware.nixosModules.framework-16-7040-amd
         lanzaboote.nixosModules.lanzaboote
+        
+        ./modules/framework
+        ./modules/laptop
+        ./modules/lanzaboote
       ];
     };
   };
