@@ -63,7 +63,7 @@ create_boot_entry_for_secureboot(){
 
   if [ -n "$luks_password" ]; then
     nix profile add nixpkgs#sbctl
-    sbctl create-keys --export /mnt/var/lib/sbctl/keys
+    sudo sbctl create-keys --export /mnt/var/lib/sbctl/keys
     bootctl --esp-path=/mnt/boot install
   fi
 }
