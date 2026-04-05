@@ -43,6 +43,8 @@ in {
         ./modules/hyprland
         ./modules/wireless
 
+        ./overlays
+
         ./hosts/${name}
 
       ] ++ info.extraModules;
