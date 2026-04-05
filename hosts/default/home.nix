@@ -25,4 +25,9 @@
       fi
     '';
   };
+  
+  home.shellAliases = {
+    nrs = "sudo nixos-rebuild switch --flake .#${hostname}";
+    nrb = "sudo nixos-rebuild boot --flake .#${hostname}";
+  };
 }
