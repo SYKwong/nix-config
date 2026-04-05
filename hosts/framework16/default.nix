@@ -1,7 +1,13 @@
 {
   imports = [
-    ./framework16-luks.nix
+    ./disko.nix
     ./hardware-configuration.nix
     ./luks.nix
+    ./zram.nix
+
+    ../../modules/framework
+    ../../modules/lanzaboote
   ];
+
+  system.stateVersion = "26.05";
 }
