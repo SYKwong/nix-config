@@ -16,6 +16,9 @@
 
   xdg.configFile."hypr/hyprlock.conf".source = ./../../config/hypr/hyprlock/hyprlock.conf;
 
+  xdg.configFile."hypr/hyprpaper.conf".source = ./../../config/hypr/hyprpaper/hyprpaper.conf;
+  xdg.configFile."hypr/wallpaer".source = ./../../config/hypr/hyprpaper/wallpaper;
+
   xdg.configFile."waybar".source = ./../../config/waybar;
 
   xdg.configFile."rofi".source = ./../../config/rofi;
