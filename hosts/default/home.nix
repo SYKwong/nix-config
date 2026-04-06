@@ -14,6 +14,8 @@
   xdg.configFile."hypr/hypridle.conf".source = ./../../config/hypr/hypridle/hosts/${hostname}.conf;
   xdg.configFile."hypr/hypridle/common".source = ./../../config/hypr/hypridle/common;
 
+  xdg.configFile."hypr/hyprlock.conf".source = ./../../config/hypr/hyprlock/hyprlock.conf;
+
   xdg.configFile."waybar".source = ./../../config/waybar;
 
   xdg.configFile."rofi".source = ./../../config/rofi;
