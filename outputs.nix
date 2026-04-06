@@ -44,7 +44,7 @@ in {
 
         ./modules/core
         ./modules/home-manager
-        ./modules/hyprland
+        ./modules/window-manager/hyprland
         ./modules/wireless
 
         ./overlays

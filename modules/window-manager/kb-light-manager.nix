@@ -1,4 +1,5 @@
 { pkgs, ... }:
+
 {
   environment.systemPackages = [
     (pkgs.writeShellApplication {
