@@ -5,6 +5,7 @@
     ../hypridle.nix
     ../hyprlock.nix
     ../kb-light-manager.nix
+    ../notifications.nix
     ../rofi.nix
     ../swayosd.nix
     ../waybar.nix
