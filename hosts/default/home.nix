@@ -4,7 +4,8 @@
   imports = [ 
     ./../../modules/home/cli 
   ];
-
+  
+  # UWSM quirk with systemd 
   wayland.windowManager.hyprland.systemd.enable = false;
   
   xdg.configFile."hypr/hyprland.conf".source = ./../../config/hypr/hyprland/hosts/${hostname}.conf;
@@ -15,7 +16,8 @@
 
   xdg.configFile."waybar".source = ./../../config/waybar;
 
-  home.file."debug_hostname.txt".text = "Hostname is: ${hostname}";
+  xdg.configFile."rofi".source = ./../../config/rofi;
+
 
   programs.bash = {
     enable = true;
