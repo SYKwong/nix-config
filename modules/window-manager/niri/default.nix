@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ../dms.nix
     ../hypridle.nix
     ../hyprlock.nix
     ../kb-light-manager.nix
@@ -12,11 +13,14 @@
 
   programs = {
     niri.enable = true;
-    xwayland-satellite.enable = true;
     dms-shell.enable = true;
   };
 
-  environment.systemPackages = with pkgs; [ alacritty ];
+  environment.systemPackages = with pkgs; [ 
+    alacritty
+    xwayland-satellite
+  ];
+  
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [
