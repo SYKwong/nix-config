@@ -2,6 +2,8 @@
   
 {
   imports = [
+    ../hypridle.nix
+    ../hyprlock.nix
     ../kb-light-manager.nix
     ../rofi.nix
     ../swayosd.nix
@@ -35,20 +37,14 @@
   systemd.services."getty@tty1".enable = false;
   systemd.services."autovt@tty1".enable = false;
 
-
-  programs = {
-    hyprland = {
-      enable = true;
-      xwayland.enable = true;
-      withUWSM = true;
-    };
-    
-    hyprlock.enable = true;
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+    withUWSM = true;
   };
 
   environment.systemPackages = with pkgs; [
-    hypridle hyprpolkitagent
-    waybar
+    hyprpolkitagent
     grim slurp satty
   ];
 
