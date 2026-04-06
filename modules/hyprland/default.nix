@@ -1,6 +1,8 @@
 { pkgs, lib, username, ... }: 
-
+  
 {
+  imports = [./kb-light-manager.nix];
+
   services.greetd = {
     enable = true;
     settings = {
@@ -28,6 +30,8 @@
   systemd.services."getty@tty1".enable = false;
   systemd.services."autovt@tty1".enable = false;
 
+  services.udev.packages = [ pkgs.swayosd ];
+
   programs = {
     hyprland = {
       enable = true;
@@ -39,13 +43,13 @@
   };
 
   environment.systemPackages = with pkgs; [
-    hypridle
-    hyprpolkitagent
+    hypridle hyprpolkitagent
     waybar
-    grim
-    slurp
+    grim slurp
     kitty
     rofi
     satty
+    swayosd playerctl brightnessctl
   ];
+
 }

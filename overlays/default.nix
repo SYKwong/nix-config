@@ -1,0 +1,5 @@
+{
+  imports = [
+    ./cachyos-kernel.nix
+  ];
+}
