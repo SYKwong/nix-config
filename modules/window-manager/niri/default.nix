@@ -15,7 +15,6 @@
 
   programs = {
     niri.enable = true;
-    dms-shell.enable = true;
   };
 
   environment.systemPackages = with pkgs; [
