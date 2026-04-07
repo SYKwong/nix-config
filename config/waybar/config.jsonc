@@ -1,62 +1,60 @@
 // -*- mode: jsonc -*-
 {
-    "layer": "top", 
-    "position": "top", 
-    "height": 30, 
-    "spacing": 4, 
+  "layer": "top", 
+  "position": "top", 
+  "height": 30, 
+  "spacing": 0, 
 
-    // Choose the order of the modules
-    "modules-left": [
-        "hyprland/workspaces",
-        "custom/sep",
-        "hyprland/window",
-        "custom/sep"
-    ],
-    "modules-center": [
-      "clock"
-    ],
+  // Choose the order of the modules
+  "modules-left": [
+    "hyprland/workspaces",
+  ],
+  "modules-center": [
+    "clock",
+    "custom/update"
+  ],
 
-    "modules-right": [
-        "custom/sep",
-        "network",
-        "custom/sep",
-        "cpu",
-        "custom/sep",
-        "memory",
-        "custom/sep",
-        "disk",
-        "custom/sep",
-        "clock",
-        "custom/sep",
-        "tray"
-    ],
+  "modules-right": [
+      "network",
+      "cpu",
+      "memory",
+      "disk",
+      "clock",
+      "tray"
+  ],
 
-    // Modules configuration
-    "hyprland/workspaces": {
-        "disable-scroll": true,
-        "all-outputs": true,
-        "warp-on-scroll": false,
-        "format": "{name}",
-        "persistent-workspaces": {
-            "*" : 9
-        }
-    },
-    "hyprland/window" : {
-        "max-length": 40,
-        "seperate-outputs": false
-    },
-    "tray": {
-        // "icon-size": 21,
-        "spacing": 10
-        // "icons": {
-        //   "blueman": "bluetooth",
-        //   "TelegramDesktop": "$HOME/.local/share/icons/hicolor/16x16/apps/telegram.png"
-        // }
-    },
-    "clock": {
-      "format": "{:L%A %H:%M %B %d %Y}",
-      "tooltip": false
+  // Modules configuration
+  "hyprland/workspaces": {
+      "disable-scroll": true,
+      "all-outputs": true,
+      "warp-on-scroll": false,
+      "format": "{name}",
+      "persistent-workspaces": {
+          "*" : 9
+      }
   },
+  "tray": {
+      // "icon-size": 21,
+      "spacing": 10
+      // "icons": {
+      //   "blueman": "bluetooth",
+      //   "TelegramDesktop": "$HOME/.local/share/icons/hicolor/16x16/apps/telegram.png"
+      // }
+  },
+  "clock": {
+    "format": "{:L%A %H:%M %B %d %Y}",
+    "tooltip": false
+  },
+   
+  "custom/update": {
+    "format": "",
+    "exec": "update-available",
+    "on-click": "update-system",
+    "tooltip-format": "Update available",
+    "signal": 7,
+    "interval": 3600
+  },
+
     "cpu": {
         "format": "CPU: {usage}%",
         "tooltip": false
