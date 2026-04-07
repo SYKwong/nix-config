@@ -13,6 +13,7 @@
         "custom/sep"
     ],
     "modules-center": [
+      "clock"
     ],
 
     "modules-right": [
@@ -53,8 +54,9 @@
         // }
     },
     "clock": {
-        "format-alt": "{:%Y-%m-%d}"
-    },
+      "format": "{:L%A %H:%M %B %d %Y}",
+      "tooltip": false
+  },
     "cpu": {
         "format": "CPU: {usage}%",
         "tooltip": false

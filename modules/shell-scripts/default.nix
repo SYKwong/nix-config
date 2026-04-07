@@ -1,0 +1,5 @@
+{
+  imports = [
+    ./tui-wrap.nix
+  ];
+}
