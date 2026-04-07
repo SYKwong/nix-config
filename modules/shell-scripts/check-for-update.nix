@@ -3,8 +3,8 @@
 let
   update-available = pkgs.writeShellScriptBin "update-available" ''
     config_path="~/nix-config"
-    local_hash=git -C "$config_path" rev-parse main 2>/dev/null
-    remote_hash=git -C "$config_path" ls-remote origin -h refs/heads/main | awk '{print $1}'
+    local_hash=$(git -C "$config_path" rev-parse main 2>/dev/null)
+    remote_hash=$(git -C "$config_path" ls-remote origin -h refs/heads/main | awk '{print $1}')
 
     if [ "$local_hash" != "$remote_hash" ]; then
       echo "update available $remote_hash"
