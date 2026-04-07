@@ -5,12 +5,12 @@ output "eDP-1" {
     position x=0 y=0
 }
 
-include "common/animation.kdl"
-include "common/auto-start.kdl"
-include "common/misc.kdl"
-include "common/input.kdl"
-include "common/keybind.kdl"
-include "common/layout.kdl"
-include "common/window-rule.kdl"
+include "animation.kdl"
+include "auto-start.kdl"
+include "misc.kdl"
+include "input.kdl"
+include "keybind.kdl"
+include "layout.kdl"
+include "window-rule.kdl"
 
 

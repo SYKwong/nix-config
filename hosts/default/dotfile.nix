@@ -16,7 +16,13 @@
   xdg.configFile."hypr/wallpaper".source = ./../../config/hypr/hyprpaper/wallpaper;
 
   xdg.configFile."niri/config.kdl".source = ./../../config/niri/hosts/${hostname}.kdl;
-  xdg.configFile."niri/common".source = ./../../config/niri/common;
+  xdg.configFile."niri/animation.kdl".source = ./../../config/niri/common/animation.kdl;
+  xdg.configFile."niri/auto-start.kdl".source = ./../../config/niri/common/auto-start.kdl;
+  xdg.configFile."niri/input.kdl".source = ./../../config/niri/common/input.kdl;
+  xdg.configFile."niri/keybind.kdl".source = ./../../config/niri/common/keybind.kdl;
+  xdg.configFile."niri/layout.kdl".source = ./../../config/niri/common/layout.kdl;
+  xdg.configFile."niri/misc.kdl".source = ./../../config/niri/common/misc.kdl;
+  xdg.configFile."niri/window-rule.kdl".source = ./../../config/niri/common/window-rule.kdl;
 
   xdg.configFile."waybar".source = ./../../config/waybar;
 
