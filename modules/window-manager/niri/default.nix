@@ -13,9 +13,7 @@
 
   _module.args.session-command = "niri-session";
 
-  programs = {
-    niri.enable = true;
-  };
+  programs.niri.enable = true;
 
   environment.systemPackages = with pkgs; [
     alacritty
