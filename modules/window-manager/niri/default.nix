@@ -9,6 +9,7 @@
     ../noctalia.nix
     #../notifications.nix
     ../swayosd.nix
+    ../waybar.nix
     ];
 
   _module.args.session-command = "niri-session";
