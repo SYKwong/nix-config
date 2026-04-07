@@ -3,20 +3,22 @@
 {
   imports = [
     ../dms.nix
+    ../greetd.nix
     ../hypridle.nix
     ../hyprlock.nix
     ../kb-light-manager.nix
     ../notifications.nix
     ../swayosd.nix
-    ../waybar.nix
-  ];
+    ];
+
+  _module.args.session-command = "niri-session";
 
   programs = {
     niri.enable = true;
     dms-shell.enable = true;
   };
 
-  environment.systemPackages = with pkgs; [ 
+  environment.systemPackages = with pkgs; [
     alacritty
     xwayland-satellite
   ];

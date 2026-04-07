@@ -1,5 +1,5 @@
-{ pkgs, lib, username, ... }: 
-  
+{ pkgs, ... }:
+
 {
   imports = [
     ../greetd.nix
