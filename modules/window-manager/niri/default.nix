@@ -2,12 +2,13 @@
 
 {
   imports = [
-    ../dms.nix
+    #../dms.nix
     ../greetd.nix
-    ../hypridle.nix
-    ../hyprlock.nix
+    #../hypridle.nix
+    #../hyprlock.nix
     ../kb-light-manager.nix
-    ../notifications.nix
+    ../noctalia.nix
+    #../notifications.nix
     ../swayosd.nix
     ];
 
