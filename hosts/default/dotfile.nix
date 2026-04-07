@@ -15,7 +15,7 @@
   xdg.configFile."hypr/hyprpaper.conf".source = ./../../config/hypr/hyprpaper/hyprpaper.conf;
   xdg.configFile."hypr/wallpaper".source = ./../../config/hypr/hyprpaper/wallpaper;
 
-  xdg.configFile."niri/config.kdl".source = ./../../config/niri/host/${hostname}.kdl;
+  xdg.configFile."niri/config.kdl".source = ./../../config/niri/hosts/${hostname}.kdl;
   xdg.configFile."niri/common".source = ./../../config/niri/common;
 
   xdg.configFile."waybar".source = ./../../config/waybar;
