@@ -2,23 +2,25 @@
 
 let
   power-menu = pkgs.writeShellScriptBin "power-menu" ''
-    # Fetch current profile to display as a message
     current=$(powerprofilesctl get)
 
-# Get list of available profiles from the system
-# We filter the 'powerprofilesctl list' output to get just the profile names
-    options=$(powerprofilesctl list | awk '/^\s*[* ]\s*[a-zA-Z0-9\-]+:$/ { gsub(/^[*[:space:]]+|:$/,""); print }' 
-# Use Rofi to select a profile
-# The -mesg shows the active profile at the top
-    chosen=$(echo "$options" | rofi -dmenu -i -p "Power Profile" \
-      -mesg "<b>Active:</b> $current" \
-      -theme-str 'window {width: 20em;} listview {lines: 4;}')
+# Define the options
+    options="performance\nbalanced\npower-saver"
 
-# If a profile was chosen, set it
+# Rofi command
+# We use -mesg to show the current active profile at the top
+    chosen=$(echo -e "$options" | rofi -dmenu \
+      -i \
+      -p "Power Profile" \
+      -mesg "Current: $current" \
+      -theme-str 'window {width: 20em;} listview {lines: 3;}')
+
+# Apply the profile if a choice was made
     if [ -n "$chosen" ]; then
       powerprofilesctl set "$chosen"
-      notify-send "Power Profile" "Switched to $chosen mode" -i power-profile
+      notify-send "Power Profile" "Switched to $chosen" -i "battery-good"
     fi
+
   '';
 in
 {
