@@ -1,3 +1,5 @@
+{ username, ... }:
+
 {
   time.timeZone = "America/Los_Angeles";
 
@@ -5,12 +7,16 @@
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
     };
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 7d";
-    };
     optimise.automatic = true;
+  };
+  
+  programs.nh = {
+    enable = true;
+    clean = {
+      enable = true;
+      extraArgs = "--keep-since 4d --keep 3";
+    };
+    flake = "/home/${username}/nix-config";
   };
 
   nixpkgs.config.allowUnfree = true;
