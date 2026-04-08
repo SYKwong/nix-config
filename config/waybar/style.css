@@ -36,6 +36,7 @@ window#waybar {
   min-width: 9px;
 }
 
+#custom-expand-icon,
 #custom-update,
 #battery,
 #network,

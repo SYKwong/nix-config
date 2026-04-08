@@ -106,14 +106,6 @@
       "default": ["", "", ""]
     }
   }, 
-  "tray": {
-      // "icon-size": 21,
-      "spacing": 10
-      // "icons": {
-      //   "blueman": "bluetooth",
-      //   "TelegramDesktop": "$HOME/.local/share/icons/hicolor/16x16/apps/telegram.png"
-      // }
-  },
   "bluetooth": {
     "format": "",
     "format-disabled": "󰂲",
@@ -122,5 +114,18 @@
     "format-no-controller": "",
     "tooltip-format": "Devices connected: {num_connections}",
     "on-click": "tui-wrap bluetui"
+  },
+    "group/tray-expander": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-duration": 600,
+      "children-class": "tray-group-item"
+    },
+    "modules": ["custom/expand-icon", "tray"]
+  },
+
+  "custom/expand-icon": {
+    "format": "",
+    "tooltip": false
   }
 }
