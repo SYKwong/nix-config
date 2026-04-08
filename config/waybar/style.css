@@ -63,3 +63,7 @@ window#waybar {
   margin-left: 17px;
   margin-right: 17px;
 }
+
+#bluetooth {
+  margin-left: 17px;
+}
