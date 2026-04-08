@@ -49,56 +49,22 @@ button:hover {
 }
 
 #clock,
-#custom-sep,
-#battery,
-#cpu,
-#memory,
-#disk,
-#network,
 #tray {
     padding: 0 8px;
     color: @white;
 }
 
-#custom-sep {
-    color: @brblk;
-}
-
 #clock {
     color: @cyn;
-    border-bottom: 4px solid @cyn;
 }
-
-#battery {
-    color: @mag;
-    border-bottom: 4px solid @mag;
-}
-
-#disk {
-    color: @ylw;
-    border-bottom: 4px solid @ylw;
-}
-
-#memory {
-    color: @mag;
-    border-bottom: 4px solid @mag;
-}
-
-#cpu {
-    color: @grn;
-    border-bottom: 4px solid @grn;
-}
-
-#network {
-    color: @blu;
-    border-bottom: 4px solid @blu;
-}
-
-#network.disconnected {
-    background-color: @red;
-}
-
 #tray {
     background-color: #2980b9;
 }
 
+.modules-left {
+  margin-left: 8px;
+}
+
+.modules-right {
+  margin-right: 8px;
+}
