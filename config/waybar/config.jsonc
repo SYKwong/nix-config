@@ -99,12 +99,12 @@
       // }
   },
   "bluetooth": {
-    "format": "<U+F294>",
-    "format-disabled": "<U+F00B2>",
-    "format-off": "<U+F00B2>",
-    "format-connected": "<U+F00B1>",
+    "format": "",
+    "format-disabled": "󰂲",
+    "format-off": "󰂲",
+    "format-connected": "󰂱",
     "format-no-controller": "",
     "tooltip-format": "Devices connected: {num_connections}",
-    "on-click": "tui-wrap bluetui"
+    "on-click": "omarchy-launch-bluetooth"
   }
 }
