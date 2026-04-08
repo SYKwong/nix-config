@@ -17,7 +17,7 @@
   ],
 
   "modules-right": [
-    "group/tray-expander",
+    //"group/tray-expander",
     "bluetooth",
     "network",
     "pulseaudio",

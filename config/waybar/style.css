@@ -57,3 +57,9 @@ window#waybar {
   color: #f0f0ff;
   background-color: rgba(30, 30, 46, 0.6);
 }
+
+#workspaces,
+#clock {
+  margin-left: 17px;
+  margin-right: 17px;
+}
