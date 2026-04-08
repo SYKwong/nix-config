@@ -90,5 +90,22 @@
       "headset": "",
       "default": ["", "", ""]
     }
+  }, 
+  "tray": {
+      // "icon-size": 21,
+      "spacing": 10
+      // "icons": {
+      //   "blueman": "bluetooth",
+      //   "TelegramDesktop": "$HOME/.local/share/icons/hicolor/16x16/apps/telegram.png"
+      // }
+  },
+  "bluetooth": {
+    "format": "<U+F294>",
+    "format-disabled": "<U+F00B2>",
+    "format-off": "<U+F00B2>",
+    "format-connected": "<U+F00B1>",
+    "format-no-controller": "",
+    "tooltip-format": "Devices connected: {num_connections}",
+    "on-click": "tui-wrap bluetui"
   }
 }
