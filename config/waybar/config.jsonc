@@ -29,13 +29,6 @@
           "*" : 9
       }
   },
-  "tray": {
-      // "icon-size": 21,
-      "spacing": 10
-      // "icons": {
-      //   "blueman": "bluetooth",
-      //   "TelegramDesktop": "$HOME/.local/share/icons/hicolor/16x16/apps/telegram.png"
-      // }
   },
   "clock": {
     "format": "{:L%A %H:%M %B %d %Y}",
@@ -98,8 +91,13 @@
       "default": ["", "", ""]
     }
   },
-    "custom/sep": {
-        "format" : "|",
-        "interval" : 0
-    }
+  "bluetooth": {
+    "format": "",
+    "format-disabled": "󰂲",
+    "format-off": "󰂲",
+    "format-connected": "󰂱",
+    "format-no-controller": "",
+    "tooltip-format": "Devices connected: {num_connections}",
+    "on-click": "tui-wrap bluetui"
+  },
 }
