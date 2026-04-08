@@ -23,6 +23,7 @@ window#waybar {
 .modules-left,
 .modules-right,
 .modules-center {
+  background: @bg;
   border-radius: 28px;
 }
 
