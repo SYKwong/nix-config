@@ -21,6 +21,14 @@ window#waybar {
     color: @fg;
 }
 
+.modules-left {
+  margin-left: 8px;
+}
+
+.modules-right {
+  margin-right: 8px;
+}
+
 #workspaces button {
     padding: 0 6px;
     color: @cyn;
@@ -61,10 +69,10 @@ button:hover {
     background-color: #2980b9;
 }
 
-.modules-left {
-  margin-left: 8px;
-}
-
-.modules-right {
-  margin-right: 8px;
+#custom-update,
+#battery,
+#network,
+#pulseaudio,
+#bluetooth {
+  margin-right: 17px;
 }
