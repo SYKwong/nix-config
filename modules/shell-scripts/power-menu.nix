@@ -7,8 +7,7 @@ let
 
 # Get list of available profiles from the system
 # We filter the 'powerprofilesctl list' output to get just the profile names
-    options=$(powerprofilesctl list | grep '^*' -v | grep -oP '^\s+\K\S+' | tr -d ':')
-
+    options=$(powerprofilesctl list | awk '/^\s*[* ]\s*[a-zA-Z0-9\-]+:$/ { gsub(/^[*[:space:]]+|:$/,""); print }' 
 # Use Rofi to select a profile
 # The -mesg shows the active profile at the top
     chosen=$(echo "$options" | rofi -dmenu -i -p "Power Profile" \
