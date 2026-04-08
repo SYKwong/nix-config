@@ -84,6 +84,20 @@
     "spacing": 1,
     "on-click": "tui-wrap impala"
   },
+
+  "pulseaudio": {
+    "format": "{icon}",
+    "on-click": "tui-wrap wiremix",
+    "on-click-right": "pamixer -t",
+    "tooltip-format": "Playing at {volume}%",
+    "scroll-step": 5,
+    "format-muted": "",
+    "format-icons": {
+      "headphone": "",
+      "headset": "",
+      "default": ["", "", ""]
+    }
+  },
     "custom/sep": {
         "format" : "|",
         "interval" : 0
