@@ -36,19 +36,6 @@ window#waybar {
   min-width: 9px;
 }
 
-#clock,
-#tray {
-    padding: 0 8px;
-    color: @white;
-}
-
-#clock {
-    color: @cyn;
-}
-#tray {
-    background-color: #2980b9;
-}
-
 #custom-update,
 #battery,
 #network,
