@@ -14,10 +14,10 @@
   ],
 
   "modules-right": [
-      "bluetooth",
-      "network",
-      "pulseaudio",
-      "tray"
+    "bluetooth",
+    "network",
+    "pulseaudio",
+    "battery"
   ],
 
   "hyprland/workspaces": {
@@ -51,31 +51,41 @@
     "interval": 3600
   },
 
-    "battery": {
-        "states": {
-            "good": 95,
-            "warning": 30,
-            "critical": 15
-        },
-        "format": "Bat: {capacity}% {icon} {time}",
-        "format-plugged": "{capacity}% ",
-        "format-alt": "Bat {capacity}%",
-        "format-time": "{H}:{M}",
-        "format-icons": ["", "", "", "", ""]
+  "custom/battery": {
+    "format": "{capacity}% {icon}",
+    "format-discharging": "{icon}",
+    "format-charging": "{icon}",
+    "format-plugged": "",
+    "format-icons": {
+      "charging": ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
+      "default": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
     },
-    "network": {
-      "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
-      "format": "{icon}",
-      "format-wifi": "{icon}",
-      "format-ethernet": "󰀂",
-      "format-disconnected": "󰤮",
-      "tooltip-format-wifi": "{essid} ({frequency} GHz)",
-      "tooltip-format-ethernet": "Connected",
-      "tooltip-format-disconnected": "Disconnected",
-      "interval": 3,
-      "spacing": 1,
-      "on-click": "tui-wrap impala"
-    },
+    "format-full": "󰂅",
+    "tooltip-format-discharging": "{power:>1.0f}W↓ {capacity}%",
+    "tooltip-format-charging": "{power:>1.0f}W↑ {capacity}%",
+    "interval": 5,
+    "menu": "on-click",
+    "menu-file": "~/.config/waybar/power-profile-menu.xml",
+    
+    "states": {
+      "warning": 20,
+      "critical": 10
+    }
+  },
+
+  "network": {
+    "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+    "format": "{icon}",
+    "format-wifi": "{icon}",
+    "format-ethernet": "󰀂",
+    "format-disconnected": "󰤮",
+    "tooltip-format-wifi": "{essid} ({frequency} GHz)",
+    "tooltip-format-ethernet": "Connected",
+    "tooltip-format-disconnected": "Disconnected",
+    "interval": 3,
+    "spacing": 1,
+    "on-click": "tui-wrap impala"
+  },
     "custom/sep": {
         "format" : "|",
         "interval" : 0
