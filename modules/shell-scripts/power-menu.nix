@@ -2,25 +2,24 @@
 
 let
   power-menu = pkgs.writeShellScriptBin "power-menu" ''
-    PROFILES=("performance" "balanced" "power-saver")
-    CURRENT=$(powerprofilesctl get)
+    # Fetch current profile to display as a message
+    current=$(powerprofilesctl get)
 
-    ACTIVE_INDEX=-1
-    for i in "''${!PROFILES[@]}"; do
-      if [[ "''${PROFILES[$i]}" == "$CURRENT" ]]; then
-        ACTIVE_INDEX=$i
-        break
-      fi
-    done
+# Get list of available profiles from the system
+# We filter the 'powerprofilesctl list' output to get just the profile names
+    options=$(powerprofilesctl list | grep '^*' -v | grep -oP '^\s+\K\S+' | tr -d ':')
 
-    MENU=" Performance\n Balanced\n Power Saver"
+# Use Rofi to select a profile
+# The -mesg shows the active profile at the top
+    chosen=$(echo "$options" | rofi -dmenu -i -p "Power Profile" \
+      -mesg "<b>Active:</b> $current" \
+      -theme-str 'window {width: 20em;} listview {lines: 4;}')
 
-    CHOSEN=$(echo -e "$MENU" | rofi -dmenu -i -p "Current: $CURRENT" -a "$ACTIVE_INDEX" -selected-row "$ACTIVE_INDEX")
-    case "$CHOSEN" in
-      *Performance) powerprofilesctl set performance ;;
-      *Balanced)    powerprofilesctl set balanced ;;
-      *Saver)       powerprofilesctl set power-saver ;;
-    esac
+# If a profile was chosen, set it
+    if [ -n "$chosen" ]; then
+      powerprofilesctl set "$chosen"
+      notify-send "Power Profile" "Switched to $chosen mode" -i power-profile
+    fi
   '';
 in
 {
