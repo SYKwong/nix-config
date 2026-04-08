@@ -5,7 +5,6 @@
   "height": 30, 
   "spacing": 0, 
 
-  // Choose the order of the modules
   "modules-left": [
     "hyprland/workspaces",
   ],
@@ -15,15 +14,12 @@
   ],
 
   "modules-right": [
+      "bluetooth",
       "network",
-      "cpu",
-      "memory",
-      "disk",
-      "clock",
+      "pulseaudio",
       "tray"
   ],
 
-  // Modules configuration
   "hyprland/workspaces": {
       "disable-scroll": true,
       "all-outputs": true,
@@ -55,18 +51,6 @@
     "interval": 3600
   },
 
-    "cpu": {
-        "format": "CPU: {usage}%",
-        "tooltip": false
-    },
-    "memory": {
-        "format": "Mem: {used}GiB"
-    },
-    "disk": {
-        "interval": 60,
-        "path": "/",
-        "format": "Disk: {free}"
-    },
     "battery": {
         "states": {
             "good": 95,
@@ -80,8 +64,17 @@
         "format-icons": ["", "", "", "", ""]
     },
     "network": {
-        "format": "Online",
-        "format-disconnected": "Disconnected ⚠"
+      "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+      "format": "{icon}",
+      "format-wifi": "{icon}",
+      "format-ethernet": "󰀂",
+      "format-disconnected": "󰤮",
+      "tooltip-format-wifi": "{essid} ({frequency} GHz)",
+      "tooltip-format-ethernet": "Connected",
+      "tooltip-format-disconnected": "Disconnected",
+      "interval": 3,
+      "spacing": 1,
+      "on-click": "tui-wrap impala"
     },
     "custom/sep": {
         "format" : "|",
