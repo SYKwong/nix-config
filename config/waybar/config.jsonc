@@ -29,7 +29,6 @@
           "*" : 9
       }
   },
-  },
   "clock": {
     "format": "{:L%A %H:%M %B %d %Y}",
     "tooltip": false
