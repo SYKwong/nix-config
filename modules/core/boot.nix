@@ -2,6 +2,7 @@
   boot = {
     initrd.systemd.enable = true;
     loader.systemd-boot.enable = true;
+    loader.systemd-boot.configurationLimit = 5;
     loader.grub.enable = false;
   };
 ### For Silent Boot 
