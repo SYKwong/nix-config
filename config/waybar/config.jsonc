@@ -51,7 +51,7 @@
     "interval": 3600
   },
 
-  "custom/battery": {
+  "battery": {
     "format": "{capacity}% {icon}",
     "format-discharging": "{icon}",
     "format-charging": "{icon}",
@@ -64,9 +64,7 @@
     "tooltip-format-discharging": "{power:>1.0f}W↓ {capacity}%",
     "tooltip-format-charging": "{power:>1.0f}W↑ {capacity}%",
     "interval": 5,
-    "menu": "on-click",
-    "menu-file": "~/.config/waybar/power-profile-menu.xml",
-    
+    "on-click": "power-menu",
     "states": {
       "warning": 20,
       "critical": 10
