@@ -42,6 +42,11 @@ window#waybar {
   min-width: 9px;
 }
 
+window#waybar {
+    background: transparent;
+    color: #ffffff;
+}
+
 #custom-expand-icon,
 #custom-update,
 #battery,
@@ -49,4 +54,6 @@ window#waybar {
 #pulseaudio,
 #bluetooth {
   margin-right: 17px;
+  color: #f0f0ff;
+  background-color: rgba(30, 30, 46, 0.6);
 }

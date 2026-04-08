@@ -1,7 +1,8 @@
 //  mode: jsonc -*-
 {
   "include": [ "~/.config/waybar/shared.jsonc" ],
-
+  
+  "margin-top": 10,
   "layer": "top", 
   "position": "top", 
   "height": 30, 
@@ -47,6 +48,6 @@
       "4": [],
       "5": []
     }
-  }
+  },
 }
 
