@@ -6,8 +6,8 @@ let
     CURRENT=$(powerprofilesctl get)
 
     ACTIVE_INDEX=-1
-    for i in "${!PROFILES[@]}"; do
-      if [[ "${PROFILES[$i]}" == "$CURRENT" ]]; then
+    for i in "''${!PROFILES[@]}"; do
+      if [[ "''${PROFILES[$i]}" == "$CURRENT" ]]; then
         ACTIVE_INDEX=$i
         break
       fi
