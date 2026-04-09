@@ -65,6 +65,8 @@ window#waybar {
   margin-right: 17px;
 }
 
+#tray,
+#custom-expand-icon,
 #group-tray-expander {
   margin-left: 17px;
 }
