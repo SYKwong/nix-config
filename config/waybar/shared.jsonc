@@ -70,7 +70,8 @@
     "tooltip-format": "Devices connected: {num_connections}",
     "on-click": "tui-wrap bluetui"
   },
-    "group/tray-expander": {
+
+  "group/tray-expander": {
     "orientation": "inherit",
     "drawer": {
       "transition-duration": 600,
@@ -82,5 +83,10 @@
   "custom/expand-icon": {
     "format": "",
     "tooltip": false
+  },
+
+  "tray": {
+    "icon-size": 12,
+    "spacing": 17
   }
 }
