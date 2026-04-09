@@ -1,26 +1,21 @@
-/* The main OSD window */
 window#osd {
-    background-color: #1e1e1e; /* Dark background */
-    border: 1px solid #333333;
-    border-radius: 12px;
-    padding: 12px;
+    background: rgba(30, 30, 46, 0.9); /* Dark background (Catppuccin-like) */
+    border: 2px solid #585b70;
+    border-radius: 20px;
 }
 
-/* The background of the volume/brightness bar (the "trough") */
-#level {
-    background-color: #333333;
-    border-radius: 4px;
-    min-height: 8px;
+image {
+    color: #cdd6f4; /* Light icon color */
 }
 
-/* The filled portion of the bar */
-#level progress {
-    background-color: #ffffff; /* White or a highlight color */
-    border-radius: 4px;
+progress {
+    background: #89b4fa; /* Accent color for the progress bar */
+    min-height: 10px;
+    border-radius: 5px;
 }
 
-/* The icon or text label */
-#label {
-    color: #ffffff;
-    margin-bottom: 8px;
+trough {
+    background: #45475a; /* Darker background for the bar track */
+    min-height: 10px;
+    border-radius: 5px;
 }
