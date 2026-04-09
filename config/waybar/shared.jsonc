@@ -1,7 +1,7 @@
 //  mode: jsonc -*-
 {
   "clock": {
-    "format": "{:L%A %H:%M %B %d %Y}",
+    "format": "{:L%a %I:%M %p %b %d %y}",
     "tooltip": false
   },
    
