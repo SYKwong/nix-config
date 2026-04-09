@@ -1,21 +1,32 @@
 window#osd {
-    background: rgba(30, 30, 46, 0.9); /* Dark background (Catppuccin-like) */
+    background: rgba(30, 30, 46, 0.9);
     border: 2px solid #585b70;
-    border-radius: 20px;
+    /* 999px ensures the ends are always perfectly round */
+    border-radius: 999px; 
+    
+    /* Extra horizontal padding (40px) makes it look like a pill */
+    padding: 12px 40px; 
+}
+
+label {
+    color: #cdd6f4;
+    font-family: sans-serif;
+    font-weight: bold;
+    margin: 0 10px; /* Gives the text some horizontal breathing room */
 }
 
 image {
-    color: #cdd6f4; /* Light icon color */
+    color: #cdd6f4;
 }
 
 progress {
-    background: #89b4fa; /* Accent color for the progress bar */
-    min-height: 10px;
-    border-radius: 5px;
+    background: #89b4fa;
+    min-height: 8px; /* Slightly thinner bar looks "cleaner" in a pill */
+    border-radius: 999px; /* Matches the pill aesthetic */
 }
 
 trough {
-    background: #45475a; /* Darker background for the bar track */
-    min-height: 10px;
-    border-radius: 5px;
+    background: #45475a;
+    min-height: 8px;
+    border-radius: 999px;
 }
