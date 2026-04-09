@@ -30,4 +30,6 @@ in
   xdg.configFile."waybar".source = symlink "waybar";
 
   xdg.configFile."rofi".source = symlink "rofi";
+
+  xdg.configFile."swayosd".source = symlink " swayosd";
 }

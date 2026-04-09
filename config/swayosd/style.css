@@ -1,0 +1,26 @@
+/* The main OSD window */
+window#osd {
+    background-color: #1e1e1e; /* Dark background */
+    border: 1px solid #333333;
+    border-radius: 12px;
+    padding: 12px;
+}
+
+/* The background of the volume/brightness bar (the "trough") */
+#level {
+    background-color: #333333;
+    border-radius: 4px;
+    min-height: 8px;
+}
+
+/* The filled portion of the bar */
+#level progress {
+    background-color: #ffffff; /* White or a highlight color */
+    border-radius: 4px;
+}
+
+/* The icon or text label */
+#label {
+    color: #ffffff;
+    margin-bottom: 8px;
+}
