@@ -1,32 +1,37 @@
 window#osd {
     background: rgba(30, 30, 46, 0.9);
     border: 2px solid #585b70;
-    /* 999px ensures the ends are always perfectly round */
-    border-radius: 999px; 
-    
-    /* Extra horizontal padding (40px) makes it look like a pill */
-    padding: 12px 40px; 
+    border-radius: 999px;
+    padding: 12px 25px;
+}
+
+/* The 'trough' is the background track of the bar */
+trough {
+    background: #45475a;
+    min-height: 8px;
+    min-width: 150px; /* Explicitly setting a positive width prevents the -2 error */
+    border-radius: 999px;
+    border: none;
+}
+
+/* The 'progress' is the actual colored fill */
+progress {
+    background: #89b4fa;
+    min-height: 8px;
+    border-radius: 999px;
+    /* Ensure there is no margin or border here that could shrink the width to negative */
+    margin: 0; 
+    border: none;
+}
+
+image {
+    color: #cdd6f4;
+    margin-right: 15px; /* Creates the gap between icon and bar */
 }
 
 label {
     color: #cdd6f4;
     font-family: sans-serif;
     font-weight: bold;
-    margin: 0 10px; /* Gives the text some horizontal breathing room */
-}
-
-image {
-    color: #cdd6f4;
-}
-
-progress {
-    background: #89b4fa;
-    min-height: 8px; /* Slightly thinner bar looks "cleaner" in a pill */
-    border-radius: 999px; /* Matches the pill aesthetic */
-}
-
-trough {
-    background: #45475a;
-    min-height: 8px;
-    border-radius: 999px;
+    margin-left: 10px;
 }
