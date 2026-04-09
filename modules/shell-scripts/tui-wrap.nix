@@ -12,7 +12,8 @@ let
     }
 
     focus_and_warp() {
-      hyprctl dispatch focuswindow "class:$APP_ID"
+      local id=$1
+      hyprctl dispatch focuswindow "class:$id"
       hyprctl dispatch alterzorder top
     }
 
@@ -23,7 +24,7 @@ let
       exit 0
     fi
 
-    exec setsid uwsm-app -- xdg-terminal-exec --app-id="tui-float.$APP_NAME" -e "$APP_NAME" "$@"
+    exec setsid uwsm-app -- xdg-terminal-exec --app-id"$APP_ID" -e "$APP_NAME" "$@"
 
     for i in {1..20}; do # Try for 2 seconds (20 * 0.1s)
       NEW_ID=$(get_window)
