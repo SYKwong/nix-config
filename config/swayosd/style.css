@@ -2,7 +2,7 @@ window#osd {
     background: rgba(30, 30, 46, 0.9);
     border: 2px solid #585b70;
     border-radius: 999px;
-    padding: 12px 25px;
+    padding: 12px 10px 12px 25px;
 }
 
 /* The 'trough' is the background track of the bar */
@@ -26,7 +26,7 @@ progress {
 
 image {
     color: #cdd6f4;
-    /* margin-right: 15px; /* Creates the gap between icon and bar */
+    margin-right: 15px; 
 }
 
 label {
