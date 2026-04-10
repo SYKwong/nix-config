@@ -30,5 +30,8 @@ let
   ;
 in
 {
-  environment.systemPackages = [ tuiWrap ];
+  environment.systemPackages = [ 
+    tuiWrap
+    pkgs.foot
+  ];
 }
