@@ -24,7 +24,8 @@ let
     fi
 
     exec setsid uwsm-app -- xdg-terminal-exec --app-id="$APP_ID" -e "$APP_NAME" "$@"
-    hyprctl --batch "dispatch focuswindow address:0; dispatch focuswindow class:$APP_ID"
+    read -r W H < <(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | "\(.width) \(.height)"')
+    hyprctl dispatch cursorpos $((W/2)) $((H/2))
   '';
 in
 {

@@ -6,6 +6,7 @@
     neovim
     wget
     wiremix
+    jq
   ];
 
   xdg.terminal-exec = {
