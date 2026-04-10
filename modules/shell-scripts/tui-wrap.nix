@@ -24,9 +24,9 @@ let
     fi
 
     read -r W H < <(hyprctl monitors | awk '/^[ \t]*[0-9]+x[0-9]+/ {last=$1} /focused: yes/ {print last}' | sed 's/x/ /; s/@.*//')
-    exec footclient --app-id="$APP_ID" -e "$APP_NAME" "$@"
     hyprctl dispatch movecursor $((W/2)) $((H/2))
-  ''
+    exec footclient --app-id="$APP_ID" -e "$APP_NAME" "$@"
+    ''
   ;
 in
 {
