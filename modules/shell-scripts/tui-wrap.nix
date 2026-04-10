@@ -12,8 +12,9 @@ let
     }
 
     focus_and_warp() {
-      hyprctl dispatch focuswindow "class:$APP_ID"
-      hyprctl dispatch alterzorder top
+      hyprctl --batch "keyword cursor:no_warps true; dispatch focuswindow class:$APP_ID; keyword cursor:no_warps false"
+      #hyprctl dispatch focuswindow "class:$APP_ID"
+      #hyprctl dispatch alterzorder top
     }
 
     ALREADY_EXIST=$(get_window)
