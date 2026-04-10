@@ -23,7 +23,9 @@ let
       exit 0
     fi
 
-    read -r W H < <(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | "\(.width) \(.height)"')
+    #read -r W H < <(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | "\(.width) \(.height)"')
+    # Replace your read line with this:
+    read -r W H < <(hyprctl monitors | awk '/^[ \t]*[0-9]+x[0-9]+/ {last=$1} /focused: yes/ {print last}' | sed 's/x/ /; s/@.*//')
     hyprctl dispatch movecursor $((W/2)) $((H/2))
     exec setsid uwsm-app -- xdg-terminal-exec --app-id="$APP_ID" -e "$APP_NAME" "$@"
   '';
