@@ -8,7 +8,7 @@ let
     APP_ID="tui-float.$APP_NAME"
     
     get_window(){
-      hyprctl clients | grep -q "tui-float.$APP_NAME"
+      hyprctl clients | grep "$APP_ID"
     }
 
     focus_and_warp() {
