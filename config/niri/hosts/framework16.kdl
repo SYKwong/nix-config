@@ -1,0 +1,16 @@
+output "eDP-1" {
+    mode "2560x1600@165.000"
+    scale 2
+    transform "normal"
+    position x=0 y=0
+}
+
+include "animation.kdl"
+include "auto-start.kdl"
+include "misc.kdl"
+include "input.kdl"
+include "keybind.kdl"
+include "layout.kdl"
+include "window-rule.kdl"
+
+

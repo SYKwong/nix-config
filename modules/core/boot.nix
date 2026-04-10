@@ -2,6 +2,7 @@
   boot = {
     initrd.systemd.enable = true;
     loader.systemd-boot.enable = true;
+    loader.systemd-boot.configurationLimit = 5;
     loader.grub.enable = false;
   };
 ### For Silent Boot 
@@ -21,7 +22,7 @@
       "systemd.show_status=false"
       "vt.global_cursor_default=0"
     ];
-    loader.timeout = 5;
+    loader.timeout = 1;
     plymouth.enable = true;
     blacklistedKernelModules = [ "sp5100_tco" "iTCO_wdt" ];
     

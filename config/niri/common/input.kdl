@@ -1,0 +1,30 @@
+input {
+    keyboard {
+      repeat-rate 35
+      repeat-delay 200
+    }
+
+    touchpad {
+        tap
+        // dwt
+        // dwtp
+        // drag false
+        // drag-lock
+        natural-scroll
+        // accel-speed 0.2
+        // accel-profile "flat"
+        // scroll-method "two-finger"
+        // disabled-on-external-mouse
+    }
+
+    mouse {
+    }
+
+    trackpoint {
+    }
+
+    // Uncomment this to make the mouse warp to the center of newly focused windows.
+    // warp-mouse-to-focus
+
+    focus-follows-mouse max-scroll-amount="0%"
+}
