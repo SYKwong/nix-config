@@ -23,9 +23,9 @@ let
       exit 0
     fi
 
-    exec setsid uwsm-app -- xdg-terminal-exec --app-id="$APP_ID" -e "$APP_NAME" "$@"
     read -r W H < <(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | "\(.width) \(.height)"')
     hyprctl dispatch movecursor $((W/2)) $((H/2))
+    exec setsid uwsm-app -- xdg-terminal-exec --app-id="$APP_ID" -e "$APP_NAME" "$@"
   '';
 in
 {
