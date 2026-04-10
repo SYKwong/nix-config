@@ -6,7 +6,7 @@
     neovim
     wget
     wiremix
-    jq
+    foot # for tui-warpper
   ];
 
   xdg.terminal-exec = {

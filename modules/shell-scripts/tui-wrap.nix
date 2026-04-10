@@ -27,7 +27,8 @@ let
     # Replace your read line with this:
     read -r W H < <(hyprctl monitors | awk '/^[ \t]*[0-9]+x[0-9]+/ {last=$1} /focused: yes/ {print last}' | sed 's/x/ /; s/@.*//')
     hyprctl dispatch movecursor $((W/2)) $((H/2))
-    uwsm-app -- xdg-terminal-exec --app-id="$APP_ID" -e "$APP_NAME" "$@"
+    exec footclient --app-id="$APP_ID" -e "$APP_NAME" "$@"
+    #uwsm-app -- kitty --single-instance --app-id="$APP_ID" -e "$APP_NAME" "$@"
     #exec setsid uwsm-app -- xdg-terminal-exec --app-id="$APP_ID" -e "$APP_NAME" "$@"
   ''
   ;
