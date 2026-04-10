@@ -12,9 +12,8 @@ let
     }
 
     focus_and_warp() {
-      hyprctl --batch "keyword cursor:no_warps true; dispatch focuswindow class:$APP_ID; keyword cursor:no_warps false"
-      #hyprctl dispatch focuswindow "class:$APP_ID"
-      #hyprctl dispatch alterzorder top
+      hyprctl dispatch focuswindow "class:$APP_ID"
+      hyprctl dispatch alterzorder top
     }
 
     ALREADY_EXIST=$(get_window)
@@ -25,16 +24,7 @@ let
     fi
 
     exec setsid uwsm-app -- xdg-terminal-exec --app-id="$APP_ID" -e "$APP_NAME" "$@"
-
-    for i in {1..20}; do # Try for 2 seconds (20 * 0.1s)
-      NEW_INSTANCE=$(get_window)
-      if [ -n "$NEW_INSTANCE" ] && [ "$NEW_INSTANCE" != "null" ]; then
-        focus_and_warp 
-        exit 0
-      fi
-      sleep 0.1
-    done
-
+    hyprctl --batch "dispatch focuswindow address:0; dispatch focuswindow class:$APP_ID"
   '';
 in
 {
