@@ -9,6 +9,7 @@ let
   stylix 
   lanzaboote
   silentSDDM
+  zen-browser
   ;
 
   hosts = {
@@ -45,6 +46,8 @@ in {
         silentSDDM.nixosModules.default
 
         ./modules/core
+
+        #./modules/browsers
         ./modules/display-manager/silentSDDM.nix
         ./modules/home-manager
         ./modules/window-manager/hyprland
