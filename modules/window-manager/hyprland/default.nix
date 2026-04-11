@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ../greetd.nix
+    #../greetd.nix
     ../hypridle.nix
     ../hyprlock.nix
     ../hyprpaper.nix
