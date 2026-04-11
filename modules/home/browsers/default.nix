@@ -35,11 +35,6 @@
           return-youtube-dislikes
           karakeep
         ];
-
-      settings = {
-        zen.tabs.vertical.right-side = true;
-        zen.welcome-screen.seen =	true;
-        zen.view.compact.enable-at-startup = true;
       };
     };
   };
