@@ -1,7 +1,7 @@
 {
   programs.silentSDDM = {
     enable = true;
-    theme = "rei";
+    theme = "default";
     # settings = { ... }; see example in module
   };
 }
