@@ -47,7 +47,6 @@ in {
 
         ./modules/core
 
-        #./modules/browsers
         ./modules/display-manager/silentSDDM.nix
         ./modules/home-manager
         ./modules/window-manager/hyprland
