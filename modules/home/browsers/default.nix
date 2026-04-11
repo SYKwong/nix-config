@@ -27,16 +27,13 @@
         Fingerprinting = true;
       };
     };
-    profiles.default = {
-      extensions.packages = 
-        with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; 
+    profiles.default.extensions.packages = 
+      with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; 
         [
           ublock-origin
           return-youtube-dislikes
           karakeep
         ];
-      };
-    };
   };
 
 }
