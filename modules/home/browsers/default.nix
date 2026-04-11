@@ -27,15 +27,21 @@
         Fingerprinting = true;
       };
     };
-    profiles.default.extensions.packages = 
-      with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; 
-      [
-        ublock-origin
-        return-youtube-dislikes
-        karakeep
-      ];
+    profiles.default = {
+      extensions.packages = 
+        with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; 
+        [
+          ublock-origin
+          return-youtube-dislikes
+          karakeep
+        ];
 
-
+      settings = {
+        zen.tabs.vertical.right-side = true;
+        zen.welcome-screen.seen =	true;
+        zen.view.compact.enable-at-startup = true;
+      };
+    };
   };
 
 }
