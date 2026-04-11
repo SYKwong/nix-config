@@ -1,4 +1,4 @@
-{ inputs, pkgs, ... }:
+{ inputs, ... }:
 
 {
   imports = [
@@ -19,7 +19,7 @@
       DisableTelemetry = true;
       DontCheckDefaultBrowser = true;
       NoDefaultBookmarks = true;
-      OfferToSaveLogins = false;
+      OfferToSaveLogins = true;
       EnableTrackingProtection = {
         Value = true;
         Locked = true;
@@ -27,13 +27,5 @@
         Fingerprinting = true;
       };
     };
-    profiles.default.extensions.packages = 
-      with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; 
-        [
-          ublock-origin
-          return-youtube-dislikes
-          karakeep
-        ];
   };
-
 }
