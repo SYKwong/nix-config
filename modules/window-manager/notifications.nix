@@ -1,5 +1,8 @@
 { pkgs, ... }:
 
 {
-  environment.systemPackages = [ pkgs.mako ];
+  environment.systemPackages = with pkgs; [
+    mako
+    libnotify
+  ];
 }

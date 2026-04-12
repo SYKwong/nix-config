@@ -1,5 +1,4 @@
-spawn-at-startup "waybar"
-spawn-at-startup "noctalia-shell"
+spawn-at-startup "waybar -c ~/.config/waybar/niri.jsonc"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"

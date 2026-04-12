@@ -2,21 +2,11 @@
 {
   "include": [ "~/.config/waybar/shared.jsonc" ],
   
-  "margin-top": 10,
-  "layer": "top", 
-  "position": "top", 
-  "height": 30, 
-  "spacing": 0, 
 
-  "modules-left": [
-    "hyprland/workspaces",
-  ],
   "modules-center": [
+    "custom/update",
     "clock",
-    "custom/update"
-  ],
-
-  "modules-right": [
+    "hyprland/workspaces",
     "group/tray-expander",
     "bluetooth",
     "network",
@@ -48,6 +38,6 @@
       "4": [],
       "5": []
     }
-  },
+  }
 }
 

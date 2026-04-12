@@ -32,4 +32,6 @@ in
   xdg.configFile."rofi".source = symlink "rofi";
 
   xdg.configFile."swayosd".source = symlink "swayosd";
+
+  xdg.configFile."mako".source = symlink "mako";
 }
