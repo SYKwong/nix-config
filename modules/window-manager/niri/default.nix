@@ -2,17 +2,14 @@
 
 {
   imports = [
-    ../greetd.nix
-    #../hypridle.nix
-    #../hyprlock.nix
+    ../hypridle.nix
+    ../hyprlock.nix
     ../kb-light-manager.nix
-    ../noctalia.nix
-    #../notifications.nix
+    #../noctalia.nix
+    ../notifications.nix
     ../swayosd.nix
     ../waybar.nix
     ];
-
-  _module.args.session-command = "niri-session";
 
   programs.niri.enable = true;
 
