@@ -1,7 +1,10 @@
 background-color=#1e1e2e
 border-color=#89b4fa
+text-color=#cdd6f4
 border-radius=15
 
+anchor=top-right
+default-timeout=5000
 sort=-time
 layer=overlay
 width=300
@@ -12,17 +15,3 @@ max-icon-size=64
 default-timeout=5000
 ignore-timeout=1
 font=monospace 14
-
-[urgency=low]
-border-color=#585b70
-
-[urgency=normal]
-border-color=#89b4fa
-
-[urgency=high]
-border-color=#f38ba8
-default-timeout=0
-
-[category=mpd]
-default-timeout=2000
-group-by=category
