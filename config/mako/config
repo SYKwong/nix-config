@@ -17,7 +17,7 @@ font=monospace 14
 border-color=#585b70
 
 [urgency=normal]
-border-color=#fab387
+border-color=#89b4fa
 
 [urgency=high]
 border-color=#f38ba8
