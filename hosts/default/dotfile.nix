@@ -2,36 +2,32 @@
 let
   config_path = "/home/${username}/nix-config/config";
   symlink = path: config.lib.file.mkOutOfStoreSymlink "${config_path}/${path}";
+
+  files = {
+    "hypr/hyprland.conf"   = "hypr/hyprland/hosts/${hostname}.conf";
+    "hypr/hyprland/common" = "hypr/hyprland/common";
+    "hypr/hypridle.conf"   = "hypr/hypridle/hosts/${hostname}.conf";
+    "hypr/hypridle/common" = "hypr/hypridle/common";
+    "hypr/hyprlock.conf"   = "hypr/hyprlock/hyprlock.conf";
+    "hypr/hyprpaper.conf"  = "hypr/hyprpaper/hyprpaper.conf";
+    "hypr/wallpaper"       = "hypr/hyprpaper/wallpaper";
+
+    "niri/config.kdl"      = "niri/hosts/${hostname}.kdl";
+    "niri/animation.kdl"   = "niri/common/animation.kdl";
+    "niri/auto-start.kdl"  = "niri/common/auto-start.kdl";
+    "niri/input.kdl"       = "niri/common/input.kdl";
+    "niri/keybind.kdl"     = "niri/common/keybind.kdl";
+    "niri/layout.kdl"      = "niri/common/layout.kdl";
+    "niri/misc.kdl"        = "niri/common/misc.kdl";
+    "niri/window-rule.kdl" = "niri/common/window-rule.kdl";
+
+    "waybar"  = "waybar";
+    "rofi"    = "rofi";
+    "swayosd" = "swayosd";
+    "mako"    = "mako";
+    "foot"    = "foot";
+  };
 in 
 {
-  # UWSM quirk with systemd 
-  wayland.windowManager.hyprland.systemd.enable = false;
-  
-  xdg.configFile."hypr/hyprland.conf".source = symlink "hypr/hyprland/hosts/${hostname}.conf"; 
-  xdg.configFile."hypr/hyprland/common".source = symlink "hypr/hyprland/common";
-
-  xdg.configFile."hypr/hypridle.conf".source = symlink "hypr/hypridle/hosts/${hostname}.conf";
-  xdg.configFile."hypr/hypridle/common".source = symlink "hypr/hypridle/common";
-
-  xdg.configFile."hypr/hyprlock.conf".source = symlink "hypr/hyprlock/hyprlock.conf" ;
-
-  xdg.configFile."hypr/hyprpaper.conf".source = symlink "hypr/hyprpaper/hyprpaper.conf";
-  xdg.configFile."hypr/wallpaper".source = symlink "hypr/hyprpaper/wallpaper";
-
-  xdg.configFile."niri/config.kdl".source = symlink "niri/hosts/${hostname}.kdl";
-  xdg.configFile."niri/animation.kdl".source = symlink "niri/common/animation.kdl";
-  xdg.configFile."niri/auto-start.kdl".source = symlink "niri/common/auto-start.kdl";
-  xdg.configFile."niri/input.kdl".source = symlink "niri/common/input.kdl";
-  xdg.configFile."niri/keybind.kdl".source = symlink "niri/common/keybind.kdl";
-  xdg.configFile."niri/layout.kdl".source = symlink "niri/common/layout.kdl";
-  xdg.configFile."niri/misc.kdl".source = symlink "niri/common/misc.kdl";
-  xdg.configFile."niri/window-rule.kdl".source = symlink "niri/common/window-rule.kdl";
-
-  xdg.configFile."waybar".source = symlink "waybar";
-
-  xdg.configFile."rofi".source = symlink "rofi";
-
-  xdg.configFile."swayosd".source = symlink "swayosd";
-
-  xdg.configFile."mako".source = symlink "mako";
+  xdg.configFile = builtins.mapAttrs (name: value: { source = symlink value; }) files;
 }
