@@ -11,7 +11,8 @@
     ../swayosd.nix
     ../waybar.nix
   ];
-
+  _module.args.session-command = "start-hyprland";
+  
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
