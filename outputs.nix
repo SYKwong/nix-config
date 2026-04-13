@@ -47,7 +47,8 @@ in {
 
         ./modules/core
 
-        ./modules/display-manager/silentSDDM.nix
+        #./modules/display-manager/silentSDDM.nix
+        ./modules/display-manager/regreet.nix
         ./modules/home-manager
         ./modules/window-manager/hyprland
         #./modules/window-manager/niri
