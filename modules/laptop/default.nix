@@ -7,6 +7,9 @@
   };
 
   systemd.sleep.settings.Sleep = {
-    HibernateDelaySec = "30m";
+    HibernateDelaySec = "30min";
   };
+
+  services.fprintd.enable = true;
+  security.polkit.enable = true;
 }

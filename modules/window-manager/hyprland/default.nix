@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ../greetd.nix
     ../hypridle.nix
     ../hyprlock.nix
     ../hyprpaper.nix
@@ -12,6 +13,8 @@
     ../waybar.nix
   ];
 
+  _module.args.session-command = "start-hyprland";
+  
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
