@@ -5,12 +5,8 @@
     enable = true;
     config = {
       pager = "less -FR";
-      # other styles available and cane be combined
-      #  style = "numbers,changes,headers,rule,grid";
       style = "full";
-      # Bat has other thems as well
-      # ansi,Catppuccin,base16,base16-256,GitHub,Nord,etc
-      theme = lib.mkForce "Dracula";
+      theme = lib.mkForce "Catppuccin Mocha";
     };
     extraPackages = with pkgs.bat-extras; [
       batman
