@@ -26,6 +26,7 @@ let
     "swayosd" = "swayosd";
     "mako"    = "mako";
     "foot"    = "foot";
+    "kitty"   = "kitty";
   };
 in 
 {
