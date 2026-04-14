@@ -10,9 +10,9 @@ let
     "hypr/hypridle/common"  = "hypr/hypridle/common";
     "hypr/hyprlock.conf"    = "hypr/hyprlock/hyprlock.conf";
     "hypr/hyprpaper.conf"   = "hypr/hyprpaper/hyprpaper.conf";
-    "hypr/mocha.conf"       = "hypr/mocha.conf";
-    "hypr/gray0_ctp_on-line.png" = "hypr/hyprlock/gray0_ctp_on-line.png";
     "hypr/wallpaper"        = "hypr/hyprpaper/wallpaper";
+    "hypr/mocha.conf"       = "hypr/mocha.conf";
+    "hypr/gray0_ctp_on_line.png" = "hypr/hyprlock/gray0_ctp_on_line.png";
 
     "niri/config.kdl"       = "niri/hosts/${hostname}.kdl";
     "niri/animation.kdl"    = "niri/common/animation.kdl";
