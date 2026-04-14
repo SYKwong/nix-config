@@ -11,7 +11,7 @@ let
     "hypr/hyprlock.conf"    = "hypr/hyprlock/hyprlock.conf";
     "hypr/hyprpaper.conf"   = "hypr/hyprpaper/hyprpaper.conf";
     "hypr/wallpaper"        = "hypr/hyprpaper/wallpaper";
-    "hypr/mocha.conf"       = "hype/mocha.conf"
+    "hypr/mocha.conf"       = "hype/mocha.conf";
 
     "niri/config.kdl"       = "niri/hosts/${hostname}.kdl";
     "niri/animation.kdl"    = "niri/common/animation.kdl";
