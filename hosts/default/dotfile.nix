@@ -12,8 +12,7 @@ let
     "hypr/hyprpaper.conf"   = "hypr/hyprpaper/hyprpaper.conf";
     "hypr/wallpaper"        = "hypr/hyprpaper/wallpaper";
     "hypr/mocha.conf"       = "hypr/mocha.conf";
-    "hypr/gray0_ctp_on_line.png" = "hypr/hyprlock/gray0_ctp_on_line.png";
-    "hypr/gray0_ctp_on_line.svg" = "hypr/hyprlock/gray0_ctp_on_line.svg";
+    "hypr/cat_on_line.png"  = "hypr/hyprlock/cat_on_line.png";
 
     "niri/config.kdl"       = "niri/hosts/${hostname}.kdl";
     "niri/animation.kdl"    = "niri/common/animation.kdl";
