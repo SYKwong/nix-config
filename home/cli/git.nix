@@ -11,16 +11,6 @@
         };
 
         init.defaultBranch = "main";
-
-        url = {
-          "https://github.com/" = {
-            insteadOf = [
-              "gh:"
-              "github:"
-            ];
-          };
-        };
-
         merge.conflictstyle = "zdiff3";
         push.default = "simple";
         push.autoSetupRemote = true;
