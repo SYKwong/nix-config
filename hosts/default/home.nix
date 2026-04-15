@@ -1,7 +1,7 @@
 {
   imports = [ 
-    ./../../modules/home/cli
-    ./../../modules/home/browsers  
+    ./../../home/browsers
+    ./../../home/cli
 
     ./alias.nix
     ./dotfile.nix
