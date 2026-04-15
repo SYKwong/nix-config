@@ -5,6 +5,7 @@
     ./fwupd.nix
     ./hardware.nix
     ./kernel.nix
+    ./keyring.nix
     ./networking.nix
     ./stylix.nix
     ./system.nix
