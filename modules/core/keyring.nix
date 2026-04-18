@@ -1,10 +1,20 @@
 { pkgs, lib, config, ... }:
 {
-  services.gnome.gnome-keyring.enable = true;
-  programs.ssh.startAgent = false;
-  programs.ssh.extraConfig = ''
-    AddKeysToAgent yes
-  '';
+  services.gnome ={
+    gnome-keyring.enable = true;
+    gcr-ssh-agent.enable = true;
+  };
+
+  environment.systemPackages = with pkgs; [
+    libsecret
+  ]
+
+  programs.ssh = {
+    startAgent = false;
+    ssh.extraConfig = ''
+      AddKeysToAgent yes
+    '';
+  };
 
   services.dbus.packages = [ pkgs.gcr ];
 
@@ -37,7 +47,7 @@
       serviceConfig = {
         Type = "oneshot";
         Environment = "SSH_AUTH_SOCK=/run/user/%U/keyring/ssh";
-        ExecStart = "${pkgs.openssh}/bin/ssh-add -l";
+        ExecStart = "${pkgs.libsecret}/bin/secret-tool lookup name unlock-trigger";
         RemainAfterExit = true;
       };
     };
@@ -46,8 +56,18 @@
  
   environment.sessionVariables = {
     GSM_SKIP_SSH_AGENT_WORKAROUND = "1";
-    SSH_AUTH_SOCK = "\${XDG_RUNTIME_DIR}/keyring/ssh";
+    SSH_AUTH_SOCK = "/run/user/1000/keyring/ssh";
   };
 
+  security.pam.services.hyprlock = {
+  gnomeKeyring = true;
+  text = ''
+    auth      include   login
+    # We ensure fingerprint is 'optional' so it doesn't short-circuit the keyring
+    auth      optional  pam_fprintd.so
+    auth      optional  pam_gnome_keyring.so
+    session   optional  pam_gnome_keyring.so auto_start
+  '';
+};
 
 }
