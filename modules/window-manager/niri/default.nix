@@ -27,5 +27,4 @@
     configPackages = [ pkgs.niri ];
   };
 
-  services.gnome.gnome-keyring.enable = true;
 }

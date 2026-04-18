@@ -3,7 +3,6 @@
   services.gnome = {
     gnome-keyring.enable = true;
   };
-    #security.pam.services.hyprlock.enableGnomeKeyring = lib.mkIf config.programs.hyprlock.enable true;
   
   security.pam.services = {
     greetd.enableGnomeKeyring = true;
@@ -11,7 +10,6 @@
     hyprlock.enableGnomeKeyring = true;
     login.enableGnomeKeyring = true;
   };
-  services.dbus.packages = [ pkgs.gnome-keyring pkgs.gcr ];
 
   systemd.user.services = {
     hyprpolkitagent = {
