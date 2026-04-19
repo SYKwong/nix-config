@@ -7,11 +7,11 @@
 
   environment.systemPackages = with pkgs; [
     libsecret
-  ]
+  ];
 
   programs.ssh = {
     startAgent = false;
-    ssh.extraConfig = ''
+    extraConfig = ''
       AddKeysToAgent yes
     '';
   };
@@ -58,16 +58,5 @@
     GSM_SKIP_SSH_AGENT_WORKAROUND = "1";
     SSH_AUTH_SOCK = "/run/user/1000/keyring/ssh";
   };
-
-  security.pam.services.hyprlock = {
-  gnomeKeyring = true;
-  text = ''
-    auth      include   login
-    # We ensure fingerprint is 'optional' so it doesn't short-circuit the keyring
-    auth      optional  pam_fprintd.so
-    auth      optional  pam_gnome_keyring.so
-    session   optional  pam_gnome_keyring.so auto_start
-  '';
-};
 
 }
