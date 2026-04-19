@@ -7,17 +7,18 @@
 
   environment.systemPackages = with pkgs; [
     libsecret
-    gcr_4
   ];
 
   programs.ssh = {
-    startAgent = false;
     extraConfig = ''
-      AddKeysToAgent yes
+      # Global Config
+      Host *
+        IgnoreUnknown UseKeychain
+        AddKeysToAgent yes
+        UseKeychain yes
+        IdentitiesOnly yes
     '';
   };
-
-  services.dbus.packages = [ pkgs.gcr ];
 
   security.pam.services = {
     greetd.enableGnomeKeyring = true;
@@ -57,7 +58,7 @@
  
   environment.sessionVariables = {
     GSM_SKIP_SSH_AGENT_WORKAROUND = "1";
-    SSH_ASKPASS = lib.mkForce "${pkgs.gcr_4}/libexec/gcr4-ssh-askpass";
+    #SSH_ASKPASS = lib.mkForce "${pkgs.gcr_4}/libexec/gcr4-ssh-askpass";
     SSH_AUTH_SOCK = "/run/user/1000/keyring/ssh";
   };
 
