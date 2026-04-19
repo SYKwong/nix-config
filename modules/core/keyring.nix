@@ -7,6 +7,7 @@
 
   environment.systemPackages = with pkgs; [
     libsecret
+    seahorse
   ];
 
   programs.ssh = {
@@ -58,7 +59,6 @@
  
   environment.sessionVariables = {
     GSM_SKIP_SSH_AGENT_WORKAROUND = "1";
-    #SSH_ASKPASS = lib.mkForce "${pkgs.gcr_4}/libexec/gcr4-ssh-askpass";
     SSH_AUTH_SOCK = "/run/user/1000/keyring/ssh";
   };
 
