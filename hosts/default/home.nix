@@ -2,6 +2,7 @@
   imports = [ 
     ./../../home/browsers
     ./../../home/cli
+    ./../../home/theme
 
     ./alias.nix
     ./dotfile.nix
