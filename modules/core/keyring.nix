@@ -31,18 +31,6 @@
     login.enableGnomeKeyring = true;
   };
 
-  systemd.user.services.proactive-keyring-unlock = {
-    description = "Proactively trigger GNOME Keyring unlock prompt on login";
-    wantedBy = [ "graphical-session.target" ];
-    after = [ "graphical-session.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      Environment = "SSH_AUTH_SOCK=/run/user/%U/keyring/ssh";
-      ExecStart = "${pkgs.libsecret}/bin/secret-tool lookup name unlock-trigger";
-      RemainAfterExit = true;
-    };
-  };
-
   environment.variables = {
     SSH_AUTH_SOCK = "$XDG_RUNTIME_DIR/gcr/ssh";
     SSH_ASKPASS = lib.mkForce "${pkgs.gcr_4}/libexec/gcr4-ssh-askpass";
