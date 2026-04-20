@@ -29,20 +29,6 @@
   };
 
   systemd.user.services = {
-    hyprpolkitagent = {
-      description = "Hyprpolkit authentication agent";
-      wantedBy = [ "graphical-session.target" ];
-      wants = [ "graphical-session.target" ];
-      after = [ "graphical-session.target" ];
-      serviceConfig = {
-        Type = "simple";
-        ExecStart = "${pkgs.hyprpolkitagent}/libexec/hyprpolkitagent";
-        Restart = "on-failure";
-        RestartSec = 1;
-        TimeoutStopSec = 10;
-      };
-    };
-
     proactive-keyring-unlock = {
       description = "Proactively trigger GNOME Keyring unlock prompt on login";
       wantedBy = [ "graphical-session.target" ];
@@ -54,7 +40,6 @@
         RemainAfterExit = true;
       };
     };
-
   };
  
   environment.sessionVariables = {
