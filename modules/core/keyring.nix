@@ -8,8 +8,11 @@
   environment.systemPackages = with pkgs; [
     libsecret
     seahorse
+    gcr_4
   ];
 
+  services.dbus.packages = [ pkgs.gcr_4 ];
+  
   programs.ssh = {
     extraConfig = ''
       # Global Config
@@ -41,10 +44,15 @@
       };
     };
   };
- 
-  environment.sessionVariables = {
-    GSM_SKIP_SSH_AGENT_WORKAROUND = "1";
-    SSH_AUTH_SOCK = "/run/user/1000/keyring/ssh";
-  };
+    environment.variables = {
+      SSH_AUTH_SOCK = "$XDG_RUNTIME_DIR/gcr/ssh";
+      SSH_ASKPASS = lib.mkForce "${pkgs.gcr_4}/libexec/gcr4-ssh-askpass";
+      GNOME_KEYRING_CONTROL = "$XDG_RUNTIME_DIR/keyring";
+      SIGNAL_PASSWORD_STORE = "gnome-libsecret";
+    }; 
+  #environment.sessionVariables = {
+  #  GSM_SKIP_SSH_AGENT_WORKAROUND = "1";
+  #  SSH_AUTH_SOCK = "/run/user/1000/gcr/ssh";
+  #};
 
 }
