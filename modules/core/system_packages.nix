@@ -6,6 +6,7 @@
     neovim
     wget
     wiremix
+    wl-clipboard
   ];
 
   xdg.terminal-exec = {
