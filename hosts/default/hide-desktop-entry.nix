@@ -17,8 +17,16 @@ let
   ];
 in
 {
-  xdg.desktopEntries = lib.genAttrs appsToHide (name: {
-    inherit name;
-    noDisplay = true;
-  });
+  xdg.dataFile = lib.listToAttrs (map (name: {
+    name = "applications/${name}.desktop";
+    value = {
+      text = ''
+        [Desktop Entry]
+        Type=Application
+        Name=${name}
+        Exec=true
+        NoDisplay=true
+      '';
+    };
+  }) appsToHide);
 }
