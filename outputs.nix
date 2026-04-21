@@ -51,6 +51,7 @@ in {
         #./modules/window-manager/niri
         ./modules/shell-scripts
         ./modules/wireless
+        ./modules/virtualization
 
         ./overlays
 
