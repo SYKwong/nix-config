@@ -1,6 +1,7 @@
  { lib, ... }:
 
 let
+  # Apps that xdg.desktopEntries cannot hide
   annoyingApps = [
     "rofi"
     "rofi-theme-selector"
