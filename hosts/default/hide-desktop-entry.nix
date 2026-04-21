@@ -1,6 +1,11 @@
  { lib, ... }:
 
 let
+  annoyingApps = [
+    "rofi"
+    "rofi-theme-selector"
+   ];
+
   appsToHide = [
     # Foot is only used for TUI app
     "foot"
@@ -14,16 +19,28 @@ let
 
     # Misc
     "nixos-manual"
-    "rofi"
-    "rofi-theme-selector"
     "btop"
     "uuctl"
 
   ];
+
+  hiddenDesktopContent = name: ''
+    [Desktop Entry]
+    Type=Application
+    Name=${name}
+    Exec=true
+    NoDisplay=true
+    Hidden=true
+  '';
 in
 {
   xdg.desktopEntries = lib.genAttrs appsToHide (name: {
     inherit name;
-       noDisplay = true;
+    noDisplay = true;
   });
+
+  home.file = lib.listToAttrs (map (name: {
+    name = ".local/share/applications/${name}.desktop";
+    value = { text = hiddenDesktopContent name; };
+  }) annoyingApps);
 }
