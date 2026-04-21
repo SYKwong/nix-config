@@ -1,20 +1,29 @@
-{ lib, ... }:
+ { lib, ... }:
 
 let
-  appsToHide = [   
+  appsToHide = [
+    # Foot is only used for TUI app
+    "foot"
+    "foot-server"
+    "footclient"
+
+    # Installed as Stylix dependency
+    "qt5ct"
+    "qt6ct"
+    "kvantummanager"
+
+    # Misc
+    "nixos-manual"
+    "rofi"
+    "rofi-theme-selector"
+    "btop"
+    "uuctl"
+
   ];
 in
 {
-  xdg.dataFile = lib.listToAttrs (map (name: {
-    name = "applications/${name}.desktop";
-    value = {
-      text = ''
-        [Desktop Entry]
-        Type=Application
-        Name=${name}
-        Exec=true
-        NoDisplay=true
-      '';
-    };
-  }) appsToHide);
+  xdg.desktopEntries = lib.genAttrs appsToHide (name: {
+    inherit name;
+       noDisplay = true;
+  });
 }
