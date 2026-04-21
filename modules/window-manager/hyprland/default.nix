@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  imports = [ ./common ];
+  imports = [ ../common ];
 
   _module.args.session-command = "start-hyprland";
   
