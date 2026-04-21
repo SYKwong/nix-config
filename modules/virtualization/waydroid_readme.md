@@ -14,3 +14,10 @@ We need an arm translation layer for most apps to work
 nix shell github:nix-community/NUR#repos.ataraxiasjel.waydroid-script -c sudo waydroid-script
 Android 13 -> Install -> libndk (or libhoudini) 
 ```
+
+To clean up Waydroid junk
+```bash
+rm ~/.local/share/applications/waydroid.com.android.*
+rm ~/.local/share/applications/waydroid.com.google.android.*
+rm waydroid.org.lineageos.*
+```
