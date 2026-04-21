@@ -1,9 +1,7 @@
 { lib, ... }:
 
 let
-  appsToHide = [
-    # Hide all waydroid pre-installed apps 
-    
+  appsToHide = [   
   ];
 in
 {
