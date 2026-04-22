@@ -37,6 +37,7 @@ window#waybar {
     color: #ffffff;
 }
 
+#tray,
 #group-tray-expander,
 #custom-expand-icon,
 #custom-update,
@@ -53,7 +54,6 @@ window#waybar {
   margin-right: 17px;
 }
 
-#tray,
 #custom-expand-icon,
 #group-tray-expander {
   margin-left: 17px;
