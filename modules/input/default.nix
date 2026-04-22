@@ -10,7 +10,7 @@
       ignoreUserConfig = true; # Required for using the following settings
       addons = with pkgs; [
         fcitx5-mozc
-        fcitx5-chinese-addons
+        kdePackages.fcitx5-chinese-addons
         fcitx5-table-extra
       ];
 
@@ -27,7 +27,7 @@
         };
 
         addons = {
-          classicui = {
+          classicui.globalSection = {
             Theme = "default-dark";
             VerticalCandidateList = "False";
             Font = "Sans 15";
@@ -35,7 +35,7 @@
             TrayFont="Sans Bold 15";
           };
 
-          punctuation = {
+          punctuation.globalSection = {
             Enabled = "False";
           };
         };
