@@ -26,6 +26,12 @@
           "Groups/0/Items/2".Name = "mozc";
         };
 
+        globalOptions = {
+          "Hotkey/TriggerKeys" = {
+            "0" = "Alt+Shift+Shift_L";
+          };
+        };
+
         addons = {
           classicui.globalSection = {
             Theme = "default-dark";
