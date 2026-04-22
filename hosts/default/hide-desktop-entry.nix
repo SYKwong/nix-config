@@ -22,6 +22,12 @@ let
     "qt6ct"
     "kvantummanager"
 
+    # fcitx5
+    "fcitx5-configtool"
+    "org.fcitx.fcitx5-migrator"
+    "org.fcitx.Fcitx5"
+    "kbd-layout-viewer5"
+
     # Misc
     "nixos-manual"
     "btop"
@@ -46,6 +52,9 @@ in
 
   home.file = lib.listToAttrs (map (name: {
     name = ".local/share/applications/${name}.desktop";
-    value = { text = hiddenDesktopContent name; };
+    value = { 
+      text = hiddenDesktopContent name;
+      force = true;
+    };
   }) annoyingApps);
 }

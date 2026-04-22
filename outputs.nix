@@ -52,6 +52,7 @@ in {
         ./modules/shell-scripts
         ./modules/wireless
         ./modules/virtualization
+        ./modules/input
 
         ./overlays
 
