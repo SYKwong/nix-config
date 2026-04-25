@@ -37,8 +37,6 @@ window#waybar {
     color: #ffffff;
 }
 
-#tray,
-#group-tray-expander,
 #custom-expand-icon,
 #custom-update,
 #battery,
@@ -55,7 +53,6 @@ window#waybar {
   margin-right: 17px;
 }
 
-#custom-expand-icon,
-#group-tray-expander {
+#custom-fcitx5{
   margin-left: 17px;
 }
