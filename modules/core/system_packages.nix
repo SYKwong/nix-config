@@ -7,6 +7,7 @@
     wget
     wiremix
     wl-clipboard
+    psmisc
   ];
 
   xdg.terminal-exec = {
