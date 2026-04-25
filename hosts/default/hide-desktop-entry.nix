@@ -9,6 +9,7 @@ let
     "waydroid.com.google.android.apps.messaging"
     "waydroid.com.google.android.contacts"
     "waydroid.com.google.android.apps.restore"
+    "waydroid.com.google.android.inputmethod.latin"
   ];
 
   appsToHide = [
