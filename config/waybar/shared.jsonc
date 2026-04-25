@@ -69,7 +69,8 @@
       "headset": "",
       "default": ["", "", ""]
     }
-  }, 
+  },
+
   "bluetooth": {
     "format": "",
     "format-disabled": "󰂲",
@@ -78,6 +79,25 @@
     "format-no-controller": "",
     "tooltip-format": "Devices connected: {num_connections}",
     "on-click": "tui-wrap bluetui"
+  },
+
+  "group/tray-expander": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-duration": 600,
+      "children-class": "tray-group-item"
+    },
+    "modules": ["custom/expand-icon", "tray"]
+  },
+
+  "custom/expand-icon": {
+    "format": "",
+    "tooltip": false
+  },
+
+  "tray": {
+    "icon-size": 12,
+    "spacing": 17
   },
 
   "custom/fcitx5": {
