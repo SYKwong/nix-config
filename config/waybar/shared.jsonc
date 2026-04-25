@@ -97,8 +97,9 @@
   },
 
   "custom/fcitx5": {
-    "exec": "~/.config/waybar/fcitx5-watch.sh",
-    "return-type": "json",
-    "format": "{}"
+    "exec": "fcitx5-tray",
+    "return-type": "string",
+    "format": "{}",
+    "tooltip": false
   }
 }

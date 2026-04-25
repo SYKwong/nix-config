@@ -12,7 +12,6 @@
         fcitx5-mozc
         kdePackages.fcitx5-chinese-addons
         fcitx5-table-extra
-        fcitx5-lua
       ];
 
       settings = {
