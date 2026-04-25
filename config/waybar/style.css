@@ -39,18 +39,18 @@ window#waybar {
 
 #tray,
 #group-tray-expander,
-#custom-fcitx5
 #custom-expand-icon,
 #custom-update,
 #battery,
 #network,
-#pulseaudio,
-#bluetooth {
+#pulseaudio{
   margin-right: 17px;
 }
 
+#custom-fcitx5
 #workspaces,
-#clock {
+#clock,
+#bluetooth {
   margin-left: 17px;
   margin-right: 17px;
 }
