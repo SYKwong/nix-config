@@ -37,24 +37,22 @@ window#waybar {
     color: #ffffff;
 }
 
-#group-tray-expander,
 #custom-expand-icon,
 #custom-update,
 #battery,
 #network,
-#pulseaudio,
-#bluetooth {
+#pulseaudio{
   margin-right: 17px;
 }
 
+#custom-fcitx5
 #workspaces,
-#clock {
+#clock,
+#bluetooth {
   margin-left: 17px;
   margin-right: 17px;
 }
 
-#tray,
-#custom-expand-icon,
-#group-tray-expander {
+#custom-fcitx5{
   margin-left: 17px;
 }

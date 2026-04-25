@@ -5,7 +5,9 @@
   "layer": "top", 
   "position": "top", 
   "height": 30, 
-  "spacing": 0, 
+  "spacing": 0,
+
+  "reload_style_on_change": true,
 
   "clock": {
     "format": "{:L%I:%M %p %a %b %d}",
@@ -78,22 +80,10 @@
     "on-click": "tui-wrap bluetui"
   },
 
-  "group/tray-expander": {
-    "orientation": "inherit",
-    "drawer": {
-      "transition-duration": 600,
-      "children-class": "tray-group-item"
-    },
-    "modules": ["custom/expand-icon", "tray"]
-  },
-
-  "custom/expand-icon": {
-    "format": "",
+  "custom/fcitx5": {
+    "exec": "fcitx5-tray",
+    "return-type": "string",
+    "format": "{}",
     "tooltip": false
-  },
-
-  "tray": {
-    "icon-size": 12,
-    "spacing": 17
   }
 }
