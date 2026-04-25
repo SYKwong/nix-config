@@ -13,6 +13,14 @@ let
       esac
     }
 
+    while ! pgrep -x fcitx5 > /dev/null; do
+      sleep 1
+    done
+
+    until fcitx5-remote -n > /dev/null 2>&1; do
+      sleep 0.5
+    done
+
     get_im
 
     dbus-monitor --session "interface='org.kde.StatusNotifierItem',member='NewIcon'"  2>/dev/null | \
