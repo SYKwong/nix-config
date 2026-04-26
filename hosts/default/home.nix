@@ -3,6 +3,7 @@
     ./../../home/browsers
     ./../../home/cli
     ./../../home/theme
+    ./../../home/shell
 
     ./alias.nix
     ./dotfile.nix
