@@ -11,7 +11,7 @@
 
   wayland.windowManager.hyprland.systemd.enable = false;
 
-  programs.bash = {
+  programs.fish = {
     enable = true;
   };
 }

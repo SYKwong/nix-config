@@ -11,6 +11,7 @@
     ./system.nix
     ./system_packages.nix
     ./user.nix
+    ./fish-shell.nix
   ];
 }
 
