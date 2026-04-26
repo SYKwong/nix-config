@@ -1,19 +1,16 @@
 {
   programs = {
     fish.enable = true;
-    oh-my-posh = {
+
+    starship = {
       enable = true;
       enableFishIntegration = true;
-      useTheme = "capr4n";
+      
+      enableTransience = true;
+      settings = {
+        add_newline = true;
+        line_break.disabled = true;
+      };
     };
-
-    #starship = {
-    #  enable = true;
-    #  enableFishIntegration = true;
-    #  settings = {
-    #    add_newline = false;
-    #    line_break.disabled = true;
-    #  };
-    #};
   };
 }
