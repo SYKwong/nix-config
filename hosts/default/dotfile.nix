@@ -29,7 +29,6 @@ let
     "mako"    = "mako";
     "foot"    = "foot";
     "kitty"   = "kitty";
-    "starship"= "starship";	
   };
 in 
 {
