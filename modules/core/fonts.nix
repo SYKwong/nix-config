@@ -10,7 +10,6 @@
       hackgen-nf-font
       ibm-plex
       inter
-      jetbrains-mono
       material-icons
       maple-mono.NF
       minecraftia
@@ -32,6 +31,11 @@
       symbola
       terminus_font
     ];
+
+    enableDefaultPackages = true;
+    fontconfig.defaultFonts = {
+      monospace = [ "JetBrainsMono Nerd Font" "JetBrains Mono" ];
+    };
   };
 }
 
