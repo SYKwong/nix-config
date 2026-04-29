@@ -31,11 +31,6 @@
       symbola
       terminus_font
     ];
-
-    enableDefaultPackages = true;
-    fontconfig.defaultFonts = {
-      monospace = [ "JetBrainsMono Nerd Font" "JetBrains Mono" ];
-    };
   };
 }
 
