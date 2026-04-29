@@ -26,12 +26,8 @@ disabled = false
 style = "bg:lavender fg:crust"
 
 [os.symbols]
-Ubuntu = "󰕈"
-Linux  = "󰌽"
-Gentoo = "󰣨"
 Fedora = "󰣛"
 Arch   = "󰣇"
-Debian = "󰣚"
 NixOS  = " "
 
 [directory]
