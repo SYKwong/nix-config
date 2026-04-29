@@ -3,6 +3,7 @@
     ./../../home/browsers
     ./../../home/cli
     ./../../home/theme
+    ./../../home/shell
 
     ./alias.nix
     ./dotfile.nix
@@ -11,7 +12,7 @@
 
   wayland.windowManager.hyprland.systemd.enable = false;
 
-  programs.bash = {
+  programs.fish = {
     enable = true;
   };
 }

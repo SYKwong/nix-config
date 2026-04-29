@@ -10,7 +10,6 @@
       hackgen-nf-font
       ibm-plex
       inter
-      jetbrains-mono
       material-icons
       maple-mono.NF
       minecraftia
