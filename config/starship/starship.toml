@@ -8,6 +8,7 @@ $directory\
 [](bg:teal fg:sapphire)\
 $git_branch\
 $git_status\
+$git_metrics\
 [ ](fg:teal)\
 $fill\
 [](pink)\
@@ -25,26 +26,12 @@ disabled = false
 style = "bg:lavender fg:crust"
 
 [os.symbols]
-Windows = ""
 Ubuntu = "󰕈"
-SUSE = ""
-Raspbian = "󰐿"
-Mint = "󰣭"
-Macos = "󰀵"
-Manjaro = ""
 Linux = "󰌽"
 Gentoo = "󰣨"
 Fedora = "󰣛"
-Alpine = ""
-Amazon = ""
-Android = ""
-AOSC = ""
 Arch = "󰣇"
-Artix = "󰣇"
-CentOS = ""
 Debian = "󰣚"
-Redhat = "󱄛"
-RedHatEnterprise = "󱄛"
 NixOS = " "
 
 [directory]
@@ -58,7 +45,7 @@ truncation_symbol = "…/"
 "Downloads" = " "
 "Music" = "󰝚 "
 "Pictures" = " "
-"Developer" = "󰲋 "
+"Projects" = "󰲋 "
 "nix-config" = " "
 
 [git_branch]
@@ -69,6 +56,11 @@ format = '[[ $symbol $branch ](fg:crust bg:teal)]($style)'
 [git_status]
 style = "bg:teal"
 format = '[[($all_status$ahead_behind )](fg:crust bg:teal)]($style)'
+
+[git_metrics]
+disabled = false
+style = "bg:teal"
+format = '([$added ](fg:crust bg:teal))([$deleted](fg:crust bg:teal))'
 
 [time]
 disabled = false
