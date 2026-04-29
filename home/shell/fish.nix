@@ -15,6 +15,7 @@
   stylix.targets.starship.enable = false;
 
   xdg.configFile."fish/conf.d/theme.fish".text = ''
+    # Modified catppuccin theme
     set -g fish_color_normal cdd6f4
     set -g fish_color_command 89b4fa
     set -g fish_color_param f2cdcd
