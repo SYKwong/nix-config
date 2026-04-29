@@ -4,6 +4,7 @@
     ./../../home/cli
     ./../../home/theme
     ./../../home/shell
+    ./../../home/core
 
     ./alias.nix
     ./dotfile.nix
