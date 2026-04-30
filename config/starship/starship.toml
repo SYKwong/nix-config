@@ -57,7 +57,7 @@ format = '[[($all_status$ahead_behind )](fg:crust bg:teal)]($style)'
 disabled = false
 added_style = "fg:crust bg:teal"
 deleted_style = "fg:crust bg:teal"
-format = '[$added ]($added_style)[$deleted ]($deleted_style)'
+format = '([$added ]($added_style)[$deleted ]($deleted_style))'
 
 [time]
 disabled = false
