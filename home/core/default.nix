@@ -1,3 +1,5 @@
+{ pkgs, ... }:
+
 {
   xdg.userDirs = {
     enable = true;
@@ -6,4 +8,6 @@
     templates = null;
     publicShare = null;
   };
+
+  home.packages = [ pkgs.papirus-icon-theme ];
 }
