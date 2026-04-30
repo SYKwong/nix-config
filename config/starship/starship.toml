@@ -55,7 +55,9 @@ format = '[[($all_status$ahead_behind )](fg:crust bg:teal)]($style)'
 
 [git_metrics]
 disabled = false
-format = '([$added $deleted ](fg:crust bg:teal))'
+added_style = "fg:crust bg:teal"
+deleted_style = "fg:crust bg:teal"
+format = '[$added ]($added_style)[$deleted ]($deleted_style)'
 
 [time]
 disabled = false
