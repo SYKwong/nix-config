@@ -35,6 +35,7 @@ in {
           inherit inputs; 
           inherit (info) username;
           hostname = name;
+          window-manager = "hyprland";
         };
 
       modules = [
@@ -45,8 +46,7 @@ in {
         ./modules/core
 
         ./modules/home-manager
-        ./modules/window-manager/hyprland
-        #./modules/window-manager/niri
+        ./modules/window-manager
         ./modules/shell-scripts
         ./modules/wireless
         ./modules/virtualization
