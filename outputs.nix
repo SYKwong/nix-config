@@ -47,7 +47,6 @@ in {
 
         ./modules/home-manager
         ./modules/window-manager
-        #./modules/window-manager/niri
         ./modules/shell-scripts
         ./modules/wireless
         ./modules/virtualization
