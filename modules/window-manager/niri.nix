@@ -1,11 +1,9 @@
 { config, pkgs, lib, window-manager, ... }:
 
 {
-  imports = [ ./common ];
-  
-  config = lib.mkIf (window-manager == "niri"){
+  #config = lib.mkIf (window-manager == "niri"){
 
-    _module.args.session-command = "niri-session";
+  #  _module.args.session-command = "niri-session";
 
     programs.niri.enable = true;
 
@@ -23,6 +21,6 @@
       configPackages = [ pkgs.niri ];
     };
   
-  };
+  #};
 }
 

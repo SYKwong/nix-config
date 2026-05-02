@@ -36,7 +36,7 @@ in {
           inherit inputs; 
           inherit (info) username;
           hostname = name;
-          window-manager = "hyprland";
+          #window-manager = "hyprland";
         };
 
       modules = [

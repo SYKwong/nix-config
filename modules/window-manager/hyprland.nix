@@ -1,9 +1,9 @@
-{ config, pkgs, lib, window-manager, ... }:
+{ config, pkgs, lib, ... }:
 
 {
-  config = lib.mkIf (window-manager == "hyprland"){
+  #config = lib.mkIf (window-manager == "hyprland"){
   
-    _module.args.session-command = "start-hyprland";
+  #  _module.args.session-command = "start-hyprland";
   
     programs.hyprland = {
       enable = true;
@@ -29,6 +29,6 @@
         TimeoutStopSec = 10;
       };
     };
-  };
+  #};
 }
 
