@@ -1,8 +1,6 @@
 {
   imports = [
     #./greetd.nix
-    ./sddm.nix
-
     ./hypridle.nix
     ./hyprlock.nix
     ./hyprpaper.nix

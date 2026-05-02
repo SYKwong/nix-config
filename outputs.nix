@@ -8,6 +8,7 @@ let
   disko 
   stylix 
   lanzaboote
+  silentSDDM
   ;
 
   hosts = {
@@ -42,10 +43,12 @@ in {
         disko.nixosModules.disko
         home-manager.nixosModules.home-manager
         stylix.nixosModules.stylix
+	silentSDDM.nixosModules.default
 
         ./modules/core
 
         ./modules/home-manager
+	./modules/display-manager
         ./modules/window-manager
         ./modules/shell-scripts
         ./modules/wireless
