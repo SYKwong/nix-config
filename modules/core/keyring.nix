@@ -27,6 +27,7 @@
 
   security.pam.services = {
     sddm.enableGnomeKeyring = true;
+    ly.enableGnomeKeyring = true;
   #  greetd.enableGnomeKeyring = true;
   #  greetd-password.enableGnomeKeyring = true;
   #  hyprlock.enableGnomeKeyring = true;
