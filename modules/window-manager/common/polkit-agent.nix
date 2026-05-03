@@ -3,7 +3,6 @@
 {
   environment.systemPackages = with pkgs; [
     hyprpolkitagent
-    grim slurp satty
   ];
 
   systemd.user.services.hyprpolkitagent = {
