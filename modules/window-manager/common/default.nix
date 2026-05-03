@@ -8,5 +8,6 @@
     ./rofi.nix
     ./swayosd.nix
     ./waybar.nix
+    ./polkit-agent.nix
   ];
 }
