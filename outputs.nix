@@ -8,7 +8,6 @@ let
   disko 
   stylix 
   lanzaboote
-  silentSDDM
   ;
 
   hosts = {
@@ -36,14 +35,12 @@ in {
           inherit inputs; 
           inherit (info) username;
           hostname = name;
-          #window-manager = "hyprland";
         };
 
       modules = [
         disko.nixosModules.disko
         home-manager.nixosModules.home-manager
         stylix.nixosModules.stylix
-		silentSDDM.nixosModules.default
 
         ./modules/core
 

@@ -1,34 +1,29 @@
 { config, pkgs, lib, ... }:
 
 {
-  #config = lib.mkIf (window-manager == "hyprland"){
-  
-  #  _module.args.session-command = "start-hyprland";
-  
-    programs.hyprland = {
-      enable = true;
-      xwayland.enable = true;
-      withUWSM = true;
-    };
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+    withUWSM = true;
+  };
 
-    environment.systemPackages = with pkgs; [
-      hyprpolkitagent
-      grim slurp satty
-    ];
+  environment.systemPackages = with pkgs; [
+    hyprpolkitagent
+    grim slurp satty
+  ];
 
-    systemd.user.services.hyprpolkitagent = {
-      description = "Hyprpolkit authentication agent";
-      wantedBy = [ "graphical-session.target" ];
-      wants = [ "graphical-session.target" ];
-      after = [ "graphical-session.target" ];
-      serviceConfig = {
-        Type = "simple";
-        ExecStart = "${pkgs.hyprpolkitagent}/libexec/hyprpolkitagent";
-        Restart = "on-failure";
-        RestartSec = 1;
-        TimeoutStopSec = 10;
-      };
+  systemd.user.services.hyprpolkitagent = {
+    description = "Hyprpolkit authentication agent";
+    wantedBy = [ "graphical-session.target" ];
+    wants = [ "graphical-session.target" ];
+    after = [ "graphical-session.target" ];
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = "${pkgs.hyprpolkitagent}/libexec/hyprpolkitagent";
+      Restart = "on-failure";
+      RestartSec = 1;
+      TimeoutStopSec = 10;
     };
-  #};
+  };
 }
 
