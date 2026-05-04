@@ -9,11 +9,11 @@
   ];
 
   programs = {
-  	neovim = {
-    		enable = true;
-    		defaultEditor = true;
-    		vimAlias = true;
-    		viAlias = true;
+	neovim = {
+	  enable = true;
+      defaultEditor = true;
+      vimAlias = true;
+	  viAlias = true;
   	};
 	nano.enable = false;
   };
