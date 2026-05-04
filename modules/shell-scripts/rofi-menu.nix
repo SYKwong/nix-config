@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 let
-  power-menu = pkgs.writeShellScriptBin "power-menu" ''
+  rofi-power-menu = pkgs.writeShellScriptBin "rofi-power-menu" ''
     current=$(powerprofilesctl get)
     options="performance\nbalanced\npower-saver"
    
@@ -19,5 +19,5 @@ let
   '';
 in
 {
-  environment.systemPackages = [ power-menu ];
+  environment.systemPackages = [ rofi-power-menu ];
 }
