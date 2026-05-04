@@ -3,11 +3,20 @@
 {
   environment.systemPackages = with pkgs; [
     kitty
-    neovim
     wget
     wiremix
     wl-clipboard
   ];
+
+  programs = {
+  	neovim = {
+    		enable = true;
+    		defaultEditor = true;
+    		vimAlias = true;
+    		viAlias = true;
+  	};
+	nano.enable = false;
+  };
 
   xdg.terminal-exec = {
     enable = true;
