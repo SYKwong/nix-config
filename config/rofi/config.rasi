@@ -25,6 +25,11 @@ configuration{
     kb-remove-char-back: "BackSpace";
     kb-move-char-forward: "Control+f";
     kb-mode-complete: "Control+o";
+
+    kb-cancel: "Escape,MousePrimary";
+
+    me-select-entry: "MousePrimary";
+    me-accept-entry: "!MousePrimary";
 }
 @theme "catppuccin-lavrent-mocha.rasi"
 //@theme "tokyonight.rasi"
