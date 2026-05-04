@@ -26,4 +26,5 @@ configuration{
     kb-move-char-forward: "Control+f";
     kb-mode-complete: "Control+o";
 }
-@theme "tokyonight.rasi"
+@theme "catppuccin-lavrent-mocha.rasi"
+//@theme "tokyonight.rasi"
