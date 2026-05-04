@@ -16,6 +16,15 @@
         push.autoSetupRemote = true;
         help.autocorrect = 10;
         rerere.enabled = true;
+        pull.rebase = true;
+        alias = {
+          co = "checkout";
+          cm = "commit -m";
+          pl = "pull";
+          ps = "push";
+          st = "status";
+          lazy = "!f() { git add -A && git commit -m \"$1\" && git push; }; f";
+        };
       };
     };
 
