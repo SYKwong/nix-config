@@ -1,28 +1,20 @@
 { config, pkgs, lib, window-manager, ... }:
 
 {
-  imports = [ ./common ];
+  programs.niri.enable = true;
+
+  environment.systemPackages = with pkgs; [
+    alacritty
+    xwayland-satellite
+  ];
   
-  config = lib.mkIf (window-manager == "niri"){
-
-    _module.args.session-command = "niri-session";
-
-    programs.niri.enable = true;
-
-    environment.systemPackages = with pkgs; [
-      alacritty
-      xwayland-satellite
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-gnome
     ];
-    
-    xdg.portal = {
-      enable = true;
-      extraPortals = with pkgs; [
-        xdg-desktop-portal-gtk
-        xdg-desktop-portal-gnome
-      ];
-      configPackages = [ pkgs.niri ];
-    };
-  
+    configPackages = [ pkgs.niri ];
   };
 }
 

@@ -1,6 +1,5 @@
 {
   imports = [
-    ./greetd.nix
     ./hypridle.nix
     ./hyprlock.nix
     ./hyprpaper.nix
@@ -9,5 +8,6 @@
     ./rofi.nix
     ./swayosd.nix
     ./waybar.nix
+    ./polkit-agent.nix
   ];
 }
