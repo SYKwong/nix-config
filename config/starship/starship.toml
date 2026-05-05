@@ -37,11 +37,11 @@ truncation_length = 3
 truncation_symbol = "…/"
 
 [directory.substitutions]
-"Documents" = "󰈙 "
-"Downloads" = " "
-"Music" = "󰝚 "
-"Pictures" = " "
-"Projects" = "󰲋 "
+"~/Documents" = "󰈙 "
+"~/Downloads" = " "
+"~/Music" = "󰝚 "
+"~/Pictures" = " "
+"~/Projects" = "󰲋 "
 "nix-config" = " "
 
 [git_branch]
