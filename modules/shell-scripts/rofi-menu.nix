@@ -4,8 +4,19 @@ let
   rofi-menu = pkgs.writeShellScriptBin "rofi-menu" ''
     options="󰐥 System\n󱐋 Power Profile"
 
-    chosen=$(echo -e "$options" | rofi -dmenu -i )
+    chosen=$(echo -e "$options" | rofi -dmenu \
+      -i \
+      -theme-str '
+        element-icon { enabled: false; }
+        prompt { enabled: false; }
+        window { width: 250; }
+        listview { dynamic: true; fixed-height: false; lines: 10; }
+    ')
     case "$chosen" in
+      "󰐥 System")
+        rofi-power-menu ;;
+      "󱐋 Power Profile")
+        rofi-power-profile ;;
       *)
         exit 1 ;;
     esac
@@ -27,13 +38,12 @@ let
     chosen=$(echo -e "$options" | rofi -dmenu \
       -i \
       -markup-rows \
-      -p "Power Profile" \
       -theme-str '
         window { width: 300; } 
-        listview { lines: 3; } 
+        listview { lines: 3; }
         prompt { enabled: false; }
         element { padding: 10px 10px; }
-        element-text { horizontal-align: 0;}
+        element-text { horizontal-align: 0; }
         element-icon { enabled: false; }
       ')
     
@@ -47,32 +57,31 @@ let
   '';
 
   rofi-power-menu = pkgs.writeShellScriptBin "rofi-power-menu" ''
-    options="Shutdown\nSuspend\nHibernate\nReboot\nLog Out\nLock"
+    options="󰐥 Shutdown\n󰒲 Suspend\n󰤁 Hibernate\n󰜉 Reboot\n󰍃 Logout\n Lock"
 
     chosen=$(echo -e "$options" | rofi -dmenu \
       -i \
-      -p "Power Profile" \
       -theme-str '
         window { width: 300; } 
         listview { lines: 6; } 
         prompt { enabled: false; }
-        element { padding: 5px 10px; }
-        element-text { horizontal-align: 0;}
+        element { padding: 10px 10px; }
+        element-text { horizontal-align: 0; }
         element-icon { enabled: false; }
       ')
 
     case "$chosen" in
-      "Shutdown")
+      "󰐥 Shutdown")
         systemctl poweroff ;;
-      "Suspend")
+      "󰒲 Suspend")
         systemctl suspend-then-hibernate ;;
-      "Hibernate")
+      "󰤁 Hibernate")
         systemctl hibernate ;;
-      "Reboot")
+      "󰜉 Reboot")
         systemctl reboot ;;
-      "Log Out")
+      "󰍃 Logout")
         loginctl terminate-user $USER ;;
-      "Lock")
+      " Lock")
         pidof hyprlock || hyprlock ;; 
       *)
         exit 1 ;;
