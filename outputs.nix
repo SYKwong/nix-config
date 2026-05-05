@@ -45,12 +45,13 @@ in {
         ./modules/core
 
         ./modules/home-manager
-		./modules/display-manager
+        ./modules/display-manager
         ./modules/window-manager
         ./modules/shell-scripts
         ./modules/wireless
         ./modules/virtualization
         ./modules/input
+        ./modules/misc
 
         ./overlays
 

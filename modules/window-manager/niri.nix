@@ -8,13 +8,6 @@
     xwayland-satellite
   ];
   
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-gtk
-      xdg-desktop-portal-gnome
-    ];
-    configPackages = [ pkgs.niri ];
-  };
+  xdg.portal.configPackages = [ pkgs.niri ];
 }
 
