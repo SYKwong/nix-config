@@ -42,7 +42,7 @@ truncation_symbol = "…/"
 "~/Music" = "󰝚 "
 "~/Pictures" = " "
 "~/Projects" = "󰲋 "
-"~/nix-config" = " "
+"nix-config" = " "
 
 [git_branch]
 symbol = ""
