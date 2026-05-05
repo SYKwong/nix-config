@@ -18,6 +18,8 @@
     lavender: #b4befe;
 
     background-color: @base;
+
+    font: "JetBrainsMono Nerd Font 15";
 }
 
 window {
@@ -112,4 +114,8 @@ element-text, element-icon {
 
 element-text .active, element-text .urgent {
     text-color: @base;
+}
+
+element-text {
+    font: "inherit";
 }

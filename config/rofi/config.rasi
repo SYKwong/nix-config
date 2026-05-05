@@ -32,4 +32,3 @@ configuration{
     me-accept-entry: "!MousePrimary";
 }
 @theme "catppuccin-lavrent-mocha.rasi"
-//@theme "tokyonight.rasi"
