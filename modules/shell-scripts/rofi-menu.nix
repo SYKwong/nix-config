@@ -2,7 +2,8 @@
 
 let
   rofi-menu = pkgs.writeShellScriptBin "rofi-menu" ''
-    options="󰐥 System\n󱐋 Power Profile"
+    #[NF-icon][two space][Name]
+    options="󰐥  System\n󱐋  Power Profile\n󰖩  Wi-Fi\n󰂯  Bluetooth\n󰕾  Audio"
 
     chosen=$(echo -e "$options" | rofi -dmenu \
       -i \
@@ -17,6 +18,12 @@ let
         rofi-power-menu ;;
       "󱐋 Power Profile")
         rofi-power-profile ;;
+      " Wi-Fi")
+        tui-wrap impala ;;
+      "󰂯 Bluetooth")
+        tui-wrap bluetui ;;
+      " Audio")
+        tui-wrap wiremix ;;
       *)
         exit 1 ;;
     esac
