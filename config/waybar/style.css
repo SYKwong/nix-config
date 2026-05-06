@@ -45,7 +45,6 @@ window#waybar {
   margin-right: 17px;
 }
 
-#custom-fcitx5
 #workspaces,
 #clock,
 #bluetooth {
@@ -53,6 +52,11 @@ window#waybar {
   margin-right: 17px;
 }
 
-#custom-fcitx5{
+#custom-fcitx5 {
   margin-left: 17px;
+}
+
+
+#custom-notification{
+  margin-left: 8px;
 }
