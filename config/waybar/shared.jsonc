@@ -127,5 +127,4 @@
     "on-click-right": "sleep 0.1 && swaync-client -d -sw",
     "escape": true
   }
-
 }
