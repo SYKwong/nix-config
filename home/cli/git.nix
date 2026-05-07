@@ -1,4 +1,4 @@
-{ username, ... }:
+{ pkgs, username, ... }:
 
 {
   programs = {
@@ -30,7 +30,7 @@
 
     gh.enable = true;
     lazygit.enable = true;
-
   };
+  home.packages = [ pkgs.glab ];
 }
 
