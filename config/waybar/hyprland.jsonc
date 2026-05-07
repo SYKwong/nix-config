@@ -14,6 +14,10 @@
     "battery"
   ],
 
+  "modules-right": [
+    "custom/notification"
+  ],
+
   "hyprland/workspaces": {
     "on-click": "activate",
     "format": "{icon}",
