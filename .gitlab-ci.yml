@@ -46,7 +46,7 @@ update-flake-mr:
            -o merge_request.remove_source_branch \
            -o merge_request.label="dependencies" \
            -o merge_request.assignee_id="$GITLAB_USER_ID" \
-           -o merge_request.squash=true
+           -o merge_request.squash=true \
            -o merge_request.merge_when_pipeline_succeeds
         fi
       fi
