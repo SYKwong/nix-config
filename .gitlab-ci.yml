@@ -39,10 +39,10 @@ update-flake-mr:
           echo "DRY RUN: Would have pushed and created an MR now."
         else
           # 4. Push with MR creation options
-         git push origin "$BRANCH_NAME" \
+         git push -f origin "$BRANCH_NAME" \
            -o merge_request.create \
            -o merge_request.target="$CI_DEFAULT_BRANCH" \
-           -o merge_request.title="Weekly Nix Flake Update: $(date +%Y-%m-%d)" \
+           -o merge_request.title="Daily Nix Flake Update: $(date +%Y-%m-%d)" \
            -o merge_request.remove_source_branch \
            -o merge_request.label="dependencies" \
            -o merge_request.assignee_id="$GITLAB_USER_ID" \
