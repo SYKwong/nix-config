@@ -17,7 +17,7 @@
   "custom/update": {
     "format": "",
     "exec": "update-available",
-    "on-click": "update-system",
+    "on-click": "tui-wrap update-system",
     "tooltip-format": "Update available",
     "signal": 7,
     "interval": 3600

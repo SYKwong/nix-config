@@ -42,6 +42,8 @@ let
       git stash pop
     fi
 
+    pkill -RTMIN+7 waybar
+
     read -n 1 -s -r -p "Press any key to exit..."
     echo "" # Adds a newline so the next terminal prompt starts on a fresh line
     exit 0
