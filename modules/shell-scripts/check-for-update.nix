@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, hostname, ... }:
 
 let
   update-available = pkgs.writeShellScriptBin "update-available" ''
@@ -8,15 +8,24 @@ let
 
     if [[ -n "$remote_hash" && "$local_hash" != "$remote_hash" ]]; then
       echo "update available $remote_hash"
-      exit 1
-    else
       exit 0
+    else
+      exit 1
     fi
   '';
 
   update-system = pkgs.writeShellScriptBin "update-system" ''
-    nrs 
+    set -e
+    CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+    OLD_STASH=$(git rev-parse -q --verify refs/stash || true)
+
+    echo "--- Switching to main and pulling changes ---"
+    git stash push -m "temp-update-stash"
+    git switch main
+    git pull
     
+    echo "---  Running NixOS Rebuild ---"
+    sudo nixos-rebuild switch --flake ~/nix-config/#${hostname} 
     if [ $? -eq 1 ]; then
       echo "Live switch failed. Making a new boot entry instead."
       nrb
@@ -25,8 +34,16 @@ let
       fi
     fi
 
-    echo "Press any key to exit..."
-    read -n 1 -s -r
+    echo "--- Returning to $CURRENT_BRANCH ---"
+    git switch "$CURRENT_BRANCH"
+
+    if [ "$OLD_STASH" != "$NEW_STASH" ]; then
+      echo "--- Restoring stashed changes ---"
+      git stash pop
+    fi
+
+    read -n 1 -s -r -p "Press any key to exit..."
+    echo "" # Adds a newline so the next terminal prompt starts on a fresh line
     exit 0
   '';
 in

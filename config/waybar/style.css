@@ -38,7 +38,6 @@ window#waybar {
 }
 
 #custom-expand-icon,
-#custom-update,
 #battery,
 #network,
 #pulseaudio{
@@ -56,7 +55,12 @@ window#waybar {
   margin-left: 17px;
 }
 
+#custom-update {
+  margin-left: 17px;
+  margin-right: 8px;
+}
 
-#custom-notification{
-  margin-left: 8px;
+#custom-notification {
+  margin-left: 16px;
+  margin-right: 8px;
 }

@@ -3,7 +3,6 @@
   "include": [ "~/.config/waybar/shared.jsonc" ],
 
   "modules-center": [
-    "custom/update",
     "clock",
     "hyprland/workspaces",
     "group/tray-expander",
@@ -15,6 +14,7 @@
   ],
 
   "modules-right": [
+    "custom/update",
     "custom/notification"
   ],
 
