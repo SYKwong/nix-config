@@ -12,6 +12,7 @@
     ./system_packages.nix
     ./user.nix
     ./fish-shell.nix
+    ./powerManagement.nix
   ];
 }
 
