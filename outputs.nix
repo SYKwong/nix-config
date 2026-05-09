@@ -26,7 +26,7 @@ let
 
 in {
   # Expose hosts for Bash
-  hostInfo = hosts;
+  lib.hostInfo = hosts;
 
   nixosConfigurations = nixpkgs.lib.mapAttrs (name: info: 
     nixpkgs.lib.nixosSystem {
