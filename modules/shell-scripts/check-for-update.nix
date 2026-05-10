@@ -1,8 +1,10 @@
-{ pkgs, hostname, ... }:
+{ pkgs, hostname, username, ... }:
 
 let
+  config_path = "/home/${username}/nix-config";
+
   update-available = pkgs.writeShellScriptBin "update-available" ''
-    config_path="$HOME/nix-config"
+    repo="${config_path}"
     local_hash=$(git -C "$config_path" rev-parse main 2>/dev/null)
     remote_hash=$(git -C "$config_path" ls-remote origin -h refs/heads/main 2>/dev/null | awk '{print $1}')
 
@@ -10,17 +12,20 @@ let
       echo "update available $remote_hash"
       exit 0
     else
+      echo "no update at the moment"
       exit 1
     fi
   '';
 
   update-system = pkgs.writeShellScriptBin "update-system" ''
     set -e
+    REPO="${config_path}"
+    cd "$REPO"
+
     CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-    OLD_STASH=$(git rev-parse -q --verify refs/stash || true)
 
     echo "--- Switching to main and pulling changes ---"
-    git stash push -m "temp-update-stash"
+    STASH_RESULT=$(git stash push -m "temp-update-stash")
     git switch main
     git pull
     
@@ -37,7 +42,7 @@ let
     echo "--- Returning to $CURRENT_BRANCH ---"
     git switch "$CURRENT_BRANCH"
 
-    if [ "$OLD_STASH" != "$NEW_STASH" ]; then
+    if [[ "$STASH_RESULT" != "No local changes to save" ]]; then
       echo "--- Restoring stashed changes ---"
       git stash pop
     fi
