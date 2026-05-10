@@ -13,16 +13,19 @@ let
         window { width: 250; }
         listview { dynamic: true; fixed-height: false; lines: 10; }
     ')
-    case "$chosen" in
-      "󰐥 System")
+
+    cleanup_input=$(echo "$chosen" | tr -cd '[:print:]' | xargs)
+    
+    case "$cleanup_input" in
+      "System")
         rofi-power-menu ;;
-      "󱐋 Power Profile")
+      "Power Profile")
         rofi-power-profile ;;
-      " Wi-Fi")
+      "Wi-Fi")
         tui-wrap impala ;;
-      "󰂯 Bluetooth")
+      "Bluetooth")
         tui-wrap bluetui ;;
-      " Audio")
+      "Audio")
         tui-wrap wiremix ;;
       *)
         exit 1 ;;
