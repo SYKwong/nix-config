@@ -33,7 +33,7 @@ let
     sudo nixos-rebuild switch --flake ~/nix-config/#${hostname} 
     if [ $? -eq 1 ]; then
       echo "Live switch failed. Making a new boot entry instead."
-      nrb
+      sudo nixos-rebuild boot --flake ~/nix-config/#${hostname} 
       if [ $? -eq 1 ]; then
         echo "Fail to build the confiuration. Please check for any errors in the config."
       fi
