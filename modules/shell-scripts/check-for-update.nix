@@ -4,9 +4,9 @@ let
   config_path = "/home/${username}/nix-config";
 
   update-available = pkgs.writeShellScriptBin "update-available" ''
-    repo="${config_path}"
-    local_hash=$(git -C "$config_path" rev-parse main 2>/dev/null)
-    remote_hash=$(git -C "$config_path" ls-remote origin -h refs/heads/main 2>/dev/null | awk '{print $1}')
+    REPO="${config_path}"
+    local_hash=$(git -C "$REPO" rev-parse main 2>/dev/null)
+    remote_hash=$(git -C "$REPO" ls-remote origin -h refs/heads/main 2>/dev/null | awk '{print $1}')
 
     if [[ -n "$remote_hash" && "$local_hash" != "$remote_hash" ]]; then
       echo "update available $remote_hash"
