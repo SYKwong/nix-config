@@ -25,28 +25,32 @@ update-flake-mr:
     - git checkout -b "$BRANCH_NAME"
     
     # 2. Run the update
-    - nix --experimental-features "nix-command flakes" flake update
+    - nix --experimental-features "nix-command flakes" flake update 2> update_summary.txt
     
     # 3. Check for changes and push
     - |
       if git diff --exit-code flake.lock; then
         echo "No updates available."
       else
+        SUMMARY=$(grep '•' update_summary.txt | sed 's/•/*/g')
+
         git add flake.lock
         git commit -m "chore: nix flake update"
         
         if [ "$DRY_RUN" == "true" ]; then
           echo "DRY RUN: Would have pushed and created an MR now."
+          echo "$SUMMARY"
         else
           # 4. Push with MR creation options
          git push -f origin "$BRANCH_NAME" \
-           -o merge_request.create \
-           -o merge_request.target="$CI_DEFAULT_BRANCH" \
-           -o merge_request.title="Daily Nix Flake Update: $(date +%Y-%m-%d)" \
-           -o merge_request.remove_source_branch \
-           -o merge_request.label="dependencies" \
-           -o merge_request.assignee_id="$GITLAB_USER_ID" \
-           -o merge_request.squash=true \
-           -o merge_request.merge_when_pipeline_succeeds
+            -o merge_request.create \
+            -o merge_request.target="$CI_DEFAULT_BRANCH" \
+            -o merge_request.title="Daily Nix Flake Update: $(date +%Y-%m-%d)" \
+            -o merge_request.description="The following flake inputs were updated: $SUMMARY" \
+            -o merge_request.remove_source_branch \
+            -o merge_request.label="dependencies" \
+            -o merge_request.assignee_id="$GITLAB_USER_ID" \
+            -o merge_request.squash=true \
+            -o merge_request.merge_when_pipeline_succeeds
         fi
       fi
