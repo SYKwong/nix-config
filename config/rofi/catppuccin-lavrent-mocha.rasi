@@ -1,21 +1,17 @@
 /**
  * Catppuccin Mocha theme
- * Color palette copied from https://catppuccin.com/palette
- * Modified from https://github.com/hiimsergey/rofi-catppuccin
  * https://github.com/SYKwong/nix-config/
  */
 
 * {
-    base: #1e1e2e;
-    surface0: #313244;
-    overlay0: #6c7086;
-    text: #cdd6f4;
+    base:     rgba(30, 30, 46, 50%);
+    surface0: rgba(49, 50, 68, 50%);
+    overlay0: rgba(108, 112, 134, 100%);
+    text:     rgba(205, 214, 244, 50%);
 
-    mauve: #cba6f7;
-    red: #f38ba8;
-    peach: #fab387;
-    green: #a6e3a1;
-    lavender: #b4befe;
+    lavender: rgba(180, 190, 254, 50%);
+
+    transparent: rgba (0,0,0,0%);
 
     background-color: @base;
 
@@ -30,20 +26,10 @@ window {
     border-color: @lavender;
 }
 
-mainbox {
-    spacing: 0;
-    children: [inputbar, message, listview];
-}
-
 inputbar {
     color: @text;
     padding: 14;
     background-color: @base;
-}
-
-message {
-    padding: 10;
-    background-color: @overlay0;
 }
 
 listview {
@@ -54,11 +40,6 @@ listview {
     background-color: @base;
     dynamic: false;
     lines: 6;
-}
-
-textbox {
-    text-color: @text;
-    background-color: inherit;
 }
 
 error-message {
@@ -85,30 +66,14 @@ element.selected.normal {
 }
 
 element.alternate.normal {
-    background-color: inherit;
-}
-
-element.normal.active, element.alternate.active {
-    background-color: @peach;
-}
-
-element.selected.active {
-    background-color: @green;
-}
-
-element.normal.urgent, element.alternate.urgent {
-    background-color: @red;
-}
-
-element.selected.urgent {
-    background-color: @mauve;
+  background-color: inherit;
 }
 
 element-text, element-icon {
     size: 40;
     margin: 0 10 0 0;
     vertical-align: 0.5;
-    background-color: inherit;
+    background-color: @transparent;
     text-color: @text;
 }
 

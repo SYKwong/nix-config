@@ -1,0 +1,311 @@
+/* --- 1. CATPPUCCIN MOCHA COLORS (@define-color) --- */
+@define-color base      #1e1e2e;
+@define-color mantle    #181825;
+@define-color crust     #11111b;
+@define-color text      #cdd6f4;
+@define-color subtext0  #a6adc8;
+@define-color surface0  #313244;
+@define-color surface1  #45475a;
+@define-color surface2  #585b70;
+@define-color blue      #89b4fa;
+@define-color mauve     #cba6f7;
+@define-color red       #f38ba8;
+@define-color green     #a6e3a1;
+@define-color yellow    #f9e2af;
+@define-color peach     #fab387;
+@define-color lavender  #b4befe;
+@define-color sapphire  #74c7ec;
+
+@define-color background-alt  @surface0;
+@define-color background-sec  @surface2;
+@define-color selected        @mauve;
+@define-color hover           @surface1;
+@define-color urgent          @red;
+
+/* --- 2. GLOBAL STYLES (Nerd Fonts) --- */
+* {
+    color: @text;
+    all: unset;
+    font-size: 14px;
+    font-family: "JetBrainsMono Nerd Font";
+    transition: 200ms;
+}
+
+/* --- 3. CONTROL CENTER --- */
+.control-center {
+    background: alpha(@base, .85);
+    border-radius: 24px;
+    border: 1px solid @mauve;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,.6);
+    margin: 18px;
+    padding: 12px;
+}
+
+.control-center .widget-title > label {
+  color: $text;
+  font-size: 1.3em;
+}
+
+.widget-mpris {
+    background: @background-alt;
+    border-radius: 16px;
+    color: @text;
+    margin:  20px 6px;
+}
+
+  /* NOTE: Background need *opacity 1* otherwise will turn into the album art blurred  */
+.widget-mpris-player {
+    border-radius: 22px;
+    padding: 6px 14px;
+    margin: 6px;
+}
+
+.widget-mpris > box > button {
+  color: @text;
+  border-radius: 20px;
+}
+ 
+.widget-mpris button {
+  color: alpha(@text, .6);
+}
+
+.widget-mpris button:hover {
+  color: @text;
+}
+
+.widget-mpris-album-art {
+  border-radius: 16px;
+}
+ 
+.widget-mpris-title {
+    font-weight: 700;
+    font-size: 1rem;
+}
+ 
+.widget-mpris-subtitle {
+    font-weight: 500;
+    font-size: 0.8rem;
+}
+
+picture.mpris-background {
+  opacity: 0;
+}
+
+
+.control-center .widget-title button {
+  background: @surface1;
+  border-radius: 8px;
+  padding: 4px 16px;
+}
+
+/* --- 4. BUTTONS GRID (The "5 Per Line" Fix) --- */
+.widget-buttons-grid {
+    padding: 8px;
+    margin: 6px;
+    border-radius: 12px;
+    background: alpha(@surface0, .6);
+}
+
+.widget-buttons-grid > flowbox > flowboxchild > button {
+    margin: 4px;
+    background: @surface1;
+    border-radius: 12px;
+    min-width: 76px; 
+    min-height: 60px;
+}
+
+.widget-buttons-grid > flowbox > flowboxchild > button:hover {
+    background: @surface2;
+}
+
+.widget-buttons-grid > flowbox > flowboxchild > button:checked {
+    background: @mauve;
+    color: @crust;
+}
+
+/* Label styling inside buttons for Nerd Font icons */
+.widget-buttons-grid > flowbox > flowboxchild > button label {
+    text-align: center;
+    width: 100%;
+    font-size: 1.5rem;
+    padding-right: 0.17em;  
+}
+
+/* --- 5. NOTIFICATIONS --- */
+.notification-row {
+    outline: none;
+    margin: 4px 0px;
+}
+
+.notification-background {
+    background: alpha(@surface0, .6);
+    border-radius: 16px;
+    padding: 8px;
+    margin: 4px;
+}
+
+.notification-background.critical {
+    border: 1px solid @red;
+}
+
+.summary {
+    font-weight: bold;
+    color: @blue;
+}
+
+.body {
+    color: @subtext0;
+}
+
+/* Close Button with Nerd Font */
+.close-button {
+    background: transparent;
+    border-radius: 6px;
+    padding: 4px;
+}
+
+.close-button:hover {
+    background-color: @red;
+}
+
+/* --- Slider Core Styling --- */
+scale trough {
+    margin: 0rem 1rem;
+    min-height: 12px;
+    min-width: 70px;
+    border-radius: 12px;
+    background-color: @surface0;
+}
+
+/* The 'highlight' is the progress bar behind the slider */
+scale trough highlight {
+    background: @sapphire;
+    border-radius: 12px;
+}
+
+/* The 'slider' is the handle/knob */
+scale trough slider {
+    /* Since 'all: unset' was used, you MUST give it dimensions */
+    min-height: 20px;
+    min-width: 20px;
+    margin: -5px; /* Negative margin pulls it out of the trough slightly */
+    border-radius: 100%;
+    background-color: @blue;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+    transition: all 0.2s ease;
+}
+
+scale trough slider:hover {
+    background-color: @text; /* Change color on hover for visual feedback */
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.8), 0 0 8px @blue;
+}
+
+/* --- Widget Layout --- */
+.widget-backlight,
+.widget-volume {
+    padding: 1rem 0;
+}
+
+/* Using Nerd Fonts for icons inside the labels */
+.widget-backlight label,
+.widget-volume label {
+    font-family: "JetBrainsMono Nerd Font";
+    color: @sapphire;
+    padding: 0 1rem;
+    font-size: 1.2rem;
+}
+
+.notification-row {
+    outline: none;
+    margin: 0;
+    padding: 0;
+}
+
+.floating-notifications.background .notification-row .notification-background {
+    background: alpha(@base, .85);
+    box-shadow: 0 0 12px 0 rgba(0,0,0,.6);
+    border: 2px solid @selected;
+    border-radius: 24px;
+    margin: 16px;
+    padding: 0;
+}
+
+.floating-notifications.background .notification-row .notification-background .notification {
+    padding: 10px;
+    border-radius: 24px;
+}
+
+/* Urgency Styling */
+.floating-notifications.background .notification-row .notification-background .notification.critical {
+    border: 2px solid @urgent;
+}
+
+.floating-notifications.background .notification-row .notification-background .notification .notification-content {
+    margin: 14px;
+}
+
+/* Action Buttons (The "Accept/Dismiss" buttons inside notification) */
+.floating-notifications.background .notification-row .notification-background .notification > *:last-child > * .notification-action {
+    border-radius: 12px;
+    background-color: @background-alt;
+    color: @text;
+    margin: 8px;
+    padding: 6px;
+    border: 1px solid @surface1;
+    min-height: 2em;
+}
+
+.floating-notifications.background .notification-row .notification-background .notification > *:last-child > * .notification-action:hover {
+    background-color: @hover;
+    border: 1px solid @selected;
+}
+
+.floating-notifications.background .notification-row .notification-background .notification > *:last-child > * .notification-action:active {
+    background-color: @selected;
+    color: @crust;
+}
+
+/* Image/Icon Styling */
+.image {
+    margin: 10px 20px 10px 0px;
+    border-radius: 12px;
+}
+
+.summary {
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: @blue;
+}
+
+.body {
+    font-size: 0.9rem;
+    color: alpha(@text, 0.9);
+}
+
+/* Close Button (Icon Support) */
+.floating-notifications.background .notification-row .notification-background .close-button {
+    margin: 8px;
+    padding: 4px;
+    border-radius: 8px;
+    background-color: transparent;
+}
+
+.floating-notifications.background .notification-row .notification-background .close-button:hover {
+    background-color: @urgent;
+    color: @crust;
+}
+
+/* Progress Bar (Timer/Alert Progress) */
+.notification.critical progress {
+    background-color: @urgent;
+}
+
+.notification.low progress,
+.notification.normal progress {
+    background-color: @selected;
+}
+
+/* Fix for Nerd Font Label Offset in Buttons */
+.notification-action label {
+    padding-right: 4px; /* Compensating for the double-width rendering */
+}
