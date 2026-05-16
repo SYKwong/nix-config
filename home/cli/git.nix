@@ -9,7 +9,8 @@
           name = "${username}";
           email = "${username}@example.com";
         };
-
+        
+        # git confit options
         init.defaultBranch = "main";
         merge.conflictstyle = "zdiff3";
         push.default = "simple";
@@ -17,6 +18,8 @@
         help.autocorrect = 10;
         rerere.enabled = true;
         pull.rebase = true;
+        fetch.prune = true;
+
         alias = {
           co = "checkout";
           cm = "commit -m";
