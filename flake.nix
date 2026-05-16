@@ -26,7 +26,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/f2004296fc7cf75fccfa1028a6253dd5f42456a8";
+    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/ae5bc7641fb4178e4d9582ea49cab201f60f7869";
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";

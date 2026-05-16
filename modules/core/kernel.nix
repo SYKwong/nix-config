@@ -2,5 +2,5 @@
 
 {
   boot.kernelPackages = 
-    pkgs.cachyosKernels.linuxPackages-cachyos-latest-lto-zen4; 
+    pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto-zen4; 
 }
