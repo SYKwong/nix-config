@@ -50,7 +50,6 @@ update-flake-mr:
             -o merge_request.target="$CI_DEFAULT_BRANCH" \
             -o merge_request.title="Daily Nix Flake Update: $(date +%Y-%m-%d)" \
             -o merge_request.description="The following flake inputs were updated: $SUMMARY" \
-
             -o merge_request.remove_source_branch \
             -o merge_request.label="dependencies" \
             -o merge_request.assignee_id="$GITLAB_USER_ID" \
