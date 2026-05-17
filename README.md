@@ -1,5 +1,10 @@
 # nix-config  
 
+# License
+MIT-0  
+You can use my code without any attribution, but I would appreciate if you do.   
+Please note that some part of this repo might be sublicensed to something else because I didn't write them.
+
 ## How to use  
 
 ### Step 0 on framework16  
