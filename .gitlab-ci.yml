@@ -6,7 +6,21 @@ verify-flake:
   stage: test
   image: nixos/nix:latest
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    # Only for merge requests
+    - if: '$CI_PIPELINE_SOURCE != "merge_request_event"'
+      when: never
+
+    # Skip draft/WIP MRs
+    - if: '$CI_MERGE_REQUEST_TITLE =~ /^(Draft:|WIP:|\[Draft\])/i'
+      when: never
+
+    # Run only when nix files changed
+    - changes:
+        - "**/*.nix"
+        - "flake.lock"
+
+    - when: manual
+      allow_failure: true
   script:
     - nix flake check --extra-experimental-features "nix-command flakes"
 
