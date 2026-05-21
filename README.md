@@ -1,8 +1,9 @@
 # nix-config  
 
 # License
-MIT-0  
-You can use my code without any attribution, but I would appreciate if you do.   
+
+MIT-0 except for everything in `wallpaper`
+You can use my code without any attribution, but I would appreciate if you do.
 Please note that some part of this repo might be sublicensed to something else because I didn't write them.
 
 ## How to use  

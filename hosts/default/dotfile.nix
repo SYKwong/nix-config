@@ -10,7 +10,7 @@ let
     "hypr/hypridle/common"  = "hypr/hypridle/common";
     "hypr/hyprlock.conf"    = "hypr/hyprlock/hyprlock.conf";
     "hypr/hyprpaper.conf"   = "hypr/hyprpaper/hyprpaper.conf";
-    "hypr/wallpaper"        = "hypr/hyprpaper/wallpaper";
+    "hypr/wallpaper"        = "../wallpaper";
     "hypr/mocha.conf"       = "hypr/mocha.conf";
     "hypr/cat_on_line.png"  = "hypr/hyprlock/cat_on_line.png";
 
