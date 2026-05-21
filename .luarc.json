@@ -1,0 +1,14 @@
+{
+  "workspace": {
+    "library": [
+      "/usr/share/hypr/stubs",
+      "./config/hypr/hyprland/lua"
+    ]
+  },
+  "diagnostics": {
+    "globals": [
+      "hl",
+      "utils"
+    ]
+  }
+}

@@ -11,5 +11,7 @@
     satty
     grimblast
   ];
+
+  environment.pathsToLink = [ "/share/hypr" ];
 }
 
