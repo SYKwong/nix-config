@@ -5,6 +5,8 @@ local reload_waybar = "pkill waybar; waybar -c ~/.config/waybar/hyprland.jsonc &
 local snip = 'grimblast -f copysave area && notify-send "Screenshot Saved to File and Clipboard"'
 local snip_edit =
 	'GRIMBLAST_EDITOR="satty --filename" grimblast edit area && notify-send "Screenshot Saved to File and Clipboard"'
+local notification_center =  "swaync-client -t"
+
 local mainMod = "SUPER"
 
 hl.bind(mainMod .. " + SUPER_L", hl.dsp.exec_cmd(app_launcher))
@@ -14,7 +16,12 @@ hl.bind(mainMod .. " + W", hl.dsp.window.close())
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(reload_waybar))
 hl.bind(mainMod .. " + S", hl.dsp.exec_cmd(snip))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd(snip_edit))
-hl.bind(mainMod .. " + Z", hl.dsp.exec_cmd("swaync-client -t"))
+hl.bind(mainMod .. " + Z", hl.dsp.exec_cmd(notification_center))
+hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ mode = "maximized" }))
+
+-- Cycle through workspace
+hl.bind(mainMod .. " + TAB",         hl.dsp.focus({ workspace = "e+1" }))
+hl.bind(mainMod .. " + SHIFT + TAB", hl.dsp.focus({ workspace = "e-1" }))
 
 -- Alt Tab
 hl.bind("ALT + TAB", hl.dsp.window.cycle_next(""))
@@ -29,6 +36,22 @@ for i = 1, 10 do
 	hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i }))
 	hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
 end
+
+ 	
+	
+
+-- Move focus with mainMod + arrow keys
+hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
+hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
+hl.bind(mainMod .. " + up",    hl.dsp.focus({ direction = "up" }))
+hl.bind(mainMod .. " + down",  hl.dsp.focus({ direction = "down" }))
+
+-- Move window with mainMod + SHIFT + arrow keys
+hl.bind(mainMod .. " + SHIFT + left",  hl.dsp.window.swap({ direction = "left" }))
+hl.bind(mainMod .. " + SHIFT + right", hl.dsp.window.swap({ direction = "right" }))
+hl.bind(mainMod .. " + SHIFT + up",    hl.dsp.window.swap({ direction = "up" }))
+hl.bind(mainMod .. " + SHIFT + down",  hl.dsp.window.swap({ direction = "down" }))
+
 
 -- Scroll through existing workspaces with mainMod + scroll
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
