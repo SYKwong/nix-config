@@ -12,7 +12,8 @@ verify-flake:
 
     # Skip draft/WIP MRs
     - if: '$CI_MERGE_REQUEST_TITLE =~ /^(Draft:|WIP:|\[Draft\])/i'
-      when: never
+      when: manual
+      allow_failure: true
 
     # Run only when nix files changed
     - changes:
