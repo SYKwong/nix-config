@@ -1,7 +1,7 @@
 { config, hostname, username, ... }:
 let
   config_path = "/home/${username}/nix-config/config";
-  symlink = path: config.lib.file.mkOutOfStoreSymlink "${config_path}/${path}";
+  symlink     = path: config.lib.file.mkOutOfStoreSymlink "${config_path}/${path}";
 
   files = {
     "hypr/hyprland.lua"         = "hypr/hyprland/hyprland.lua";
@@ -10,7 +10,6 @@ let
     "hypr/hypridle.conf"        = "hypr/hypridle/hypridle.conf";
     "hypr/hyprlock.conf"        = "hypr/hyprlock/hyprlock.conf";
     "hypr/hyprpaper.conf"       = "hypr/hyprpaper/hyprpaper.conf";
-    "hypr/wallpaper"            = "../wallpaper";
     "hypr/mocha.conf"           = "hypr/mocha.conf";
     "hypr/cat_on_line.png"      = "hypr/hyprlock/cat_on_line.png";
 
@@ -25,4 +24,5 @@ let
 in 
 {
   xdg.configFile = builtins.mapAttrs (name: value: { source = symlink value; }) files;
+  home.file."Wallpaper".source = symlink "../wallpaper" ;
 }

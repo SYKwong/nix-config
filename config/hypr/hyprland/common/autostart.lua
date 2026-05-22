@@ -1,7 +1,7 @@
 hl.on("hyprland.start", function()
 	hl.exec_cmd("systemctl --user enable --now hyprpolkitagent.service")
 	hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
-	hl.exec_cmd("uwsm-app -- hyprpaper")
+	hl.exec_cmd("uwsm-app -- swaybg -i ~/Wallpaper/current_wallpaper -m fill")
 	hl.exec_cmd("uwsm-app -- hypridle")
 	hl.exec_cmd("uwsm-app -- waybar -c ~/.config/waybar/hyprland.jsonc")
 	hl.exec_cmd("uwsm-app -- swayosd-server")
