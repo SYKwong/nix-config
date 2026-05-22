@@ -85,9 +85,10 @@ hl.config({
 
 -- See https://wiki.hypr.land/Configuring/Layouts/Scrolling-Layout/ for more
 hl.config({
-	scrolling = {
-		fullscreen_on_one_column = true,
-	},
+  scrolling = {
+    fullscreen_on_one_column = true,
+    explicit_column_widths = "0.5,1",
+  },
 })
 
 for i =6, 10 do

@@ -17,7 +17,15 @@ hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(reload_waybar))
 hl.bind(mainMod .. " + S", hl.dsp.exec_cmd(snip))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd(snip_edit))
 hl.bind(mainMod .. " + Z", hl.dsp.exec_cmd(notification_center))
-hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ mode = "maximized" }))
+hl.bind(mainMod .. " + F", function()
+    local ws = hl.get_active_workspace().tiled_layout
+    
+    if ws == "scrolling" then
+      hl.dispatch(hl.dsp.layout("colresize +conf"))
+    else
+      hl.dispatch(hl.dsp.window.fullscreen({ mode = "maximized" }))
+    end
+end, { description = "Scrolling maximixed hack" })
 
 -- Cycle through workspace
 hl.bind(mainMod .. " + TAB",         hl.dsp.focus({ workspace = "e+1" }))
@@ -36,9 +44,6 @@ for i = 1, 10 do
 	hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i }))
 	hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
 end
-
- 	
-	
 
 -- Move focus with mainMod + arrow keys
 hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
