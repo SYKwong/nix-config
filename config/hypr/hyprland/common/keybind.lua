@@ -9,23 +9,17 @@ local notification_center =  "swaync-client -t"
 
 local mainMod = "SUPER"
 
+local utils = require("hyprland/common/utils")
+
 hl.bind(mainMod .. " + SUPER_L", hl.dsp.exec_cmd(app_launcher))
 hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd("rofi-menu"))
-hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
+hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(utils.kitty_term))
 hl.bind(mainMod .. " + W", hl.dsp.window.close())
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(reload_waybar))
 hl.bind(mainMod .. " + S", hl.dsp.exec_cmd(snip))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd(snip_edit))
 hl.bind(mainMod .. " + Z", hl.dsp.exec_cmd(notification_center))
-hl.bind(mainMod .. " + F", function()
-    local ws = hl.get_active_workspace().tiled_layout
-    
-    if ws == "scrolling" then
-      hl.dispatch(hl.dsp.layout("colresize +conf"))
-    else
-      hl.dispatch(hl.dsp.window.fullscreen({ mode = "maximized" }))
-    end
-end, { description = "Scrolling maximixed hack" })
+hl.bind(mainMod .. " + F", utils.maximized_workaround)
 
 -- Cycle through workspace
 hl.bind(mainMod .. " + TAB",         hl.dsp.focus({ workspace = "e+1" }))
