@@ -3,7 +3,13 @@
 let
   rofi-menu = pkgs.writeShellScriptBin "rofi-menu" ''
     #[NF-icon][two space][Name]
-    options="󰐥  System\n󱐋  Power Profile\n󰖩  Wi-Fi\n󰂯  Bluetooth\n󰕾  Audio"
+    options="\
+    󰸉  Wallpaper\n\
+    󰐥  System\n\
+    󱐋  Power Profile\n\
+    󰖩  Wi-Fi\n\
+    󰂯  Bluetooth\n\
+    󰕾  Audio"
 
     chosen=$(echo -e "$options" | rofi -dmenu \
       -i \
@@ -27,6 +33,8 @@ let
         tui-wrap bluetui ;;
       "Audio")
         tui-wrap wiremix ;;
+      "Wallpaper")
+        rofi-wallpaper-picker ;;
       *)
         exit 1 ;;
     esac
