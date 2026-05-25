@@ -12,7 +12,7 @@ end
 utils.kitty_term = [[
     ACTIVE_PID=$(hyprctl activewindow | awk '/pid:/ {print $2}')
     if [ -n "$ACTIVE_PID" ]; then
-        CHILD_PID=$(pgrep -P "$ACTIVE_PID" | tail -n 1)
+        CHILD_PID=$(pgrep -P "$ACTIVE_PID" | awk '{p2=p1; p1=$0} END{print p2}')
         if [ -n "$CHILD_PID" ]; then
             CWD=$(readlink /proc/$CHILD_PID/cwd)
         else
