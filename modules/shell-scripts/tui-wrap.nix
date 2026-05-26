@@ -2,7 +2,6 @@
 
 let
   tuiWrap = pkgs.writeShellScriptBin "tui-wrap" ''
-    set -x
     APP_NAME="''${1:-}"
 
     if [ -z "$APP_NAME" ]; then
@@ -20,24 +19,32 @@ let
       exit 1
     fi
     
-    get_window(){
+    get_window() {
       hyprctl clients | grep "$APP_ID" || true
+    }
+    
+    move_cursor_to_center() {
+      read -r W H < <(hyprctl monitors | awk '/^[ \t]*[0-9]+x[0-9]+/ {last=$1} /focused: yes/ {print last}' | sed 's/x/ /; s/@.*//')
+      X=$((W/2))
+      Y=$((H/2))
+      hyprctl dispatch "hl.dsp.cursor.move({ x = ''${X}, y = ''${Y} })"
     }
 
     focus_and_warp() {
-      hyprctl dispatch focuswindow "class:$APP_ID"
-      hyprctl dispatch alterzorder top
+      WORKSPACE=$(hyprctl activeworkspace | awk '/workspace ID/ {print $3}')
+      hyprctl dispatch "hl.dsp.window.move({ window = \"class:$APP_ID\", workspace = \"$WORKSPACE\" })"
+      hyprctl dispatch 'hl.dsp.focus({ window = "'"class:$APP_ID"'" })'
+      hyprctl dispatch 'hl.dsp.window.alter_zorder({ mode = "top" })'
     }
 
     ALREADY_EXIST=$(get_window)
+    move_cursor_to_center
 
     if [ -n "$ALREADY_EXIST" ] && [ "$ALREADY_EXIST" != "null" ]; then
       focus_and_warp
       exit 0
     fi
 
-    read -r W H < <(hyprctl monitors | awk '/^[ \t]*[0-9]+x[0-9]+/ {last=$1} /focused: yes/ {print last}' | sed 's/x/ /; s/@.*//')
-    hyprctl dispatch movecursor $((W/2)) $((H/2))
     exec footclient --app-id="$APP_ID" -e "$APP_BIN" "$@"
   '';
 in
