@@ -15,7 +15,7 @@
     users = [ username ];
     commands = [
       {
-        command = "/run/current-system/sw/bin/nixos-rebuild";
+        command = "${pkgs.nixos-rebuild}/bin/nixos-rebuild";
         options = [ "NOPASSWD" ];
       }
     ];
