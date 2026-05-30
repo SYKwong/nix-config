@@ -44,6 +44,9 @@ truncation_symbol = "…/"
 "~/Projects" = "󰲋 "
 "nix-config" = " "
 
+[fill]
+symbol = " "
+
 [git_branch]
 symbol = ""
 style = "bg:teal"

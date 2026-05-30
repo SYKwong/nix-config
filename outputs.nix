@@ -8,6 +8,7 @@ let
   disko 
   stylix 
   lanzaboote
+  nixvim
   ;
 
   hosts = {
@@ -41,6 +42,7 @@ in {
         disko.nixosModules.disko
         home-manager.nixosModules.home-manager
         stylix.nixosModules.stylix
+        nixvim.nixosModules.nixvim
 
         ./modules/core
 
@@ -52,6 +54,7 @@ in {
         ./modules/virtualization
         ./modules/input
         ./modules/misc
+        ./modules/editors
 
         ./overlays
 
