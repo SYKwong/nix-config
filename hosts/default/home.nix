@@ -5,6 +5,7 @@
     ./../../home/theme
     ./../../home/shell
     ./../../home/core
+    ./../../home/social
 
     ./alias.nix
     ./dotfile.nix
