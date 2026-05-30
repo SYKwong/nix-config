@@ -20,6 +20,7 @@ hl.bind(mainMod .. " + S", hl.dsp.exec_cmd(snip))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd(snip_edit))
 hl.bind(mainMod .. " + Z", hl.dsp.exec_cmd(notification_center))
 hl.bind(mainMod .. " + F", utils.maximized_workaround)
+hl.bind(mainMod .. " + L", utils.toggle_layout, { description = "Toggle Master/Scrolling Layout" })
 
 -- Cycle through workspace
 hl.bind(mainMod .. " + TAB",         hl.dsp.focus({ workspace = "e+1" }))

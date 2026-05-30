@@ -91,6 +91,3 @@ hl.config({
   },
 })
 
-for i =6, 10 do
-  hl.workspace_rule({ workspace = i , layout = "scrolling"})
-end

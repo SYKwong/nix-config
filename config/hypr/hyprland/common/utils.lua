@@ -32,4 +32,16 @@ utils.maximized_workaround = function()
     end
 end
 
+utils.toggle_layout = function()
+    if current_layout == "master" then
+        current_layout = "scrolling"
+    else
+        current_layout = "master"
+    end
+    
+    hl.config({ general = { layout = current_layout } })
+    
+    hl.exec_cmd(string.format("notify-send -t 1500 -a 'Hyprland' 'Layout Changed' 'Active layout is now: %s'", current_layout))
+end
+
 return utils
