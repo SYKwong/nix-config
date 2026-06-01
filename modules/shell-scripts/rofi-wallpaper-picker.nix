@@ -157,7 +157,7 @@ pkgs.writeShellApplication {
         pkill swaybg || true
         swaybg -m fill -i "$CURRENT_LINK" &
 
-        notify-send "Wallpaper changed"
+        notify-send -h boolean:transient:true "Wallpaper changed"
     }
 
     if [ -f "$FULL_PATH" ]; then
