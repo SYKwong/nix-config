@@ -82,7 +82,9 @@ function utils.toggle_workspace_layout()
     utils.save_workspace_states(states)
     
     hl.workspace_rule({ workspace = workspace_id, layout = next_layout })
-    hl.exec_cmd(string.format("notify-send -t 1500 -a 'Hyprland' 'Layout Changed' 'Workspace %d layout is now: %s'", workspace_id, next_layout))
+    hl.exec_cmd(string.format(
+        "notify-send -t 1500 -a 'Hyprland' -h boolean:transient:true 'Layout Changed' 'Workspace %d layout is now: %s'",
+          workspace_id, next_layout))
 end
 
 return utils
