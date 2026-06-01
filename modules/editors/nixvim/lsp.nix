@@ -17,9 +17,9 @@
     lsp = {
       enable = true;
       servers = {
-        nil_ls.enable = true;  # Nix language support
-        ts_ls.enable = true;   # TypeScript & JavaScript support
-        pyright.enable = true; # Python support
+        nixd.enable = true;  # Nix
+        pyright.enable = true; # Python
+        lua_ls.enable = true; # Lua
       };
       keymaps.lspBuf = {
         "gd" = "definition";
