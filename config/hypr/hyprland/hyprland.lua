@@ -34,3 +34,8 @@ if host_monitor_setting then
 else
 	hl.monitor({ output = "HDMI-1", mode = "1920x1080@60" })
 end
+
+local saved_states = utils.load_workspace_states()
+for ws_id, layout_name in pairs(saved_states) do
+  hl.workspace_rule({ workspace = ws_id, layout = layout_name })
+end

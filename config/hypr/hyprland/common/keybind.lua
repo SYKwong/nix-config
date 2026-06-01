@@ -20,17 +20,26 @@ hl.bind(mainMod .. " + S", hl.dsp.exec_cmd(snip))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd(snip_edit))
 hl.bind(mainMod .. " + Z", hl.dsp.exec_cmd(notification_center))
 hl.bind(mainMod .. " + F", utils.maximized_workaround)
-hl.bind(mainMod .. " + L", utils.toggle_layout, { description = "Toggle Master/Scrolling Layout" })
+hl.bind(mainMod .. " + L", utils.toggle_workspace_layout, { description = "Toggle Master/Scrolling Layout of the current workspace" })
 
 -- Cycle through workspace
 hl.bind(mainMod .. " + TAB",         hl.dsp.focus({ workspace = "e+1" }))
 hl.bind(mainMod .. " + SHIFT + TAB", hl.dsp.focus({ workspace = "e-1" }))
 
 -- Alt Tab
-hl.bind("ALT + TAB", hl.dsp.window.cycle_next(""))
-hl.bind("ALT + TAB", hl.dsp.window.bring_to_top())
-hl.bind("ALT + SHIFT + TAB", hl.dsp.window.cycle_next("prev"))
-hl.bind("ALT + SHIFT + TAB", hl.dsp.window.bring_to_top())
+hl.bind("ALT + TAB", utils.layout_bind({
+    scrolling = hl.dsp.layout("focus r"),
+    dwindle   = hl.dsp.window.cycle_next({"next = true"}),
+    monocle   = hl.dsp.layout("cyclenext"),
+    master    = hl.dsp.layout("cyclenext"),
+}))
+
+hl.bind("ALT + SHIFT + TAB", utils.layout_bind({
+    scrolling = hl.dsp.layout("focus l"),
+    dwindle   = hl.dsp.window.cycle_next({"next = false"}),
+    monocle   = hl.dsp.layout("cycleprev"),
+    master    = hl.dsp.layout("cycleprev"),
+}))
 
 -- Switch workspaces with mainMod + [0-9]
 -- Move active window to a workspace with mainMod + SHIFT + [0-9]
