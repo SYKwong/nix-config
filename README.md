@@ -2,7 +2,7 @@
 
 # License
 
-MIT-0 except for everything in `wallpaper`
+MIT-0  
 You can use my code without any attribution, but I would appreciate if you do.
 Please note that some part of this repo might be sublicensed to something else because I didn't write them.
 
@@ -43,3 +43,11 @@ Go to BIOS and enable Secure Boot.
 sudo systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=7 /dev/disk/by-partlabel/disk-main-luks
 if LUKS is not auto unlocking, enroll again
 ```
+
+### Wallpaper
+My list of wallpaper which was previously bundled in this repo was moved to its own repo to speed up fresh install and changing wallpaper will not create a meaningless change to the repo.
+You can find them [here](https://gitlab.com/kylekwong/Wallpaper).  
+
+If you want to use them, clone the repository to your home directory, aka `~/Wallpaper/`.  
+If you want to use your own wallpaper, create your own `~/Wallpaper/`, put your wallpaper in, then start the wallpaper picker by using `SUPER + SPACE_BAR` -> `Wallpaper`.
+

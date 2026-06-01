@@ -24,5 +24,4 @@ let
 in 
 {
   xdg.configFile = builtins.mapAttrs (name: value: { source = symlink value; }) files;
-  home.file."Wallpaper".source = symlink "../wallpaper" ;
 }
