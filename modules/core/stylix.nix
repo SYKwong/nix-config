@@ -50,6 +50,7 @@
     };
     targets = {
       nixvim.enable = false;
+      kmscon.enable = false;
     };
   };
 }
