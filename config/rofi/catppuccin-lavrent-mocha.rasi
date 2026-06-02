@@ -28,16 +28,18 @@ window {
 
 inputbar {
     color: @text;
-    padding: 14;
-    background-color: @base;
+    padding: 14px 14px 6px 14px ;
+    background-color: @transparent;
+    spacing: 0px;
+    children: [ prompt, entry ];
 }
 
 listview {
-    padding: 8;
+    padding: 0px 8px 8px 8px;
     border-radius: 0 0 10 10;
     border: 2 2 2 2;
-    border-color: @base;
-    background-color: @base;
+    border-color: @transparent;
+    background-color: @transparent;
     dynamic: false;
     lines: 6;
 }
@@ -50,8 +52,13 @@ entry, prompt, case-indicator {
     text-color: inherit;
 }
 
+prompt,entry {
+    border: 0px;
+    background-color: @transparent;
+}
+
 prompt {
-    margin: 0 10 0 0;
+    margin: 0 0 0 0;
 }
 
 element {

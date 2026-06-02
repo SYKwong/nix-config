@@ -17,6 +17,20 @@ pkgs.writeShellApplication {
     chosen=$(echo -e "$options" | rofi -dmenu \
       -i \
       -theme-str '
+        inputbar {
+          children: [ "textbox-prompt-colon", "entry" ];
+          spacing: 8px;
+        }
+
+        /* Use a Nerd Font magnifying glass glyph as the prompt */
+        textbox-prompt-colon {
+          enabled: true;
+          expand: false;
+          str: " ";
+          text-color: @text;
+          background-color: @transparent;
+          font: "JetBrainsMono Nerd Font 12";
+        }
         window { width: 300; } 
         listview { lines: 6; } 
         prompt { enabled: false; }
