@@ -1,0 +1,122 @@
+configuration {
+    show-icons: true;
+    hover-select: true;
+    me-select-entry: "";
+    me-accept-entry: "MousePrimary";
+}
+
+/* --- YOUR COLOR PALETTE VARIABES --- */
+* {
+    base:             rgba(30, 30, 46, 50%);
+    surface0:         rgba(49, 50, 68, 50%);
+    overlay0:         rgba(108, 112, 134, 100%);
+    text:             rgba(205, 214, 244, 50%);
+    lavender:         rgba(180, 190, 254, 50%);
+    transparent:      rgba(0, 0, 0, 0%);
+
+    background-color: @base;
+    font:             "JetBrainsMono Nerd Font 15";
+}
+
+window {
+    width: 35%;
+    anchor: center;
+    location: center;
+    border-radius: 12px;
+    background-color: @base;
+    padding: 20px;
+}
+
+mainbox {
+    background-color: @transparent;
+    children: [ inputbar, listview ];
+}
+
+/* --- INPUT BAR --- */
+inputbar {
+    margin: 0px 0px 15px 0px;
+    padding: 0px 4px;
+    background-color: @transparent;
+    border-radius: 6px;
+    text-color: @text;
+    children: [ prompt, entry ];
+}
+
+prompt {
+    /* Make the prompt transparent so it blends perfectly into the inputbar */
+    background-color: @transparent;  
+    text-color: @overlay0;        
+    padding: 10px 0px 10px 12px;  
+    
+    str: " "; 
+}
+
+entry {
+    /* Make the entry transparent so it blends perfectly into the inputbar */
+    background-color: @transparent;
+    text-color: @text;
+    padding: 10px;
+    
+    placeholder: "Casual Browsing Search...";
+    placeholder-color: @overlay0;
+}
+
+textbox-prompt-colon, case-indicator {
+    background-color: @transparent;
+    text-color: inherit;
+}
+
+/* --- GRID VIEW --- */
+listview {
+    columns: 3;
+    lines: 5;
+    cycle: false;
+    dynamic: true;
+    layout: vertical;
+    flow: horizontal;
+    background-color: @transparent;
+}
+
+element {
+    orientation: vertical;
+    padding: 6px 10px;
+    border-radius: 6px;
+    background-color: @transparent; 
+}
+
+element-icon {
+    size: 48px;
+    horizontal-align: 0.5;
+    background-color: @transparent;
+}
+
+element-text {
+    horizontal-align: 0.5;
+    text-color: @text;
+    background-color: @transparent;
+}
+
+/* --- SELECTION STATES & FIXED HOVER --- */
+element normal.normal {
+    background-color: @transparent;
+    text-color: @text;
+}
+
+element alternate.normal {
+    background-color: @transparent;
+    text-color: @text;
+}
+
+/* When the mouse hovers over an item */
+element selected.normal {
+    background-color: @lavender;    
+}
+
+element-text selected.normal {
+    background-color: @transparent;
+    text-color: @base; /* Keeps contrast high against lavender background */
+}
+
+element-icon selected.normal {
+    background-color: @transparent;
+}

@@ -78,7 +78,7 @@
             },
             {
               "label": "󱂩",
-              "command": "pkill -SIGRTMIN+1 .nwg-dock-hyprl || uwsm-app -- nwg-dock-hyprland -r",
+              "command": "pkill -SIGRTMIN+1 .nwg-dock-hyprl || uwsm-app -- nwg-dock-hyprland -c 'rofi -show drun -theme ~/.config/rofi/mouse_menu.rasi' -r",
               "active": false,
               "type": "toggle"
             },
