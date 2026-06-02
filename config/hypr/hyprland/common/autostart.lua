@@ -23,7 +23,8 @@ hl.on("hyprland.start", function()
 
   if dir_exists(wallpaper_dir) then
     hl.exec_cmd("uwsm-app -- swaybg -i ~/Wallpaper/current_wallpaper -m fill")
-    hl.config({ misc = {disable_hyprland_logo = true} })
+  else
+    hl.config({ misc = {disable_hyprland_logo = false} })
   end
 
 end)
