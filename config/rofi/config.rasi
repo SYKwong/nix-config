@@ -30,5 +30,7 @@ configuration{
 
     me-select-entry: "MousePrimary";
     me-accept-entry: "!MousePrimary";
+
+    scroll-method: 1;
 }
 @theme "catppuccin-lavrent-mocha.rasi"

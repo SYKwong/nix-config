@@ -74,14 +74,12 @@ pkgs.writeShellApplication {
     done
 
     selection_base=$(
-        #printf "%s\n" "''${files[@]}" | \
-        #xargs -P "$(nproc)" -I {} bash -c 'generate_thumb "{}"' | \
         for f in "''${files[@]}"; do
           generate_thumb "$f"
         done | \
         rofi \
             -dmenu \
-            -show-icons \
+            -scroll-method 1 \
             -p "Select Wallpaper" \
             -selected-row "$selected_row" \
             -theme-str '
@@ -102,7 +100,7 @@ pkgs.writeShellApplication {
                     orientation: vertical;
                     width: 450px;
                     expand: false;
-                    children: [ inputbar, listview ];
+                    children: [ listview ];
                 }
 
                 right-box {
@@ -130,7 +128,7 @@ pkgs.writeShellApplication {
 
                 element {
                     orientation: horizontal;
-                    padding: 8px 12px;
+                    padding: 8px 8px;
                     border-radius: 4px;
                 }
 
