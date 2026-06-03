@@ -29,11 +29,13 @@ let
     "org.fcitx.Fcitx5"
     "kbd-layout-viewer5"
 
+    # KDE stuff
+    "org.kde.konsole"
+
     # Misc
     "nixos-manual"
     "btop"
     "uuctl"
-
   ];
 
   hiddenDesktopContent = name: ''
