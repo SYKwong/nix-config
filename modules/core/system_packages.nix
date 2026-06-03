@@ -6,8 +6,10 @@
     wget
     wiremix
     wl-clipboard
+
     kdePackages.dolphin
     kdePackages.konsole
+    kdePackages.qtsvg
   ];
 
   programs = {

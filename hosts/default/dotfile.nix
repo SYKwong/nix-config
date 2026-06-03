@@ -16,10 +16,11 @@ let
     "waybar"  = "waybar";
     "rofi"    = "rofi";
     "swayosd" = "swayosd";
-    "mako"    = "mako";
     "foot"    = "foot";
     "kitty"   = "kitty";
     "swaync"  = "swaync";
+
+    "dolphinrc" = "kde/dolphin/dolphinrc";
   };
 in 
 {
