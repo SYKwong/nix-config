@@ -27,19 +27,8 @@ hl.bind(mainMod .. " + TAB",         hl.dsp.focus({ workspace = "e+1" }))
 hl.bind(mainMod .. " + SHIFT + TAB", hl.dsp.focus({ workspace = "e-1" }))
 
 -- Alt Tab
-hl.bind("ALT + TAB", utils.layout_bind({
-    scrolling = hl.dsp.layout("focus r"),
-    dwindle   = hl.dsp.window.cycle_next({"next = true"}),
-    monocle   = hl.dsp.layout("cyclenext"),
-    master    = hl.dsp.layout("cyclenext"),
-}))
-
-hl.bind("ALT + SHIFT + TAB", utils.layout_bind({
-    scrolling = hl.dsp.layout("focus l"),
-    dwindle   = hl.dsp.window.cycle_next({"next = false"}),
-    monocle   = hl.dsp.layout("cycleprev"),
-    master    = hl.dsp.layout("cycleprev"),
-}))
+hl.bind("ALT + TAB",          utils.cycle_window())
+hl.bind("ALT + SHIFT + TAB",  utils.cycle_window("prev"))
 
 -- Switch workspaces with mainMod + [0-9]
 -- Move active window to a workspace with mainMod + SHIFT + [0-9]

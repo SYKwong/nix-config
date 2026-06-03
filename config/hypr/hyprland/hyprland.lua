@@ -6,6 +6,7 @@ require("hyprland/common/looknfeel")
 require("hyprland/common/windowrule")
 require("hyprland/common/layerrule")
 require("hyprland/common/misc")
+require("hyprland/common/gesture")
 
 local utils = require("hyprland/common/utils")
 

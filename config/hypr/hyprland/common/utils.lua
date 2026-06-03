@@ -87,4 +87,24 @@ function utils.toggle_workspace_layout()
           workspace_id, next_layout))
 end
 
+function utils.cycle_window(direction)
+  direction = direction or "next"
+
+  if "next" == direction then
+    return utils.layout_bind({
+      scrolling = hl.dsp.layout("focus r"),
+      dwindle   = hl.dsp.window.cycle_next({"next = true"}),
+      monocle   = hl.dsp.layout("cyclenext"),
+      master    = hl.dsp.layout("cyclenext")
+    })
+  else
+    return utils.layout_bind({
+    scrolling = hl.dsp.layout("focus l"),
+    dwindle   = hl.dsp.window.cycle_next({"next = false"}),
+    monocle   = hl.dsp.layout("cycleprev"),
+    master    = hl.dsp.layout("cycleprev")
+  })
+  end
+end
+
 return utils
