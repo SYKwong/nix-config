@@ -6,7 +6,7 @@
 * {
     base:     rgba(30, 30, 46, 50%);
     surface0: rgba(49, 50, 68, 50%);
-    overlay0: rgba(108, 112, 134, 100%);
+    overlay0: rgba(108, 112, 134, 50%);
     text:     rgba(205, 214, 244, 50%);
 
     lavender: rgba(180, 190, 254, 50%);
