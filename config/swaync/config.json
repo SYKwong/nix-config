@@ -68,7 +68,7 @@
             },
             {
               "label": "",
-              "command": "swaync-client -cp; tui-wrap yazi ~"
+              "command": "swaync-client -cp; hyprctl eval '_G.spawn_floating_app([[dolphin]])'"
             },
             {
               "label": "󰍶",

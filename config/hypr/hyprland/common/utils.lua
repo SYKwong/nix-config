@@ -107,4 +107,15 @@ function utils.cycle_window(direction)
   end
 end
 
+function _G.spawn_floating_app(app)
+    local m = hl.get_active_monitor()
+    if m then
+        local w = math.floor(m.width * 0.7)
+        local h = math.floor(m.height * 0.7)
+        local uwsm_command = "uwsm app -- " .. app
+        
+        hl.dispatch(hl.dsp.exec_cmd(uwsm_command, { float = true, size = {w, h}, center = true }))
+    end
+end
+
 return utils
