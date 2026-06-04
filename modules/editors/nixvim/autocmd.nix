@@ -1,6 +1,6 @@
 {
   programs.nixvim.autoCmd = [
-    # 1. Dynamic Code-Boundary Underline Highlight Tracking
+    # Dynamic Code-Boundary Underline Highlight Tracking
     {
       event = [ "CursorMoved" "CursorMovedI" "BufEnter" ];
       callback.__raw = ''
@@ -18,7 +18,7 @@
       '';
     }
 
-    # 2. Maximize Kitty Terminal Blur on Launch
+    # Maximize Kitty Terminal Blur on Launch
     {
       event = [ "VimEnter" ];
       callback.__raw = ''
@@ -32,7 +32,7 @@
       '';
     }
 
-    # 3. Restore Default Subtle Kitty Terminal Blur on Exit
+    # Restore Default Subtle Kitty Terminal Blur on Exit
     {
       event = [ "VimLeave" ];
       callback.__raw = ''
@@ -45,5 +45,12 @@
         end
       '';
     }
+
+    # 2 Space Tab Language
+      {
+        event = [ "FileType" ];
+        pattern = [ "nix" "yaml" ];
+        command = "setlocal tabstop=2 shiftwidth=2 softtabstop=2";
+      }
   ];
 }
