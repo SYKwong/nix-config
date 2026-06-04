@@ -25,7 +25,7 @@ utils.kitty_term = [[
 
 utils.maximized_workaround = function()
     local ws = hl.get_active_workspace().tiled_layout
-    
+
     if ws == "scrolling" then
       hl.dispatch(hl.dsp.layout("colresize +conf"))
     else

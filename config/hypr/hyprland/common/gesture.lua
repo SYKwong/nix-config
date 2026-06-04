@@ -7,13 +7,19 @@ hl.gesture({
 })
 
 hl.gesture({
-    fingers = 3,
-    direction = "left",
-    action = utils.cycle_window("next")
+  fingers = 4,
+  direction = "down",
+  action = "close"
 })
 
 hl.gesture({
-    fingers = 3,
-    direction = "right",
-    action = utils.cycle_window("prev")
+  fingers = 3,
+  direction = "left",
+  action = utils.cycle_window("next")
+})
+
+hl.gesture({
+  fingers = 3,
+  direction = "right",
+  action = utils.cycle_window("prev")
 })

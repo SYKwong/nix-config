@@ -7,6 +7,7 @@ require("hyprland/common/windowrule")
 require("hyprland/common/layerrule")
 require("hyprland/common/misc")
 require("hyprland/common/gesture")
+require("hyprland/common/layout")
 
 local utils = require("hyprland/common/utils")
 
@@ -17,6 +18,7 @@ local monitor_setting = {
 			mode = "2560x1600@165Hz",
 			position = "auto",
 			scale = "1.0",
+      cm = "dcip3"
 		})
 	end,
 	desktop = function()

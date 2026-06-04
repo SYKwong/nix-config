@@ -11,13 +11,8 @@ hl.config({
 			inactive_border = "rgba(595959aa)",
 		},
 
-		-- Set to true to enable resizing windows by clicking and dragging on borders and gaps
 		resize_on_border = false,
-
-		-- Please see https://wiki.hypr.land/Configuring/Advanced-and-Cool/Tearing/ before you turn this on
 		allow_tearing = false,
-
-		layout = "master",
 	},
 
 	decoration = {
@@ -75,19 +70,3 @@ hl.animation({ leaf = "workspaces", enabled = true, speed = 1.94, bezier = "almo
 hl.animation({ leaf = "workspacesIn", enabled = true, speed = 1.21, bezier = "almostLinear", style = "fade" })
 hl.animation({ leaf = "workspacesOut", enabled = true, speed = 1.94, bezier = "almostLinear", style = "fade" })
 hl.animation({ leaf = "zoomFactor", enabled = true, speed = 7, bezier = "quick" })
-
--- See https://wiki.hypr.land/Configuring/Layouts/Master-Layout/ for more
-hl.config({
-	master = {
-		new_status = "slave",
-	},
-})
-
--- See https://wiki.hypr.land/Configuring/Layouts/Scrolling-Layout/ for more
-hl.config({
-  scrolling = {
-    fullscreen_on_one_column = true,
-    explicit_column_widths = "0.5,1",
-  },
-})
-
