@@ -24,7 +24,7 @@ sudo su
 You should run `nixos-generate-config --no-filesystems --root /mnt`  
 to get your `hardware-configuration.nix` after disko,
 and replace the one in the repo with it.  
-Also because I wrote my`disko.nix`, which is a [disko](https://github.com/nix-community/disko) file, to use a specific drive on my system, you should change `/dev/disk/by-id/nvme-samsung_ssd_990_pro_4tb_s7kgnj0w903445l` to the drive you want to install NixOS on.  
+Also because I wrote my`disko.nix`, which is a [disko](https://github.com/nix-community/disko) file, to use a specific drive on my system,i you should change `/dev/disk/by-id/nvme-samsung_ssd_990_pro_4tb_s7kgnj0w903445l` to the drive you want to install NixOS on.  
 You should also change the swap size to be 2 to 4GB + your ram capacity.
 
 ``` bash
@@ -50,4 +50,10 @@ You can find them [here](https://gitlab.com/kylekwong/Wallpaper).
 
 If you want to use them, clone the repository to your home directory, aka `~/Wallpaper/`.  
 If you want to use your own wallpaper, create your own `~/Wallpaper/`, put your wallpaper in, then start the wallpaper picker by using `SUPER + SPACE_BAR` -> `Wallpaper`.
+
+### After BIOS Update
+0. Please remember your LUKS password before you do a BIOS update  
+1. NixOS will promopt you to enter your LUKS password after booting into it  
+2. `sudo systemd-cryptenroll /dev/disk/by-partlabel/disk-main-luks --wipe-slot=tpm2`
+3. `sudo systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=7 /dev/disk/by-partlabel/disk-main-luks`
 
