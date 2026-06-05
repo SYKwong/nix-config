@@ -39,9 +39,9 @@ hl.window_rule({
 })
 
 hl.window_rule({
-  name = "vesktop_opacity",
-  match = {
-    class = "vesktop",
-  },
-  opacity = 0.9
+	name = "vesktop_opacity",
+	match = {
+		class = "vesktop",
+	},
+	opacity = 0.9,
 })

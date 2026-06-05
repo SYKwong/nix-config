@@ -36,5 +36,10 @@
     nixvim = {
       url = "github:nix-community/nixvim";
     };
+
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 }

@@ -24,98 +24,106 @@ utils.kitty_term = [[
 ]]
 
 utils.maximized_workaround = function()
-    local ws = hl.get_active_workspace().tiled_layout
+	local ws = hl.get_active_workspace().tiled_layout
 
-    if ws == "scrolling" then
-      hl.dispatch(hl.dsp.layout("colresize +conf"))
-    else
-      hl.dispatch(hl.dsp.window.fullscreen({ mode = "maximized" }))
-    end
+	if ws == "scrolling" then
+		hl.dispatch(hl.dsp.layout("colresize +conf"))
+	else
+		hl.dispatch(hl.dsp.window.fullscreen({ mode = "maximized" }))
+	end
 end
 
 utils.layout_bind = function(bind_table)
-  return function ()
-    local workspace = hl.get_active_workspace()
-    local layout = workspace.tiled_layout
-               
-    if bind_table[layout] then
-      hl.dispatch(bind_table[layout])
-    end
-  end
+	return function()
+		local workspace = hl.get_active_workspace()
+		local layout = workspace.tiled_layout
+
+		if bind_table[layout] then
+			hl.dispatch(bind_table[layout])
+		end
+	end
 end
 
 function utils.load_workspace_states()
-    local states = {}
-    local f = io.open(state_file, "r")
-    if not f then return states end
-    
-    local content = f:read("*all")
-    f:close()
-    
-    for k, v in content:gmatch('"([^"]+)"%s*:%s*"([^"]+)"') do
-        states[k] = v
-    end
-    return states
+	local states = {}
+	local f = io.open(state_file, "r")
+	if not f then
+		return states
+	end
+
+	local content = f:read("*all")
+	f:close()
+
+	for k, v in content:gmatch('"([^"]+)"%s*:%s*"([^"]+)"') do
+		states[k] = v
+	end
+	return states
 end
 
 function utils.save_workspace_states(states)
-    local f = io.open(state_file, "w")
-    if not f then return end
-    
-    local json_parts = {}
-    for k, v in pairs(states) do
-        table.insert(json_parts, string.format('  "%s": "%s"', k, v))
-    end
-    
-    f:write("{\n" .. table.concat(json_parts, ",\n") .. "\n}")
-    f:close()
+	local f = io.open(state_file, "w")
+	if not f then
+		return
+	end
+
+	local json_parts = {}
+	for k, v in pairs(states) do
+		table.insert(json_parts, string.format('  "%s": "%s"', k, v))
+	end
+
+	f:write("{\n" .. table.concat(json_parts, ",\n") .. "\n}")
+	f:close()
 end
 
 function utils.toggle_workspace_layout()
-    local workspace = hl.get_active_workspace()
-    local workspace_id = tostring(workspace.id)
-    local states = utils.load_workspace_states()
-    local current_layout = states[workspace_id] or workspace.layout or "master"
-    local next_layout = (current_layout == "master") and "scrolling" or "master"
-    
-    states[workspace_id] = next_layout
-    utils.save_workspace_states(states)
-    
-    hl.workspace_rule({ workspace = workspace_id, layout = next_layout })
-    hl.exec_cmd(string.format(
-        "notify-send -t 1500 -a 'Hyprland' -h boolean:transient:true 'Layout Changed' 'Workspace %d layout is now: %s'",
-          workspace_id, next_layout))
+	local workspace = hl.get_active_workspace()
+	local workspace_id = tostring(workspace.id)
+	local states = utils.load_workspace_states()
+	local current_layout = states[workspace_id] or workspace.layout or "master"
+	local next_layout = (current_layout == "master") and "scrolling" or "master"
+
+	states[workspace_id] = next_layout
+	utils.save_workspace_states(states)
+
+	hl.workspace_rule({ workspace = workspace_id, layout = next_layout })
+	hl.exec_cmd(
+		string.format(
+			"notify-send -t 1500 -a 'Hyprland' -h boolean:transient:true 'Layout Changed' 'Workspace %d layout is now: %s'",
+			workspace_id,
+			next_layout
+		)
+	)
 end
 
 function utils.cycle_window(direction)
-  direction = direction or "next"
+	direction = direction or "next"
 
-  if "next" == direction then
-    return utils.layout_bind({
-      scrolling = hl.dsp.layout("focus r"),
-      dwindle   = hl.dsp.window.cycle_next({"next = true"}),
-      monocle   = hl.dsp.layout("cyclenext"),
-      master    = hl.dsp.layout("cyclenext")
-    })
-  else
-    return utils.layout_bind({
-    scrolling = hl.dsp.layout("focus l"),
-    dwindle   = hl.dsp.window.cycle_next({"next = false"}),
-    monocle   = hl.dsp.layout("cycleprev"),
-    master    = hl.dsp.layout("cycleprev")
-  })
-  end
+	if "next" == direction then
+		return utils.layout_bind({
+			scrolling = hl.dsp.layout("focus r"),
+			dwindle = hl.dsp.window.cycle_next({ "next = true" }),
+			monocle = hl.dsp.layout("cyclenext"),
+			master = hl.dsp.layout("cyclenext"),
+		})
+	else
+		return utils.layout_bind({
+			scrolling = hl.dsp.layout("focus l"),
+			dwindle = hl.dsp.window.cycle_next({ "next = false" }),
+			monocle = hl.dsp.layout("cycleprev"),
+			master = hl.dsp.layout("cycleprev"),
+		})
+	end
 end
 
 function _G.spawn_floating_app(app)
-    local m = hl.get_active_monitor()
-    if m then
-        local w = math.floor(m.width * 0.7)
-        local h = math.floor(m.height * 0.7)
-        local uwsm_command = "uwsm app -- " .. app
-        
-        hl.dispatch(hl.dsp.exec_cmd(uwsm_command, { float = true, size = {w, h}, center = true }))
-    end
+	local m = hl.get_active_monitor()
+	if m then
+		local w = math.floor(m.width * 0.7)
+		local h = math.floor(m.height * 0.7)
+		local uwsm_command = "uwsm app -- " .. app
+
+		hl.dispatch(hl.dsp.exec_cmd(uwsm_command, { float = true, size = { w, h }, center = true }))
+	end
 end
 
 return utils

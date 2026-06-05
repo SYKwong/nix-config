@@ -9,10 +9,12 @@ let
     disko
     stylix
     lanzaboote
+    treefmt-nix
     ;
 
   system = "x86_64-linux";
   pkgs = nixpkgs.legacyPackages.${system};
+  treefmtEval = treefmt-nix.lib.evalModule pkgs ./treefmt;
 
   hosts = {
     framework16 = {
@@ -32,7 +34,7 @@ in
 {
   # Expose hosts for Bash
   lib.hostInfo = hosts;
-  formatter.${system} = pkgs.nixfmt-tree;
+  formatter.${system} = treefmtEval.config.build.wrapper;
 
   nixosConfigurations = nixpkgs.lib.mapAttrs (
     name: info:

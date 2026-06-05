@@ -1,8 +1,8 @@
 hl.config({
-  misc = {
-    disable_hyprland_logo = true,
-    force_default_wallpaper = 0,
-    disable_splash_rendering = true,
-    vrr = 1,
-  },
+	misc = {
+		disable_hyprland_logo = true,
+		force_default_wallpaper = 0,
+		disable_splash_rendering = true,
+		vrr = 1,
+	},
 })

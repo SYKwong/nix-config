@@ -18,7 +18,7 @@ local monitor_setting = {
 			mode = "2560x1600@165Hz",
 			position = "auto",
 			scale = "1.0",
-      cm = "dcip3"
+			cm = "dcip3",
 		})
 	end,
 	desktop = function()
@@ -40,5 +40,5 @@ end
 
 local saved_states = utils.load_workspace_states()
 for ws_id, layout_name in pairs(saved_states) do
-  hl.workspace_rule({ workspace = ws_id, layout = layout_name })
+	hl.workspace_rule({ workspace = ws_id, layout = layout_name })
 end

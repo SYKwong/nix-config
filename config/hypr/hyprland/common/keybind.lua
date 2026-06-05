@@ -5,7 +5,7 @@ local reload_waybar = "pkill waybar; waybar -c ~/.config/waybar/hyprland.jsonc &
 local snip = 'grimblast -f copysave area && notify-send "Screenshot Saved to File and Clipboard"'
 local snip_edit =
 	'GRIMBLAST_EDITOR="satty --filename" grimblast edit area && notify-send "Screenshot Saved to File and Clipboard"'
-local notification_center =  "swaync-client -t"
+local notification_center = "swaync-client -t"
 
 local mainMod = "SUPER"
 
@@ -20,15 +20,19 @@ hl.bind(mainMod .. " + S", hl.dsp.exec_cmd(snip))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd(snip_edit))
 hl.bind(mainMod .. " + Z", hl.dsp.exec_cmd(notification_center))
 hl.bind(mainMod .. " + F", utils.maximized_workaround)
-hl.bind(mainMod .. " + L", utils.toggle_workspace_layout, { description = "Toggle Master/Scrolling Layout of the current workspace" })
+hl.bind(
+	mainMod .. " + L",
+	utils.toggle_workspace_layout,
+	{ description = "Toggle Master/Scrolling Layout of the current workspace" }
+)
 
 -- Cycle through workspace
-hl.bind(mainMod .. " + TAB",         hl.dsp.focus({ workspace = "e+1" }))
+hl.bind(mainMod .. " + TAB", hl.dsp.focus({ workspace = "e+1" }))
 hl.bind(mainMod .. " + SHIFT + TAB", hl.dsp.focus({ workspace = "e-1" }))
 
 -- Alt Tab
-hl.bind("ALT + TAB",          utils.cycle_window())
-hl.bind("ALT + SHIFT + TAB",  utils.cycle_window("prev"))
+hl.bind("ALT + TAB", utils.cycle_window())
+hl.bind("ALT + SHIFT + TAB", utils.cycle_window("prev"))
 
 -- Switch workspaces with mainMod + [0-9]
 -- Move active window to a workspace with mainMod + SHIFT + [0-9]
@@ -39,17 +43,16 @@ for i = 1, 10 do
 end
 
 -- Move focus with mainMod + arrow keys
-hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
+hl.bind(mainMod .. " + left", hl.dsp.focus({ direction = "left" }))
 hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
-hl.bind(mainMod .. " + up",    hl.dsp.focus({ direction = "up" }))
-hl.bind(mainMod .. " + down",  hl.dsp.focus({ direction = "down" }))
+hl.bind(mainMod .. " + up", hl.dsp.focus({ direction = "up" }))
+hl.bind(mainMod .. " + down", hl.dsp.focus({ direction = "down" }))
 
 -- Move window with mainMod + SHIFT + arrow keys
-hl.bind(mainMod .. " + SHIFT + left",  hl.dsp.window.swap({ direction = "left" }))
+hl.bind(mainMod .. " + SHIFT + left", hl.dsp.window.swap({ direction = "left" }))
 hl.bind(mainMod .. " + SHIFT + right", hl.dsp.window.swap({ direction = "right" }))
-hl.bind(mainMod .. " + SHIFT + up",    hl.dsp.window.swap({ direction = "up" }))
-hl.bind(mainMod .. " + SHIFT + down",  hl.dsp.window.swap({ direction = "down" }))
-
+hl.bind(mainMod .. " + SHIFT + up", hl.dsp.window.swap({ direction = "up" }))
+hl.bind(mainMod .. " + SHIFT + down", hl.dsp.window.swap({ direction = "down" }))
 
 -- Scroll through existing workspaces with mainMod + scroll
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))

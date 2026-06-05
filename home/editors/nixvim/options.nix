@@ -2,8 +2,8 @@
   programs.nixvim.opts = {
     number = true;
     relativenumber = true;
-    shiftwidth = 2;
-    tabstop = 2;
+    shiftwidth = 4;
+    tabstop = 4;
     expandtab = true;
     smartindent = true;
     wrap = false;
