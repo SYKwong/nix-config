@@ -21,7 +21,8 @@ pkgs.writeShellApplication {
     󱐋  Power Profile\n\
     󰖩  Wi-Fi\n\
     󰂯  Bluetooth\n\
-    󰕾  Audio"
+    󰕾  Audio\n\
+      Keybind"
 
     chosen=$(echo -e "$options" | rofi -dmenu \
       -i \
@@ -61,6 +62,8 @@ pkgs.writeShellApplication {
         tui-wrap wiremix ;;
       "Wallpaper")
         rofi-wallpaper-picker ;;
+      "Keybind")
+        rofi-keybinds ;;
       *)
         exit 1 ;;
     esac
