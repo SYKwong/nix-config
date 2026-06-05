@@ -9,14 +9,13 @@
       };
       conform-nvim.settings = {
         formatters_by_ft.nix = [ "nixfmt" ];
-        formatters.nixfmt.command = lib.getExe pkgs.nixfmt;
       };
       lint.lintersByFt.nix = [ "statix" ];
     };
 
     extraPackages = with pkgs; [
       statix
-      nixfmt-rfc-style
+      nixfmt
     ];
 
     autoCmd = [

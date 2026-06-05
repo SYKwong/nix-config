@@ -11,6 +11,6 @@
       };
     };
 
-    extraPackages = with pkgs; [ stylua ];
+    extraPackages = [ pkgs.stylua ];
   };
 }
