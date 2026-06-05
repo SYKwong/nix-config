@@ -4,12 +4,13 @@
   programs.neovim.enable = lib.mkForce false;
 
   imports = [
+    ./language
+
     ./autocmd.nix
     ./options.nix
     ./keymaps.nix
     ./ui.nix
     ./plugins.nix
-    ./lsp.nix
   ];
 
   programs.nixvim = {

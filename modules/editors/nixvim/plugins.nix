@@ -1,15 +1,8 @@
 {
   programs.nixvim.plugins = {
-    # Automatic bracket/quote pairing
     nvim-autopairs.enable = true;
-
-    # Smart case manipulation utilities (camelCase, snake_case, etc.)
     text-case.enable = true;
-
-    # Sidebar Git status signs in the gutter
     gitsigns.enable = true;
-
-    # File Tree Explorer
     neo-tree = {
       enable = true;
       settings = {
@@ -17,8 +10,6 @@
         window.width = 30;
       };
     };
-
-    # Project Fuzzy Finder
     telescope = {
       enable = true;
       keymaps = {
@@ -29,5 +20,38 @@
         "<leader>fh" = "help_tags";
       };
     };
+
+    treesitter = {
+      enable = true;
+      settings = {
+        highlight = {
+          enable = true;
+          additional_vim_regex_highlighting = false;
+        };
+      };
+    };
+
+    cmp = {
+      enable = true;
+      settings = {
+        autoEnableSources = true;
+        sources = [
+          { name = "nvim_lsp"; }
+          { name = "path"; }
+          { name = "buffer"; }
+        ];
+        mapping = {
+          "<CR>" = "cmp.mapping.confirm({ select = true })";
+          "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
+          "<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
+        };
+      };
+    };
+
+    conform-nvim = {
+      enable = true;
+      settings.format_on_save.timeout_ms = 500;
+    };
+    lint.enable = true;
   };
 }

@@ -2,7 +2,11 @@
   programs.nixvim.autoCmd = [
     # Dynamic Code-Boundary Underline Highlight Tracking
     {
-      event = [ "CursorMoved" "CursorMovedI" "BufEnter" ];
+      event = [
+        "CursorMoved"
+        "CursorMovedI"
+        "BufEnter"
+      ];
       callback.__raw = ''
         function()
           if vim.w.text_cursorline_id then
@@ -47,10 +51,10 @@
     }
 
     # 2 Space Tab Language
-      {
-        event = [ "FileType" ];
-        pattern = [ "nix" "yaml" ];
-        command = "setlocal tabstop=2 shiftwidth=2 softtabstop=2";
-      }
+    {
+      event = [ "FileType" ];
+      pattern = [ "yaml" ];
+      command = "setlocal tabstop=2 shiftwidth=2 softtabstop=2";
+    }
   ];
 }
