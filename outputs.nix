@@ -1,23 +1,23 @@
 inputs:
 
 let
-  inherit (inputs) 
-  nixpkgs nixpkgs-stable 
-  home-manager 
-  nixos-hardware 
-  disko 
-  stylix 
-  lanzaboote
-  nixvim
-  ;
+  inherit (inputs)
+    nixpkgs
+    nixpkgs-stable
+    home-manager
+    nixos-hardware
+    disko
+    stylix
+    lanzaboote
+    ;
 
   hosts = {
-    framework16 = { 
+    framework16 = {
       username = "fw16-kyle";
       extraModules = [
         nixos-hardware.nixosModules.framework-16-7040-amd
         lanzaboote.nixosModules.lanzaboote
-        
+
         ./modules/framework
         ./modules/laptop
         ./modules/lanzaboote
@@ -25,24 +25,25 @@ let
     };
   };
 
-in {
+in
+{
   # Expose hosts for Bash
   lib.hostInfo = hosts;
 
-  nixosConfigurations = nixpkgs.lib.mapAttrs (name: info: 
+  nixosConfigurations = nixpkgs.lib.mapAttrs (
+    name: info:
     nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = { 
-          inherit inputs; 
-          inherit (info) username;
-          hostname = name;
-        };
+      specialArgs = {
+        inherit inputs;
+        inherit (info) username;
+        hostname = name;
+      };
 
       modules = [
         disko.nixosModules.disko
         home-manager.nixosModules.home-manager
         stylix.nixosModules.stylix
-        nixvim.nixosModules.nixvim
 
         ./modules/core
 
@@ -54,13 +55,13 @@ in {
         ./modules/virtualization
         ./modules/input
         ./modules/misc
-        ./modules/editors
 
         ./overlays
 
         ./hosts/${name}
 
-      ] ++ info.extraModules;
+      ]
+      ++ info.extraModules;
     }
   ) hosts;
 }

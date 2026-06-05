@@ -1,9 +1,11 @@
-{ lib, ... }:
+{ inputs, lib, ... }:
 
 {
   programs.neovim.enable = lib.mkForce false;
-
+  stylix.targets.nixvim.enable = false;
   imports = [
+    inputs.nixvim.homeModules.nixvim
+
     ./language
 
     ./autocmd.nix
