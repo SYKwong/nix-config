@@ -10,7 +10,7 @@ let
     fi
 
     shift
-    
+
     APP_ID="tui-float.$APP_NAME"
     APP_BIN=$(command -v "$APP_NAME")
 
@@ -18,11 +18,11 @@ let
       echo "Could not find $APP_NAME"
       exit 1
     fi
-    
+
     get_window() {
       hyprctl clients | grep "$APP_ID" || true
     }
-    
+
     move_cursor_to_center() {
       read -r W H < <(hyprctl monitors | awk '/^[ \t]*[0-9]+x[0-9]+/ {last=$1} /focused: yes/ {print last}' | sed 's/x/ /; s/@.*//')
       X=$((W/2))
@@ -49,9 +49,8 @@ let
   '';
 in
 {
-  environment.systemPackages = [ 
+  environment.systemPackages = [
     tuiWrap
     pkgs.foot
   ];
 }
-

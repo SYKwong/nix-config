@@ -6,7 +6,7 @@
     interactiveShellInit = ''
       set fish_greeting # Disable greeting
     '';
-  };  
+  };
   users.users.${username} = {
     shell = pkgs.fish;
   };

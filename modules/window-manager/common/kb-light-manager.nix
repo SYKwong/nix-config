@@ -6,8 +6,8 @@
       name = "kb-light-manager";
       runtimeInputs = [
         pkgs.qmk
-        pkgs.qmk_hid 
-        pkgs.gnugrep 
+        pkgs.qmk_hid
+        pkgs.gnugrep
         pkgs.coreutils
       ];
       text = builtins.readFile ./scripts/kb-light-manager.sh;

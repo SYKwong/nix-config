@@ -58,14 +58,14 @@ pkgs.writeShellApplication {
     [ ''${#files[@]} -eq 0 ] && exit 0
 
     current_base=""
-    
+
     if [ -L "$CURRENT_LINK" ]; then
         current_target="$(readlink -f "$CURRENT_LINK")"
         current_base="$(basename "$current_target")"
     fi
-    
+
     selected_row=0
-    
+
     for i in "''${!files[@]}"; do
         if [ "$(basename "''${files[$i]}")" = "$current_base" ]; then
             selected_row="$i"

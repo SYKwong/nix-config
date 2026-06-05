@@ -57,3 +57,6 @@ If you want to use your own wallpaper, create your own `~/Wallpaper/`, put your 
 2. `sudo systemd-cryptenroll /dev/disk/by-partlabel/disk-main-luks --wipe-slot=tpm2`
 3. `sudo systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=7 /dev/disk/by-partlabel/disk-main-luks`
 
+
+### Formatting
+Run `nix fmt`

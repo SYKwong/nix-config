@@ -1,4 +1,10 @@
-{ pkgs, hostname, username, config_path, ... }:
+{
+  pkgs,
+  hostname,
+  username,
+  config_path,
+  ...
+}:
 
 pkgs.writeShellApplication {
   name = "update-available";

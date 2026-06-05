@@ -3,10 +3,9 @@
 {
   users.users."${username}" = {
     isNormalUser = true;
-    extraGroups = [ 
+    extraGroups = [
       "wheel"
       "video"
     ];
   };
 }
-

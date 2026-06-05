@@ -5,8 +5,8 @@
     loader.systemd-boot.configurationLimit = 5;
     loader.grub.enable = false;
   };
-### For Silent Boot 
-### Silent Power Down Cannot Be Done Because of initrd 
+  ### For Silent Boot
+  ### Silent Power Down Cannot Be Done Because of initrd
   boot = {
     consoleLogLevel = 3;
     initrd.verbose = false;
@@ -24,9 +24,11 @@
     ];
     loader.timeout = 1;
     plymouth.enable = true;
-    blacklistedKernelModules = [ "sp5100_tco" "iTCO_wdt" ];
-    
-  };
-###
-}
+    blacklistedKernelModules = [
+      "sp5100_tco"
+      "iTCO_wdt"
+    ];
 
+  };
+  ###
+}

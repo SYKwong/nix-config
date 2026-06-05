@@ -6,7 +6,7 @@ let
   '';
 in
 {
-  environment.systemPackages = [ 
+  environment.systemPackages = [
     reload-waybar
   ];
 }

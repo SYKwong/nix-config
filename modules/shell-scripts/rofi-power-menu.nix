@@ -1,6 +1,5 @@
 { pkgs, ... }:
 
-
 pkgs.writeShellApplication {
   name = "rofi-power-menu";
 
@@ -11,7 +10,7 @@ pkgs.writeShellApplication {
     hyprlock
   ];
 
-  text =  ''
+  text = ''
     options="󰐥 Shutdown\n󰒲 Suspend\n󰤁 Hibernate\n󰜉 Reboot\n󰍃 Logout\n Lock"
 
     chosen=$(echo -e "$options" | rofi -dmenu \

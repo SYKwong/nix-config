@@ -5,11 +5,14 @@
 
   nix = {
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
     };
     optimise.automatic = true;
   };
-  
+
   programs.nh = {
     enable = true;
     clean = {
@@ -21,4 +24,3 @@
 
   nixpkgs.config.allowUnfree = true;
 }
-

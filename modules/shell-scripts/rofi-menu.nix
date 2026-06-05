@@ -47,7 +47,7 @@ pkgs.writeShellApplication {
     ')
 
     cleanup_input=$(echo "$chosen" | tr -cd '[:print:]' | xargs)
-    
+
     case "$cleanup_input" in
       "System")
         rofi-power-menu ;;

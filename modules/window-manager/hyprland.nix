@@ -14,4 +14,3 @@
 
   environment.pathsToLink = [ "/share/hypr" ];
 }
-

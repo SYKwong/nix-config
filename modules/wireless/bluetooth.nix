@@ -1,8 +1,13 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   cfg = config.custom.wireless.bluetooth;
-in 
+in
 {
   config = lib.mkIf cfg.enable {
     hardware.bluetooth = {

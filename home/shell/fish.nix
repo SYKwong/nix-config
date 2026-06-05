@@ -1,4 +1,9 @@
-{ lib, config, username, ... }:
+{
+  lib,
+  config,
+  username,
+  ...
+}:
 
 {
   programs = {
@@ -7,7 +12,7 @@
     starship = {
       enable = true;
       enableFishIntegration = true;
-      
+
       enableTransience = true;
       settings = builtins.fromTOML (builtins.readFile ../../config/starship/starship.toml);
     };

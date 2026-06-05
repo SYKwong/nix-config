@@ -1,4 +1,4 @@
- { lib, ... }:
+{ lib, ... }:
 
 let
   # Apps that xdg.desktopEntries cannot hide
@@ -53,11 +53,13 @@ in
     noDisplay = true;
   });
 
-  home.file = lib.listToAttrs (map (name: {
-    name = ".local/share/applications/${name}.desktop";
-    value = { 
-      text = hiddenDesktopContent name;
-      force = true;
-    };
-  }) annoyingApps);
+  home.file = lib.listToAttrs (
+    map (name: {
+      name = ".local/share/applications/${name}.desktop";
+      value = {
+        text = hiddenDesktopContent name;
+        force = true;
+      };
+    }) annoyingApps
+  );
 }

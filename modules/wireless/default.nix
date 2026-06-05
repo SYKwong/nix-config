@@ -1,13 +1,13 @@
 /**
- * Wireless Module
- * * This module manages WiFi (via iwd/NetworkManager) and Bluetooth.
- * Both features are ENABLED by default.
- *
- * To disable a feature in your host configuration:
- * custom.wireless.wifi.enable = false;
- * custom.wireless.bluetooth.enable = false;
- */
-{ lib, ...}:
+  Wireless Module
+  * This module manages WiFi (via iwd/NetworkManager) and Bluetooth.
+  Both features are ENABLED by default.
+
+  To disable a feature in your host configuration:
+  custom.wireless.wifi.enable = false;
+  custom.wireless.bluetooth.enable = false;
+*/
+{ lib, ... }:
 
 {
   imports = [

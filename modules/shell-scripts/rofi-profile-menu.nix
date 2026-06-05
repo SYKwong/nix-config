@@ -53,7 +53,7 @@ pkgs.writeShellApplication {
         
         element-icon { enabled: false; }
       ')
-    
+
     chosen="''${chosen//<i>/}"
     chosen="''${chosen//<\/i>/}"
 

@@ -37,8 +37,8 @@
             Theme = "default-dark";
             VerticalCandidateList = "False";
             Font = "Sans 15";
-            MenuFont="Sans 15";
-            TrayFont="Sans Bold 15";
+            MenuFont = "Sans 15";
+            TrayFont = "Sans Bold 15";
           };
 
           punctuation.globalSection = {

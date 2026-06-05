@@ -1,6 +1,6 @@
 { pkgs, lib, ... }:
 {
-  services.gnome ={
+  services.gnome = {
     gnome-keyring.enable = true;
     gcr-ssh-agent.enable = true;
   };
@@ -12,7 +12,7 @@
   ];
 
   services.dbus.packages = [ pkgs.gcr_4 ];
- 
+
   security.pam.services = {
     ly.enableGnomeKeyring = true;
   };

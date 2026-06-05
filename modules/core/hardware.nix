@@ -5,4 +5,3 @@
     keyboard.qmk.enable = true;
   };
 }
-

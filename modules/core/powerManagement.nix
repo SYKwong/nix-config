@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 {
   powerManagement.powerUpCommands = lib.mkIf config.programs.waybar.enable ''

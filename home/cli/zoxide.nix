@@ -1,5 +1,5 @@
 {
-  programs.zoxide ={
+  programs.zoxide = {
     enable = true;
     options = [ "--cmd cd" ];
     enableBashIntegration = true;
@@ -7,4 +7,3 @@
     enableFishIntegration = true;
   };
 }
-

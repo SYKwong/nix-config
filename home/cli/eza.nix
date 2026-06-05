@@ -25,4 +25,3 @@
     tree = "eza --tree ";
   };
 }
-

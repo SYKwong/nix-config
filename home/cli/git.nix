@@ -9,7 +9,7 @@
           name = "${username}";
           email = "${username}@example.com";
         };
-        
+
         # git confit options
         init.defaultBranch = "main";
         merge.conflictstyle = "zdiff3";
@@ -36,4 +36,3 @@
   };
   home.packages = [ pkgs.glab ];
 }
-

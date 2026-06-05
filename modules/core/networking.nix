@@ -1,4 +1,4 @@
-{ hostname, ...}:
+{ hostname, ... }:
 
 {
   networking.hostName = "${hostname}";

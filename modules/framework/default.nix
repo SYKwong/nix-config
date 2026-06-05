@@ -4,4 +4,3 @@
     ./fw-fanctrl.nix
   ];
 }
-

@@ -8,5 +8,5 @@
       name = "Adwaita";
       package = pkgs.adwaita-icon-theme;
     };
-  }; 
+  };
 }

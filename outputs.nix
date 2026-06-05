@@ -11,6 +11,9 @@ let
     lanzaboote
     ;
 
+  system = "x86_64-linux";
+  pkgs = nixpkgs.legacyPackages.${system};
+
   hosts = {
     framework16 = {
       username = "fw16-kyle";
@@ -29,11 +32,12 @@ in
 {
   # Expose hosts for Bash
   lib.hostInfo = hosts;
+  formatter.${system} = pkgs.nixfmt-tree;
 
   nixosConfigurations = nixpkgs.lib.mapAttrs (
     name: info:
     nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
+      system = system;
       specialArgs = {
         inherit inputs;
         inherit (info) username;
