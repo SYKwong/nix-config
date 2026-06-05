@@ -8,6 +8,7 @@ require("hyprland/common/layerrule")
 require("hyprland/common/misc")
 require("hyprland/common/gesture")
 require("hyprland/common/layout")
+require("hyprland/common/media")
 
 local utils = require("hyprland/common/utils")
 

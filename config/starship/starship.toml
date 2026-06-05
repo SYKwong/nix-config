@@ -51,6 +51,7 @@ symbol = " "
 symbol = ""
 style = "bg:teal"
 format = '[[ $symbol $branch ](fg:crust bg:teal)]($style)'
+truncation_length = 12
 
 [git_status]
 style = "bg:teal"

@@ -126,4 +126,18 @@ function _G.spawn_floating_app(app)
 	end
 end
 
+function utils.scrolling_consume_expel(direction)
+	direction = direction or "next"
+
+	if "next" == direction then
+		return utils.layout_bind({
+			scrolling = hl.dsp.layout("consume_or_expel next"),
+		})
+	else
+		return utils.layout_bind({
+			scrolling = hl.dsp.layout("consume_or_expel prev"),
+		})
+	end
+end
+
 return utils
