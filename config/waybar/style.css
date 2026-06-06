@@ -37,7 +37,6 @@ window#waybar {
     color: #ffffff;
 }
 
-#custom-expand-icon,
 #battery,
 #network,
 #pulseaudio{
@@ -51,6 +50,7 @@ window#waybar {
   margin-right: 17px;
 }
 
+#tray,
 #custom-fcitx5 {
   margin-left: 17px;
 }

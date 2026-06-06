@@ -132,13 +132,25 @@
     "modules": ["custom/expand-icon", "tray"]
   },
 
-  "custom/expand-icon": {
-    "format": "",
+  "group/tray-expander": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-duration": 600,
+      "children-class": "tray-group-item"
+    },
+    "modules": ["group/expand-icons", "tray"]
+  },
+  "group/expand-icons": {
+    "orientation": "inherit",
+    "modules": ["custom/expand-icon#horizontal", "custom/expand-icon#vertical"]
+  },
+  "custom/expand-icon#horizontal": {
+    "format": "",
     "tooltip": false
   },
 
   "tray": {
-    "icon-size": 12,
+    "icon-size": 25,
     "spacing": 17
   },
 
