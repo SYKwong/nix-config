@@ -1,7 +1,7 @@
 local terminal = "kitty"
 local fileManager = "yazi"
 local app_launcher = "pkill -x rofi || rofi -show drun"
-local reload_waybar = "pkill waybar; waybar -c ~/.config/waybar/hyprland.jsonc &"
+local reload_waybar = "pkill waybar; waybar &"
 local snip = 'grimblast -f copysave area && notify-send "Screenshot Saved to File and Clipboard"'
 local snip_edit =
 	'GRIMBLAST_EDITOR="satty --filename" grimblast edit area && notify-send "Screenshot Saved to File and Clipboard"'

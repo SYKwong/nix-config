@@ -2,6 +2,7 @@
   imports = [
     ./lua.nix
     ./nix.nix
+    ./json.nix
   ];
 
   programs.nixvim.plugins = {
