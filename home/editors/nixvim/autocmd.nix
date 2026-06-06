@@ -29,7 +29,7 @@
         function()
           local window_id = os.getenv("KITTY_WINDOW_ID")
           if window_id then
-            local cmd = string.format("kitty @ set-background-opacity -m id:%s 0.9", window_id)
+            local cmd = string.format("kitty @ set-background-opacity -m id:%s 0.95", window_id)
             vim.fn.system(cmd)
           end
         end

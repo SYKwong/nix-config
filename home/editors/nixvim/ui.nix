@@ -11,6 +11,8 @@
             return {
               CursorLine = { bg = "none", undercurl = true, sp = colors.mauve },
               CursorLineNr = { fg = colors.mauve, bold = true },
+              IblScope = { fg = colors.blue },
+              IblIndent = { fg = colors.surface0 },
             }
           end
         '';
@@ -37,7 +39,20 @@
 
       indent-blankline = {
         enable = true;
-        settings.scope.enabled = true;
+        settings = {
+          scope = {
+            enabled = true;
+            include = {
+              node_type = {
+                nix = [
+                  "attrset"
+                  "let_expression"
+                  "binding"
+                ];
+              };
+            };
+          };
+        };
       };
 
       bufferline = {
@@ -61,6 +76,7 @@
           long_message_to_split = true;
         };
       };
+
     };
   };
 }

@@ -24,10 +24,18 @@
     treesitter = {
       enable = true;
       settings = {
-        highlight = {
-          enable = true;
-          additional_vim_regex_highlighting = false;
-        };
+        highlight.enable = true;
+        indent.enable = true;
+      };
+    };
+
+    treesitter-context.enable = true;
+
+    treesitter-textobjects = {
+      enable = true;
+      settings.select = {
+        enable = true;
+        lookahead = true;
       };
     };
 
@@ -53,5 +61,6 @@
       settings.format_on_save.timeout_ms = 500;
     };
     lint.enable = true;
+    nix.enable = true;
   };
 }
