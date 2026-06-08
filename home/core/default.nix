@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ config, ... }:
 
 {
   xdg.userDirs = {
@@ -11,6 +11,4 @@
       SCREENSHOTS = "${config.xdg.userDirs.pictures}/Screenshots";
     };
   };
-
-  home.packages = [ pkgs.papirus-icon-theme ];
 }

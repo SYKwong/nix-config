@@ -22,12 +22,15 @@
       base0E = "#cba6f7";
       base0F = "#f2cdcd";
     };
+
     polarity = "dark";
+
     cursor = {
       package = pkgs.bibata-cursors;
       name = "Bibata-Modern-Ice";
       size = 24;
     };
+
     fonts = {
       monospace = {
         package = pkgs.nerd-fonts.jetbrains-mono;
@@ -48,8 +51,18 @@
         popups = 12;
       };
     };
+
+    icons = {
+      enable = true;
+      dark = "adwaita-dark";
+    };
+
     targets = {
       kmscon.enable = false;
     };
   };
+
+  environment.systemPackages = [
+    pkgs.adwaita-icon-theme
+  ];
 }

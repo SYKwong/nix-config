@@ -1,6 +1,8 @@
 { pkgs, ... }:
 
 {
+  imports = [ ./theme.nix ];
+
   i18n.inputMethod = {
     enable = true;
     type = "fcitx5";
@@ -39,6 +41,7 @@
             Font = "Sans 15";
             MenuFont = "Sans 15";
             TrayFont = "Sans Bold 15";
+            PreferTextIcon = "True";
           };
 
           punctuation.globalSection = {
