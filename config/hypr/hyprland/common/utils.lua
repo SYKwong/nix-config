@@ -27,7 +27,12 @@ utils.maximized_workaround = function()
 	local ws = hl.get_active_workspace().tiled_layout
 
 	if ws == "scrolling" then
-		hl.dispatch(hl.dsp.layout("colresize +conf"))
+		local fullscreen_state = hl.get_active_window().fullscreen
+		if fullscreen_state == 2 then
+			hl.dispatch(hl.dsp.window.fullscreen({ mode = "fullscreen" }))
+		else
+			hl.dispatch(hl.dsp.layout("colresize +conf"))
+		end
 	else
 		hl.dispatch(hl.dsp.window.fullscreen({ mode = "maximized" }))
 	end
