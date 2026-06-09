@@ -19,6 +19,8 @@
         rerere.enabled = true;
         pull.rebase = true;
         fetch.prune = true;
+        rebase.autoStash = true;
+        merge.autoStash = true;
 
         alias = {
           co = "checkout";
