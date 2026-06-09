@@ -54,7 +54,7 @@
 
     icons = {
       enable = true;
-      dark = "adwaita-dark";
+      dark = "Adwaita";
     };
 
     targets = {

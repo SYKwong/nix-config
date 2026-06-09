@@ -1,7 +1,4 @@
-{
-  pkgs,
-  ...
-}:
+{ pkgs, ... }:
 
 let
   mozcSmallIcons = pkgs.stdenvNoCC.mkDerivation {
