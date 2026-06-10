@@ -31,7 +31,7 @@ pkgs.writeShellApplication {
         local thumb="$CACHE_DIR/''${base}.jpg"
 
         if [ ! -f "$thumb" ] || [ "$img" -nt "$thumb" ]; then
-            magick "$img" \
+            magick "''${img}[0]" \
                 -thumbnail "640x360^" \
                 -gravity center \
                 -extent 640x360 \
@@ -47,12 +47,12 @@ pkgs.writeShellApplication {
 
     shopt -s nullglob
     mapfile -t files < <(
-      printf '%s\n' "$WALLPAPER_DIR"/*.{jpg,jpeg,png,webp} 2>/dev/null |
-      sort
+        printf '%s\n' "$WALLPAPER_DIR"/*.{jpg,jpeg,png,webp,gif} 2>/dev/null |
+        sort
     )
 
     mapfile -t files < <(
-      printf "%s\n" "''${files[@]}" | sort
+        printf "%s\n" "''${files[@]}" | sort
     )
 
     [ ''${#files[@]} -eq 0 ] && exit 0
@@ -75,7 +75,7 @@ pkgs.writeShellApplication {
 
     selection_base=$(
         for f in "''${files[@]}"; do
-          generate_thumb "$f"
+            generate_thumb "$f"
         done | \
         rofi \
             -dmenu \
@@ -100,6 +100,7 @@ pkgs.writeShellApplication {
                     orientation: vertical;
                     width: 450px;
                     expand: false;
+                    padding: 10px 0px 0px 0px;
                     children: [ listview ];
                 }
 
@@ -151,9 +152,13 @@ pkgs.writeShellApplication {
         local target_img="$1"
 
         ln -sfn "$(basename "$target_img")" "$CURRENT_LINK"
-
-        pkill swaybg || true
-        swaybg -m fill -i "$CURRENT_LINK" &
+        
+        if command -v awww; then 
+            awww img "$CURRENT_LINK" -t wipe --transition-fps 120
+        else
+            pkill swaybg || true
+            swaybg -m fill -i "$CURRENT_LINK" &
+        fi
 
         notify-send -h boolean:transient:true "Wallpaper changed"
     }

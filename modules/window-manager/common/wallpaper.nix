@@ -1,5 +1,8 @@
 { pkgs, ... }:
 
 {
-  environment.systemPackages = [ pkgs.swaybg ];
+  environment.systemPackages = [
+    pkgs.swaybg
+    pkgs.awww
+  ];
 }

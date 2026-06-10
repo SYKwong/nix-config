@@ -28,6 +28,7 @@ let
     rofi-profile-menu = import ./rofi-profile-menu.nix common;
     rofi-wallpaper-picker = import ./rofi-wallpaper-picker.nix common;
     rofi-keybind = import ./rofi-keybind.nix common;
+    gif-maker = import ./gif-maker.nix common;
   };
 in
 {
