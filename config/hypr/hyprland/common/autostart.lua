@@ -28,7 +28,6 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("uwsm-app -- waybar")
 	hl.exec_cmd("uwsm-app -- swayosd-server")
 	hl.exec_cmd("uwsm-app -- foot --server")
-	hl.exec_cmd("uwsm-app -- waydroid session start")
 	hl.exec_cmd("uwsm-app -- fcitx5 -r -d")
 	hl.exec_cmd("uwsm-app -- vesktop --start-minimized")
 

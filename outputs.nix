@@ -58,7 +58,6 @@ in
         ./modules/window-manager
         ./modules/shell-scripts
         ./modules/wireless
-        ./modules/virtualization
         ./modules/input
         ./modules/misc
 

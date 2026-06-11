@@ -16,7 +16,6 @@
     # Chrome Web Store extensions (installed via Helium's privacy proxy)
     extensions = [
       { id = "ophjlpahpchlmihnnnihgmmeilfjmjjc"; } # Line
-      { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; } # uBlock Origin
     ];
 
   };

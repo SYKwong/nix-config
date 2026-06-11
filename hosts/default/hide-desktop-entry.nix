@@ -5,11 +5,6 @@ let
   annoyingApps = [
     "rofi"
     "rofi-theme-selector"
-    "waydroid.com.android.vending"
-    "waydroid.com.google.android.apps.messaging"
-    "waydroid.com.google.android.contacts"
-    "waydroid.com.google.android.apps.restore"
-    "waydroid.com.google.android.inputmethod.latin"
   ];
 
   appsToHide = [
