@@ -299,6 +299,26 @@
         "type": "github"
       }
     },
+    "helium": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1781163771,
+        "narHash": "sha256-FjlOiKElFjKF7OL/Szj8VgsIzXNKNo5Q3V2EWQ2orBw=",
+        "owner": "cjavad",
+        "repo": "nixpille-helium",
+        "rev": "c1b3186a167ff03d2857c77eb8aba569cbfade9b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cjavad",
+        "repo": "nixpille-helium",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -567,6 +587,7 @@
     "root": {
       "inputs": {
         "disko": "disko",
+        "helium": "helium",
         "home-manager": "home-manager",
         "lanzaboote": "lanzaboote",
         "nix-cachyos-kernel": "nix-cachyos-kernel",

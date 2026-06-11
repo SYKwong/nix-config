@@ -147,14 +147,14 @@ end
 function utils.scrolling_consume_expel(direction)
 	direction = direction or "next"
 
-	local workspace = hl.get_active_workspace()
-	local layout = workspace.tiled_layout
-
-	if layout ~= "scrolling" then
-		return
-	end
-
 	return function()
+		local workspace = hl.get_active_workspace()
+		local layout = workspace.tiled_layout
+
+		if layout ~= "scrolling" then
+			return
+		end
+
 		if "next" == direction then
 			hl.dispatch(hl.dsp.layout("consume_or_expel next"))
 		else
