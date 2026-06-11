@@ -114,12 +114,12 @@ hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { description = "[Mou
 -- Scrolling Only
 -- Merge/Pop window from a column
 hl.bind(
-	mainMod .. " + ALT + left",
+	mainMod .. " + comma",
 	utils.scrolling_consume_expel("prev"),
 	{ description = "[Window] Merge into the left column if alone, pops out if not" }
 )
 hl.bind(
-	mainMod .. " + ALT + right",
+	mainMod .. " + period",
 	utils.scrolling_consume_expel("next"),
 	{ description = "[Window] Merge into the right column if alone, pops out if not" }
 )

@@ -38,17 +38,6 @@ utils.maximized_workaround = function()
 	end
 end
 
-utils.layout_bind = function(bind_table)
-	return function()
-		local workspace = hl.get_active_workspace()
-		local layout = workspace.tiled_layout
-
-		if bind_table[layout] then
-			hl.dispatch(bind_table[layout])
-		end
-	end
-end
-
 function utils.load_workspace_states()
 	local states = {}
 	local f = io.open(state_file, "r")
@@ -103,20 +92,44 @@ end
 function utils.cycle_window(direction)
 	direction = direction or "next"
 
-	if "next" == direction then
-		return utils.layout_bind({
+	return function()
+		local active = hl.get_active_window()
+		if not active then
+			return
+		end
+
+		local state_str = tostring(active.floating)
+		local workspace = hl.get_active_workspace()
+		local layout = workspace.tiled_layout
+
+		if state_str == "true" then
+			hl.dispatch(hl.dsp.window.cycle_next())
+			return
+		end
+
+		local tiled_next_binds = {
 			scrolling = hl.dsp.layout("focus r"),
 			dwindle = hl.dsp.window.cycle_next({ "next = true" }),
 			monocle = hl.dsp.layout("cyclenext"),
 			master = hl.dsp.layout("cyclenext"),
-		})
-	else
-		return utils.layout_bind({
+		}
+
+		local tiled_prev_binds = {
 			scrolling = hl.dsp.layout("focus l"),
 			dwindle = hl.dsp.window.cycle_next({ "next = false" }),
 			monocle = hl.dsp.layout("cycleprev"),
 			master = hl.dsp.layout("cycleprev"),
-		})
+		}
+
+		if "next" == direction then
+			if tiled_next_binds[layout] then
+				hl.dispatch(tiled_next_binds[layout])
+			end
+		else
+			if tiled_prev_binds[layout] then
+				hl.dispatch(tiled_prev_binds[layout])
+			end
+		end
 	end
 end
 
@@ -134,14 +147,19 @@ end
 function utils.scrolling_consume_expel(direction)
 	direction = direction or "next"
 
-	if "next" == direction then
-		return utils.layout_bind({
-			scrolling = hl.dsp.layout("consume_or_expel next"),
-		})
-	else
-		return utils.layout_bind({
-			scrolling = hl.dsp.layout("consume_or_expel prev"),
-		})
+	local workspace = hl.get_active_workspace()
+	local layout = workspace.tiled_layout
+
+	if layout ~= "scrolling" then
+		return
+	end
+
+	return function()
+		if "next" == direction then
+			hl.dispatch(hl.dsp.layout("consume_or_expel next"))
+		else
+			hl.dispatch(hl.dsp.layout("consume_or_expel prev"))
+		end
 	end
 end
 
