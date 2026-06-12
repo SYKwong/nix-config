@@ -31,6 +31,7 @@ let
     "nixos-manual"
     "btop"
     "uuctl"
+    "qimgv"
   ];
 
   hiddenDesktopContent = name: ''
@@ -46,6 +47,7 @@ in
   xdg.desktopEntries = lib.genAttrs appsToHide (name: {
     inherit name;
     noDisplay = true;
+    exec = name;
   });
 
   home.file = lib.listToAttrs (

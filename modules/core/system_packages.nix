@@ -4,6 +4,7 @@
   environment.systemPackages = with pkgs; [
     ffmpeg
     kitty
+    qimgv
     wget
     wiremix
     wl-clipboard
@@ -11,6 +12,7 @@
     kdePackages.dolphin
     kdePackages.konsole
     kdePackages.qtsvg
+    kdePackages.plasma-workspace
   ];
 
   programs = {
@@ -29,9 +31,17 @@
     nano.enable = false;
   };
 
-  xdg.terminal-exec = {
-    enable = true;
-    settings.default = [ "kitty.desktop" ];
+  xdg = {
+    terminal-exec = {
+      enable = true;
+      settings.default = [ "kitty.desktop" ];
+    };
+    mime = {
+      enable = true;
+      defaultApplications = {
+        "image/*" = "qimgv.desktop";
+      };
+    };
   };
 
 }

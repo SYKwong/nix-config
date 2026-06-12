@@ -27,6 +27,7 @@ let
 
     "dolphinrc" = "kde/dolphin/dolphinrc";
     "kservicemenurc" = "kde/dolphin/kservicemenurc";
+    "qimgv/qimgv.conf" = "qimgv/qimgv.conf";
   };
 in
 {
