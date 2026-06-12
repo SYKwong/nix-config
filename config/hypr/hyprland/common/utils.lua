@@ -89,46 +89,117 @@ function utils.toggle_workspace_layout()
 	)
 end
 
+local function get_tiled_windows_on_workspace(all_windows, target_workspace)
+	local filtered_windows = {}
+	for _, w in ipairs(all_windows) do
+		if w.workspace == target_workspace and not w.floating then
+			table.insert(filtered_windows, w)
+		end
+	end
+	return filtered_windows
+end
+
+local function sort_column_major(windows_list)
+	table.sort(windows_list, function(a, b)
+		local ax = tonumber(a.at.x)
+		local ay = tonumber(a.at.y)
+		local bx = tonumber(b.at.x)
+		local by = tonumber(b.at.y)
+
+		if ax == bx then
+			return ay < by
+		end
+		return ax < bx
+	end)
+end
+
+local function find_window_index(windows_list, target_address)
+	for i, window in ipairs(windows_list) do
+		if window.address == target_address then
+			return i
+		end
+	end
+	return nil
+end
+
+local function get_wrapped_index(current_index, list_length, direction)
+	local target_index = current_index
+
+	if direction == "next" then
+		target_index = current_index + 1
+		if target_index > list_length then
+			target_index = 1
+		end
+	else
+		target_index = current_index - 1
+		if target_index < 1 then
+			target_index = list_length
+		end
+	end
+
+	return target_index
+end
+
+local function cycle_scrolling(active, direction)
+	local all_windows = hl.get_windows()
+	local target_windows = get_tiled_windows_on_workspace(all_windows, active.workspace)
+
+	if #target_windows <= 1 then
+		return
+	end
+
+	sort_column_major(target_windows)
+
+	local current_index = find_window_index(target_windows, active.address)
+	if not current_index then
+		return
+	end
+
+	local target_index = get_wrapped_index(current_index, #target_windows, direction)
+
+	local target_window = target_windows[target_index]
+	if target_window and target_window.address then
+		local target_param = "address:" .. tostring(target_window.address)
+		hl.dispatch(hl.dsp.focus({ ["window"] = target_param }))
+	end
+end
+
 function utils.cycle_window(direction)
 	direction = direction or "next"
 
 	return function()
-		local active = hl.get_active_window()
-		if not active then
+		local active_window = hl.get_active_window()
+		if not active_window then
 			return
 		end
 
-		local state_str = tostring(active.floating)
-		local workspace = hl.get_active_workspace()
-		local layout = workspace.tiled_layout
+		local active_workspace = active_window.workspace
+		local layout = active_workspace.tiled_layout
 
-		if state_str == "true" then
+		if active_window.floating then
 			hl.dispatch(hl.dsp.window.cycle_next())
 			return
 		end
 
-		local tiled_next_binds = {
-			scrolling = hl.dsp.layout("focus r"),
-			dwindle = hl.dsp.window.cycle_next({ "next = true" }),
-			monocle = hl.dsp.layout("cyclenext"),
-			master = hl.dsp.layout("cyclenext"),
-		}
+		if layout == "scrolling" then
+			cycle_scrolling(active_window, direction)
+			return
+		end
 
-		local tiled_prev_binds = {
-			scrolling = hl.dsp.layout("focus l"),
-			dwindle = hl.dsp.window.cycle_next({ "next = false" }),
-			monocle = hl.dsp.layout("cycleprev"),
-			master = hl.dsp.layout("cycleprev"),
-		}
+		local binds = {}
 
-		if "next" == direction then
-			if tiled_next_binds[layout] then
-				hl.dispatch(tiled_next_binds[layout])
-			end
+		if direction == "next" then
+			binds.dwindle = hl.dsp.window.cycle_next({ "next = true" })
+			binds.monocle = hl.dsp.layout("cyclenext")
+			binds.master = hl.dsp.layout("cyclenext")
 		else
-			if tiled_prev_binds[layout] then
-				hl.dispatch(tiled_prev_binds[layout])
-			end
+			binds.dwindle = hl.dsp.window.cycle_next({ "next = false" })
+			binds.monocle = hl.dsp.layout("cycleprev")
+			binds.master = hl.dsp.layout("cycleprev")
+		end
+
+		if binds[layout] then
+			hl.dispatch(binds[layout])
 		end
 	end
 end
