@@ -26,6 +26,7 @@ let
     "swaync" = "swaync";
 
     "dolphinrc" = "kde/dolphin/dolphinrc";
+    "kservicemenurc" = "kde/dolphin/kservicemenurc";
   };
 in
 {
