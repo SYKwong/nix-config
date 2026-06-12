@@ -71,9 +71,12 @@ end
 
 function utils.toggle_workspace_layout()
 	local workspace = hl.get_active_workspace()
+	if not workspace then
+		return
+	end
 	local workspace_id = tostring(workspace.id)
 	local states = utils.load_workspace_states()
-	local current_layout = states[workspace_id] or workspace.layout or "master"
+	local current_layout = states[workspace_id] or workspace.tiled_layout or "master"
 	local next_layout = (current_layout == "master") and "scrolling" or "master"
 
 	states[workspace_id] = next_layout
@@ -174,6 +177,10 @@ function utils.cycle_window(direction)
 		end
 
 		local active_workspace = active_window.workspace
+		if not active_workspace then
+			return
+		end
+
 		local layout = active_workspace.tiled_layout
 
 		if active_window.floating then
@@ -220,6 +227,10 @@ function utils.scrolling_consume_expel(direction)
 
 	return function()
 		local workspace = hl.get_active_workspace()
+		if not workspace then
+			return
+		end
+
 		local layout = workspace.tiled_layout
 
 		if layout ~= "scrolling" then

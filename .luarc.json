@@ -2,7 +2,7 @@
   "workspace": {
     "library": [
       "/usr/share/hypr/stubs",
-      "./config/hypr/hyprland/lua"
+      "/run/current-system/sw/share/hypr/stubs"
     ]
   },
   "diagnostics": {
