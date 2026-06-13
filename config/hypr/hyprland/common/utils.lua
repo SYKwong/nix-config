@@ -23,18 +23,30 @@ utils.kitty_term = [[
     kitty -d "${CWD:-$HOME}"
 ]]
 
-utils.maximized_workaround = function()
-	local ws = hl.get_active_workspace().tiled_layout
-
-	if ws == "scrolling" then
-		local fullscreen_state = hl.get_active_window().fullscreen
-		if fullscreen_state == 2 then
-			hl.dispatch(hl.dsp.window.fullscreen({ mode = "fullscreen" }))
-		else
-			hl.dispatch(hl.dsp.layout("colresize +conf"))
+function utils.maximized_workaround()
+	return function()
+		local window = hl.get_active_window()
+		if not window then
+			return
 		end
-	else
-		hl.dispatch(hl.dsp.window.fullscreen({ mode = "maximized" }))
+
+		if window.floating then
+			hl.dispatch(hl.dsp.window.fullscreen({ mode = "maximized" }))
+			return
+		end
+
+		local layout = window.workspace.tiled_layout
+
+		if layout == "scrolling" then
+			local fullscreen_state = window.fullscreen
+			if fullscreen_state == 2 then
+				hl.dispatch(hl.dsp.window.fullscreen({ mode = "fullscreen" }))
+			else
+				hl.dispatch(hl.dsp.layout("colresize +conf"))
+			end
+		else
+			hl.dispatch(hl.dsp.window.fullscreen({ mode = "maximized" }))
+		end
 	end
 end
 

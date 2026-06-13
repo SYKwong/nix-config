@@ -20,7 +20,7 @@ hl.bind(mainMod .. " + Z", hl.dsp.exec_cmd(notification_center), { description =
 -- Window & System Management
 hl.bind(mainMod .. " + W", hl.dsp.window.close(), { description = "[Window] Close active window" })
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(reload_waybar), { description = "[System] Reload Waybar configuration" })
-hl.bind(mainMod .. " + F", utils.maximized_workaround, { description = "[Window] Maximize Window" })
+hl.bind(mainMod .. " + F", utils.maximized_workaround(), { description = "[Window] Maximize Window" })
 hl.bind(
 	mainMod .. " + SHIFT + F",
 	hl.dsp.window.fullscreen({ mode = "fullscreen" }),
