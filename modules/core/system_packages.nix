@@ -3,6 +3,7 @@
 {
   environment.systemPackages = with pkgs; [
     ffmpeg
+    mpv
     kitty
     qimgv
     wget
@@ -40,6 +41,7 @@
       enable = true;
       defaultApplications = {
         "image/*" = "qimgv.desktop";
+        "video/*" = "mpv.desktop";
       };
     };
   };

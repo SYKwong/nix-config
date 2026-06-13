@@ -32,6 +32,7 @@ let
     "btop"
     "uuctl"
     "qimgv"
+    "mpv"
   ];
 
   hiddenDesktopContent = name: ''
