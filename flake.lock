@@ -306,11 +306,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1781163771,
-        "narHash": "sha256-FjlOiKElFjKF7OL/Szj8VgsIzXNKNo5Q3V2EWQ2orBw=",
+        "lastModified": 1781249994,
+        "narHash": "sha256-CRjW7egS52oVINmy3ou/KVEICmngPKAhIR4AitJlkes=",
         "owner": "cjavad",
         "repo": "nixpille-helium",
-        "rev": "c1b3186a167ff03d2857c77eb8aba569cbfade9b",
+        "rev": "0218e095933f264c597aceb478224af137b5bc2d",
         "type": "github"
       },
       "original": {
@@ -326,11 +326,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1781189114,
-        "narHash": "sha256-5inaamLgUMWy+MOBE9ChF9QAF1o/74LFuHkI0W/9rqc=",
+        "lastModified": 1781305496,
+        "narHash": "sha256-g8Vv4Qfc7n+lgov97REu3X6BeJtvYY0hlSUZR1GrGQQ=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "486595d2cf49cfcd649b58a284fa11ac0e34da22",
+        "rev": "c87a39aa979acc4848016d2220c6238390d84779",
         "type": "github"
       },
       "original": {
@@ -523,11 +523,11 @@
         "systems": "systems"
       },
       "locked": {
-        "lastModified": 1781034432,
-        "narHash": "sha256-+UuS36un3lXLtKsGCYQnOn51hDhB+dZ1SHoHXClnV/0=",
+        "lastModified": 1781287460,
+        "narHash": "sha256-9hXtN4my7eBqHRVQ/t6FQZ4YqZ1KG6SsKSG4Hdtr+i0=",
         "owner": "nix-community",
         "repo": "nixvim",
-        "rev": "e9fbbd56eab78751ba4c166c31a1667042528ced",
+        "rev": "f2029d9a26266eb67f46b0c79bd0a3713839a57a",
         "type": "github"
       },
       "original": {
