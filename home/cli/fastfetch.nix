@@ -8,6 +8,12 @@
         separator = " ➜  ";
       };
 
+      logo = {
+        padding = {
+          top = 2;
+        };
+      };
+
       modules = [
         "break"
         {
@@ -82,7 +88,12 @@
         }
         {
           type = "memory";
-          key = " ├  ";
+          key = " ├  ";
+          keyColor = "33";
+        }
+        {
+          type = "swap";
+          key = " ├ 󰯍 ";
           keyColor = "33";
         }
         {
