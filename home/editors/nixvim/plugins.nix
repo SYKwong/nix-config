@@ -1,7 +1,6 @@
 {
   programs.nixvim.plugins = {
     nvim-autopairs.enable = true;
-    text-case.enable = true;
     gitsigns.enable = true;
     neo-tree = {
       enable = true;
