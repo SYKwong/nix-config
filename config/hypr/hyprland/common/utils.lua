@@ -82,14 +82,17 @@ function utils.save_workspace_states(states)
 end
 
 function utils.toggle_workspace_layout()
+	local default_layout <const> = "scrolling"
+	local secondary_layout <const> = "master"
+
 	local workspace = hl.get_active_workspace()
 	if not workspace then
 		return
 	end
 	local workspace_id = tostring(workspace.id)
 	local states = utils.load_workspace_states()
-	local current_layout = states[workspace_id] or workspace.tiled_layout or "master"
-	local next_layout = (current_layout == "master") and "scrolling" or "master"
+	local current_layout = states[workspace_id] or workspace.tiled_layout or default_layout
+	local next_layout = (current_layout == default_layout) and secondary_layout or default_layout
 
 	states[workspace_id] = next_layout
 	utils.save_workspace_states(states)
