@@ -123,3 +123,10 @@ hl.bind(
 	utils.scrolling_consume_expel("next"),
 	{ description = "[Window] Merge into the right column if alone, pops out if not" }
 )
+
+hl.bind(mainMod .. " + M ", utils.minimize_window(), { description = "[Window] Minimize window to a stack" })
+hl.bind(
+	mainMod .. " + SHIFT + M",
+	utils.restore_window(),
+	{ description = "[Window] Restore minimized window from the stack" }
+)

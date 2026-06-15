@@ -260,4 +260,17 @@ function utils.scrolling_consume_expel(direction)
 	end
 end
 
+function utils.minimize_window()
+	return function()
+		hl.dispatch(hl.dsp.window.move({ workspace = "special:minimize", follow = false }))
+	end
+end
+
+function utils.restore_window()
+	return function()
+		hl.dispatch(hl.dsp.workspace.toggle_special("minimize"))
+		hl.dispatch(hl.dsp.window.move({ workspace = "+0" }))
+	end
+end
+
 return utils
