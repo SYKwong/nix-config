@@ -17,6 +17,7 @@ let
     "hypr/hyprpaper.conf" = "hypr/hyprpaper/hyprpaper.conf";
     "hypr/mocha.conf" = "hypr/mocha.conf";
     "hypr/cat_on_line.png" = "hypr/hyprlock/cat_on_line.png";
+    "hypr/cat_on_line_fullscreen.png" = "hypr/hyprlock/cat_on_line_fullscreen.png";
 
     "waybar" = "waybar";
     "rofi" = "rofi";
