@@ -1,6 +1,6 @@
 hl.config({
 	general = {
-		layout = "master",
+		layout = "scrolling",
 	},
 	master = {
 		new_status = "slave",
