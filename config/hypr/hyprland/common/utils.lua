@@ -268,6 +268,11 @@ end
 
 function utils.restore_window()
 	return function()
+		local ws = hl.get_workspace("special:minimize")
+		if not ws then
+			return
+		end
+
 		hl.dispatch(hl.dsp.workspace.toggle_special("minimize"))
 		hl.dispatch(hl.dsp.window.move({ workspace = "+0" }))
 	end
