@@ -12,5 +12,6 @@
     ./system_packages.nix
     ./user.nix
     ./fish-shell.nix
+    ./flakpak.nix
   ];
 }

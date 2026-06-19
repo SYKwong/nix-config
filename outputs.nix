@@ -10,6 +10,7 @@ let
     stylix
     lanzaboote
     treefmt-nix
+    nix-flatpak
     ;
 
   system = "x86_64-linux";
@@ -50,16 +51,18 @@ in
         disko.nixosModules.disko
         home-manager.nixosModules.home-manager
         stylix.nixosModules.stylix
+        nix-flatpak.nixosModules.nix-flatpak
 
         ./modules/core
 
-        ./modules/home-manager
         ./modules/display-manager
-        ./modules/window-manager
-        ./modules/shell-scripts
-        ./modules/wireless
+        ./modules/gaming
+        ./modules/home-manager
         ./modules/input
         ./modules/misc
+        ./modules/shell-scripts
+        ./modules/window-manager
+        ./modules/wireless
 
         ./overlays
 

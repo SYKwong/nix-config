@@ -56,3 +56,61 @@ hl.window_rule({
 	size = "(monitor_w*0.5) (monitor_h*0.5)",
 	workspace = "3 silent",
 })
+
+hl.window_rule({
+	name = "steam",
+	match = {
+		class = "steam",
+		title = "negative:^Steam$",
+	},
+	float = true,
+	center = true,
+})
+
+hl.window_rule({
+	name = "protonfixes",
+	match = {
+		title = "ProtonFixes",
+	},
+	float = true,
+	center = true,
+	size = "(monitor_w*0.5) (monitor_h*0.5)",
+})
+
+hl.window_rule({
+	name = "protonqt",
+	match = {
+		class = "net.davidotek.pupgui2",
+	},
+	float = true,
+	center = true,
+	size = "(monitor_w*0.5) (monitor_h*0.5)",
+})
+
+hl.window_rule({
+	name = "Protontricks",
+	match = {
+		title = "Protontricks",
+	},
+	float = true,
+	center = true,
+	size = "(monitor_w*0.5) (monitor_h*0.5)",
+})
+
+hl.window_rule({
+	name = "Protontricks",
+	match = {
+		title = "^(Winetricks.*)$",
+	},
+	float = true,
+	center = true,
+	size = "(monitor_w*0.5) (monitor_h*0.5)",
+})
+
+hl.window_rule({
+	name = "steam games",
+	match = {
+		initial_class = "^(steam_app_.*)$",
+	},
+	maximize = true,
+})
