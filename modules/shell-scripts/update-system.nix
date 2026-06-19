@@ -1,7 +1,5 @@
 {
   pkgs,
-  hostname,
-  username,
   config_path,
   ...
 }:
@@ -18,7 +16,7 @@ pkgs.writeShellApplication {
   ];
 
   text = ''
-    REPO="${config_path}"
+    REPO=${config_path}
 
     cd "$REPO"
 
@@ -33,18 +31,7 @@ pkgs.writeShellApplication {
 
     echo "--- Running NixOS Rebuild ---"
 
-    if sudo nixos-rebuild switch --flake "$REPO#${hostname}"; then
-      echo "Live switch succeeded."
-    else
-      echo "Live switch failed. Making a new boot entry instead."
-
-      if sudo nixos-rebuild boot --flake "$REPO#${hostname}"; then
-        echo "Boot entry created successfully."
-      else
-        echo "Failed to build configuration."
-        exit 1
-      fi
-    fi
+    rebuild
 
     echo "--- Returning to $CURRENT_BRANCH ---"
 

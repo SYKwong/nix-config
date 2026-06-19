@@ -22,6 +22,7 @@ let
 
     update-available = import ./update-available.nix common;
     update-system = import ./update-system.nix common;
+    rebuild-system = import ./rebuild.nix common;
 
     rofi-menu = import ./rofi-menu.nix common;
     rofi-power-menu = import ./rofi-power-menu.nix common;
