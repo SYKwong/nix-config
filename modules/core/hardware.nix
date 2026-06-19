@@ -1,12 +1,11 @@
 {
   hardware = {
-    graphics.enable = true;
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
     enableRedistributableFirmware = true;
     keyboard.qmk.enable = true;
-    opengl = {
-      enable = true;
-      driSupport32Bit = true;
-    };
   };
   services.xserver.videoDrivers = [ "amdgpu" ];
 }
