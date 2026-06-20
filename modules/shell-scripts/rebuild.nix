@@ -45,7 +45,7 @@ pkgs.writeShellApplication {
         printf "Would you like to reboot now to apply the changes? (y/N): "
         read -r reply
         if [[ "$reply" =~ ^[Yy]$ ]]; then
-            sudo reboot
+            reboot
         fi
     fi
   '';
