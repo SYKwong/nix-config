@@ -54,11 +54,15 @@ window#waybar {
   margin-right: 17px;
 }
 
-#tray,
+#tray {
+    margin-left: 8px;
+}
+
 #custom-fcitx5 {
   margin-left: 17px;
 }
 
+#custom-expand-icon,
 #custom-update {
   margin-left: 17px;
   margin-right: 8px;

@@ -3,7 +3,6 @@
   "modules-center": [
     "clock",
     "hyprland/workspaces",
-    "group/tray-expander",
     "custom/fcitx5",
     "bluetooth",
     "network",
@@ -12,6 +11,7 @@
   ],
 
   "modules-right": [
+    "group/tray-expander",
     "custom/update",
     "custom/notification"
   ],
@@ -29,7 +29,6 @@
     "on-click": "activate",
     "format": "{icon}",
     "format-icons": {
-      "default": "",
       "1": "1",
       "2": "2",
       "3": "3",
@@ -39,21 +38,26 @@
       "7": "7",
       "8": "8",
       "9": "9",
-      "10": "0",
+      "10": "10",
       "active": "󱓻"
     },
     "persistent-workspaces": {
-      "1": [],
-      "2": [],
-      "3": [],
-      "4": [],
-      "5": []
+      "*": 5
     }
   },
 
   "clock": {
     "format": "{:L%I:%M %p %a %b %d}",
-    "tooltip": false
+    "tooltip-format": "<tt><small>{calendar}</small></tt>",
+    "calendar": {
+      "mode": "month",
+      "format": {
+        "months": "<span color='#e0e0e0'><b>{}</b></span>",
+        "days": "<span color='#b5b5b5'><b>{}</b></span>",
+        "weeks": "<span color='#7a7a7a'><b>W{}</b></span>",
+        "today": "<span color='#ffffff'><b><u>{}</u></b></span>"
+      }
+    }
   },
 
   "custom/update": {
@@ -121,15 +125,6 @@
     "format-no-controller": "",
     "tooltip-format": "Devices connected: {num_connections}",
     "on-click": "tui-wrap bluetui"
-  },
-
-  "group/tray-expander": {
-    "orientation": "inherit",
-    "drawer": {
-      "transition-duration": 600,
-      "children-class": "tray-group-item"
-    },
-    "modules": ["custom/expand-icon", "tray"]
   },
 
   "group/tray-expander": {
