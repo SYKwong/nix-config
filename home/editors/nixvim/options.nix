@@ -12,5 +12,6 @@
     signcolumn = "yes";
     scrolloff = 8;
     updatetime = 250;
+    clipboard = "unnamedplus";
   };
 }
