@@ -11,7 +11,7 @@
 
     lavender: rgba(180, 190, 254, 50%);
 
-    transparent: rgba (0,0,0,0%);
+    transparent: rgba(0,0,0,0%);
 
     background-color: @base;
 
@@ -68,12 +68,12 @@ element {
     background-color: @surface0;
 }
 
-element.selected.normal {
+element.selected {
     background-color: @overlay0;
 }
 
-element.alternate.normal {
-  background-color: inherit;
+element.alternate {
+  background-color: @base;
 }
 
 element-text, element-icon {
@@ -84,10 +84,9 @@ element-text, element-icon {
     text-color: @text;
 }
 
-element-text .active, element-text .urgent {
-    text-color: @base;
-}
-
-element-text {
-    font: "inherit";
+element normal.active,
+element alternate.active {
+    background-color: rgba(180,190,254,25%);
+    border: 1px;
+    border-color: @lavender;
 }
