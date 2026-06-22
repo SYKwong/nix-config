@@ -26,6 +26,7 @@ let
 
     # KDE stuff
     "org.kde.konsole"
+    "org.kde.ark"
 
     # Misc
     "nixos-manual"

@@ -9,7 +9,9 @@
     wget
     wiremix
     wl-clipboard
+    p7zip
 
+    kdePackages.ark
     kdePackages.dolphin
     kdePackages.konsole
     kdePackages.qtsvg
@@ -42,6 +44,9 @@
       defaultApplications = {
         "image/*" = "qimgv.desktop";
         "video/*" = "mpv.desktop";
+        "application/zip" = "org.kde.ark.desktop";
+        "application/x-7z-compressed" = "org.kde.ark.desktop";
+        "application/x-rar" = "org.kde.ark.desktop";
       };
     };
   };
