@@ -97,4 +97,5 @@ hl.window_rule({
 	name = "fullscreen-force-opaque",
 	match = { fullscreen_state_client = 2 },
 	force_rgbx = true,
+	opaque = true,
 })
