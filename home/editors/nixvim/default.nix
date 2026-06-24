@@ -13,6 +13,7 @@
     ./keymaps.nix
     ./ui.nix
     ./plugins.nix
+    ./term.nix
   ];
 
   programs.nixvim = {

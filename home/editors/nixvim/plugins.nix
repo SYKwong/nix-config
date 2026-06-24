@@ -7,6 +7,7 @@
       settings = {
         enable_git_status = true;
         window.width = 30;
+        close_if_last_window = true;
       };
     };
     telescope = {
@@ -61,5 +62,6 @@
     };
     lint.enable = true;
     nix.enable = true;
+    bufdelete.enable = true;
   };
 }
