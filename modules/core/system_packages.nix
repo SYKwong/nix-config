@@ -14,9 +14,11 @@
 
       kdePackages.ark
       kdePackages.dolphin
+      kdePackages.ffmpegthumbs
+      kdePackages.kio-extras
       kdePackages.konsole
-      kdePackages.qtsvg
       kdePackages.plasma-workspace
+      kdePackages.qtsvg
     ])
     ++ [
       inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
