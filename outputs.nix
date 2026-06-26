@@ -11,6 +11,7 @@ let
     lanzaboote
     treefmt-nix
     nix-flatpak
+    agenix
     ;
 
   system = "x86_64-linux";
@@ -52,6 +53,7 @@ in
         home-manager.nixosModules.home-manager
         stylix.nixosModules.stylix
         nix-flatpak.nixosModules.nix-flatpak
+        agenix.nixosModules.default
 
         ./modules/core
 
@@ -63,6 +65,7 @@ in
         ./modules/shell-scripts
         ./modules/window-manager
         ./modules/wireless
+        ./modules/secrets
 
         ./overlays
 

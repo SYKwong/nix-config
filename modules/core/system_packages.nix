@@ -1,22 +1,26 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 {
-  environment.systemPackages = with pkgs; [
-    ffmpeg
-    mpv
-    kitty
-    qimgv
-    wget
-    wiremix
-    wl-clipboard
-    p7zip
+  environment.systemPackages =
+    (with pkgs; [
+      ffmpeg
+      mpv
+      kitty
+      qimgv
+      wget
+      wiremix
+      wl-clipboard
+      p7zip
 
-    kdePackages.ark
-    kdePackages.dolphin
-    kdePackages.konsole
-    kdePackages.qtsvg
-    kdePackages.plasma-workspace
-  ];
+      kdePackages.ark
+      kdePackages.dolphin
+      kdePackages.konsole
+      kdePackages.qtsvg
+      kdePackages.plasma-workspace
+    ])
+    ++ [
+      inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
+    ];
 
   programs = {
     neovim = {

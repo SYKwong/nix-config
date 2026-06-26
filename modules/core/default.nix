@@ -13,5 +13,7 @@
     ./user.nix
     ./fish-shell.nix
     ./flakpak.nix
+    ./ssh.nix
+    ./networkshare.nix
   ];
 }
