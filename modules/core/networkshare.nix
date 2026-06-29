@@ -1,9 +1,14 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  username,
+  ...
+}:
 
 {
   environment.systemPackages = [ pkgs.cifs-utils ];
 
-  fileSystems."/mnt/nas" = {
+  fileSystems."/home/${username}/data" = {
     fsType = "cifs";
     device = "//192.168.50.32/data";
     options = [
