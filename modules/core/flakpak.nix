@@ -1,3 +1,6 @@
 {
-  services.flatpak.enable = true;
+  services.flatpak = {
+    enable = true;
+    update.onActivation = true;
+  };
 }

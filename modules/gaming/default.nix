@@ -1,5 +1,3 @@
-{ pkgs, ... }:
-
 {
   programs = {
     steam = {
@@ -9,15 +7,14 @@
 
     gamescope = {
       enable = true;
-      capSysNice = true;
+      enableWsi = true;
     };
   };
-
-  environment.systemPackages = [ pkgs.protonup-qt ];
 
   services.flatpak = {
     packages = [
       "com.github.Matoking.protontricks"
+      "net.davidotek.pupgui2" # protonup-qt
     ];
     overrides = {
       "com.github.Matoking.protontricks" = {

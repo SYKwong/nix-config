@@ -57,8 +57,9 @@ hl.window_rule({
 
 hl.window_rule({
 	name = "steam games",
-	match = { initial_class = "^(steam_app_.*)$" },
+	match = { initial_class = "^(steam_app_.*)$|^(gamescope)$" },
 	maximize = true,
+	float = false,
 })
 
 hl.window_rule({
