@@ -1,7 +1,10 @@
 [Show]
+compressfileitemaction=true
+extractfileitemaction=true
 forgetfileitemaction=true
 hidefileitemaction=false
 kactivitymanagerd_fileitem_linking_plugin=true
 movetonewfolderitemaction=true
 setfoldericonitemaction=true
 tagsfileitemaction=true
+wallpaperfileitemaction=true
