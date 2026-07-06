@@ -15,5 +15,6 @@
     ./flakpak.nix
     ./ssh.nix
     ./networkshare.nix
+    ./usb_drive.nix
   ];
 }
