@@ -20,7 +20,11 @@ hl.bind(mainMod .. " + Z", hl.dsp.exec_cmd(notification_center), { description =
 -- Window & System Management
 hl.bind(mainMod .. " + W", hl.dsp.window.close(), { description = "[Window] Close active window" })
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(reload_waybar), { description = "[System] Reload Waybar configuration" })
-hl.bind(mainMod .. " + F", utils.maximized_workaround(), { description = "[Window] Maximize Window" })
+hl.bind(
+	mainMod .. " + F",
+	hl.dsp.window.fullscreen({ mode = "maximized" }),
+	{ description = "[Window] Maximize Window" }
+)
 hl.bind(
 	mainMod .. " + SHIFT + F",
 	hl.dsp.window.fullscreen({ mode = "fullscreen" }),
@@ -31,6 +35,7 @@ hl.bind(
 	utils.toggle_workspace_layout,
 	{ description = "[Layout] Toggle layout of the current workspace" }
 )
+hl.bind(mainMod .. " + slash", hl.dsp.layout("colresize +conf"), { descrption = "[Layout] (Scrolling) Resize column" })
 
 -- Screenshots
 hl.bind(mainMod .. " + S", hl.dsp.exec_cmd(snip), { description = "[Screenshot] Capture area to file and clipboard" })

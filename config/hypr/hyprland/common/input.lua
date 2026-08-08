@@ -6,6 +6,7 @@ hl.config({
 		repeat_delay = 200,
 		touchpad = {
 			natural_scroll = true,
+			clickfinger_behavior = true,
 		},
 	},
 	cursor = {
