@@ -62,10 +62,11 @@ in
         ./modules/home-manager
         ./modules/input
         ./modules/misc
+        ./modules/secrets
         ./modules/shell-scripts
+        ./modules/vpn
         ./modules/window-manager
         ./modules/wireless
-        ./modules/secrets
 
         ./overlays
 
