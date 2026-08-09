@@ -6,6 +6,7 @@
     ./fastfetch.nix
     ./fzf.nix
     ./git.nix
+    ./opencode.nix
     ./yazi.nix
     ./zoxide.nix
   ];

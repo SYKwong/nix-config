@@ -8,4 +8,5 @@ let
 in
 {
   "smb-credentials.age".publicKeys = fw16;
+  "cloudflare-workers-ai-apikey.age".publicKeys = fw16;
 }
