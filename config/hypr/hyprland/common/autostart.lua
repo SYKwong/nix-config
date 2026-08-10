@@ -24,7 +24,6 @@ end
 hl.on("hyprland.start", function()
 	hl.exec_cmd("systemctl --user enable --now hyprpolkitagent.service")
 	hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
-	hl.exec_cmd("uwsm-app -- hypridle")
 	hl.exec_cmd("uwsm-app -- waybar")
 	hl.exec_cmd("uwsm-app -- swayosd-server")
 	hl.exec_cmd("uwsm-app -- foot --server")
