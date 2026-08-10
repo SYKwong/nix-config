@@ -1,20 +1,22 @@
 {
   imports = [
     ./boot.nix
+    ./flakpak.nix
     ./fonts.nix
     ./fwupd.nix
     ./hardware.nix
     ./kernel.nix
     ./keyring.nix
     ./networking.nix
+    ./networkshare.nix
+    ./security.nix
+    ./shell.nix
+    ./ssh.nix
     ./stylix.nix
     ./system.nix
     ./system_packages.nix
-    ./user.nix
-    ./fish-shell.nix
-    ./flakpak.nix
-    ./ssh.nix
-    ./networkshare.nix
     ./usb_drive.nix
+    ./user.nix
+    ./zram.nix
   ];
 }

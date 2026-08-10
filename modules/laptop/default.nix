@@ -12,5 +12,4 @@
   };
 
   services.fprintd.enable = true;
-  security.polkit.enable = true;
 }

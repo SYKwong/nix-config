@@ -5,7 +5,6 @@
     ./disko.nix
     ./hardware-configuration.nix
     ./luks.nix
-    ./zram.nix
   ];
 
   system.stateVersion = "26.05";
