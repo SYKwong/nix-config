@@ -9,6 +9,7 @@
     ./keyring.nix
     ./networking.nix
     ./networkshare.nix
+    ./no_password_rebuild.nix
     ./security.nix
     ./shell.nix
     ./ssh.nix
@@ -19,4 +20,6 @@
     ./user.nix
     ./zram.nix
   ];
+
+  system.stateVersion = "26.05";
 }

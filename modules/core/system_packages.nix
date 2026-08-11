@@ -11,6 +11,8 @@
       wiremix
       wl-clipboard
       p7zip
+      qmk
+      qmk_hid
 
       kdePackages.ark
       kdePackages.dolphin

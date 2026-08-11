@@ -7,5 +7,4 @@
     enableRedistributableFirmware = true;
     keyboard.qmk.enable = true;
   };
-  services.xserver.videoDrivers = [ "amdgpu" ];
 }
