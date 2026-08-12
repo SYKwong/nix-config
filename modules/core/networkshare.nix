@@ -24,6 +24,7 @@
       "dir_mode=0775"
 
       "x-systemd.automount"
+      "x-systemd.mount-timeout=10s"
     ];
   };
 }
