@@ -4,15 +4,16 @@
   environment.systemPackages =
     (with pkgs; [
       ffmpeg
-      mpv
       kitty
+      mpv
+      p7zip
       qimgv
+      qmk
+      qmk_hid
+      smartmontools
       wget
       wiremix
       wl-clipboard
-      p7zip
-      qmk
-      qmk_hid
 
       kdePackages.ark
       kdePackages.dolphin
