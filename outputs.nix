@@ -61,6 +61,7 @@ in
         ./modules/gaming
         ./modules/home-manager
         ./modules/input
+        ./modules/media
         ./modules/misc
         ./modules/secrets
         ./modules/shell-scripts
