@@ -26,6 +26,7 @@ hl.window_rule({
 	name = "vesktop_opacity",
 	match = { class = "vesktop" },
 	opacity = 0.9,
+	workspace = "3 silent",
 })
 
 hl.window_rule({
@@ -39,8 +40,6 @@ hl.window_rule({
 hl.window_rule({
 	name = "Line",
 	match = { class = "^(chrome-ophjlpahpchlmihnnnihgmmeilfjmjjc__index.html-Default)$" },
-	float = true,
-	center = true,
 	size = "(monitor_w*0.5) (monitor_h*0.5)",
 	workspace = "3 silent",
 })
