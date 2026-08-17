@@ -16,6 +16,7 @@
     ./stylix.nix
     ./system.nix
     ./system_packages.nix
+    ./twingate.nix
     ./usb_drive.nix
     ./user.nix
     ./zram.nix
