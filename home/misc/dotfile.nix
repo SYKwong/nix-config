@@ -25,6 +25,7 @@ let
     "foot" = "foot";
     "kitty" = "kitty";
     "swaync" = "swaync";
+    "glow" = "glow";
 
     "dolphinrc" = "kde/dolphin/dolphinrc";
     "kservicemenurc" = "kde/dolphin/kservicemenurc";

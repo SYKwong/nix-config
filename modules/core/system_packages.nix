@@ -4,6 +4,7 @@
   environment.systemPackages =
     (with pkgs; [
       ffmpeg
+      glow
       kitty
       mpv
       p7zip
