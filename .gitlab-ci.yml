@@ -4,6 +4,7 @@ default:
 stages:
   - test
   - maintenance
+  - stable
 
 verify-flake:
   stage: test
@@ -75,3 +76,40 @@ update-flake-mr:
             -o merge_request.merge_when_pipeline_succeeds
         fi
       fi
+
+create-weekly-stable:
+  stage: stable
+  image: alpine:latest
+
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $STABLE_RELEASE == "true" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+  before_script:
+    - apk add --no-cache git
+    - git config --global user.email "ci-bot@gitlab.com"
+    - git config --global user.name "Stable Release Bot"
+    - git remote set-url origin "https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
+
+  script:
+    - TAG_NAME="stable-$(date +%Y-%m-%d)"
+    - echo "Creating stable tag $TAG_NAME at $CI_COMMIT_SHA"
+
+    - git fetch --tags
+
+    - |
+      if git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
+        echo "Tag $TAG_NAME already exists."
+        exit 1
+      fi
+
+    - git tag "$TAG_NAME" "$CI_COMMIT_SHA"
+    - git push origin "$TAG_NAME"
+
+    - |
+      git tag -l 'stable-[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]' \
+        | sort -r \
+        | tail -n +13 \
+        | while read -r TAG; do
+            echo "Deleting old stable tag: $TAG"
+            git push origin --delete "$TAG"
+          done
