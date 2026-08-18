@@ -7,14 +7,26 @@
     enable = true;
     settings = {
       "permission" = {
-        "*" = "ask";
         "read" = "allow";
+        "list" = "allow";
         "glob" = "allow";
         "grep" = "allow";
+        "edit" = "allow";
+        "write" = "allow";
         "bash" = {
           "*" = "ask";
           "git status *" = "allow";
           "git diff *" = "allow";
+          "docker *" = "ask";
+          "curl *" = "ask";
+          "wget *" = "ask";
+          "ssh *" = "deny";
+          "sudo *" = "deny";
+          "rm *" = "ask";
+          "git commit *" = "deny";
+          "git push *" = "deny";
+          "git reset --hard *" = "deny";
+          "git clean *" = "deny";
         };
       };
       provider = {
