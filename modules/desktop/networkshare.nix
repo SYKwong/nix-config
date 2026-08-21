@@ -1,16 +1,20 @@
 {
   config,
-  pkgs,
   username,
   ...
 }:
 
-{
-  environment.systemPackages = [ pkgs.cifs-utils ];
+let
+  networkShare = import ../config/networkshare-config.nix { inherit username; };
+  inherit (networkShare) mountPath nasAddress shareName;
 
-  fileSystems."/home/${username}/data" = {
+in
+{
+
+  fileSystems.${mountPath} = {
     fsType = "cifs";
-    device = "//192.168.50.32/data";
+    device = "//${nasAddress}/${shareName}";
+
     options = [
       "credentials=${config.age.secrets.smb-credentials.path}"
 
