@@ -7,6 +7,11 @@ local snip_edit =
 	'GRIMBLAST_EDITOR="satty --filename" grimblast edit area && notify-send "Screenshot Saved to File and Clipboard"'
 local notification_center = "swaync-client -t"
 
+local mute_unmute_system = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+
+local lock_screen = "pidof hyprlock || hyprlock"
+local logout = 'loginctl terminate-user "$USER"'
+
 local mainMod = "SUPER"
 
 local utils = require("hyprland/common/utils")
@@ -31,7 +36,7 @@ hl.bind(
 	{ description = "[Window] Fullscreen" }
 )
 hl.bind(
-	mainMod .. " + L",
+	mainMod .. " + SEMICOLON",
 	utils.toggle_workspace_layout,
 	{ description = "[Layout] Toggle layout of the current workspace" }
 )
@@ -135,3 +140,11 @@ hl.bind(
 	utils.restore_window(),
 	{ description = "[Window] Restore minimized window from the stack" }
 )
+
+-- Audio
+hl.bind(mainMod .. " + SHIFT + M", hl.dsp.exec_cmd(mute_unmute_system), { description = "[Audio] Mute/Unmute System" })
+
+-- Power
+hl.bind(mainMod .. " + L", hl.dsp.exec_cmd(lock_screen), { description = "[Power] Lock Screen" })
+
+hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd(logout), { description = "[Power] Logout" })

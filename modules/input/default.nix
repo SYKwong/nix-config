@@ -47,6 +47,10 @@
           punctuation.globalSection = {
             Enabled = "False";
           };
+
+          quickphrase.globalSection = {
+            TriggerKey = "";
+          };
         };
       };
     };
