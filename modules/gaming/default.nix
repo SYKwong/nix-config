@@ -1,8 +1,12 @@
+{ pkgs, ... }:
+
 {
   programs = {
     steam = {
       enable = true;
       localNetworkGameTransfers.openFirewall = true;
+      gamescopeSession.enable = true;
+      protontricks.enable = true;
     };
 
     gamescope = {
@@ -11,19 +15,5 @@
     };
   };
 
-  services.flatpak = {
-    packages = [
-      "com.github.Matoking.protontricks"
-      "net.davidotek.pupgui2" # protonup-qt
-    ];
-    overrides = {
-      "com.github.Matoking.protontricks" = {
-        Context = {
-          filesystems = [
-            "~/.steam"
-          ];
-        };
-      };
-    };
-  };
+  environment.systemPackages = [ pkgs.protonup-qt ];
 }
