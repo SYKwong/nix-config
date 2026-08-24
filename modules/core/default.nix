@@ -3,7 +3,6 @@
     ./boot.nix
     ./flakpak.nix
     ./fonts.nix
-    ./fwupd.nix
     ./hardware.nix
     ./kernel.nix
     ./keyring.nix
@@ -11,6 +10,7 @@
     ./no_password_rebuild.nix
     ./security.nix
     ./shell.nix
+    ./splash_screen.nix
     ./ssh.nix
     ./stylix.nix
     ./system.nix
@@ -21,4 +21,5 @@
   ];
 
   system.stateVersion = "26.05";
+  documentation.nixos.enable = false;
 }

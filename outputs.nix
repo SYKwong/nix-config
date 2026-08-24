@@ -28,7 +28,6 @@ let
         ./modules/framework
         ./modules/laptop
         ./modules/lanzaboote
-        ./modules/fingerprint
       ];
     };
   };
