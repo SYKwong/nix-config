@@ -32,6 +32,10 @@
           "Hotkey/TriggerKeys" = {
             "0" = "Alt+Shift+Shift_L";
           };
+          "Behavior" = {
+            "ShareInputState" = "All";
+            "ShowInputMethodInformation" = "False";
+          };
         };
 
         addons = {
