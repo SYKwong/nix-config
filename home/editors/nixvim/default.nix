@@ -19,9 +19,5 @@
   programs.nixvim = {
     enable = true;
     defaultEditor = true;
-
-    # https://github.com/nix-community/nixvim/issues/4460
-    # Remove the following line when the issue is resolved
-    nixpkgs.useGlobalPackages = true;
   };
 }
