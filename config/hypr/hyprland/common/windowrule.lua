@@ -99,3 +99,9 @@ hl.window_rule({
 	force_rgbx = true,
 	opaque = true,
 })
+
+hl.window_rule({
+	name = "music players",
+	match = { initial_title = "Supersonic" },
+	workspace = "4",
+})
