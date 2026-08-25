@@ -9,6 +9,7 @@ require("hyprland/common/misc")
 require("hyprland/common/gesture")
 require("hyprland/common/layout")
 require("hyprland/common/media")
+require("hyprland/common/workspacerule")
 
 local utils = require("hyprland/common/utils")
 
