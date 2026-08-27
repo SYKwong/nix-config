@@ -3,8 +3,6 @@
 let
   # Apps that xdg.desktopEntries cannot hide
   annoyingApps = [
-    "rofi"
-    "rofi-theme-selector"
   ];
 
   appsToHide = [
@@ -29,11 +27,11 @@ let
     #"org.kde.ark"
 
     # Misc
-    "nixos-manual"
     "btop"
     "uuctl"
     "qimgv"
     "mpv"
+    "dev.noctalia.Noctalia"
   ];
 
   hiddenDesktopContent = name: ''

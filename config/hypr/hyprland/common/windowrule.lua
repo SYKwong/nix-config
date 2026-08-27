@@ -105,3 +105,10 @@ hl.window_rule({
 	match = { initial_title = "Supersonic" },
 	workspace = "4",
 })
+
+hl.window_rule({
+	match = { class = "dev.noctalia.Noctalia" },
+	float = true,
+	center = true,
+	size = "(monitor_w*0.5) (monitor_h*0.5)",
+})

@@ -1,7 +1,5 @@
 {
   pkgs,
-  hostname,
-  username,
   config_path,
   ...
 }:

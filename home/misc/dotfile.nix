@@ -13,11 +13,6 @@ let
     "hypr/hyprland/common" = "hypr/hyprland/common";
     "hypr/hypridle_hosts.conf" = "hypr/hypridle/hosts/${hostname}.conf";
     "hypr/hypridle.conf" = "hypr/hypridle/hypridle.conf";
-    "hypr/hyprlock.conf" = "hypr/hyprlock/hyprlock.conf";
-    "hypr/hyprpaper.conf" = "hypr/hyprpaper/hyprpaper.conf";
-    "hypr/mocha.conf" = "hypr/mocha.conf";
-    "hypr/cat_on_line.png" = "hypr/hyprlock/cat_on_line.png";
-    "hypr/cat_on_line_fullscreen.png" = "hypr/hyprlock/cat_on_line_fullscreen.png";
 
     "waybar" = "waybar";
     "rofi" = "rofi";

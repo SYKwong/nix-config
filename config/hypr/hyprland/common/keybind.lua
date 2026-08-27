@@ -1,16 +1,23 @@
 local terminal = "kitty"
 local fileManager = "yazi"
-local app_launcher = "pkill -x rofi || rofi -show drun"
-local reload_waybar = "pkill waybar; waybar &"
-local snip = 'grimblast -f copysave area && notify-send "Screenshot Saved to File and Clipboard"'
-local snip_edit =
-	'GRIMBLAST_EDITOR="satty --filename" grimblast edit area && notify-send "Screenshot Saved to File and Clipboard"'
-local notification_center = "swaync-client -t"
 
-local mute_unmute_system = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+local noc = "noctalia msg "
+local app_launcher = noc .. "panel-toggle launcher"
+local snip = noc .. "screenshot-region"
 
-local lock_screen = "pidof hyprlock || hyprlock"
-local logout = 'loginctl terminate-user "$USER"'
+local volume_toggle = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+local volume_up = noc .. "volume-up"
+local volume_down = noc .. "volume-down"
+
+local brightness_up = noc .. "brightness-up"
+local brightness_down = noc .. "brightness-down"
+
+local media_toggle = noc .. "media toggle"
+local media_next = noc .. "media next"
+local media_prev = noc .. "media previous"
+
+local lock_screen = noc .. "session lock"
+local session_menu = noc .. "panel-toggle session"
 
 local mainMod = "SUPER"
 
@@ -18,13 +25,10 @@ local utils = require("hyprland/common/utils")
 
 -- Core Applications & Menus
 hl.bind(mainMod .. " + SUPER_L", hl.dsp.exec_cmd(app_launcher), { description = "[App] Launch Application Menu" })
-hl.bind("SUPER + SPACE", hl.dsp.exec_cmd("rofi-menu"), { description = "[App] Launch Custom Rofi Menu" })
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(utils.kitty_term), { description = "[App] Launch Kitty Terminal" })
-hl.bind(mainMod .. " + Z", hl.dsp.exec_cmd(notification_center), { description = "[App] Toggle Notification Center" })
 
 -- Window & System Management
 hl.bind(mainMod .. " + W", hl.dsp.window.close(), { description = "[Window] Close active window" })
-hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(reload_waybar), { description = "[System] Reload Waybar configuration" })
 hl.bind(
 	mainMod .. " + F",
 	hl.dsp.window.fullscreen({ mode = "maximized" }),
@@ -44,11 +48,6 @@ hl.bind(mainMod .. " + slash", hl.dsp.layout("colresize +conf"), { descrption = 
 
 -- Screenshots
 hl.bind(mainMod .. " + S", hl.dsp.exec_cmd(snip), { description = "[Screenshot] Capture area to file and clipboard" })
-hl.bind(
-	mainMod .. " + SHIFT + S",
-	hl.dsp.exec_cmd(snip_edit),
-	{ description = "[Screenshot] Capture area and edit with Satty" }
-)
 
 -- Workspace Cycling
 hl.bind(mainMod .. " + TAB", hl.dsp.focus({ workspace = "e+1" }), { description = "[Workspace] Focus next workspace" })
@@ -141,10 +140,37 @@ hl.bind(
 	{ description = "[Window] Restore minimized window from the stack" }
 )
 
--- Audio
-hl.bind(mainMod .. " + SHIFT + M", hl.dsp.exec_cmd(mute_unmute_system), { description = "[Audio] Mute/Unmute System" })
-
 -- Power
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd(lock_screen), { description = "[Power] Lock Screen" })
 
-hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd(logout), { description = "[Power] Logout" })
+hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd(session_menu), { description = "[Power] Session Menu" })
+
+-- Audio
+hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(volume_up), { repeating = true, description = "[Audio] Raise volume" })
+hl.bind(
+	"XF86AudioLowerVolume",
+	hl.dsp.exec_cmd(volume_down),
+	{ repeating = true, description = "[Audio] Lower volume" }
+)
+hl.bind("XF86AudioMute", hl.dsp.exec_cmd(volume_toggle), { locked = true, description = "[Audio] Toggle mute" })
+
+-- Screen Brightness
+hl.bind(
+	"XF86MonBrightnessUp",
+	hl.dsp.exec_cmd(brightness_up),
+	{ repeating = true, description = "[Display] Raise brightness" }
+)
+hl.bind(
+	"XF86MonBrightnessDown",
+	hl.dsp.exec_cmd(brightness_down),
+	{ repeating = true, description = "[Display] Lower brightness" }
+)
+
+-- Media Player Control (using playerctl)
+hl.bind(
+	"XF86AudioPlay",
+	hl.dsp.exec_cmd(media_toggle),
+	{ locked = true, description = "[Media] Toggle Play/Pause with OSD" }
+)
+hl.bind("XF86AudioNext", hl.dsp.exec_cmd(media_next), { locked = true, description = "[Media] Next track" })
+hl.bind("XF86AudioPrev", hl.dsp.exec_cmd(media_prev), { locked = true, description = "[Media] Previous track" })

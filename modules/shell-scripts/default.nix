@@ -18,24 +18,13 @@ let
   };
 
   scripts = {
-    fcitx5-tray = import ./fcitx5-tray.nix common;
-
-    update-available = import ./update-available.nix common;
     update-system = import ./update-system.nix common;
     rebuild-system = import ./rebuild.nix common;
-
-    rofi-menu = import ./rofi-menu.nix common;
-    rofi-power-menu = import ./rofi-power-menu.nix common;
-    rofi-profile-menu = import ./rofi-profile-menu.nix common;
-    rofi-wallpaper-picker = import ./rofi-wallpaper-picker.nix common;
-    rofi-keybind = import ./rofi-keybind.nix common;
-    gif-maker = import ./gif-maker.nix common;
   };
 in
 {
   imports = [
     ./tui-wrap.nix
-    ./reload-waybar.nix
   ];
 
   environment.systemPackages = builtins.attrValues scripts;

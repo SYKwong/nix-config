@@ -13,7 +13,6 @@
       qmk_hid
       smartmontools
       wget
-      wiremix
       wl-clipboard
 
       kdePackages.ark
@@ -61,5 +60,5 @@
       };
     };
   };
-
+  services.upower.enable = true;
 }

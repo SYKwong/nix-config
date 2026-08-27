@@ -3,6 +3,7 @@
     ./browsers
     ./cli
     ./core
+    ./desktop
     ./editors
     ./misc
     ./shell

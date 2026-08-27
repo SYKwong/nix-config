@@ -1,6 +1,5 @@
 {
   config,
-  pkgs,
   lib,
   ...
 }:
@@ -20,6 +19,5 @@ in
         };
       };
     };
-    environment.systemPackages = with pkgs; [ bluetui ];
   };
 }
