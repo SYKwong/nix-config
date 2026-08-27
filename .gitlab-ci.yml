@@ -26,7 +26,15 @@ verify-flake:
 
     - when: manual
       allow_failure: true
+
   script:
+    - nix fmt
+    - |
+      if ! git diff --quiet; then
+        echo "Formatting changes detected. Run 'nix fmt' locally."
+        git diff
+        exit 1
+      fi
     - nix flake check --extra-experimental-features "nix-command flakes"
 
 update-flake-mr:
