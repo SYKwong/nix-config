@@ -1,6 +1,5 @@
 {
   config,
-  hostname,
   username,
   ...
 }:
@@ -11,8 +10,6 @@ let
   files = {
     "hypr/hyprland.lua" = "hypr/hyprland/hyprland.lua";
     "hypr/hyprland/common" = "hypr/hyprland/common";
-    "hypr/hypridle_hosts.conf" = "hypr/hypridle/hosts/${hostname}.conf";
-    "hypr/hypridle.conf" = "hypr/hypridle/hypridle.conf";
 
     "waybar" = "waybar";
     "rofi" = "rofi";

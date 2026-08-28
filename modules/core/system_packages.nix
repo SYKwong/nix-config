@@ -3,6 +3,7 @@
 {
   environment.systemPackages =
     (with pkgs; [
+      brightnessctl
       ffmpeg
       glow
       kitty
