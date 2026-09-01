@@ -2,6 +2,7 @@
   inputs,
   username,
   hostname,
+  localLLM,
   ...
 }:
 
@@ -11,7 +12,14 @@
     useUserPackages = true;
     backupFileExtension = "backup";
 
-    extraSpecialArgs = { inherit inputs username hostname; };
+    extraSpecialArgs = {
+      inherit
+        inputs
+        username
+        hostname
+        localLLM
+        ;
+    };
 
     users."${username}" =
       { ... }:

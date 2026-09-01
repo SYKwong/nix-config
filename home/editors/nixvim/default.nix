@@ -13,6 +13,7 @@
     ./keymaps.nix
     ./ui.nix
     ./plugins.nix
+    ./plugins-minuet.nix
     ./term.nix
   ];
 
