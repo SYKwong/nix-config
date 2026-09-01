@@ -22,6 +22,7 @@ let
     framework16 = {
       username = "fw16-kyle";
       localLLM = true;
+      iGPUOnly = true;
       extraModules = [
         nixos-hardware.nixosModules.framework-16-7040-amd
         lanzaboote.nixosModules.lanzaboote
@@ -45,7 +46,7 @@ in
       system = system;
       specialArgs = {
         inherit inputs;
-        inherit (info) username localLLM;
+        inherit (info) username localLLM iGPUOnly;
         hostname = name;
       };
 
