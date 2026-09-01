@@ -61,5 +61,7 @@
       };
     };
   };
+
+  # Enabling upower for Noctalia battery monitoring
   services.upower.enable = true;
 }
