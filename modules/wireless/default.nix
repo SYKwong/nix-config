@@ -16,16 +16,12 @@
   ];
 
   options.custom.wireless = {
-    wifi.enable = lib.mkOption {
-      type = lib.types.bool;
+    wifi.enable = lib.mkEnableOption "WiFI Support" // {
       default = true;
-      description = "Enable WiFi support. Default is true.";
     };
 
-    bluetooth.enable = lib.mkOption {
-      type = lib.types.bool;
+    bluetooth.enable = lib.mkEnableOption "Bluetooth Support" // {
       default = true;
-      description = "Enable Bluetooth support. Default is true.";
     };
   };
 }
