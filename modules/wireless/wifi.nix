@@ -9,8 +9,12 @@ let
 in
 {
   config = lib.mkIf cfg.enable {
-    networking.wireless.iwd.enable = true;
-    networking.networkmanager.wifi.backend = "iwd";
-    networking.networkmanager.wifi.powersave = true;
+    networking = {
+      wireless.iwd.enable = true;
+      networkmanager.wifi = {
+        backend = "iwd";
+        powersave = true;
+      };
+    };
   };
 }
