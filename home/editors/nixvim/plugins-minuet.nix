@@ -1,7 +1,7 @@
-{ lib, localLLM, ... }:
+{ lib, osConfig, ... }:
 
 {
-  programs.nixvim.plugins.minuet = lib.mkIf localLLM {
+  programs.nixvim.plugins.minuet = lib.mkIf osConfig.custom.ai.enable {
     enable = true;
 
     settings = {

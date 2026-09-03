@@ -22,8 +22,6 @@ let
   hosts = {
     framework16 = {
       username = "fw16-kyle";
-      localLLM = true;
-      iGPUOnly = true;
       extraModules = [
         nixos-hardware.nixosModules.framework-16-7040-amd
         lanzaboote.nixosModules.lanzaboote
@@ -44,10 +42,10 @@ in
   nixosConfigurations = nixpkgs.lib.mapAttrs (
     name: info:
     nixpkgs.lib.nixosSystem {
-      system = system;
+      inherit system;
       specialArgs = {
         inherit inputs pkgs-stable;
-        inherit (info) username localLLM iGPUOnly;
+        inherit (info) username;
         hostname = name;
       };
 
