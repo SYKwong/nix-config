@@ -11,12 +11,8 @@ let
     "hypr/hyprland.lua" = "hypr/hyprland/hyprland.lua";
     "hypr/hyprland/common" = "hypr/hyprland/common";
 
-    "waybar" = "waybar";
-    "rofi" = "rofi";
-    "swayosd" = "swayosd";
     "foot" = "foot";
     "kitty" = "kitty";
-    "swaync" = "swaync";
     "glow" = "glow";
 
     "dolphinrc" = "kde/dolphin/dolphinrc";
@@ -25,5 +21,5 @@ let
   };
 in
 {
-  xdg.configFile = builtins.mapAttrs (name: value: { source = symlink value; }) files;
+  xdg.configFile = builtins.mapAttrs (_: value: { source = symlink value; }) files;
 }

@@ -11,7 +11,6 @@ pkgs.writeShellApplication {
     git
     nixos-rebuild
     procps
-    waybar
     coreutils
   ];
 
@@ -41,8 +40,6 @@ pkgs.writeShellApplication {
       echo "--- Restoring stashed changes ---"
       git stash pop
     fi
-
-    pkill -RTMIN+7 waybar || true
 
     read -n 1 -s -r -p "Press any key to exit..."
     echo
