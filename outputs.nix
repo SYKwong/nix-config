@@ -16,6 +16,7 @@ let
 
   system = "x86_64-linux";
   pkgs = nixpkgs.legacyPackages.${system};
+  pkgs-stable = nixpkgs-stable.legacyPackages.${system};
   treefmtEval = treefmt-nix.lib.evalModule pkgs ./treefmt;
 
   hosts = {
@@ -45,7 +46,7 @@ in
     nixpkgs.lib.nixosSystem {
       system = system;
       specialArgs = {
-        inherit inputs;
+        inherit inputs pkgs-stable;
         inherit (info) username localLLM iGPUOnly;
         hostname = name;
       };
