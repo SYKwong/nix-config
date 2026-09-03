@@ -44,7 +44,7 @@ hl.bind(
 	utils.toggle_workspace_layout,
 	{ description = "[Layout] Toggle layout of the current workspace" }
 )
-hl.bind(mainMod .. " + slash", hl.dsp.layout("colresize +conf"), { descrption = "[Layout] (Scrolling) Resize column" })
+hl.bind(mainMod .. " + slash", hl.dsp.layout("colresize +conf"), { description = "[Layout] (Scrolling) Resize column" })
 
 -- Screenshots
 hl.bind(mainMod .. " + S", hl.dsp.exec_cmd(snip), { description = "[Screenshot] Capture area to file and clipboard" })

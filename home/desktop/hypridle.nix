@@ -4,11 +4,11 @@ let
 
   host_listeners = {
     framework16 = [
-      # Trun off keyboard backlight after 5.5 minutes
+      # Turn off keyboard backlight after 5.5 minutes
       {
         timeout = 330;
         on-timeout = "kb-light-manager off 32ac 0012";
-        on-resume = "kb-light-manager on 32ab 0012";
+        on-resume = "kb-light-manager on 32ac 0012";
       }
 
       # Suspend after 10 minutes
@@ -47,7 +47,7 @@ in
         {
           timeout = 330;
           on-timeout = "hyprctl dispatch 'hl.dsp.dpms({ action = \"disable\" })'";
-          on-resume = "hyprctl dispatch 'hl.dsp.dpms({ action = \"enable\" })' ;; brightnessctl -r";
+          on-resume = "hyprctl dispatch 'hl.dsp.dpms({ action = \"enable\" })' ; brightnessctl -r";
         }
       ]
       ++ host_listeners.${hostname};

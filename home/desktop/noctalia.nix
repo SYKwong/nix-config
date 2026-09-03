@@ -127,7 +127,7 @@ in
             type = "clock";
 
             settings = {
-              backgsound_opacity = 0.0;
+              background_opacity = 0.0;
               center_text = false;
               color = "outline";
               format = "{:%m/%d}\\n{::%-I:%M %p}";
