@@ -1,5 +1,4 @@
 {
   imports = [
-    ./cachyos-kernel.nix
   ];
 }
