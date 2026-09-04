@@ -4,6 +4,7 @@
   environment.systemPackages =
     (with pkgs; [
       brightnessctl
+      deadnix
       ffmpeg
       glow
       kitty
@@ -13,6 +14,7 @@
       qmk
       qmk_hid
       smartmontools
+      statix
       wget
       wl-clipboard
 
