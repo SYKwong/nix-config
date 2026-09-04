@@ -13,6 +13,8 @@
       enable = true;
       enableWsi = true;
     };
+
+    gamemode.enable = true;
   };
 
   environment.systemPackages = [ pkgs.protonup-qt ];
