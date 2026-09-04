@@ -1,7 +1,6 @@
-{ inputs, lib, ... }:
+{ inputs, ... }:
 
 {
-  programs.neovim.enable = lib.mkForce false;
   stylix.targets.nixvim.enable = false;
   imports = [
     inputs.nixvim.homeModules.nixvim
@@ -20,5 +19,7 @@
   programs.nixvim = {
     enable = true;
     defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
   };
 }
