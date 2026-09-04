@@ -21,6 +21,7 @@ let
     update-system = import ./update-system.nix common;
     rebuild-system = import ./rebuild.nix common;
     kb-light-manager = import ./kb-light-manager.nix common;
+    rofi-keybind = import ./rofi-keybind.nix common;
   };
 in
 {

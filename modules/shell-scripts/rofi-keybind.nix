@@ -86,48 +86,147 @@ pkgs.writeShellApplication {
         -dmenu \
         -i \
         -p "󰍉 Keybind Cheat Sheet " \
+        -kb-remove-to-eol "" \
+        -kb-accept-entry "Return,KP_Enter" \
+        -kb-row-up "Up,Control+k" \
+        -kb-row-down "Down,Control+j" \
+        -kb-cancel "Escape" \
+        -scroll-method 1 \
         -theme-str '
+            * {
+                background:                  rgba(30, 30, 46, 80%);
+                background-color:            transparent;
+                foreground:                  #cdd6f4;
+                text-color:                  #cdd6f4;
+                border-color:                #b4befe;
+                separatorcolor:              transparent;
+
+                normal-background:           transparent;
+                normal-foreground:           #cdd6f4;
+                alternate-normal-background: transparent;
+                alternate-normal-foreground: #cdd6f4;
+                selected-normal-background:  rgba(108, 112, 134, 60%);
+                selected-normal-foreground:  #ffffff;
+
+                active-background:           transparent;
+                active-foreground:           #b4befe;
+                alternate-active-background: transparent;
+                alternate-active-foreground: #b4befe;
+                selected-active-background:  rgba(108, 112, 134, 60%);
+                selected-active-foreground:  #ffffff;
+
+                urgent-background:           transparent;
+                urgent-foreground:           #f38ba8;
+                alternate-urgent-background: transparent;
+                alternate-urgent-foreground: #f38ba8;
+                selected-urgent-background:  #f38ba8;
+                selected-urgent-foreground:  #1e1e2e;
+
+                font:                        "JetBrainsMono Nerd Font 13";
+            }
+
             window {
-                width: 1100px;
-                location: center;
-                anchor: center;
+                width:            1100px;
+                location:         center;
+                anchor:           center;
+                border:           2px;
+                border-radius:    12px;
+                border-color:     #b4befe;
+                background-color: rgba(30, 30, 46, 80%);
             }
 
             mainbox {
                 orientation: vertical;
-                padding: 10px;
-                children: [ inputbar, listview ];
+                padding:     14px;
+                children:    [ inputbar, listview ];
+            }
+
+            inputbar {
+                padding:  0px 0px 10px 0px;
+                spacing:  8px;
+                children: [ prompt, entry ];
+            }
+
+            prompt {
+                text-color: #b4befe;
+                margin:     0px 8px 0px 0px;
+            }
+
+            entry {
+                text-color: #cdd6f4;
             }
 
             listview {
-                columns: 1;
-                lines: 15;
-                spacing: 22px;
-                cycle: true;
-                fixed-height: false;
-                scrollbar: false;
+                columns:       1;
+                lines:         15;
+                spacing:       6px;
+                cycle:         true;
+                fixed-height:  false;
+                scrollbar:     false;
+                border:        0px;
+                border-color:  transparent;
             }
 
             element {
-                orientation: horizontal;
-                padding: 6px 16px;
-                border-radius: 4px;
+                padding:       6px 12px;
+                border-radius: 8px;
+                cursor:        pointer;
+            }
+
+            element normal.normal {
+                background-color: transparent;
+                text-color:       #cdd6f4;
+            }
+
+            element alternate.normal {
+                background-color: transparent;
+                text-color:       #cdd6f4;
+            }
+
+            element selected.normal {
+                background-color: rgba(108, 112, 134, 60%);
+                text-color:       #ffffff;
+            }
+
+            element normal.active {
+                background-color: rgba(180, 190, 254, 25%);
+                text-color:       #b4befe;
+            }
+
+            element alternate.active {
+                background-color: rgba(180, 190, 254, 25%);
+                text-color:       #b4befe;
+            }
+
+            element selected.active {
+                background-color: rgba(108, 112, 134, 60%);
+                text-color:       #ffffff;
+            }
+
+            element-text {
+                background-color: transparent;
+                text-color:       inherit;
+                cursor:           inherit;
             }
 
             element-icon {
                 enabled: false;
             }
 
-            element-text {
-                expand: true;
-                font: "Monospace 15";
-                horizontal-align: 0.0;
-                margin: 0px;
-                padding: 0px;
-            }
-
             num-filtered-rows { enabled: false; }
             num-rows { enabled: false; }
+
+            error-message {
+                padding:          16px;
+                border:           2px;
+                border-radius:    12px;
+                border-color:     #f38ba8;
+                background-color: #1e1e2e;
+            }
+
+            textbox {
+                text-color:       #f38ba8;
+            }
         ' > /dev/null
 
   '';

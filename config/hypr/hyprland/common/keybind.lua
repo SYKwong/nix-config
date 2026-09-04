@@ -26,6 +26,7 @@ local utils = require("hyprland/common/utils")
 -- Core Applications & Menus
 hl.bind(mainMod .. " + SUPER_L", hl.dsp.exec_cmd(app_launcher), { description = "[App] Launch Application Menu" })
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(utils.kitty_term), { description = "[App] Launch Kitty Terminal" })
+hl.bind(mainMod .. " + H", hl.dsp.exec_cmd("rofi-keybinds"), { description = "[Help] Show Keybind Cheat Sheet" })
 
 -- Window & System Management
 hl.bind(mainMod .. " + W", hl.dsp.window.close(), { description = "[Window] Close active window" })
