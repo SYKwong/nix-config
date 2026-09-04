@@ -8,7 +8,5 @@
       group = "100";
       mode = "0400";
     };
-
-    wireguard-fw16.file = ../../secrets/wireguard-fw16.age;
   };
 }
