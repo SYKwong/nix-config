@@ -6,13 +6,15 @@
 }:
 
 pkgs.writeShellApplication {
-  name = "rebuild"; # This becomes your new command name
+  name = "rebuild";
 
   runtimeInputs = [
+    pkgs.binutils
     pkgs.coreutils
-    pkgs.gnused
+    pkgs.gawk
+    pkgs.gnugrep
     pkgs.nixos-rebuild
-    pkgs.nettools
+    pkgs.systemd
   ];
 
   text = ''
