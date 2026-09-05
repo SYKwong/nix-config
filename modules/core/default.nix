@@ -19,8 +19,4 @@
     ./user.nix
     ./zram.nix
   ];
-
-  nix.settings.warn-dirty = false;
-  system.stateVersion = "26.05";
-  documentation.nixos.enable = false;
 }
