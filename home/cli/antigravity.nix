@@ -95,6 +95,7 @@
       - Provide clickable markdown links with `file://` scheme for modified files and code symbols.
 
       ## Git & Workflow
+      - Main Branch Protection: Never commit or push directly to `main`. Always create a feature or fix branch for any code changes.
       - Branching: Before starting a new task, proactively ask the user if they would like to create a new branch for the work (and create/switch to it if approved).
       - Control: The user handles git commits, MR/PR creation, and merging manually. The agent should only prepare code changes, run formatters/linters, and suggest single-line commit messages unless explicitly instructed.
       - Commit messages: Strictly single-line Conventional Commits (e.g. `feat(...): ...`, `fix(...): ...`). Keep extended details for the MR/PR description.
