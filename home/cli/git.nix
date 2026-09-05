@@ -10,13 +10,18 @@
           email = "${username}@example.com";
         };
 
-        # git confit options
+        # git config options
         init.defaultBranch = "main";
+        branch.sort = "-committerdate";
+        tag.sort = "version:refname";
+        diff.algorithm = "histogram";
+        diff.colorMoved = "default";
         merge.conflictstyle = "zdiff3";
         push.default = "simple";
         push.autoSetupRemote = true;
         help.autocorrect = 10;
         rerere.enabled = true;
+        rerere.autoupdate = true;
         pull.rebase = true;
         fetch.prune = true;
         rebase.autoStash = true;
