@@ -2,6 +2,7 @@
 
 let
   keys = import ../../secrets/keys.nix;
+  otherMachines = [ ];
 in
 {
   services.openssh = {
@@ -12,5 +13,6 @@ in
     };
   };
 
-  users.users."${username}".openssh.authorizedKeys.keys = builtins.attrValues keys.users;
+  users.users."${username}".openssh.authorizedKeys.keys =
+    builtins.attrValues keys.users ++ otherMachines;
 }
