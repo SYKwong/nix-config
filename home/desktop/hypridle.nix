@@ -50,7 +50,7 @@ in
           on-resume = "hyprctl dispatch 'hl.dsp.dpms({ action = \"enable\" })' ; brightnessctl -r";
         }
       ]
-      ++ host_listeners.${hostname};
+      ++ (host_listeners.${hostname} or [ ]);
     };
   };
 }
