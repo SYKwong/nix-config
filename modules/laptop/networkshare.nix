@@ -55,8 +55,8 @@ in
       "_netdev"
       "noauto"
 
-      "uid=1000"
-      "gid=100"
+      "uid=${username}"
+      "gid=users"
       "file_mode=0664"
       "dir_mode=0775"
 
