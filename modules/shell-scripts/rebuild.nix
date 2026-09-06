@@ -21,17 +21,18 @@ pkgs.writeShellApplication {
     REPO="${config_path}"
     HOSTNAME="${hostname}"
 
-    if sudo nixos-rebuild switch --flake "$REPO#$HOSTNAME"; then
+    if ! sudo nixos-rebuild boot --flake "$REPO#$HOSTNAME"; then
+        echo "Critical Error: Failed to build configuration."
+        exit 1
+    fi
+
+    echo "Boot entry created successfully."
+
+    echo "--- Activating configuration live ---"
+    if sudo /nix/var/nix/profiles/system/bin/switch-to-configuration switch; then
         echo "Live switch succeeded."
     else
-        echo "Live switch failed. Making a new boot entry instead..."
-        
-        if sudo nixos-rebuild boot --flake "$REPO#$HOSTNAME"; then
-            echo "Boot entry created successfully."
-        else
-            echo "Critical Error: Failed to build configuration entirely."
-            exit 1
-        fi
+        echo "Live switch failed. Boot entry is saved and changes will apply on next reboot."
     fi
 
     CONFIG_KERNEL=$(strings /nix/var/nix/profiles/system/kernel | grep -E '^[0-9]+\.[0-9]+' | head -n 1 | awk '{print $1}')
