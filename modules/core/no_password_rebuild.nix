@@ -7,6 +7,14 @@
       users = [ username ];
       commands = [
         {
+          command = "${pkgs.nh}/bin/nh os *";
+          options = [ "NOPASSWD" ];
+        }
+        {
+          command = "/run/current-system/sw/bin/nh os *";
+          options = [ "NOPASSWD" ];
+        }
+        {
           command = "${pkgs.nixos-rebuild}/bin/nixos-rebuild";
           options = [ "NOPASSWD" ];
         }
