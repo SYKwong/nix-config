@@ -17,4 +17,6 @@
   };
 
   environment.systemPackages = [ pkgs.protonup-qt ];
+
+  services.udev.packages = [ pkgs.game-devices-udev-rules ];
 }
