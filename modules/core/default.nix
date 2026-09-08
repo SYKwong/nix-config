@@ -3,6 +3,7 @@
     ./boot.nix
     ./flatpak.nix
     ./fonts.nix
+    ./fwupd.nix
     ./hardware.nix
     ./kernel.nix
     ./keyring.nix
