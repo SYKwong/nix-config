@@ -1,4 +1,4 @@
-{ pkgs, username, ... }:
+{ username, ... }:
 
 {
   nix.settings.trusted-users = [ username ];
@@ -7,19 +7,7 @@
       users = [ username ];
       commands = [
         {
-          command = "${pkgs.nh}/bin/nh os *";
-          options = [ "NOPASSWD" ];
-        }
-        {
-          command = "/run/current-system/sw/bin/nh os *";
-          options = [ "NOPASSWD" ];
-        }
-        {
-          command = "${pkgs.nixos-rebuild}/bin/nixos-rebuild";
-          options = [ "NOPASSWD" ];
-        }
-        {
-          command = "/run/current-system/sw/bin/nixos-rebuild";
+          command = "/run/current-system/sw/bin/rebuild";
           options = [ "NOPASSWD" ];
         }
         {

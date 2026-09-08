@@ -51,7 +51,7 @@ pkgs.writeShellApplication {
     HOSTNAME="${hostname}"
 
     log_info "Building configuration and staging boot entry with nh..."
-    if ! nh os boot "$REPO" -H "$HOSTNAME"; then
+    if ! sudo nh os boot "$REPO" -H "$HOSTNAME" --bypass-root-check; then
       log_error "Failed to build configuration."
       exit 1
     fi
