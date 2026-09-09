@@ -4,31 +4,13 @@
   fonts = {
     packages = with pkgs; [
       dejavu_fonts
-      fira-code
-      fira-code-symbols
       font-awesome
-      ibm-plex
-      inter
       material-icons
-      maple-mono.NF
-      minecraftia
-      nerd-fonts.im-writing
-      nerd-fonts.blex-mono
-      nerd-fonts.iosevka-term
-      nerd-fonts.lilex
-      nerd-fonts.ubuntu
       nerd-fonts.jetbrains-mono
-      nerd-fonts.fira-mono
       noto-fonts
-      noto-fonts-color-emoji
       noto-fonts-cjk-sans
       noto-fonts-cjk-serif
-      noto-fonts-monochrome-emoji
-      powerline-fonts
-      roboto
-      roboto-mono
-      symbola
-      terminus_font
+      noto-fonts-color-emoji
     ];
   };
 }
