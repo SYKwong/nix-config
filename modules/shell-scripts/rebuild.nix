@@ -12,12 +12,17 @@ pkgs.writeShellApplication {
     pkgs.binutils
     pkgs.coreutils
     pkgs.gawk
+    pkgs.git
     pkgs.gnugrep
     pkgs.nh
     pkgs.systemd
   ];
 
   text = ''
+    if [ "''${EUID}" -ne 0 ]; then
+      exec sudo /run/current-system/sw/bin/rebuild "$@"
+    fi
+
     if [ -t 1 ]; then
       BOLD="\033[1m"
       GREEN="\033[1;32m"
@@ -51,7 +56,7 @@ pkgs.writeShellApplication {
     HOSTNAME="${hostname}"
 
     log_info "Building configuration and staging boot entry with nh..."
-    if ! sudo nh os boot "$REPO" -H "$HOSTNAME" --bypass-root-check; then
+    if ! sudo nh os boot "$REPO" -H "$HOSTNAME" -e passwordless --bypass-root-check; then
       log_error "Failed to build configuration."
       exit 1
     fi
@@ -59,7 +64,7 @@ pkgs.writeShellApplication {
     log_success "Boot entry created successfully."
 
     log_info "Activating configuration live..."
-    if sudo /nix/var/nix/profiles/system/bin/switch-to-configuration switch; then
+    if /nix/var/nix/profiles/system/bin/switch-to-configuration switch; then
       log_success "Live switch succeeded."
     else
       log_warn "Live switch failed. Boot entry is saved and changes will apply on next reboot."
