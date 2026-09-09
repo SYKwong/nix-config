@@ -2,8 +2,6 @@
   programs.eza = {
     enable = true;
     icons = "auto";
-    enableBashIntegration = true;
-    enableZshIntegration = true;
     enableFishIntegration = true;
     git = true;
 
