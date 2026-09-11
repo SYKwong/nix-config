@@ -1,9 +1,7 @@
 {
   imports = [
-    ./ai.nix
+    ./config.nix
     ./disko.nix
     ./hardware-configuration.nix
-    ./luks.nix
-    ./wireguard.nix
   ];
 }
