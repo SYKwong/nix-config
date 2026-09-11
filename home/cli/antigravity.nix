@@ -93,6 +93,8 @@
         "command(systemctl status)"
         "command(systemctl is-active)"
         "command(journalctl)"
+
+        "write_file(/home/${username}/nix-config)"
       ];
 
       deny = [
