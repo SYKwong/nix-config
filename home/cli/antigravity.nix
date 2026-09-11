@@ -21,6 +21,7 @@
         "command(git remote)"
         "command(git stash list)"
         "command(git stash show)"
+        "command(git stash push)"
         "command(git merge-base)"
         "command(git tag)"
         "command(git describe)"
@@ -92,8 +93,6 @@
         "command(systemctl status)"
         "command(systemctl is-active)"
         "command(journalctl)"
-
-        "write_file(./**)"
       ];
 
       deny = [
