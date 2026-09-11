@@ -1,6 +1,3 @@
-local terminal = "kitty"
-local fileManager = "yazi"
-
 local noc = "noctalia msg "
 local app_launcher = noc .. "panel-toggle launcher"
 local wallpaper_picker = noc .. "panel-toggle wallpaper"
@@ -8,7 +5,7 @@ local notifications = noc .. "panel-toggle control-center notifications"
 local clipboard = noc .. "panel-toggle clipboard"
 local snip = noc .. "screenshot-region"
 
-local volume_toggle = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+local volume_toggle = noc .. "volume-mute"
 local volume_up = noc .. "volume-up"
 local volume_down = noc .. "volume-down"
 
@@ -173,7 +170,7 @@ hl.bind(
 	{ repeating = true, description = "[Display] Lower brightness" }
 )
 
--- Media Player Control (using playerctl)
+-- Media Player Control
 hl.bind(
 	"XF86AudioPlay",
 	hl.dsp.exec_cmd(media_toggle),
