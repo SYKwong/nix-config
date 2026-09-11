@@ -3,6 +3,9 @@ local fileManager = "yazi"
 
 local noc = "noctalia msg "
 local app_launcher = noc .. "panel-toggle launcher"
+local wallpaper_picker = noc .. "panel-toggle wallpaper"
+local notifications = noc .. "panel-toggle control-center notifications"
+local clipboard = noc .. "panel-toggle clipboard"
 local snip = noc .. "screenshot-region"
 
 local volume_toggle = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
@@ -26,6 +29,9 @@ local utils = require("hyprland/common/utils")
 -- Core Applications & Menus
 hl.bind(mainMod .. " + SUPER_L", hl.dsp.exec_cmd(app_launcher), { description = "[App] Launch Application Menu" })
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(utils.kitty_term), { description = "[App] Launch Kitty Terminal" })
+hl.bind(mainMod .. " + space", hl.dsp.exec_cmd(wallpaper_picker), { description = "[App] Launch Wallpaper Picker" })
+hl.bind(mainMod .. " + N", hl.dsp.exec_cmd(notifications), { description = "[App] Launch Notifications" })
+hl.bind(mainMod .. " + V", hl.dsp.exec_cmd(clipboard), { description = "[App] Launch Clipboard History" })
 hl.bind(mainMod .. " + H", hl.dsp.exec_cmd("rofi-keybinds"), { description = "[Help] Show Keybind Cheat Sheet" })
 
 -- Window & System Management
