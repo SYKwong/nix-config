@@ -1,6 +1,7 @@
 {
   pkgs,
   hostname,
+  username,
   config_path,
   ...
 }:
@@ -66,7 +67,7 @@ pkgs.writeShellApplication {
     # Antigravity CLI overwrites settings.json at runtime, causing Home Manager
     # to create a .backup on activation. Remove any stale backup to prevent
     # Home Manager from aborting with collision errors on subsequent rebuilds.
-    rm -f ~/.gemini/antigravity-cli/settings.json.backup
+    rm -f "/home/${username}/.gemini/antigravity-cli/settings.json.backup"
 
     log_info "Activating configuration live..."
     if /nix/var/nix/profiles/system/bin/switch-to-configuration switch; then
