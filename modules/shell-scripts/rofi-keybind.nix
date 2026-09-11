@@ -161,7 +161,7 @@ pkgs.writeShellApplication {
                 lines:         15;
                 spacing:       6px;
                 cycle:         true;
-                fixed-height:  false;
+                fixed-height:  true;
                 scrollbar:     false;
                 border:        0px;
                 border-color:  transparent;
