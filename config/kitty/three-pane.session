@@ -1,0 +1,25 @@
+# 1 primary window on left, 2 stacked windows on right
+#    +------------------------------------+-------------------------+
+#    |                                    |                         |
+#    |                                    |        Window 2         |
+#    |                                    |       (Top Right)       |
+#    |              Window 1		|                         |
+#    |              (Master)		+-------------------------+
+#    |                                    |                         |
+#    |            full_size=1             |        Window 3         |
+#    |                                    |      (Bottom Right)     |
+#    |                                    |                         |
+#    +------------------------------------+-------------------------+
+#    <-------------- 60% ----------------><---------- 40% ---------->
+#    		 bias=60
+layout tall:bias=60;full_size=1
+
+# Primary window (Left)
+launch fish
+focus
+
+# Top-Right window
+launch fish -c "agy -c"
+
+# Bottom-Right window
+launch fish

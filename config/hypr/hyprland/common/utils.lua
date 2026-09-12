@@ -23,6 +23,19 @@ utils.kitty_term = [[
     kitty -d "${CWD:-$HOME}"
 ]]
 
+utils.kitty_3pane = [[
+    ACTIVE_PID=$(hyprctl activewindow | awk '/pid:/ {print $2}')
+    if [ -n "$ACTIVE_PID" ]; then
+        CHILD_PID=$(pgrep -P "$ACTIVE_PID" | awk '{p2=p1; p1=$0} END{print p2}')
+        if [ -n "$CHILD_PID" ]; then
+            CWD=$(readlink /proc/$CHILD_PID/cwd)
+        else
+            CWD=$(readlink /proc/$ACTIVE_PID/cwd)
+        fi
+    fi
+    kitty -d "${CWD:-$HOME}" --session "$HOME/.config/kitty/three-pane.session"
+]]
+
 function utils.load_workspace_states()
 	local states = {}
 	local f = io.open(state_file, "r")

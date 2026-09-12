@@ -26,6 +26,11 @@ local utils = require("hyprland/common/utils")
 -- Core Applications & Menus
 hl.bind(mainMod .. " + SUPER_L", hl.dsp.exec_cmd(app_launcher), { description = "[App] Launch Application Menu" })
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(utils.kitty_term), { description = "[App] Launch Kitty Terminal" })
+hl.bind(
+	mainMod .. " + SHIFT + Return",
+	hl.dsp.exec_cmd(utils.kitty_3pane),
+	{ description = "[App] Launch 3-Pane Kitty Terminal" }
+)
 hl.bind(mainMod .. " + space", hl.dsp.exec_cmd(wallpaper_picker), { description = "[App] Launch Wallpaper Picker" })
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd(notifications), { description = "[App] Launch Notifications" })
 hl.bind(mainMod .. " + V", hl.dsp.exec_cmd(clipboard), { description = "[App] Launch Clipboard History" })
