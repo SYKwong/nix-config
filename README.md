@@ -1,5 +1,8 @@
 # nix-config  
 
+> [!NOTE]
+> The documentation across this repository is mostly LLM-generated.
+
 # License
 
 MIT-0  

@@ -3,12 +3,12 @@
 This directory manages custom desktop entries and hides unwanted application shortcuts from application launchers (such as Noctalia).
 
 ## Files
-- [`add-desktop-entry.nix`](file:///home/fw16-kyle/nix-config/home/misc/add-desktop-entry.nix): Declares custom `.desktop` entries (e.g., web app wrappers like LINE).
-- [`hide-desktop-entry.nix`](file:///home/fw16-kyle/nix-config/home/misc/hide-desktop-entry.nix): Hides entries using two tiers depending on how the application installs its `.desktop` file.
+- [`add-desktop-entry.nix`](./add-desktop-entry.nix): Declares custom `.desktop` entries (e.g., web app wrappers like LINE).
+- [`hide-desktop-entry.nix`](./hide-desktop-entry.nix): Hides entries using two tiers depending on how the application installs its `.desktop` file.
 
 ---
 
-## Hiding Desktop Entries in [`hide-desktop-entry.nix`](file:///home/fw16-kyle/nix-config/home/misc/hide-desktop-entry.nix)
+## Hiding Desktop Entries in [`hide-desktop-entry.nix`](./hide-desktop-entry.nix)
 
 ### 1. `appsToHide` (Standard / Home Manager)
 For standard NixOS and Home Manager packages whose `.desktop` files live in `/run/current-system/sw/share/applications/` or the user profile.
