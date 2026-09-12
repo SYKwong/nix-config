@@ -1,7 +1,7 @@
 {
   specialArgs,
   username,
-  hostname,
+  extraHomeModules ? [ ],
   ...
 }:
 
@@ -16,7 +16,7 @@
     users."${username}" =
       { ... }:
       {
-        imports = [ ../../hosts/${hostname}/home.nix ];
+        imports = [ ../../home ] ++ extraHomeModules;
 
         home.username = username;
         home.homeDirectory = "/home/${username}";

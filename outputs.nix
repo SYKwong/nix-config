@@ -46,6 +46,7 @@ in
       specialArgs = {
         inherit inputs pkgs-stable;
         inherit (info) username;
+        extraHomeModules = info.extraHomeModules or [ ];
         hostname = name;
       };
 
