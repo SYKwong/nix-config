@@ -63,7 +63,7 @@ And the file layout of this example will be:
       system = "x86_64-linux";
 
       extraModules = [
-        # Host-specific NixOS system modules (e.g. hardware, laptop, desktop)
+        # Host-specific NixOS system modules (e.g. hardware, profiles/laptop, profiles/desktop, profiles/gaming-handheld)
       ];
 
       # extraHomeModules = [ ... ]; # (Optional: host-specific Home Manager user modules)
@@ -104,6 +104,9 @@ After the install, the script reboots your system.
 
 #### 4. Post-Installation Setup
 If using LUKS + Secure Boot, enter BIOS after reboot and enable Secure Boot, then boot into the newly installed NixOS system.
+
+> [!TIP]
+> **Gaming Handhelds (`legion-go`)**: The system automatically forces the first boot into SDDM + KDE Plasma 6 (Wayland) to simplify initial setup (Wi-Fi, terminal, and `post-install.sh`). All subsequent boots default directly to Steam Gaming Mode.
 
 1. Open a terminal, change to the repository directory (`~/nix-config`), and run:
 ```bash
@@ -155,8 +158,17 @@ Currently, these are the partitions I'm using:
 |:---:|:---:|:---:|:---:|:---:|
 | `framework16` | Framework Laptop 16 (AMD 7040) | YES | YES | BTRFS |
 | `mini-pc-k8` | GmkTec K8 HTPC | NO | NO | BTRFS |
+| `legion-go` | Lenovo Legion Go (AMD Z1 Extreme) | NO | YES | BTRFS |
 
 The partition of framework16 is designed for hibernation, so it has a large swap file. You should also change the swap size to be 2 to 4GB + your RAM capacity.
+
+#### Gaming Handheld (`legion-go`)
+- **Dual-Session Architecture (SteamOS-style)**:
+  - **Gaming Mode (Default)**: Boots directly into a dedicated Steam Gamescope session with controller navigation, gamescope display rotation/scaling, and Handheld Daemon (`hhd`) overlay.
+  - **Desktop Mode**: Touch-friendly KDE Plasma 6 (Wayland) session. Switch from Steam via the Power menu ("Switch to Desktop"), and return to Gaming Mode via the desktop shortcut `Return to Gaming Mode` (`~/Desktop/Return.desktop`) or `steamos-session-select gamescope`.
+  - **First-Boot Behavior**: On the initial boot after installation, SDDM automatically logs into KDE Plasma 6 to allow convenient network setup and running `./post-install.sh`. This is tracked by `/var/lib/handheld-first-boot-done`; subsequent boots immediately launch Steam Gaming Mode.
+- **Power Management**: Uses `suspend-then-hibernate` (suspends immediately to `s2idle`, transitioning to hibernate in the 20 GB swapfile after 1 hour).
+- **Remote SSH Deployment (`deploy`)**: Rather than typing on the handheld's touchscreen or running background timers that conflict with hibernation, updates are pushed cleanly over local Wi-Fi via mDNS (`deploy legion-go` or `deploy-legion`). Evaluation and builds occur on the pushing host, activating live or staging cleanly.
 
 ### Wallpaper
 Wallpapers previously bundled in this repository were moved out to keep fresh installs fast and repository history clean:
@@ -170,6 +182,18 @@ If you want to use your own wallpapers, place images into `~/Wallpaper/` and lau
 1. NixOS will prompt you to enter your LUKS password after booting into it.  
 2. `sudo systemd-cryptenroll /dev/disk/by-partlabel/disk-main-luks --wipe-slot=tpm2`
 3. `sudo systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=7 /dev/disk/by-partlabel/disk-main-luks`
+
+### Peer-to-Peer Remote Deployment (`deploy`)
+
+All machines advertise and resolve each other over local mDNS (`<hostname>.local`). You can build and deploy NixOS updates to any peer machine over SSH without password prompts:
+
+```bash
+deploy <target_host> [switch|boot]
+```
+- Examples & Shell Aliases:
+  - `deploy-legion` (or `deploy legion-go`): Deploys to Lenovo Legion Go
+  - `deploy-k8` (or `deploy mini-pc-k8`): Deploys to GMKtec K8 living room HTPC
+  - `deploy-fw16` (or `deploy framework16`): Deploys to Framework Laptop 16
 
 ### Code Quality & Evaluation
 Format Nix code:

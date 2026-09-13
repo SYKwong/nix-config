@@ -1,4 +1,8 @@
-{ hostname, ... }:
+{
+  hostname,
+  osConfig,
+  ...
+}:
 
 let
 
@@ -21,7 +25,7 @@ let
 in
 {
   services.hypridle = {
-    enable = true;
+    enable = osConfig.programs.hyprland.enable;
     settings = {
       general = {
         lock_cmd = "noctalia msg session lock";

@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   ...
 }:
@@ -22,9 +23,9 @@ in
   };
 
   services.displayManager = {
-    defaultSession = "hyprland-uwsm";
+    defaultSession = lib.mkDefault "hyprland-uwsm";
     ly = {
-      enable = true;
+      enable = lib.mkDefault true;
       x11Support = false;
       settings = {
         bigclock = true;

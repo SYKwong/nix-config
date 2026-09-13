@@ -1,6 +1,8 @@
+{ lib, ... }:
+
 {
   programs.hyprland = {
-    enable = true;
+    enable = lib.mkDefault true;
     withUWSM = true;
   };
 }

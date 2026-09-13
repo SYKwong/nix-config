@@ -1,4 +1,9 @@
-{ hostname, username, ... }:
+{
+  hostname,
+  osConfig,
+  username,
+  ...
+}:
 
 let
   host_config = {
@@ -41,8 +46,8 @@ in
 
 {
   programs.noctalia = {
-    enable = true;
-    systemd.enable = true;
+    enable = osConfig.programs.hyprland.enable;
+    systemd.enable = osConfig.programs.hyprland.enable;
     settings = {
       accessibility = {
         inherit (current_host_config) ui_scale;

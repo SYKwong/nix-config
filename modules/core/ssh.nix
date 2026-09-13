@@ -15,4 +15,6 @@ in
 
   users.users."${username}".openssh.authorizedKeys.keys =
     builtins.attrValues keys.users ++ otherMachines;
+
+  users.users.root.openssh.authorizedKeys.keys = builtins.attrValues keys.users ++ otherMachines;
 }

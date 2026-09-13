@@ -11,8 +11,7 @@ This directory contains modular, reusable **NixOS system-level** configurations.
 | **`core/`** | Baseline system configurations applied across all hosts (bootloader, networking, security policies, user accounts, system fonts, and core packages). |
 | **`display-manager/`** | Graphical login managers, display greeters, and session initializers. |
 | **`window-manager/`** | Wayland compositors, window managers, and graphical session management. |
-| **`desktop/`** | Shared workstation capabilities and desktop services (e.g., network filesystem shares, desktop integration helpers). |
-| **`laptop/`** | Portable device power management, battery optimization profiles, and sleep/wake handling. |
+| **`profiles/`** | Form-factor and device-type system profiles (`desktop`, `laptop`, `gaming-handheld`) bundling form-specific hardware behavior, power management, and desktop integration (see [`modules/profiles/README.md`](./profiles/README.md)). |
 | **`framework/`** | Framework laptop hardware integrations, fan curve controls, and firmware utilities. |
 | **`wireless/`** | Wireless networking (Wi-Fi), network management, and Bluetooth services. |
 | **`vpn/`** | Virtual Private Network (VPN) client services, daemons, and encrypted tunnels. |

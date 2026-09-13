@@ -6,6 +6,10 @@
     nrs = "rebuild";
     nrb = "sudo nixos-rebuild boot --flake ~/nix-config/#${hostname}";
 
+    deploy-legion = "deploy legion-go";
+    deploy-k8 = "deploy mini-pc-k8";
+    deploy-fw16 = "deploy framework16";
+
     n = "nvim";
 
     home-vpn-on = "sudo systemctl start wg-quick-wg-home";

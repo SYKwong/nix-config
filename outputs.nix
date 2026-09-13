@@ -24,7 +24,7 @@ let
         lanzaboote.nixosModules.lanzaboote
 
         ./modules/framework
-        ./modules/laptop
+        ./modules/profiles/laptop
         ./modules/lanzaboote
       ];
     };
@@ -39,8 +39,22 @@ let
         nixos-hardware.nixosModules.common-gpu-amd
         nixos-hardware.nixosModules.common-pc-ssd
 
-        ./modules/desktop
+        ./modules/profiles/desktop
         ./modules/power/ppd.nix
+      ];
+    };
+
+    legion-go = {
+      username = "legion-go-kyle";
+      system = "x86_64-linux";
+
+      extraModules = [
+        nixos-hardware.nixosModules.common-cpu-amd
+        nixos-hardware.nixosModules.common-cpu-amd-pstate
+        nixos-hardware.nixosModules.common-gpu-amd
+        nixos-hardware.nixosModules.common-pc-ssd
+
+        ./modules/profiles/gaming-handheld
       ];
     };
   };

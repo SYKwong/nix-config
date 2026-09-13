@@ -14,6 +14,10 @@
           command = "/nix/var/nix/profiles/system/bin/switch-to-configuration";
           options = [ "NOPASSWD" ];
         }
+        {
+          command = "/run/current-system/sw/bin/nix-env";
+          options = [ "NOPASSWD" ];
+        }
       ];
     }
   ];

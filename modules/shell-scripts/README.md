@@ -9,6 +9,7 @@ This directory contains custom CLI tools and helper scripts packaged as native N
 | Script | Entry File | Derivation Builder | Description |
 | :--- | :--- | :--- | :--- |
 | **`rebuild`** (alias: **`nrs`**) | [`rebuild.nix`](./rebuild.nix) | `writeShellApplication` | NixOS configuration rebuild engine with health checks, formatters, automated commit messages, and boot/switch modes. Run via alias `nrs` (NixOS-Rebuild Switch). |
+| **`deploy`** | [`deploy.nix`](./deploy.nix) | `writeShellApplication` | Peer-to-peer remote NixOS rebuild tool over SSH/mDNS (`deploy <target_host> [switch\|boot]`). Supported targets: `legion-go`, `mini-pc-k8`, `framework16`. |
 | **`rofi-keybinds`** | [`rofi-keybind.nix`](./rofi-keybind.nix) | `writeShellApplication` | Dynamic cheat sheet parsed from `hyprctl binds` and displayed in an interactive Rofi dmenu (`SUPER + H`). |
 | **`kb-light-manager`** | [`kb-light-manager.nix`](./kb-light-manager.nix) | `writeShellApplication` | Framework laptop keyboard backlight toggle and brightness manager using `qmk_hid`. |
 | **`tui-wrap`** | [`tui-wrap.nix`](./tui-wrap.nix) | `writeShellScriptBin` *(Exception)* | Helper to spawn arbitrary CLI and TUI tools (like Yazi or Btop) inside floating Foot terminal surfaces. Dynamically resolves user commands from runtime `PATH`. |
