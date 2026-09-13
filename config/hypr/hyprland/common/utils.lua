@@ -1,70 +1,79 @@
 local utils = {}
 local state_file = "/tmp/hypr_workspace_layouts.json"
+local saved_window_states = {}
 
-utils.get_hostname = function()
+function utils.get_hostname()
 	local handle = io.popen("hostname -s")
-	local host = handle and handle:read("*a"):gsub("%s+", "") or "fallback-host"
+	local hostname = handle and handle:read("*a"):gsub("%s+", "") or "fallback-host"
 	if handle then
 		handle:close()
 	end
-	return host
+	return hostname
 end
 
-utils.kitty_term = [[
-    ACTIVE_PID=$(hyprctl activewindow | awk '/pid:/ {print $2}')
-    if [ -n "$ACTIVE_PID" ]; then
-        CHILD_PID=$(pgrep -P "$ACTIVE_PID" | awk '{p2=p1; p1=$0} END{print p2}')
-        if [ -n "$CHILD_PID" ]; then
-            CWD=$(readlink /proc/$CHILD_PID/cwd)
-        else
-            CWD=$(readlink /proc/$ACTIVE_PID/cwd)
+local function launch_kitty(session_filename)
+	local command = [[
+        ACTIVE_PID=$(hyprctl activewindow | awk '/pid:/ {print $2}')
+        if [ -n "$ACTIVE_PID" ]; then
+            CHILD_PID=$(pgrep -P "$ACTIVE_PID" | awk '{p2=p1; p1=$0} END{print p2}')
+            if [ -n "$CHILD_PID" ]; then
+                CWD=$(readlink /proc/$CHILD_PID/cwd)
+            else
+                CWD=$(readlink /proc/$ACTIVE_PID/cwd)
+            fi
         fi
-    fi
-    kitty -d "${CWD:-$HOME}"
-]]
+    ]]
 
-utils.kitty_3pane = [[
-    ACTIVE_PID=$(hyprctl activewindow | awk '/pid:/ {print $2}')
-    if [ -n "$ACTIVE_PID" ]; then
-        CHILD_PID=$(pgrep -P "$ACTIVE_PID" | awk '{p2=p1; p1=$0} END{print p2}')
-        if [ -n "$CHILD_PID" ]; then
-            CWD=$(readlink /proc/$CHILD_PID/cwd)
-        else
-            CWD=$(readlink /proc/$ACTIVE_PID/cwd)
-        fi
-    fi
-    kitty -d "${CWD:-$HOME}" --session "$HOME/.config/kitty/three-pane.session"
-]]
+	if session_filename then
+		command = command .. 'kitty -d "${CWD:-$HOME}" --session "$HOME/.config/kitty/' .. session_filename .. '"\n'
+	else
+		command = command .. 'kitty -d "${CWD:-$HOME}"\n'
+	end
+
+	hl.dispatch(hl.dsp.exec_cmd(command))
+end
+
+function utils.kitty_term()
+	return function()
+		launch_kitty()
+	end
+end
+
+function utils.kitty_3pane()
+	return function()
+		launch_kitty("three-pane.session")
+	end
+end
 
 function utils.load_workspace_states()
 	local states = {}
-	local f = io.open(state_file, "r")
-	if not f then
+	local file = io.open(state_file, "r")
+	if not file then
 		return states
 	end
 
-	local content = f:read("*all")
-	f:close()
+	local content = file:read("*all")
+	file:close()
 
-	for k, v in content:gmatch('"([^"]+)"%s*:%s*"([^"]+)"') do
-		states[k] = v
+	for workspace_id, layout_name in content:gmatch('"([^"]+)"%s*:%s*"([^"]+)"') do
+		states[workspace_id] = layout_name
 	end
 	return states
 end
 
 function utils.save_workspace_states(states)
-	local f = io.open(state_file, "w")
-	if not f then
+	local file = io.open(state_file, "w")
+	if not file then
 		return
 	end
 
 	local json_parts = {}
-	for k, v in pairs(states) do
-		table.insert(json_parts, string.format('  "%s": "%s"', k, v))
+	for workspace_id, layout_name in pairs(states) do
+		table.insert(json_parts, string.format('  "%s": "%s"', workspace_id, layout_name))
 	end
 
-	f:write("{\n" .. table.concat(json_parts, ",\n") .. "\n}")
-	f:close()
+	file:write("{\n" .. table.concat(json_parts, ",\n") .. "\n}")
+	file:close()
 end
 
 function utils.toggle_workspace_layout()
@@ -94,33 +103,34 @@ function utils.toggle_workspace_layout()
 end
 
 local function get_tiled_windows_on_workspace(all_windows, target_workspace)
+	local target_workspace_id = target_workspace and target_workspace.id
 	local filtered_windows = {}
-	for _, w in ipairs(all_windows) do
-		if w.workspace == target_workspace and not w.floating then
-			table.insert(filtered_windows, w)
+	for _, window in ipairs(all_windows) do
+		if window.workspace and window.workspace.id == target_workspace_id and not window.floating then
+			table.insert(filtered_windows, window)
 		end
 	end
 	return filtered_windows
 end
 
 local function sort_column_major(windows_list)
-	table.sort(windows_list, function(a, b)
-		local ax = tonumber(a.at.x)
-		local ay = tonumber(a.at.y)
-		local bx = tonumber(b.at.x)
-		local by = tonumber(b.at.y)
+	table.sort(windows_list, function(window_a, window_b)
+		local window_a_x = tonumber(window_a.at.x)
+		local window_a_y = tonumber(window_a.at.y)
+		local window_b_x = tonumber(window_b.at.x)
+		local window_b_y = tonumber(window_b.at.y)
 
-		if ax == bx then
-			return ay < by
+		if window_a_x == window_b_x then
+			return window_a_y < window_b_y
 		end
-		return ax < bx
+		return window_a_x < window_b_x
 	end)
 end
 
 local function find_window_index(windows_list, target_address)
-	for i, window in ipairs(windows_list) do
+	for index, window in ipairs(windows_list) do
 		if window.address == target_address then
-			return i
+			return index
 		end
 	end
 	return nil
@@ -144,9 +154,9 @@ local function get_wrapped_index(current_index, list_length, direction)
 	return target_index
 end
 
-local function cycle_scrolling(active, direction)
+local function cycle_scrolling(active_window, direction)
 	local all_windows = hl.get_windows()
-	local target_windows = get_tiled_windows_on_workspace(all_windows, active.workspace)
+	local target_windows = get_tiled_windows_on_workspace(all_windows, active_window.workspace)
 
 	if #target_windows <= 1 then
 		return
@@ -154,7 +164,7 @@ local function cycle_scrolling(active, direction)
 
 	sort_column_major(target_windows)
 
-	local current_index = find_window_index(target_windows, active.address)
+	local current_index = find_window_index(target_windows, active_window.address)
 	if not current_index then
 		return
 	end
@@ -212,14 +222,97 @@ function utils.cycle_window(direction)
 	end
 end
 
-function _G.spawn_floating_app(app)
-	local m = hl.get_active_monitor()
-	if m then
-		local w = math.floor(m.width * 0.7)
-		local h = math.floor(m.height * 0.7)
-		local uwsm_command = "uwsm app -- " .. app
+local function unfullscreen_if_fullscreened(window)
+	if window.fullscreen ~= 0 then
+		local mode = (window.fullscreen == 2) and "fullscreen" or "maximized"
+		hl.dispatch(hl.dsp.window.fullscreen({ mode = mode }))
+		return true
+	end
+	return false
+end
 
-		hl.dispatch(hl.dsp.exec_cmd(uwsm_command, { float = true, size = { w, h }, center = true }))
+function utils.custom_fullscreen()
+	return function()
+		local window = hl.get_active_window()
+		if not window then
+			return
+		end
+
+		local layout = window.workspace and window.workspace.tiled_layout
+		if window.floating or layout ~= "scrolling" then
+			hl.dispatch(hl.dsp.window.fullscreen({ mode = "maximized" }))
+			return
+		end
+
+		if unfullscreen_if_fullscreened(window) then
+			return
+		end
+
+		local monitor = hl.get_active_monitor()
+		if not monitor then
+			return
+		end
+
+		local logical_monitor_width <const> = monitor.width / monitor.scale
+		local fullscreen_ratio_threshold <const> = 0.875
+		local width_ratio = window.size.x / logical_monitor_width
+		if width_ratio >= fullscreen_ratio_threshold then
+			local saved_state = saved_window_states[window.address]
+			saved_window_states[window.address] = nil
+
+			local default_unfullscreen_width <const> = 0.5
+			local target_width = (saved_state and saved_state.width) or default_unfullscreen_width
+			hl.dispatch(hl.dsp.layout("colresize " .. tostring(target_width)))
+
+			local all_windows = hl.get_windows()
+			local tiled_windows = get_tiled_windows_on_workspace(all_windows, window.workspace)
+			local current_x = tonumber(window.at.x)
+
+			local has_left_column = false
+			for _, tiled_window in ipairs(tiled_windows) do
+				if tonumber(tiled_window.at.x) < current_x then
+					has_left_column = true
+					break
+				end
+			end
+
+			if has_left_column then
+				hl.dispatch(hl.dsp.focus({ direction = "left" }))
+				hl.dispatch(hl.dsp.focus({ window = "address:" .. tostring(window.address) }))
+			end
+		else
+			local col_width_quarter <const> = 0.25
+			local col_width_half <const> = 0.5
+			local col_width_three_quarters <const> = 0.75
+			local col_width_full <const> = 1.0
+
+			local width_quarter_threshold <const> = 0.375
+			local width_three_quarters_threshold <const> = 0.625
+			local previous_width = col_width_half
+			if width_ratio < width_quarter_threshold then
+				previous_width = col_width_quarter
+			elseif width_ratio > width_three_quarters_threshold then
+				previous_width = col_width_three_quarters
+			end
+
+			saved_window_states[window.address] = {
+				width = previous_width,
+			}
+			hl.dispatch(hl.dsp.layout("colresize " .. tostring(col_width_full)))
+		end
+	end
+end
+
+function _G.spawn_floating_app(application_command)
+	local active_monitor = hl.get_active_monitor()
+	if active_monitor then
+		local window_width = math.floor(active_monitor.width * 0.7)
+		local window_height = math.floor(active_monitor.height * 0.7)
+		local uwsm_command = "uwsm app -- " .. application_command
+
+		hl.dispatch(
+			hl.dsp.exec_cmd(uwsm_command, { float = true, size = { window_width, window_height }, center = true })
+		)
 	end
 end
 
@@ -254,8 +347,8 @@ end
 
 function utils.restore_window()
 	return function()
-		local ws = hl.get_workspace("special:minimize")
-		if not ws then
+		local minimized_workspace = hl.get_workspace("special:minimize")
+		if not minimized_workspace then
 			return
 		end
 

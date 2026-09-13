@@ -25,12 +25,8 @@ local utils = require("hyprland/common/utils")
 
 -- Core Applications & Menus
 hl.bind(mainMod .. " + SUPER_L", hl.dsp.exec_cmd(app_launcher), { description = "[App] Launch Application Menu" })
-hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(utils.kitty_term), { description = "[App] Launch Kitty Terminal" })
-hl.bind(
-	mainMod .. " + SHIFT + Return",
-	hl.dsp.exec_cmd(utils.kitty_3pane),
-	{ description = "[App] Launch 3-Pane Kitty Terminal" }
-)
+hl.bind(mainMod .. " + Return", utils.kitty_term(), { description = "[App] Launch Kitty Terminal" })
+hl.bind(mainMod .. " + SHIFT + Return", utils.kitty_3pane(), { description = "[App] Launch 3-Pane Kitty Terminal" })
 hl.bind(mainMod .. " + space", hl.dsp.exec_cmd(wallpaper_picker), { description = "[App] Launch Wallpaper Picker" })
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd(notifications), { description = "[App] Launch Notifications" })
 hl.bind(mainMod .. " + V", hl.dsp.exec_cmd(clipboard), { description = "[App] Launch Clipboard History" })
@@ -38,11 +34,7 @@ hl.bind(mainMod .. " + H", hl.dsp.exec_cmd("rofi-keybinds"), { description = "[H
 
 -- Window & System Management
 hl.bind(mainMod .. " + W", hl.dsp.window.close(), { description = "[Window] Close active window" })
-hl.bind(
-	mainMod .. " + F",
-	hl.dsp.window.fullscreen({ mode = "maximized" }),
-	{ description = "[Window] Maximize Window" }
-)
+hl.bind(mainMod .. " + F", utils.custom_fullscreen(), { description = "[Window] Maximize Window" })
 hl.bind(
 	mainMod .. " + SHIFT + F",
 	hl.dsp.window.fullscreen({ mode = "fullscreen" }),
@@ -85,33 +77,20 @@ for i = 1, 10 do
 	)
 end
 
--- Move focus with mainMod + arrow keys
-hl.bind(mainMod .. " + left", hl.dsp.focus({ direction = "left" }), { description = "[Focus] Move focus left" })
-hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }), { description = "[Focus] Move focus right" })
-hl.bind(mainMod .. " + up", hl.dsp.focus({ direction = "up" }), { description = "[Focus] Move focus up" })
-hl.bind(mainMod .. " + down", hl.dsp.focus({ direction = "down" }), { description = "[Focus] Move focus down" })
-
--- Move window with mainMod + SHIFT + arrow keys
-hl.bind(
-	mainMod .. " + SHIFT + left",
-	hl.dsp.window.swap({ direction = "left" }),
-	{ description = "[Window] Swap position left" }
-)
-hl.bind(
-	mainMod .. " + SHIFT + right",
-	hl.dsp.window.swap({ direction = "right" }),
-	{ description = "[Window] Swap position right" }
-)
-hl.bind(
-	mainMod .. " + SHIFT + up",
-	hl.dsp.window.swap({ direction = "up" }),
-	{ description = "[Window] Swap position up" }
-)
-hl.bind(
-	mainMod .. " + SHIFT + down",
-	hl.dsp.window.swap({ direction = "down" }),
-	{ description = "[Window] Swap position down" }
-)
+-- Move focus and swap windows with arrow keys
+local directions = { "left", "right", "up", "down" }
+for _, direction in ipairs(directions) do
+	hl.bind(
+		mainMod .. " + " .. direction,
+		hl.dsp.focus({ direction = direction }),
+		{ description = "[Focus] Move focus " .. direction }
+	)
+	hl.bind(
+		mainMod .. " + SHIFT + " .. direction,
+		hl.dsp.window.swap({ direction = direction }),
+		{ description = "[Window] Swap position " .. direction }
+	)
+end
 
 -- Scroll through existing workspaces with mainMod + scroll
 hl.bind(
@@ -142,6 +121,7 @@ hl.bind(
 	{ description = "[Window] Merge into the right column if alone, pops out if not" }
 )
 
+-- Minimize and Restore Windows
 hl.bind(mainMod .. " + M ", utils.minimize_window(), { description = "[Window] Minimize window to a stack" })
 hl.bind(
 	mainMod .. " + SHIFT + M",

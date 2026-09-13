@@ -8,6 +8,7 @@
       ffmpeg
       glow
       kitty
+      libnotify
       mpv
       p7zip
       qimgv
