@@ -11,8 +11,9 @@ let
 
     mini-pc-k8 = {
       output_monitor = "HDMI-A-1";
-      screen_width = 3840.0;
-      screen_height = 2160.0;
+      # 3840x2160 scaled 1.5x in Hyprland yields 2560x1440 logical dimensions
+      screen_width = 2560.0;
+      screen_height = 1440.0;
       ui_scale = 1.0;
     };
   };
