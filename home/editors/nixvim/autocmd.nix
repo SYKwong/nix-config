@@ -22,9 +22,12 @@
       '';
     }
 
-    # Maximize Kitty Terminal Blur on Launch
+    # Maximize Kitty Terminal Blur on Launch and Focus
     {
-      event = [ "VimEnter" ];
+      event = [
+        "VimEnter"
+        "FocusGained"
+      ];
       callback.__raw = ''
         function()
           local window_id = os.getenv("KITTY_WINDOW_ID")
@@ -36,9 +39,12 @@
       '';
     }
 
-    # Restore Default Subtle Kitty Terminal Blur on Exit
+    # Restore Default Subtle Kitty Terminal Blur on Exit and Focus Lost
     {
-      event = [ "VimLeave" ];
+      event = [
+        "VimLeave"
+        "FocusLost"
+      ];
       callback.__raw = ''
         function()
           local window_id = os.getenv("KITTY_WINDOW_ID")

@@ -15,11 +15,14 @@
 layout tall:bias=60;full_size=1
 
 # Primary window (Left)
-launch fish
-focus
+launch --var role=master fish
 
 # Top-Right window
 launch fish -c "agy -c"
 
 # Bottom-Right window
 launch fish
+
+# Focus primary window
+focus_matching_window var:role=master
+

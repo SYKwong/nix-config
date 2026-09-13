@@ -43,6 +43,7 @@
         "command(bash -n)"
 
         "command(hyprctl)"
+        "command(notify-send)"
 
         "command(ls)"
         "command(cat)"
@@ -130,6 +131,7 @@
       ## Communication Style
       - Keep responses concise, direct, and technical.
       - Provide clickable markdown links with `file://` scheme for modified files and code symbols.
+      - Desktop Notifications: When completing a task or waiting for user input, check if the active terminal window is currently focused via `hyprctl activewindow`. If the user is not focused on the terminal window, send a desktop notification using `notify-send -a 'Antigravity' 'Antigravity' '<summary>'`.
 
       ## Git & Workflow
       - Main Branch Protection: Never commit or push directly to `main`. Always create a feature or fix branch for any code changes.
@@ -142,9 +144,14 @@
 
       ## NixOS & Code Conventions
       - Formatting: Format Nix code with `nix fmt`.
-      - Linting & Evaluation: Verify Nix changes with `statix check`, `deadnix`, and top-level derivation evaluation (`nix eval .#nixosConfigurations.<host>.config.system.build.toplevel.drvPath`).
+      - Linting & Evaluation: Verify Nix changes with `statix check`, `deadnix`, and top-level derivation evaluation (`nix eval .#nixosConfigurations.<host>.config.system.build.toplevel.drvPath`). Do not run `nix eval` if changes do not touch `.nix` files, unless a modified file is directly referenced or imported by a `.nix` file (e.g. `starship.toml`).
       - Hardware files: Never edit auto-generated `hardware-configuration.nix` files (ignore any linter warnings inside them).
       - Portability & Modularity: Avoid hardcoded numeric UIDs/GIDs (prefer dynamic `username` and `users` group). Keep host-specific logic in `hosts/<name>/` and reusable features in `modules/<category>/`.
+      - Code Locality, Constants & Helpers: Avoid hoisting constants or helper functions to distant file headers. Assign magic numbers to named constant variables declared as late and locally as possible. Place private helper functions physically as close as possible to the consumers that use them (e.g. immediately preceding the calling function) to preserve local reading context.
+      - Minimal Diff Churn: Do not reorder, move, or refactor unrelated functions or code blocks unless explicitly requested or necessary for functionality.
+      - Guard Clauses & Early Returns: Prefer early returns / guard clauses over deep nesting or trailing else blocks to keep execution flow flat.
+      - Variable Naming: Prefer clear, descriptive, and verbose variable names over terse abbreviations (e.g. `logical_monitor_width` instead of `mon_w`).
+      - Hyprland Lua Conventions: Use standard `function table.name()` syntax instead of anonymous assignments (`table.name = function()`). Keybinding action helpers in `utils.lua` should return callback closures rather than raw command strings.
       - Desktop Shell: The environment uses Noctalia; legacy Waybar/sway-specific tools and derivations should be pruned when encountered.
 
       ## File Operations
