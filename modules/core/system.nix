@@ -26,5 +26,12 @@
     flake = "/home/${username}/nix-config";
   };
 
+  programs.git = {
+    enable = true;
+    config.safe.directory = [
+      "/home/${username}/nix-config"
+    ];
+  };
+
   nixpkgs.config.allowUnfree = true;
 }

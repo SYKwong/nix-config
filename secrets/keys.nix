@@ -1,9 +1,11 @@
 {
   users = {
     fw16 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJOptTx0t5KMjGEQ27OnSy7S2QUrDSxXoMR0MIgaSieU";
+    "mini-pc-k8" = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIEuwrn3ECrhaFbKMwFAoJnyvP8xSnWy42c8DhGvM7X3";
   };
 
   systems = {
     fw16 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAHdeMjubgGQ2IfzMOIcEM8KzgqzQBmOf8gfK6rMVjG4";
+    "mini-pc-k8" = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB7U4lpnYLZPcBG3NlZCeQZCcDuG+yOlU0mcRwG/7RG0";
   };
 }

@@ -11,7 +11,7 @@ in
   config = lib.mkIf cfg.enable {
     hardware.bluetooth = {
       enable = true;
-      powerOnBoot = false;
+      inherit (cfg) powerOnBoot;
       settings = {
         General = {
           Enable = "Source,Sink,Media,Socket";

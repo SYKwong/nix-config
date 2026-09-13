@@ -14,14 +14,11 @@ let
     agenix
     ;
 
-  system = "x86_64-linux";
-  pkgs = nixpkgs.legacyPackages.${system};
-  pkgs-stable = nixpkgs-stable.legacyPackages.${system};
-  treefmtEval = treefmt-nix.lib.evalModule pkgs ./treefmt;
-
   hosts = {
     framework16 = {
       username = "fw16-kyle";
+      system = "x86_64-linux";
+
       extraModules = [
         nixos-hardware.nixosModules.framework-16-7040-amd
         lanzaboote.nixosModules.lanzaboote
@@ -31,22 +28,43 @@ let
         ./modules/lanzaboote
       ];
     };
+
+    mini-pc-k8 = {
+      username = "k8-kyle";
+      system = "x86_64-linux";
+
+      extraModules = [
+        nixos-hardware.nixosModules.common-cpu-amd
+        nixos-hardware.nixosModules.common-cpu-amd-pstate
+        nixos-hardware.nixosModules.common-gpu-amd
+        nixos-hardware.nixosModules.common-pc-ssd
+
+        ./modules/desktop
+        ./modules/power/ppd.nix
+      ];
+    };
   };
 
 in
 {
   # Expose hosts for Bash
   lib.hostInfo = hosts;
-  formatter.${system} = treefmtEval.config.build.wrapper;
+
+  formatter =
+    nixpkgs.lib.genAttrs (nixpkgs.lib.unique (map (host: host.system) (nixpkgs.lib.attrValues hosts)))
+      (
+        system: (treefmt-nix.lib.evalModule nixpkgs.legacyPackages.${system} ./treefmt).config.build.wrapper
+      );
 
   nixosConfigurations = nixpkgs.lib.mapAttrs (
     name: info:
     nixpkgs.lib.nixosSystem {
-      inherit system;
+      inherit (info) system;
       specialArgs = {
-        inherit inputs pkgs-stable;
+        inherit inputs;
         inherit (info) username;
         extraHomeModules = info.extraHomeModules or [ ];
+        pkgs-stable = nixpkgs-stable.legacyPackages.${info.system};
         hostname = name;
       };
 

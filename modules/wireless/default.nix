@@ -20,8 +20,14 @@
       default = true;
     };
 
-    bluetooth.enable = lib.mkEnableOption "Bluetooth Support" // {
-      default = true;
+    bluetooth = {
+      enable = lib.mkEnableOption "Bluetooth Support" // {
+        default = true;
+      };
+
+      powerOnBoot = lib.mkEnableOption "Power on Bluetooth automatically at boot" // {
+        default = false;
+      };
     };
   };
 }

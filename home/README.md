@@ -8,6 +8,7 @@ This directory contains pure **Home Manager** user-space configurations. Everyth
 
 | Category | Description |
 | :--- | :--- |
+| **`core/`** | Baseline user environment configuration (`xdg.userDirs`, default folder structures). |
 | **`cli/`** | Terminal utilities and CLI tools (`bat`, `btop`, `eza`, `fastfetch`, `fzf`, `git`, `yazi`, `zoxide`, `antigravity`). |
 | **`desktop/`** | Noctalia desktop shell (status bar, OSD, lockscreen, runner) and Hypridle idle daemon. |
 | **`browsers/`** | Web browsers (Zen Browser, Helium). |

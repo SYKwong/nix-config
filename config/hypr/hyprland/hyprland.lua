@@ -22,6 +22,14 @@ local monitor_setting = {
 			cm = "dcip3",
 		})
 	end,
+	["mini-pc-k8"] = function()
+		hl.monitor({
+			output = "HDMI-A-1",
+			mode = "3840x2160@60Hz",
+			position = "auto",
+			scale = "1.5",
+		})
+	end,
 	desktop = function()
 		hl.monitor({ output = "DP-1", mode = "2560x1440@144" })
 	end,

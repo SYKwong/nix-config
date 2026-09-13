@@ -47,9 +47,9 @@ agenix -e <secret-name>.age
 
 ### Rekey Secrets (Adding or Rotating Keys)
 When adding a new machine, user key, or rotating keys:
-1. Add the new public key to [`keys.nix`](keys.nix).
-2. Update the target list in [`secrets.nix`](secrets.nix).
-3. Re-encrypt all existing secrets for the updated recipient list:
+1. Run `./post-install.sh` from the repository root on the new machine to automatically generate keys and insert them into [`keys.nix`](keys.nix) (or add them manually).
+2. Ensure the host or user key is in the recipient list in [`secrets.nix`](secrets.nix) (new hosts are included automatically in `allKeys`).
+3. Re-encrypt all existing secrets on an authorized machine with access to an existing private key:
    ```bash
    cd secrets
    agenix --rekey

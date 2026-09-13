@@ -38,12 +38,6 @@ else
     exit 1
 fi
 
-disko_partition(){
-  echo "Using ./hosts/${host_name}/disko.nix to partition your drive"
-  nix run github:nix-community/disko/latest -- \
-      --mode destroy,format,mount "./hosts/${host_name}/disko.nix" --yes-wipe-all-disks
-}
-
 set_up_full_disk_encryption() {
   if [ -n "$luks_password" ]; then
     echo "LUKS password provided. Creating secret key..."
@@ -53,20 +47,38 @@ set_up_full_disk_encryption() {
   fi
 }
 
-create_boot_entry_for_secureboot(){
-  local OLD_ENTRIES=$(efibootmgr | grep "Linux Boot Manager" | cut -d' ' -f1 | cut -d't' -f2 | tr -d '*')
+disko_partition() {
+  echo "Using ./hosts/${host_name}/disko.nix to partition your drive"
+  nix run github:nix-community/disko/latest -- \
+      --mode destroy,format,mount "./hosts/${host_name}/disko.nix" --yes-wipe-all-disks
+}
+
+generate_hardware_configuration() {
+  local hw_file="./hosts/${host_name}/hardware-configuration.nix"
+
+  # Every file created by nixos-generate-config unconditionally contains "not-detected.nix"
+  if [ ! -s "$hw_file" ] || ! grep -q "not-detected.nix" "$hw_file"; then
+    echo "Stub hardware configuration detected for ${host_name}. Generating..."
+    nixos-generate-config --no-filesystems --dir "./hosts/${host_name}"
+    rm -f "./hosts/${host_name}/configuration.nix"
+    git add "$hw_file" 2>/dev/null || true
+    echo "Hardware configuration successfully generated."
+  else
+    echo "Using existing hardware configuration for ${host_name}."
+  fi
+}
+
+cleanup_stale_boot_entries() {
+  local OLD_ENTRIES
+  OLD_ENTRIES=$( (efibootmgr | grep "Linux Boot Manager" || true) | cut -d' ' -f1 | cut -d't' -f2 | tr -d '*')
 
   for entry in $OLD_ENTRIES; do
     echo "Cleaning up stale boot entry: Boot$entry"
     efibootmgr -b "$entry" -B
   done
-
-  if [ -n "$luks_password" ]; then
-    bootctl --esp-path=/mnt/boot install
-  fi
 }
 
-install_nixos(){
+install_nixos() {
   echo "Starting NixOS installation..."
   nixos-install --no-root-password --flake ".#${host_name}"
  
@@ -75,8 +87,7 @@ install_nixos(){
   echo "$user_name:$user_password" | nixos-enter --root /mnt -c "chpasswd"
 }
 
-
-copy_config_to_host(){
+copy_config_to_host() {
   local config_dir="home/$user_name/nix-config"
   echo "Copying flake configuration to /mnt/$config_dir..."
   mkdir -p "/mnt/$config_dir"
@@ -87,7 +98,8 @@ copy_config_to_host(){
 
 set_up_full_disk_encryption
 disko_partition
-create_boot_entry_for_secureboot
+generate_hardware_configuration
+cleanup_stale_boot_entries
 install_nixos
 copy_config_to_host
 echo "Installation finished! Rebooting..."

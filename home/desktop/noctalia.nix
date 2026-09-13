@@ -1,30 +1,39 @@
 { hostname, username, ... }:
 
 let
-  lockscreen_host_config = {
+  host_config = {
     framework16 = {
       output_monitor = "eDP-1";
       screen_width = 2560.0;
       screen_height = 1600.0;
+      ui_scale = 1.25;
+    };
+
+    mini-pc-k8 = {
+      output_monitor = "HDMI-A-1";
+      screen_width = 3840.0;
+      screen_height = 2160.0;
+      ui_scale = 1.0;
     };
   };
 
-  lockscreen_config =
-    lockscreen_host_config.${hostname} or {
+  current_host_config =
+    host_config.${hostname} or {
       output_monitor = "HDMI-A-1";
       screen_width = 1920.0;
       screen_height = 1080.0;
+      ui_scale = 1.0;
     };
 
-  lockscreen_login_box_width = lockscreen_config.screen_width * 0.15625;
-  lockscreen_login_box_height = lockscreen_config.screen_height * 0.04375;
-  lockscreen_login_box_cx = lockscreen_config.screen_width / 2;
-  lockscreen_login_box_cy = lockscreen_config.screen_height / 2;
+  lockscreen_login_box_width = current_host_config.screen_width * 0.15625;
+  lockscreen_login_box_height = current_host_config.screen_height * 0.04375;
+  lockscreen_login_box_cx = current_host_config.screen_width / 2;
+  lockscreen_login_box_cy = current_host_config.screen_height / 2;
 
-  lockscreen_clock_width = lockscreen_config.screen_width * 0.20625;
-  lockscreen_clock_height = lockscreen_config.screen_height * 0.17;
-  lockscreen_clock_cx = lockscreen_config.screen_width * 0.103125;
-  lockscreen_clock_cy = lockscreen_config.screen_height * 0.09;
+  lockscreen_clock_width = current_host_config.screen_width * 0.20625;
+  lockscreen_clock_height = current_host_config.screen_height * 0.17;
+  lockscreen_clock_cx = current_host_config.screen_width * 0.103125;
+  lockscreen_clock_cy = current_host_config.screen_height * 0.09;
 
   wallpaper_directory = "/home/${username}/Wallpaper";
 in
@@ -35,55 +44,88 @@ in
     systemd.enable = true;
     settings = {
       accessibility = {
-        ui_scale = 1.25;
+        inherit (current_host_config) ui_scale;
       };
 
-      bar.default = {
-        center = [ "group:g1" ];
-        end = [
-          "group:g2"
-          "session"
-        ];
-        margin_edge = 0;
-        margin_ends = 30;
-        margin_opposite_edge = 2;
-        padding = 0;
-        start = [ "media" ];
+      bar = {
+        order = [ "default" ];
+        default = {
+          auto_hide = false;
+          background_opacity = 0.0;
+          border = "outline";
+          border_width = 0.0;
+          capsule = true;
+          capsule_fill = "surface_variant";
+          capsule_opacity = 1.0;
+          capsule_padding = 6.0;
+          capsule_thickness = 0.76;
+          concave_edge_corners = false;
+          contact_shadow = false;
+          enabled = true;
+          font_weight = 500;
+          hover_highlight = true;
+          layer = "top";
+          margin_edge = 0;
+          margin_ends = 30;
+          margin_opposite_edge = 2;
+          padding = 0;
+          panel_overlap = 1;
+          position = "top";
+          radius = 12;
+          radius_bottom_left = 12;
+          radius_bottom_right = 12;
+          radius_top_left = 12;
+          radius_top_right = 12;
+          reserve_space = true;
+          scale = 1.0;
+          shadow = false;
+          show_on_workspace_switch = true;
+          smart_auto_hide = false;
+          thickness = 34;
+          widget_spacing = 6;
 
-        capsule_group = [
-          {
-            accordion = false;
-            accordion_direction = "end";
-            enabled = true;
-            fill = "surface_variant";
-            id = "g1";
-            members = [
-              "clock"
-              "workspaces"
-              "bluetooth"
-              "network"
-              "volume"
-              "battery"
-            ];
-            opacity = 1.0;
-            padding = 6.0;
-          }
+          center = [ "group:g1" ];
+          end = [
+            "group:g2"
+            "session"
+          ];
+          start = [ "media" ];
 
-          {
-            accordion = false;
-            accordion_direction = "end";
-            enabled = true;
-            fill = "surface_variant";
-            id = "g2";
-            members = [
-              "tray"
-              "notifications"
-              "clipboard"
-            ];
-            opacity = 1.0;
-            padding = 6.0;
-          }
-        ];
+          capsule_group = [
+            {
+              accordion = false;
+              accordion_direction = "end";
+              enabled = true;
+              fill = "surface_variant";
+              id = "g1";
+              members = [
+                "clock"
+                "workspaces"
+                "bluetooth"
+                "network"
+                "volume"
+                "battery"
+              ];
+              opacity = 1.0;
+              padding = 6.0;
+            }
+
+            {
+              accordion = false;
+              accordion_direction = "end";
+              enabled = true;
+              fill = "surface_variant";
+              id = "g2";
+              members = [
+                "tray"
+                "notifications"
+                "clipboard"
+              ];
+              opacity = 1.0;
+              padding = 6.0;
+            }
+          ];
+        };
       };
 
       control_center.calendar.show_events_card = false;
@@ -96,12 +138,12 @@ in
         schema_version = 2;
 
         widget = {
-          "lockscreen-login-box@${lockscreen_config.output_monitor}" = {
+          "lockscreen-login-box@${current_host_config.output_monitor}" = {
             box_width = lockscreen_login_box_width;
             box_height = lockscreen_login_box_height;
             cx = lockscreen_login_box_cx;
             cy = lockscreen_login_box_cy;
-            output = lockscreen_config.output_monitor;
+            output = current_host_config.output_monitor;
             rotation = 0.0;
             type = "login_box";
 
@@ -122,7 +164,7 @@ in
             box_width = lockscreen_clock_width;
             cx = lockscreen_clock_cx;
             cy = lockscreen_clock_cy;
-            output = lockscreen_config.output_monitor;
+            output = current_host_config.output_monitor;
             rotation = 0.0;
             type = "clock";
 
@@ -157,6 +199,14 @@ in
         popup_borders = false;
         popup_shadows = false;
         show_location = false;
+
+        mpris.blacklist = [
+          "firefox"
+          "zen"
+          "chromium"
+          "chrome"
+          "brave"
+        ];
 
         launcher = {
           categories = false;
