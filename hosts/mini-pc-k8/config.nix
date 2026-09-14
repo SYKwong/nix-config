@@ -3,10 +3,7 @@
 {
   age.secrets.harmonia-signing-key.file = ../../secrets/harmonia-signing-key.age;
 
-  networking.firewall = {
-    allowedTCPPorts = [ 5000 ];
-    allowedUDPPorts = [ 5353 ];
-  };
+  networking.firewall.allowedTCPPorts = [ 5000 ];
 
   # Define custom ALSA Card Profile for mini PC chassis without phantom internal speaker/mic
   environment.etc."alsa-card-profile/mixer/profile-sets/k8-analog.conf".text = ''
