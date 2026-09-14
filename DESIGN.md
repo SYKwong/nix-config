@@ -164,14 +164,44 @@ Mimicking SteamOS and Bazzite-deck, the gaming handheld features a dual-session 
 
 ## 7. Installation & Provisioning Workflow
 
-1. **Live USB Installation**:
-   ```bash
-   sudo ./install.sh "legion-go" "<user_password>"
-   ```
-   * `install.sh` detects the stub in `hosts/legion-go/hardware-configuration.nix` and runs `nixos-generate-config --no-filesystems`.
-   * Partitions the drive using `hosts/legion-go/disko.nix` without requiring a LUKS passphrase.
-   * Installs NixOS system closure with `legion-go-kyle` user account.
+Installation is performed using the **official standard NixOS Live USB** with a USB-C hub/dock connected for initial BIOS configuration (UMA frame buffer set to 6 GB VRAM and Secure Boot disabled).
 
-2. **First Boot & Setup**:
-   * Run `./post-install.sh` to initialize SSH host keys, user keys, and remote configurations.
-   * Rekey `secrets/keys.nix` via `agenix --rekey` on an authorized machine.
+### 7.1. Remote LAN Deployment via `nixos-anywhere` (Recommended)
+Pushes pre-cached packages across local LAN at 100+ MB/s and auto-generates hardware configuration directly on your workstation repo:
+
+1. On the Legion Go console (standard Live ISO):
+   ```bash
+   sudo passwd root
+   ip a  # note the IP address
+   ```
+2. From your workstation (`mini-pc-k8` or `framework16`):
+   ```bash
+   # Pre-cache closure in the background (eliminates internet download delays)
+   nix build .#nixosConfigurations.legion-go.config.system.build.toplevel
+
+   # Deploy over local LAN
+   nix run github:nix-community/nixos-anywhere -- \
+     --generate-hardware-config nixos-generate-config ./hosts/legion-go/hardware-configuration.nix \
+     --flake .#legion-go \
+     root@<legion-go-ip>
+   ```
+   * Remote execution partitions `/dev/nvme0n1` via Disko, generates `hardware-configuration.nix`, transfers the closure over LAN in ~90 seconds, installs `systemd-boot`, and reboots into Steam Big Picture.
+3. Commit generated hardware configuration:
+   ```bash
+   git add hosts/legion-go/hardware-configuration.nix
+   git commit -m "feat(legion-go): add generated hardware configuration"
+   ```
+
+### 7.2. Local Live USB Installation (`install.sh`)
+```bash
+sudo ./install.sh "legion-go" "<user_password>"
+```
+* Automatically runs `nixos-generate-config --no-filesystems`.
+* Partitions `/dev/nvme0n1` using `hosts/legion-go/disko.nix` (unencrypted Btrfs + 20 GB hibernation swapfile).
+* Installs system closure with `legion-go-kyle` user account and reboots.
+
+### 7.3. First Boot & Setup
+* Initial boot automatically loads KDE Plasma 6 (via `/var/lib/handheld-first-boot-done` sentinel check).
+* Run `./post-install.sh --auth` to initialize SSH host keys, user keys, and remote configurations.
+* Rekey `secrets/keys.nix` via `agenix --rekey` on an authorized machine.
+* Subsequent boots default directly to Steam Gaming Mode.

@@ -97,10 +97,29 @@ And the file layout of this example will be:
     ```
 
 #### 3. Running the Installer
-``` bash
+
+##### Option A: Local Live USB (`install.sh`)
+Run directly in the live environment:
+```bash
 sudo ./install.sh "<host_name>" "<user_password>" ["<luks_password>"]
 ```
 After the install, the script reboots your system.
+
+##### Option B: Remote LAN Deployment (`nixos-anywhere`)
+Deploy to a machine on your local network running the standard official NixOS live installer (useful for streaming pre-cached packages across LAN at 100+ MB/s):
+
+1. On the target machine (booted in live ISO with network connected):
+   ```bash
+   sudo passwd root
+   ip a  # note the target IP
+   ```
+2. From your workstation:
+   ```bash
+   nix run github:nix-community/nixos-anywhere -- \
+     --generate-hardware-config nixos-generate-config ./hosts/<host_name>/hardware-configuration.nix \
+     --flake .#<host_name> \
+     root@<target_ip>
+   ```
 
 #### 4. Post-Installation Setup
 If using LUKS + Secure Boot, enter BIOS after reboot and enable Secure Boot, then boot into the newly installed NixOS system.
