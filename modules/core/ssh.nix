@@ -15,4 +15,18 @@ in
 
   users.users."${username}".openssh.authorizedKeys.keys =
     builtins.attrValues keys.users ++ otherMachines;
+
+  programs.ssh.knownHosts = {
+    mini-pc-k8 = {
+      publicKey = keys.systems."mini-pc-k8";
+      extraHostNames = [ "mini-pc-k8.local" ];
+    };
+    fw16 = {
+      publicKey = keys.systems.fw16;
+      extraHostNames = [
+        "framework16"
+        "framework16.local"
+      ];
+    };
+  };
 }
