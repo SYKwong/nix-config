@@ -9,6 +9,7 @@
     ./git.nix
     ./opencode.nix
     ./yazi.nix
+    ./yt-dlp.nix
     ./zoxide.nix
   ];
 }
