@@ -19,7 +19,8 @@
       extra-trusted-public-keys = [
         "mini-pc-k8-1:4Tac3TqWj59aZkbxxJ+ux931MXNVnvWrU1xGAll40KE="
       ];
-      connect-timeout = 5;
+      connect-timeout = 2;
+      download-attempts = 2;
     };
     optimise.automatic = true;
   };
