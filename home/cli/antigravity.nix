@@ -146,7 +146,7 @@
 
       ## NixOS & Code Conventions
       - Formatting: Format Nix code with `nix fmt`.
-      - Linting & Evaluation: Verify Nix changes with `statix check`, `deadnix`, and top-level derivation evaluation (`nix eval .#nixosConfigurations.<host>.config.system.build.toplevel.drvPath`). Do not run `nix eval` if changes do not touch `.nix` files, unless a modified file is directly referenced or imported by a `.nix` file (e.g. `starship.toml`).
+      - Linting & Evaluation: Verify Nix changes with `statix check`, `deadnix`, and flake evaluation (`nix flake check --no-build`). Do not run `nix flake check` if changes do not touch `.nix` files, unless a modified file is directly referenced or imported by a `.nix` file (e.g. `starship.toml`).
       - Hardware files: Never edit auto-generated `hardware-configuration.nix` files (ignore any linter warnings inside them).
       - Portability & Modularity: Avoid hardcoded numeric UIDs/GIDs (prefer dynamic `username` and `users` group). Keep host-specific logic in `hosts/<name>/` and reusable features in `modules/<category>/`.
       - Code Locality, Constants & Helpers: Avoid hoisting constants or helper functions to distant file headers. Assign magic numbers to named constant variables declared as late and locally as possible. Place private helper functions physically as close as possible to the consumers that use them (e.g. immediately preceding the calling function) to preserve local reading context.

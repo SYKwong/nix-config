@@ -181,5 +181,5 @@ Lint and evaluate configurations:
 ```bash
 statix check
 deadnix
-nix eval .#nixosConfigurations.<host>.config.system.build.toplevel.drvPath
+nix flake check --no-build
 ```
