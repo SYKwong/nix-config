@@ -21,7 +21,7 @@ local session_menu = noc .. "panel-toggle session"
 
 local mainMod = "SUPER"
 
-local utils = require("hyprland/common/utils")
+local utils = require("hyprland/utils")
 
 -- Core Applications & Menus
 hl.bind(mainMod .. " + SUPER_L", hl.dsp.exec_cmd(app_launcher), { description = "[App] Launch Application Menu" })
