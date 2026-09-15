@@ -37,6 +37,23 @@ let
   lockscreen_clock_cy = current_host_config.screen_height * 0.09;
 
   wallpaper_directory = "/home/${username}/Wallpaper";
+
+  host_idle_behaviors = {
+    framework16 = {
+      kb-backlight = {
+        action = "command";
+        command = "kb-light-manager off 32ac 0012";
+        resume_command = "kb-light-manager on 32ac 0012";
+        timeout = 330;
+      };
+
+      suspend-then-hibernate = {
+        action = "command";
+        command = "systemctl suspend-then-hibernate";
+        timeout = 600;
+      };
+    };
+  };
 in
 
 {
@@ -131,7 +148,37 @@ in
 
       control_center.calendar.show_events_card = false;
       desktop_widgets.enabled = false;
-      idle.pre_action_fade_seconds = 0;
+      idle = {
+        behavior_order = [
+          "dim"
+          "lock"
+          "screen-off"
+          "kb-backlight"
+          "suspend-then-hibernate"
+        ];
+        pre_action_fade_seconds = 0;
+        behavior = {
+          dim = {
+            action = "command";
+            command = "brightnessctl -s set 5%";
+            resume_command = "brightnessctl -r";
+            timeout = 150;
+          };
+
+          lock = {
+            action = "lock";
+            enabled = true;
+            timeout = 300;
+          };
+
+          screen-off = {
+            action = "screen_off";
+            enabled = true;
+            timeout = 330;
+          };
+        }
+        // (host_idle_behaviors.${hostname} or { });
+      };
       location.auto_locate = true;
 
       lockscreen_widgets = {

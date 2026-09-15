@@ -8,8 +8,7 @@ let
   symlink = path: config.lib.file.mkOutOfStoreSymlink "${config_path}/${path}";
 
   files = {
-    "hypr/hyprland.lua" = "hypr/hyprland.lua";
-    "hypr/hyprland" = "hypr/hyprland";
+    "hypr" = "hypr";
 
     "foot" = "foot";
     "kitty" = "kitty";
