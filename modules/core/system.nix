@@ -1,6 +1,9 @@
 { username, ... }:
 
 {
+  documentation.nixos.enable = false;
+  nixpkgs.config.allowUnfree = true;
+  system.stateVersion = "26.05";
   time.timeZone = "America/Los_Angeles";
 
   nix = {
@@ -21,9 +24,6 @@
     optimise.automatic = true;
   };
 
-  system.stateVersion = "26.05";
-  documentation.nixos.enable = false;
-
   programs = {
     nh = {
       enable = true;
@@ -42,6 +42,4 @@
       ];
     };
   };
-
-  nixpkgs.config.allowUnfree = true;
 }
