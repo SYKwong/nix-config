@@ -96,6 +96,7 @@
         "command(journalctl)"
 
         "write_file(/home/${username}/nix-config)"
+        "write_file(/home/${username}/Projects)"
       ];
 
       deny = [
@@ -122,6 +123,7 @@
     settings = {
       trustedWorkspaces = [
         "/home/${username}/nix-config"
+        "/home/${username}/Projects"
       ];
     };
 
