@@ -2,7 +2,6 @@ MenuBar=Disabled
 
 [General]
 CloseSplitViewChoice=InactiveView
-LockPanels=false
 RememberOpenedTabs=false
 Version=202
 ViewPropsTimestamp=2026,6,1,23,18,10.141
