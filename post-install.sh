@@ -189,10 +189,14 @@ authenticate_gitlab() {
   fi
 
   echo "Ensuring SSH key is uploaded to GitLab as '$key_title'..."
-  if glab ssh-key add "$user_key_file" --title "$key_title" 2>/dev/null; then
+  local glab_output
+  if glab_output=$(glab ssh-key add "$user_key_file" --title "$key_title" 2>&1); then
     echo "==> [OK] SSH key successfully added to GitLab!"
+  elif echo "$glab_output" | grep -qi "already been taken"; then
+    echo "==> [OK] SSH key already registered on GitLab."
   else
-    echo "==> [NOTICE] SSH key already registered or upload skipped."
+    echo "==> [WARN] Failed to add SSH key to GitLab:"
+    echo "    $glab_output"
   fi
 
   echo "Verifying SSH connection to GitLab..."
@@ -207,19 +211,25 @@ authenticate_github() {
   echo "--- GitHub Authentication (gh) ---"
   if gh auth status >/dev/null 2>&1; then
     echo "GitHub is already authenticated."
+    if ! gh auth status 2>&1 | grep -q "admin:public_key"; then
+      echo "Existing token lacks 'admin:public_key' scope. Refreshing credentials..."
+      gh auth refresh -h github.com -s admin:public_key
+    fi
   else
     echo "Authenticating with GitHub..."
-    if ! gh auth login --hostname github.com --web --git-protocol ssh; then
+    if ! gh auth login --hostname github.com --web --git-protocol ssh --skip-ssh-key -s admin:public_key; then
       echo "GitHub authentication was skipped or failed."
       return 0
     fi
   fi
 
   echo "Ensuring SSH key is uploaded to GitHub as '$key_title'..."
-  if gh ssh-key add "$user_key_file" --title "$key_title" 2>/dev/null; then
-    echo "==> [OK] SSH key successfully added to GitHub!"
+  local gh_output
+  if gh_output=$(gh ssh-key add "$user_key_file" --title "$key_title" 2>&1); then
+    echo "==> [OK] $gh_output"
   else
-    echo "==> [NOTICE] SSH key already registered or upload skipped."
+    echo "==> [WARN] Failed to add SSH key to GitHub:"
+    echo "    $gh_output"
   fi
 
   echo "Verifying SSH connection to GitHub..."
@@ -268,7 +278,7 @@ print_reminders() {
     echo "  or authenticate individually whenever you are ready:"
     echo "    - GitLab:    glab auth login --hostname gitlab.com --web --git-protocol ssh"
     echo "                 (or add key at https://gitlab.com/-/user_settings/ssh_keys)"
-    echo "    - GitHub:    gh auth login --hostname github.com --git-protocol ssh"
+    echo "    - GitHub:    gh auth login --hostname github.com --web --git-protocol ssh -s admin:public_key"
     echo "    - NordVPN:   nordvpn login"
     echo "    - Wallpaper: git clone git@gitlab.com:kylekwong/private-wallpaper.git ~/Wallpaper (or public: https://gitlab.com/kylekwong/Wallpaper.git)"
     echo ""
