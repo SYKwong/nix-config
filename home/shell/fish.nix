@@ -6,7 +6,6 @@
       enableFishIntegration = true;
 
       enableTransience = true;
-      settings = fromTOML (builtins.readFile ../../config/starship/starship.toml);
     };
   };
   stylix.targets.starship.enable = false;

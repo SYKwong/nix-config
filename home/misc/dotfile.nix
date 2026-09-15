@@ -13,6 +13,7 @@ let
     "foot" = "foot";
     "kitty" = "kitty";
     "glow" = "glow";
+    "starship.toml" = "starship/starship.toml";
 
     "dolphinrc" = "kde/dolphin/dolphinrc";
     "kservicemenurc" = "kde/dolphin/kservicemenurc";
