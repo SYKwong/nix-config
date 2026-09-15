@@ -24,20 +24,23 @@
   system.stateVersion = "26.05";
   documentation.nixos.enable = false;
 
-  programs.nh = {
-    enable = true;
-    clean = {
+  programs = {
+    nh = {
       enable = true;
-      extraArgs = "--keep-since 4d --keep 3";
+      clean = {
+        enable = true;
+        extraArgs = "--keep-since 4d --keep 3";
+      };
+      flake = "/home/${username}/nix-config";
     };
-    flake = "/home/${username}/nix-config";
-  };
 
-  programs.git = {
-    enable = true;
-    config.safe.directory = [
-      "/home/${username}/nix-config"
-    ];
+    # Needed for the rebuild script as it uses the root user
+    git = {
+      enable = true;
+      config.safe.directory = [
+        "/home/${username}/nix-config"
+      ];
+    };
   };
 
   nixpkgs.config.allowUnfree = true;
