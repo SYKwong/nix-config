@@ -10,6 +10,7 @@
     enable = true;
     config = {
       autocreate-playlist = "filter";
+      directory-filter-types = "video";
     };
     bindings = {
       UP = "add volume 5";
