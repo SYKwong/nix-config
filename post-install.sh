@@ -241,15 +241,22 @@ authenticate_nordvpn() {
   echo "--- NordVPN Authentication ---"
   if nordvpn account 2>/dev/null | grep -qi "Email address"; then
     echo "NordVPN is already logged in."
-    return 0
+  else
+    echo "Opening browser to log into NordVPN..."
+    nordvpn login || true
+
+    echo ""
+    read -r -p "Complete login in your browser, then press [Enter] to continue..."
+
+    if ! nordvpn account 2>/dev/null | grep -qi "Email address"; then
+      echo "Notice: NordVPN account does not appear logged in yet."
+      return 0
+    fi
+    echo "==> [OK] NordVPN login successful!"
   fi
 
-  echo "Logging into NordVPN..."
-  if nordvpn login; then
-    echo "==> [OK] NordVPN login successful!"
-  else
-    echo "NordVPN login was skipped or failed."
-  fi
+  echo "Configuring NordVPN LAN discovery..."
+  nordvpn set lan-discovery on || true
 }
 
 authenticate_services() {
