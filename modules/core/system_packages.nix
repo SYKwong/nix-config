@@ -41,6 +41,7 @@
     mime = {
       enable = true;
       defaultApplications = {
+        "audio/*" = "io.bassi.Amberol.desktop";
         "image/*" = "qimgv.desktop";
         "video/*" = "mpv.desktop";
         "application/zip" = "org.kde.ark.desktop";

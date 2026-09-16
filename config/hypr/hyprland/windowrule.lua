@@ -91,6 +91,12 @@ hl.window_rule({
 })
 
 hl.window_rule({
+	name = "amberol",
+	match = { class = "io.bassi.Amberol" },
+	workspace = "4",
+})
+
+hl.window_rule({
 	match = { class = "dev.noctalia.Noctalia" },
 	float = true,
 	center = true,

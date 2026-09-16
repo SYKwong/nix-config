@@ -2,6 +2,7 @@
 
 {
   home.packages = with pkgs; [
+    amberol
     jellyfin-desktop
     supersonic
   ];
