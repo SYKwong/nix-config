@@ -23,10 +23,6 @@
       kdePackages.dolphin
       kdePackages.ffmpegthumbs
       kdePackages.kio-extras
-      kdePackages.konsole
-      kdePackages.plasma-workspace
-      kdePackages.qtsvg
-      kdePackages.dolphin-plugins
     ])
     ++ [
       inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
