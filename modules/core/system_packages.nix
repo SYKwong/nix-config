@@ -7,6 +7,7 @@
       deadnix
       ffmpeg
       glow
+      jq
       kitty
       libnotify
       mpv

@@ -13,19 +13,45 @@ end
 
 local function launch_kitty(session_filename)
 	local command = [[
-        ACTIVE_PID=$(hyprctl activewindow | awk '/pid:/ {print $2}')
-        if [ -n "$ACTIVE_PID" ]; then
-            CHILD_PID=$(pgrep -P "$ACTIVE_PID" | awk '{p2=p1; p1=$0} END{print p2}')
-            if [ -n "$CHILD_PID" ]; then
-                CWD=$(readlink /proc/$CHILD_PID/cwd)
-            else
-                CWD=$(readlink /proc/$ACTIVE_PID/cwd)
-            fi
+        get_kitty_cwd() {
+            [ -n "$1" ] || return 0
+            local child_pid
+            child_pid=$(pgrep -P "$1" | awk '{p2=p1; p1=$0} END{print p2}')
+            readlink "/proc/${child_pid:-$1}/cwd"
+        }
+
+        get_dolphin_cwd() {
+            local title dir
+            title=$(echo "$1" | jq -r '.title // empty')
+            dir="${title% — Dolphin}"
+            dir="${dir% - Dolphin}"
+            echo "$dir"
+        }
+
+        ACTIVE_WINDOW=$(hyprctl activewindow -j)
+        ACTIVE_PID=$(echo "$ACTIVE_WINDOW" | jq -r '.pid // empty')
+        APP_CLASS=$(echo "$ACTIVE_WINDOW" | jq -r '.class // empty')
+
+        case "$APP_CLASS" in
+            kitty)            CWD=$(get_kitty_cwd "$ACTIVE_PID") ;;
+            org.kde.dolphin)  CWD=$(get_dolphin_cwd "$ACTIVE_WINDOW") ;;
+            *)                CWD="" ;;
+        esac
+
+        if [ -n "$CWD" ] && [ ! -d "$CWD" ]; then
+            CWD=""
         fi
     ]]
 
 	if session_filename then
-		command = command .. 'kitty -d "${CWD:-$HOME}" --session "$HOME/.config/kitty/' .. session_filename .. '"\n'
+		command = command
+			.. [[
+            if [ "$CWD" = "$HOME" ]; then
+               CWD="$HOME/nix-config/"
+            fi
+            kitty -d "${CWD:-$HOME}" --session "$HOME/.config/kitty/]]
+			.. session_filename
+			.. '"\n'
 	else
 		command = command .. 'kitty -d "${CWD:-$HOME}"\n'
 	end

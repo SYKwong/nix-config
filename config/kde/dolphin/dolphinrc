@@ -3,6 +3,7 @@ MenuBar=Disabled
 [General]
 CloseSplitViewChoice=InactiveView
 RememberOpenedTabs=false
+ShowFullPathInTitlebar=true
 Version=202
 ViewPropsTimestamp=2026,6,1,23,18,10.141
 
