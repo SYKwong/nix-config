@@ -7,7 +7,6 @@
 let
   networkShare = import ../config/networkshare-config.nix { inherit username; };
   inherit (networkShare) mountPath nasAddress shareName;
-
 in
 {
 

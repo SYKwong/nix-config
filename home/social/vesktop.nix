@@ -1,4 +1,6 @@
 {
+  stylix.targets.vesktop.enable = false;
+
   programs.vesktop = {
     enable = true;
     vencord = {
@@ -17,5 +19,4 @@
       '';
     };
   };
-  stylix.targets.vesktop.enable = false;
 }

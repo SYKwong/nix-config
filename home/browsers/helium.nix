@@ -17,6 +17,5 @@
     extensions = [
       { id = "ophjlpahpchlmihnnnihgmmeilfjmjjc"; } # Line
     ];
-
   };
 }

@@ -62,6 +62,8 @@ let
 in
 
 {
+  stylix.targets.noctalia.enable = false;
+
   programs.noctalia = {
     enable = true;
     systemd.enable = true;

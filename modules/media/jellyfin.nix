@@ -1,7 +1,5 @@
 { pkgs, ... }:
 
 {
-  environment.systemPackages = [
-    pkgs.jellyfin-desktop
-  ];
+  environment.systemPackages = [ pkgs.jellyfin-desktop ];
 }

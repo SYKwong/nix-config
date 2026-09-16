@@ -28,8 +28,10 @@
       inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
     ];
 
-  programs.nano.enable = false;
-
+  programs = {
+    nano.enable = false;
+    localsend.enable = true;
+  };
   xdg = {
     terminal-exec = {
       enable = true;

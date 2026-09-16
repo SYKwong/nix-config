@@ -82,11 +82,10 @@ in
         ./modules/home-manager
         ./modules/input
         ./modules/media
-        ./modules/misc
         ./modules/secrets
         ./modules/shell-scripts
         ./modules/vpn
-        ./modules/window-manager
+        ./modules/window-manager/hyprland.nix
         ./modules/wireless
 
         ./overlays
