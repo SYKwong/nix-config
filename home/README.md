@@ -13,6 +13,7 @@ This directory contains pure **Home Manager** user-space configurations. Everyth
 | **`desktop/`** | Noctalia desktop shell (status bar, OSD, lockscreen, runner, idle management). |
 | **`browsers/`** | Web browsers (Zen Browser, Helium). |
 | **`editors/`** | Text editors, primarily NixVim (declarative Neovim configuration) and Zed. |
+| **`media/`** | Media players and desktop streaming clients (`mpv`, `jellyfin-desktop`, `supersonic`). |
 | **`shell/`** | Fish shell configuration, interactive prompts, and completions. |
 | **`social/`** | Messaging and social clients (`vesktop`). |
 | **`theme/`** | GTK theme settings and Stylix user-level overrides. |

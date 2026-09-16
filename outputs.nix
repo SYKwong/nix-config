@@ -81,7 +81,6 @@ in
         ./modules/gaming
         ./modules/home-manager
         ./modules/input
-        ./modules/media
         ./modules/secrets
         ./modules/shell-scripts
         ./modules/vpn

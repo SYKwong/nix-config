@@ -17,7 +17,6 @@ This directory contains modular, reusable **NixOS system-level** configurations.
 | **`wireless/`** | Wireless networking (Wi-Fi), network management, and Bluetooth services. |
 | **`vpn/`** | Virtual Private Network (VPN) client services, daemons, and encrypted tunnels. |
 | **`gaming/`** | Gaming platforms, compatibility runtimes, and graphics/system performance optimizations. |
-| **`media/`** | Media streaming servers, headless playback daemons, and audio services. |
 | **`ai/`** | Hardware-accelerated compute runtimes, local AI engines, and inference services. |
 | **`secrets/`** | System secret management, decryption, and credential provisioning. |
 | **`input/`** | Input method engines (IME), internationalization, and keyboard layout mappings. |
