@@ -1,10 +1,14 @@
 {
+  lib,
   specialArgs,
   username,
-  extraHomeModules ? [ ],
+  hostname,
   ...
 }:
 
+let
+  hostHome = ../../hosts/${hostname}/home;
+in
 {
   home-manager = {
     useGlobalPkgs = true;
@@ -16,7 +20,10 @@
     users."${username}" =
       { ... }:
       {
-        imports = [ ../../home ] ++ extraHomeModules;
+        imports = [
+          ../../home
+        ]
+        ++ lib.optional (builtins.pathExists hostHome) hostHome;
 
         home.username = username;
         home.homeDirectory = "/home/${username}";

@@ -56,7 +56,7 @@ And the file layout of this example will be:
 
 #### 2. Adding a new machine  
 - Step 1: Define the Host Entry  
-    - Open `outputs.nix` and define your machine under the `hosts` attribute set. `extraModules` is required; `extraHomeModules` is optional (defaults to `[ ]`):
+    - Open `outputs.nix` and define your machine under the `hosts` attribute set. `extraModules` is required:
     ```nix
     <host_name> = {
       username = "<user_name>";
@@ -65,8 +65,6 @@ And the file layout of this example will be:
       extraModules = [
         # Host-specific NixOS system modules (e.g. hardware, laptop, desktop)
       ];
-
-      # extraHomeModules = [ ... ]; # (Optional: host-specific Home Manager user modules)
     };
     ```  
 

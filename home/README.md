@@ -32,7 +32,7 @@ Fast-iterating configuration files (such as Hyprland Lua scripts, Kitty, and Foo
 Custom desktop launchers and rules for hiding unwanted third-party app shortcuts are managed in [`home/misc/`](./misc). See [`home/misc/desktop-entry.md`](./misc/desktop-entry.md) for documentation on the two-tier hiding mechanism.
 
 ### 4. Host-Specific User Extensions
-Host directories do not contain separate `home.nix` files; all machines import this common [`home/`](./) directory directly via [`modules/home-manager/default.nix`](../modules/home-manager/default.nix). If a machine requires user packages or settings unique to that host, declare them under `extraHomeModules` in [`outputs.nix`](../outputs.nix).
+All machines import this common [`home/`](./) directory directly via [`modules/home-manager/default.nix`](../modules/home-manager/default.nix). If a machine requires user packages or settings unique to that host, place them in `hosts/<hostname>/home/` (with a `default.nix`), which is automatically imported if it exists.
 
 ### 5. Idle Management
 Idle timeouts and power states are managed natively by Noctalia ([`home/desktop/noctalia.nix`](./desktop/noctalia.nix)) using the Wayland `ext_idle_notifier_v1` protocol, consolidating idle handling without external daemons like `hypridle`.

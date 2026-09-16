@@ -57,8 +57,6 @@ Every host is declared in the `hosts` set in [`outputs.nix`](../outputs.nix):
   extraModules = [
     # Host-specific NixOS system modules (e.g. nixos-hardware, laptop, desktop)
   ];
-
-  # extraHomeModules = [ ... ]; # (Optional: host-specific Home Manager user modules)
 };
 ```
 
@@ -67,4 +65,4 @@ Every host is declared in the `hosts` set in [`outputs.nix`](../outputs.nix):
 ## Conventions & Rules
 * **No hardcoded paths or IDs**: Use dynamic `username` and the standard `users` group. Avoid hardcoded `/home/<username>` paths; reference `specialArgs.username` or config variables.
 * **Keep it host-specific**: Generic or reusable capabilities belong in [`modules/`](../modules) or [`home/`](../home).
-* **No per-host `home.nix`**: Host directories do not contain `home.nix`. All baseline user configurations are imported directly from [`home/`](../home); host-specific user additions belong in `extraHomeModules` in [`outputs.nix`](../outputs.nix).
+* **Per-host user configuration**: All baseline user configurations are imported directly from [`home/`](../home); host-specific user additions belong in `hosts/<hostname>/home/` (automatically imported if present).
