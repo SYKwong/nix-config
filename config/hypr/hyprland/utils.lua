@@ -46,8 +46,8 @@ local function launch_kitty(session_filename)
 	if session_filename then
 		command = command
 			.. [[
-            if [ "$CWD" = "$HOME" ]; then
-               CWD="$HOME/nix-config/"
+            if [ -z "$CWD" ] || [ "$CWD" = "$HOME" ]; then
+               CWD="$HOME/nix-config"
             fi
             kitty -d "${CWD:-$HOME}" --session "$HOME/.config/kitty/]]
 			.. session_filename
