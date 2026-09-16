@@ -12,6 +12,7 @@
     config = {
       autocreate-playlist = "filter";
       directory-filter-types = "video";
+      save-position-on-quit = true;
     };
     bindings = {
       UP = "add volume 5";
