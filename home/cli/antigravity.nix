@@ -44,6 +44,7 @@
 
         "command(hyprctl)"
         "command(notify-send)"
+        "command(noctalia)"
 
         "command(ls)"
         "command(cat)"
