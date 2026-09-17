@@ -14,10 +14,10 @@ This directory contains pure **Home Manager** user-space configurations. Everyth
 | **`browsers/`** | Web browsers (Zen Browser, Helium). |
 | **`editors/`** | Text editors, primarily NixVim (declarative Neovim configuration) and Zed. |
 | **`media/`** | Media players and desktop streaming clients (`amberol`, `mpv`, `jellyfin-desktop`, `supersonic`). |
-| **`shell/`** | Fish shell configuration, interactive prompts, and completions. |
+| **`shell/`** | Fish shell configuration, interactive prompts, completions, and shell aliases/functions (`alias.nix`). |
 | **`social/`** | Messaging and social clients (`vesktop`). |
 | **`theme/`** | GTK theme settings and Stylix user-level overrides. |
-| **`misc/`** | System glue: out-of-store dotfile symlinking (`dotfile.nix`), custom/hidden `.desktop` entries, and shell aliases. |
+| **`misc/`** | System glue: out-of-store dotfile symlinking (`dotfile.nix`), and custom/hidden `.desktop` entries. |
 
 ---
 

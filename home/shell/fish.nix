@@ -1,6 +1,20 @@
 {
   programs = {
-    fish.enable = true;
+    fish = {
+      enable = true;
+      functions = {
+        n = {
+          body = ''
+            if not set -q argv[1]
+              nvim .
+            else
+              nvim $argv
+            end
+          '';
+          wraps = "nvim";
+        };
+      };
+    };
     starship = {
       enable = true;
       enableFishIntegration = true;
