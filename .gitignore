@@ -1,2 +1,4 @@
 .gitlab-ci-local
 config/hypr/noctalia.lua
+__pycache__/
+*.pyc
