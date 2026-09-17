@@ -27,11 +27,12 @@ let
 
     # Misc
     "btop"
-    "uuctl"
-    "qimgv"
-    "mpv"
     "dev.noctalia.Noctalia"
     "io.bassi.Amberol"
+    "kitty"
+    "mpv"
+    "qimgv"
+    "uuctl"
   ];
 
   hiddenDesktopContent = name: ''
