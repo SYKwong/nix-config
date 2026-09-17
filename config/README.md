@@ -26,12 +26,11 @@ By using `config.lib.file.mkOutOfStoreSymlink` in [`home/misc/dotfile.nix`](../h
 | **`kitty/`** | `~/.config/kitty` | Kitty terminal emulator configuration, color schemes, and declarative session blueprints (e.g. `three-pane.session`). |
 | **`foot/`** | `~/.config/foot` | Minimal Foot terminal configuration used for floating TUI wrappers (`tui-wrap`). |
 | **`starship/`** | `~/.config/starship.toml` | Starship cross-shell prompt theme and format settings. |
-| **`kde/dolphin/`** | `~/.config/dolphinrc`, `kservicemenurc` | KDE Dolphin file manager preferences and context menu integration. |
+| **`kde/dolphin/`** | `~/.config/dolphinrc`, `kservicemenurc`, `~/.local/state/dolphinstaterc` | KDE Dolphin file manager preferences, context menus, and window/panel layout state. |
 | **`qimgv/`** | `~/.config/qimgv/qimgv.conf` | Fast image viewer settings. |
 | **`glow/`** | `~/.config/glow` | CLI Markdown viewer theme and pager settings. |
 
 ---
-
 ## Adding a New Out-of-Store Dotfile
 1. Create the configuration file or folder in `./config/<app>/`.
 2. Register the mapping in [`home/misc/dotfile.nix`](../home/misc/dotfile.nix) under the `files` attribute set:

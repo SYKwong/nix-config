@@ -19,7 +19,12 @@ let
     "kservicemenurc" = "kde/dolphin/kservicemenurc";
     "qimgv/qimgv.conf" = "qimgv/qimgv.conf";
   };
+
+  stateFiles = {
+    "dolphinstaterc" = "kde/dolphin/dolphinstaterc";
+  };
 in
 {
   xdg.configFile = builtins.mapAttrs (_: value: { source = symlink value; }) files;
+  xdg.stateFile = builtins.mapAttrs (_: value: { source = symlink value; }) stateFiles;
 }
