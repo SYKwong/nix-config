@@ -31,8 +31,10 @@ let
     "io.bassi.Amberol"
     "kitty"
     "mpv"
+    "nvim"
     "qimgv"
     "uuctl"
+    "yazi"
   ];
 
   hiddenDesktopContent = name: ''
