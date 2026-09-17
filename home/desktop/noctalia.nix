@@ -286,10 +286,9 @@ in
       system.monitor.enabled = false;
 
       theme = {
-        builtin = "Catppuccin";
-        community_palette = "Catppuccin Mocha Blue";
-        source = "community";
-        wallpaper_scheme = "m3-tonal-spot";
+        mode = "dark";
+        source = "wallpaper";
+        wallpaper_scheme = "m3-content";
         templates = {
           builtin_ids = [ "hyprland" ];
           enable_builtin_templates = true;
