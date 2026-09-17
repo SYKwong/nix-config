@@ -32,6 +32,7 @@ let
     "qimgv"
     "mpv"
     "dev.noctalia.Noctalia"
+    "io.bassi.Amberol"
   ];
 
   hiddenDesktopContent = name: ''
