@@ -23,8 +23,7 @@ let
     "kbd-layout-viewer5"
 
     # KDE stuff
-    "org.kde.konsole"
-    #"org.kde.ark"
+    "org.kde.ark"
 
     # Misc
     "btop"
