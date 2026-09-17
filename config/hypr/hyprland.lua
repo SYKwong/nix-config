@@ -12,6 +12,12 @@ require("hyprland/workspacerule")
 
 local utils = require("hyprland/utils")
 
+-- For Noctalia Color templates
+local ok, noctalia = pcall(require, "noctalia")
+if ok and noctalia.apply_theme then
+	noctalia.apply_theme()
+end
+
 local monitor_setting = {
 	framework16 = function()
 		hl.monitor({

@@ -291,8 +291,8 @@ in
         source = "community";
         wallpaper_scheme = "m3-tonal-spot";
         templates = {
-          enable_builtin_templates = false;
-          enable_community_templates = false;
+          builtin_ids = [ "hyprland" ];
+          enable_builtin_templates = true;
         };
       };
 
