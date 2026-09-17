@@ -153,7 +153,18 @@ in
         };
       };
 
-      control_center.calendar.show_events_card = false;
+      control_center = {
+        calendar.show_events_card = false;
+        shortcuts = [
+          { type = "caffeine"; }
+          { type = "nightlight"; }
+          { type = "notification"; }
+          { type = "power_profile"; }
+        ];
+        show_session_button = false;
+        sidebar = "none";
+        sidebar_section = "none";
+      };
       desktop_widgets.enabled = false;
       idle = {
         behavior_order = [
@@ -233,6 +244,11 @@ in
         };
       };
 
+      notification = {
+        history_retention_hours = 24;
+        layer = "overlay";
+      };
+
       osd = {
         background_opacity = 0.5;
         offset_x = 0;
@@ -240,7 +256,7 @@ in
         position = "bottom_center";
         position_vertical = "bottom_center";
         kinds = {
-          lock_keys = false;
+          lock_keys = true;
           nightlight = false;
         };
       };
@@ -273,6 +289,7 @@ in
         };
 
         panel = {
+          control_center_placement = "floating";
           session_placement = "floating";
           session_position = "center";
           transparency_mode = "glass";
