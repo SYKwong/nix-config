@@ -17,6 +17,7 @@
     ./system_packages.nix
     ./usb_drive.nix
     ./user.nix
+    ./xdg.nix
     ./zram.nix
   ];
 }
