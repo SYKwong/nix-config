@@ -7,6 +7,7 @@
     mime = {
       enable = true;
       defaultApplications = {
+        "text/*" = "nvim.desktop";
         "audio/*" = "io.bassi.Amberol.desktop";
         "image/*" = "qimgv.desktop";
         "video/*" = "mpv.desktop";
@@ -16,4 +17,10 @@
       };
     };
   };
+
+  environment.etc."xdg/kdeglobals".text = ''
+    [General]
+    TerminalApplication=kitty
+    TerminalService=kitty.desktop
+  '';
 }

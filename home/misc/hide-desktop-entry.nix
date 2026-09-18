@@ -47,11 +47,19 @@ let
   '';
 in
 {
-  xdg.desktopEntries = lib.genAttrs appsToHide (name: {
-    inherit name;
-    noDisplay = true;
-    exec = name;
-  });
+  xdg.desktopEntries = lib.genAttrs appsToHide (
+    name:
+    {
+      inherit name;
+      noDisplay = true;
+      exec = name;
+    }
+    // lib.optionalAttrs (name == "nvim") {
+      exec = "nvim %F";
+      terminal = true;
+      mimeType = [ "text/plain" ];
+    }
+  );
 
   home.file = lib.listToAttrs (
     map (name: {
