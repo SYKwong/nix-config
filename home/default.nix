@@ -5,6 +5,7 @@
     ./core
     ./desktop
     ./editors
+    ./media
     ./misc
     ./shell
     ./social

@@ -23,7 +23,8 @@ hosts/<hostname>/
 ├── default.nix                 # Main host entry point
 ├── hardware-configuration.nix  # Auto-generated hardware configuration (do NOT edit manually)
 ├── disko.nix                   # Partitioning, filesystems (Btrfs), and boot decryption (TPM2/LUKS)
-└── config.nix                  # (Optional) Host-specific module options and agenix secrets
+├── config.nix                  # (Optional) Host-specific module options and agenix secrets
+└── flatpak.nix                 # (Optional) Host-specific Flatpak packages (auto-imported by modules/flatpak)
 ```
 
 ### File Responsibilities
@@ -44,6 +45,9 @@ hosts/<hostname>/
 4. **`config.nix` (Optional)** ([framework16](./framework16/config.nix), [mini-pc-k8](./mini-pc-k8/config.nix), [legion-go](./legion-go/config.nix)):
    A consolidated module for any machine-specific option toggles (e.g. `custom.ai`, `custom.vpn.wireguard`) and host-specific secrets (`age.secrets`). Avoid creating micro-files for individual feature toggles.
 
+5. **`flatpak.nix` (Optional)**:
+   A dedicated list of machine-specific Flatpak packages and sandbox overrides, auto-discovered and imported by [`modules/flatpak/`](../modules/flatpak) if present.
+
 ---
 
 ## Connection to `outputs.nix`
@@ -58,8 +62,6 @@ Every host is declared in the `hosts` set in [`outputs.nix`](../outputs.nix):
   extraModules = [
     # Host-specific NixOS system modules (e.g. nixos-hardware, profiles/laptop, profiles/desktop, profiles/gaming-handheld)
   ];
-
-  # extraHomeModules = [ ... ]; # (Optional: host-specific Home Manager user modules)
 };
 ```
 
@@ -103,4 +105,4 @@ Every host is declared in the `hosts` set in [`outputs.nix`](../outputs.nix):
 ## Conventions & Rules
 * **No hardcoded paths or IDs**: Use dynamic `username` and the standard `users` group. Avoid hardcoded `/home/<username>` paths; reference `specialArgs.username` or config variables.
 * **Keep it host-specific**: Generic or reusable capabilities belong in [`modules/`](../modules) or [`home/`](../home).
-* **No per-host `home.nix`**: Host directories do not contain `home.nix`. All baseline user configurations are imported directly from [`home/`](../home); host-specific user additions belong in `extraHomeModules` in [`outputs.nix`](../outputs.nix).
+* **Per-host user configuration**: All baseline user configurations are imported directly from [`home/`](../home); host-specific user additions belong in `hosts/<hostname>/home/` (automatically imported if present).

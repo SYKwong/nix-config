@@ -23,15 +23,18 @@ let
     "kbd-layout-viewer5"
 
     # KDE stuff
-    "org.kde.konsole"
-    #"org.kde.ark"
+    "org.kde.ark"
 
     # Misc
     "btop"
-    "uuctl"
-    "qimgv"
-    "mpv"
     "dev.noctalia.Noctalia"
+    "io.bassi.Amberol"
+    "kitty"
+    "mpv"
+    "nvim"
+    "qimgv"
+    "uuctl"
+    "yazi"
   ];
 
   hiddenDesktopContent = name: ''
@@ -44,11 +47,19 @@ let
   '';
 in
 {
-  xdg.desktopEntries = lib.genAttrs appsToHide (name: {
-    inherit name;
-    noDisplay = true;
-    exec = name;
-  });
+  xdg.desktopEntries = lib.genAttrs appsToHide (
+    name:
+    {
+      inherit name;
+      noDisplay = true;
+      exec = name;
+    }
+    // lib.optionalAttrs (name == "nvim") {
+      exec = "nvim %F";
+      terminal = true;
+      mimeType = [ "text/plain" ];
+    }
+  );
 
   home.file = lib.listToAttrs (
     map (name: {

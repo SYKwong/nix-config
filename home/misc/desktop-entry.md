@@ -42,16 +42,47 @@ annoyingApps = [
 
 ## Finding Desktop Entry Names
 
-To find the exact name of an entry to hide:
+Desktop entries often use Reverse-DNS names that differ from their package name or display title (e.g., Amberol is `io.bassi.Amberol.desktop`, Ark is `org.kde.ark.desktop`).
 
-1. **System packages**:
+To find the exact `.desktop` filename to hide:
+
+### Method 1: Search by filename across active desktop directories
+Search across System, Home Manager user profile, and local directories simultaneously:
+
+```bash
+find /run/current-system/sw/share/applications \
+     /etc/profiles/per-user/$USER/share/applications \
+     ~/.local/share/applications \
+     -name "*<app-name>*.desktop" 2>/dev/null
+```
+
+Or query specific directories:
+1. **System packages (`environment.systemPackages`)**:
    ```bash
    ls /run/current-system/sw/share/applications | grep -i <app-name>
    ```
-
-2. **User-level or runtime packages (Waydroid, Flatpak, local installs)**:
+2. **Home Manager packages (`home.packages`)**:
+   ```bash
+   ls /etc/profiles/per-user/$USER/share/applications | grep -i <app-name>
+   ```
+3. **User-level or runtime packages (Waydroid, Flatpak, local installs)**:
    ```bash
    ls ~/.local/share/applications | grep -i <app-name>
    ```
 
-3. Add the basename (excluding `.desktop`) to `appsToHide`, or to `annoyingApps` if it still appears in the launcher.
+### Method 2: Search by launcher display title
+If you only know the friendly name displayed in your launcher (e.g. "Amberol" or "Archive Manager"), search for the `Name=` field inside all `.desktop` files:
+
+```bash
+grep -rn -i "^Name=<Display Name>" \
+  /run/current-system/sw/share/applications \
+  /etc/profiles/per-user/$USER/share/applications \
+  ~/.local/share/applications 2>/dev/null
+```
+
+### Applying the Name
+Take the filename **excluding `.desktop`**:
+- `/etc/profiles/per-user/$USER/share/applications/io.bassi.Amberol.desktop` $\rightarrow$ `"io.bassi.Amberol"`
+- `/run/current-system/sw/share/applications/org.kde.ark.desktop` $\rightarrow$ `"org.kde.ark"`
+
+Add that exact string to `appsToHide` in [`hide-desktop-entry.nix`](./hide-desktop-entry.nix), or to `annoyingApps` if it still appears in the launcher.

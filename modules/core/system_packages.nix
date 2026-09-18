@@ -7,9 +7,9 @@
       deadnix
       ffmpeg
       glow
+      jq
       kitty
       libnotify
-      mpv
       p7zip
       qimgv
       qmk
@@ -23,32 +23,14 @@
       kdePackages.dolphin
       kdePackages.ffmpegthumbs
       kdePackages.kio-extras
-      kdePackages.konsole
-      kdePackages.plasma-workspace
-      kdePackages.qtsvg
-      kdePackages.dolphin-plugins
     ])
     ++ [
       inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
     ];
 
-  programs.nano.enable = false;
-
-  xdg = {
-    terminal-exec = {
-      enable = true;
-      settings.default = [ "kitty.desktop" ];
-    };
-    mime = {
-      enable = true;
-      defaultApplications = {
-        "image/*" = "qimgv.desktop";
-        "video/*" = "mpv.desktop";
-        "application/zip" = "org.kde.ark.desktop";
-        "application/x-7z-compressed" = "org.kde.ark.desktop";
-        "application/x-rar" = "org.kde.ark.desktop";
-      };
-    };
+  programs = {
+    nano.enable = false;
+    localsend.enable = true;
   };
 
   # Enabling upower for Noctalia battery monitoring

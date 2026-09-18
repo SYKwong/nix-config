@@ -1,5 +1,5 @@
 {
   imports = [
-    ./hyprland.nix
+    ./warm-cache.nix
   ];
 }

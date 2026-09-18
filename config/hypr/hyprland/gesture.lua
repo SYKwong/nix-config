@@ -1,4 +1,4 @@
-local utils = require("hyprland/common/utils")
+local utils = require("hyprland/utils")
 
 hl.gesture({
 	fingers = 4,

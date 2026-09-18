@@ -10,7 +10,6 @@ let
     stylix
     lanzaboote
     treefmt-nix
-    nix-flatpak
     agenix
     ;
 
@@ -77,7 +76,6 @@ in
       specialArgs = {
         inherit inputs;
         inherit (info) username;
-        extraHomeModules = info.extraHomeModules or [ ];
         pkgs-stable = nixpkgs-stable.legacyPackages.${info.system};
         hostname = name;
       };
@@ -86,7 +84,6 @@ in
         disko.nixosModules.disko
         home-manager.nixosModules.home-manager
         stylix.nixosModules.stylix
-        nix-flatpak.nixosModules.nix-flatpak
         agenix.nixosModules.default
 
         ./modules/core
@@ -96,12 +93,10 @@ in
         ./modules/gaming
         ./modules/home-manager
         ./modules/input
-        ./modules/media
-        ./modules/misc
         ./modules/secrets
         ./modules/shell-scripts
         ./modules/vpn
-        ./modules/window-manager
+        ./modules/window-manager/hyprland.nix
         ./modules/wireless
 
         ./overlays

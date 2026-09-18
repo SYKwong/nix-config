@@ -8,18 +8,23 @@ let
   symlink = path: config.lib.file.mkOutOfStoreSymlink "${config_path}/${path}";
 
   files = {
-    "hypr/hyprland.lua" = "hypr/hyprland/hyprland.lua";
-    "hypr/hyprland/common" = "hypr/hyprland/common";
+    "hypr" = "hypr";
 
     "foot" = "foot";
     "kitty" = "kitty";
     "glow" = "glow";
+    "starship.toml" = "starship/starship.toml";
 
     "dolphinrc" = "kde/dolphin/dolphinrc";
     "kservicemenurc" = "kde/dolphin/kservicemenurc";
     "qimgv/qimgv.conf" = "qimgv/qimgv.conf";
   };
+
+  stateFiles = {
+    "dolphinstaterc" = "kde/dolphin/dolphinstaterc";
+  };
 in
 {
   xdg.configFile = builtins.mapAttrs (_: value: { source = symlink value; }) files;
+  xdg.stateFile = builtins.mapAttrs (_: value: { source = symlink value; }) stateFiles;
 }

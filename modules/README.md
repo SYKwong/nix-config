@@ -16,14 +16,14 @@ This directory contains modular, reusable **NixOS system-level** configurations.
 | **`wireless/`** | Wireless networking (Wi-Fi), network management, and Bluetooth services. |
 | **`vpn/`** | Virtual Private Network (VPN) client services, daemons, and encrypted tunnels. |
 | **`gaming/`** | Gaming platforms, compatibility runtimes, and graphics/system performance optimizations. |
-| **`media/`** | Media streaming servers, headless playback daemons, and audio services. |
 | **`ai/`** | Hardware-accelerated compute runtimes, local AI engines, and inference services. |
 | **`secrets/`** | System secret management, decryption, and credential provisioning. |
 | **`input/`** | Input method engines (IME), internationalization, and keyboard layout mappings. |
 | **`shell-scripts/`** | Custom CLI utilities packaged via `writeShellApplication` (see [`modules/shell-scripts/README.md`](./shell-scripts/README.md)). |
-| **`home-manager/`** | System-level Home Manager integration module binding user configurations and `extraHomeModules`. |
+| **`home-manager/`** | System-level Home Manager integration module binding user configurations and automatic per-host home extensions. |
 | **`lanzaboote/`** | UEFI Secure Boot integration and cryptographic bootloader signing. |
 | **`power/`** | Power management daemons and system power profile switching. |
+| **`flatpak/`** | Declarative Flatpak application and sandbox runtime management (on-demand; see [`modules/flatpak/README.md`](./flatpak/README.md)). |
 | **`config/`** | Shared, host-reusable system configurations intended to be imported on demand. |
 | **`misc/`** | Miscellaneous auxiliary system services and utility integrations. |
 

@@ -56,7 +56,7 @@ And the file layout of this example will be:
 
 #### 2. Adding a new machine  
 - Step 1: Define the Host Entry  
-    - Open `outputs.nix` and define your machine under the `hosts` attribute set. `extraModules` is required; `extraHomeModules` is optional (defaults to `[ ]`):
+    - Open `outputs.nix` and define your machine under the `hosts` attribute set. `extraModules` is required:
     ```nix
     <host_name> = {
       username = "<user_name>";
@@ -65,8 +65,6 @@ And the file layout of this example will be:
       extraModules = [
         # Host-specific NixOS system modules (e.g. hardware, profiles/laptop, profiles/desktop, profiles/gaming-handheld)
       ];
-
-      # extraHomeModules = [ ... ]; # (Optional: host-specific Home Manager user modules)
     };
     ```  
 
@@ -175,8 +173,7 @@ Instead of unstable disk assignments like `/dev/sdX` or `/dev/nvmeX`, persistent
 Currently, these are the partitions I'm using:
 | Host Name | Description | LUKS + Secure Boot | Hibernation | File System |
 |:---:|:---:|:---:|:---:|:---:|
-| `framework16` | Framework Laptop 16 (AMD 7040) | YES | YES | BTRFS |
-| `mini-pc-k8` | GmkTec K8 HTPC | NO | NO | BTRFS |
+| `mini-pc-k8` | GMKtec K8 HTPC | NO | NO | BTRFS |
 | `legion-go` | Lenovo Legion Go (AMD Z1 Extreme) | NO | YES | BTRFS |
 
 The partition of framework16 is designed for hibernation, so it has a large swap file. You should also change the swap size to be 2 to 4GB + your RAM capacity.
@@ -224,5 +221,7 @@ Lint and evaluate configurations:
 ```bash
 statix check
 deadnix
-nix eval .#nixosConfigurations.<host>.config.system.build.toplevel.drvPath
+nix flake check --no-build
 ```
+---
+*The repository icon is the NixOS logo, licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) by the NixOS project.*
