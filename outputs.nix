@@ -76,6 +76,7 @@ in
       specialArgs = {
         inherit inputs;
         inherit (info) username;
+        inherit hosts;
         pkgs-stable = nixpkgs-stable.legacyPackages.${info.system};
         hostname = name;
       };
