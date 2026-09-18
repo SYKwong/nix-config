@@ -181,3 +181,5 @@ statix check
 deadnix
 nix flake check --no-build
 ```
+---
+*The repository icon is the NixOS logo, licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) by the NixOS project.*
