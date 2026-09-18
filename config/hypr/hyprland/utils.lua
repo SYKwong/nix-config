@@ -180,6 +180,24 @@ local function get_wrapped_index(current_index, list_length, direction)
 	return target_index
 end
 
+-- Workaround for using column size of 1 instead of native fullscreen
+local function center_cursor_for_full_width_window(target_window)
+	local monitor = hl.get_active_monitor()
+	if not monitor then
+		return
+	end
+
+	local logical_monitor_width <const> = monitor.width / monitor.scale
+	local fullscreen_ratio_threshold <const> = 0.875
+	local width_ratio = target_window.size.x / logical_monitor_width
+
+	if target_window.fullscreen ~= 0 or width_ratio >= fullscreen_ratio_threshold then
+		local center_x = math.floor(monitor.x + logical_monitor_width / 2)
+		local center_y = math.floor(target_window.at.y + target_window.size.y / 2)
+		hl.dispatch(hl.dsp.cursor.move({ x = center_x, y = center_y }))
+	end
+end
+
 local function cycle_scrolling(active_window, direction)
 	local all_windows = hl.get_windows()
 	local target_windows = get_tiled_windows_on_workspace(all_windows, active_window.workspace)
@@ -201,6 +219,7 @@ local function cycle_scrolling(active_window, direction)
 	if target_window and target_window.address then
 		local target_param = "address:" .. tostring(target_window.address)
 		hl.dispatch(hl.dsp.focus({ ["window"] = target_param }))
+		center_cursor_for_full_width_window(target_window)
 	end
 end
 
