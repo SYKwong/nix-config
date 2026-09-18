@@ -9,6 +9,14 @@ stages:
 verify-flake:
   stage: test
   image: nixos/nix:latest
+  variables:
+    XDG_CACHE_HOME: "$CI_PROJECT_DIR/.cache"
+  cache:
+    key:
+      files:
+        - flake.lock
+    paths:
+      - .cache/nix
   rules:
     # Only for merge requests
     - if: '$CI_PIPELINE_SOURCE != "merge_request_event"'
@@ -35,7 +43,7 @@ verify-flake:
         git diff
         exit 1
       fi
-    - nix flake check --extra-experimental-features "nix-command flakes"
+    - nix flake check --no-build --extra-experimental-features "nix-command flakes"
 
 update-flake-mr:
   stage: maintenance
