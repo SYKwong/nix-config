@@ -22,7 +22,8 @@ hosts/<hostname>/
 ├── default.nix                 # Main host entry point
 ├── hardware-configuration.nix  # Auto-generated hardware configuration (do NOT edit manually)
 ├── disko.nix                   # Partitioning, filesystems (Btrfs), and boot decryption (TPM2/LUKS)
-└── config.nix                  # (Optional) Host-specific module options and agenix secrets
+├── config.nix                  # (Optional) Host-specific module options and agenix secrets
+└── flatpak.nix                 # (Optional) Host-specific Flatpak packages (auto-imported by modules/flatpak)
 ```
 
 ### File Responsibilities
@@ -42,6 +43,9 @@ hosts/<hostname>/
 
 4. **`config.nix` (Optional)** ([framework16](./framework16/config.nix)):
    A consolidated module for any machine-specific option toggles (e.g. `custom.ai`, `custom.vpn.wireguard`) and host-specific secrets (`age.secrets`). Avoid creating micro-files for individual feature toggles.
+
+5. **`flatpak.nix` (Optional)**:
+   A dedicated list of machine-specific Flatpak packages and sandbox overrides, auto-discovered and imported by [`modules/flatpak/`](../modules/flatpak) if present.
 
 ---
 

@@ -10,7 +10,6 @@ let
     stylix
     lanzaboote
     treefmt-nix
-    nix-flatpak
     agenix
     ;
 
@@ -71,7 +70,6 @@ in
         disko.nixosModules.disko
         home-manager.nixosModules.home-manager
         stylix.nixosModules.stylix
-        nix-flatpak.nixosModules.nix-flatpak
         agenix.nixosModules.default
 
         ./modules/core

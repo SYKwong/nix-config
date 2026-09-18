@@ -1,7 +1,6 @@
 {
   imports = [
     ./boot.nix
-    ./flatpak.nix
     ./fonts.nix
     ./fwupd.nix
     ./hardware.nix
