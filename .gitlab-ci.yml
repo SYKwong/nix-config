@@ -1,22 +1,21 @@
 default:
   timeout: 5 minutes
 
+variables:
+  FF_USE_FASTZIP: "true"
+  CACHE_COMPRESSION_LEVEL: "fast"
+  XDG_CACHE_HOME: "$CI_PROJECT_DIR/.cache"
+  NIX_CONFIG: |
+    experimental-features = nix-command flakes
+    warn-dirty = false
+    eval-cache = true
+
 stages:
   - test
   - maintenance
   - stable
 
-verify-flake:
-  stage: test
-  image: nixos/nix:latest
-  variables:
-    XDG_CACHE_HOME: "$CI_PROJECT_DIR/.cache"
-  cache:
-    key:
-      files:
-        - flake.lock
-    paths:
-      - .cache/nix
+.nix-test-rules: &nix_test_rules
   rules:
     # Only for merge requests
     - if: '$CI_PIPELINE_SOURCE != "merge_request_event"'
@@ -35,15 +34,40 @@ verify-flake:
     - when: manual
       allow_failure: true
 
+check-format:
+  <<: *nix_test_rules
+  stage: test
+  image: nixos/nix:latest
+  cache:
+    key:
+      files:
+        - flake.lock
+    paths:
+      - .cache/nix
+    policy: pull
   script:
-    - nix fmt --extra-experimental-features "nix-command flakes"
+    - nix fmt
     - |
       if ! git diff --quiet; then
         echo "Formatting changes detected. Run 'nix fmt' locally."
         git diff
         exit 1
       fi
-    - nix flake check --extra-experimental-features "nix-command flakes"
+
+verify-flake:
+  <<: *nix_test_rules
+  stage: test
+  image: nixos/nix:latest
+  cache:
+    key:
+      files:
+        - flake.lock
+    paths:
+      - .cache/nix
+    fallback_keys:
+      - nix-input-cache-default
+  script:
+    - nix flake check
 
 update-flake-mr:
   stage: maintenance
@@ -57,7 +81,7 @@ update-flake-mr:
   script:
     - |
       # 1. Run the update
-      nix --experimental-features "nix-command flakes" flake update 2> update_summary.txt
+      nix flake update 2> update_summary.txt
 
       # 2. Check if flake.lock changed at all
       if git diff --exit-code flake.lock; then
