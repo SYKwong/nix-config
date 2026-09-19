@@ -9,8 +9,7 @@ This directory contains modular, reusable **NixOS system-level** configurations.
 | Category | Description |
 | :--- | :--- |
 | **`core/`** | Baseline system configurations applied across all hosts (bootloader, networking, security policies, user accounts, system fonts, and core packages). |
-| **`display-manager/`** | Graphical login managers, display greeters, and session initializers. |
-| **`window-manager/`** | Wayland compositors, window managers, and graphical session management. |
+| **`hyprland/`** | Hyprland Wayland compositor, UWSM session integration, and Ly display manager greeter. |
 | **`desktop/`** | Shared workstation capabilities and desktop services (e.g., network filesystem shares, desktop integration helpers). |
 | **`laptop/`** | Portable device power management, battery optimization profiles, and sleep/wake handling. |
 | **`framework/`** | Framework laptop hardware integrations, fan curve controls, and firmware utilities. |

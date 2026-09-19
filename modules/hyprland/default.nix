@@ -16,6 +16,11 @@ let
   '';
 in
 {
+  programs.hyprland = {
+    enable = true;
+    withUWSM = true;
+  };
+
   security.pam.services = {
     login.fprintAuth = false;
     ly.fprintAuth = false;
