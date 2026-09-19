@@ -43,7 +43,7 @@ verify-flake:
         git diff
         exit 1
       fi
-    - nix flake check --no-build --extra-experimental-features "nix-command flakes"
+    - nix flake check --extra-experimental-features "nix-command flakes"
 
 update-flake-mr:
   stage: maintenance
