@@ -13,6 +13,9 @@
             visible = true;
             hide_dotfiles = false;
             hide_gitignored = false;
+            never_show = [
+              ".git"
+            ];
           };
         };
       };
@@ -26,12 +29,25 @@
         "<leader>fb" = "buffers";
         "<leader>fh" = "help_tags";
       };
-      settings.pickers = {
-        find_files = {
-          hidden = true;
+      settings = {
+        defaults = {
+          file_ignore_patterns = [
+            "^%.git/"
+            "[/\\]%.git/"
+            "^%.git$"
+            "[/\\]%.git$"
+          ];
         };
-        live_grep = {
-          additional_args = [ "--hidden" ];
+        pickers = {
+          find_files = {
+            hidden = true;
+          };
+          live_grep = {
+            additional_args = [
+              "--hidden"
+              "--glob=!**/.git/*"
+            ];
+          };
         };
       };
     };
