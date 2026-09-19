@@ -19,11 +19,11 @@ This directory contains modular, reusable **NixOS system-level** configurations.
 | **`gaming/`** | Gaming platforms, compatibility runtimes, and graphics/system performance optimizations. |
 | **`ai/`** | Hardware-accelerated compute runtimes, local AI engines, and inference services. |
 | **`secrets/`** | System secret management, decryption, and credential provisioning. |
-| **`input/`** | Input method engines (IME), internationalization, and keyboard layout mappings. |
+| **`input-method/`** | Input method engines (IME), internationalization, and character input mappings. |
 | **`shell-scripts/`** | Custom CLI utilities packaged via `writeShellApplication` (see [`modules/shell-scripts/README.md`](./shell-scripts/README.md)). |
 | **`home-manager/`** | System-level Home Manager integration module binding user configurations and automatic per-host home extensions. |
 | **`lanzaboote/`** | UEFI Secure Boot integration and cryptographic bootloader signing. |
-| **`power/`** | Power management daemons and system power profile switching. |
+| **`power-management/`** | Power management daemons and system power profile switching. |
 | **`flatpak/`** | Declarative Flatpak application and sandbox runtime management (on-demand; see [`modules/flatpak/README.md`](./flatpak/README.md)). |
 | **`config/`** | Shared, host-reusable system configurations intended to be imported on demand. |
 | **`misc/`** | Miscellaneous auxiliary system services and utility integrations. |

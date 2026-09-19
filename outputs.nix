@@ -39,7 +39,7 @@ let
         nixos-hardware.nixosModules.common-pc-ssd
 
         ./modules/desktop
-        ./modules/power/ppd.nix
+        ./modules/power-management/ppd.nix
       ];
     };
   };
@@ -78,7 +78,7 @@ in
         ./modules/display-manager
         ./modules/gaming
         ./modules/home-manager
-        ./modules/input
+        ./modules/input-method
         ./modules/secrets
         ./modules/shell-scripts
         ./modules/vpn
