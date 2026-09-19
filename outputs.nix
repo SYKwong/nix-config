@@ -22,7 +22,7 @@ let
         nixos-hardware.nixosModules.framework-16-7040-amd
         lanzaboote.nixosModules.lanzaboote
 
-        ./modules/framework
+        ./modules/hardware/framework.nix
         ./modules/laptop
         ./modules/lanzaboote
       ];

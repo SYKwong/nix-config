@@ -12,7 +12,7 @@ This directory contains modular, reusable **NixOS system-level** configurations.
 | **`hyprland/`** | Hyprland Wayland compositor, UWSM session integration, and Ly display manager greeter. |
 | **`desktop/`** | Shared workstation capabilities and desktop services (e.g., network filesystem shares, desktop integration helpers). |
 | **`laptop/`** | Portable device power management, battery optimization profiles, and sleep/wake handling. |
-| **`framework/`** | Framework laptop hardware integrations, fan curve controls, and firmware utilities. |
+| **`hardware/`** | Vendor-specific hardware integrations, device firmware utilities, and on-demand chassis configurations (e.g. `framework.nix`). |
 | **`wireless/`** | Wireless networking (Wi-Fi), network management, and Bluetooth services. |
 | **`vpn/`** | Virtual Private Network (VPN) client services, daemons, and encrypted tunnels. |
 | **`gaming/`** | Gaming platforms, compatibility runtimes, and graphics/system performance optimizations. |
