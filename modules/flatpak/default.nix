@@ -16,6 +16,10 @@ in
 
   services.flatpak = {
     enable = true;
-    update.onActivation = true;
+    update = {
+      onActivation = true;
+      auto.enable = true;
+    };
+    uninstallUnmanaged = true;
   };
 }

@@ -1,6 +1,6 @@
 {
   imports = [
-    ../../power/ppd.nix
+    ../../power-management/ppd.nix
     ./desktop.nix
     ./hhd.nix
     ./session.nix

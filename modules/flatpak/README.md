@@ -145,5 +145,10 @@ services.flatpak.overrides = {
    ```bash
    nrs
    ```
-2. Running `nrs` automatically updates installed Flatpak packages during system activation (via `services.flatpak.update.onActivation = true;`).
-3. Removing an entry from `services.flatpak.packages` and running `nrs` automatically uninstalls the package.
+2. **Auto-Updates:**
+   - **Activation:** Running `nrs` updates declared packages during system activation (`services.flatpak.update.onActivation = true;`).
+   - **Periodic Timer:** A background systemd timer updates Flatpak packages weekly (`services.flatpak.update.auto.enable = true;`).
+3. **Declarative Removal & Pruning:**
+   - Removing an entry from `services.flatpak.packages` automatically uninstalls the package on the next activation (`uninstallUnmanaged = true;`).
+   - Orphaned runtimes and extensions are automatically pruned (`uninstallUnused = true;`).
+

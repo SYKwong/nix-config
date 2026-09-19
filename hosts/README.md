@@ -78,7 +78,7 @@ Every host is declared in the `hosts` set in [`outputs.nix`](../outputs.nix):
 ### 2. `mini-pc-k8` (Living Room HTPC / Desktop)
 * **Hardware**: GMKtec K8, AMD Ryzen 7 8845HS (Hawk Point, 8C/16T, Zen 4, Radeon 780M).
 * **Storage**: Unencrypted Btrfs with automated monthly scrub timers.
-* **Profile**: Imports [`profiles/desktop`](../modules/profiles/desktop) and [`modules/power/ppd.nix`](../modules/power/ppd.nix).
+* **Profile**: Imports [`profiles/desktop`](../modules/profiles/desktop) and [`modules/power-management/ppd.nix`](../modules/power-management/ppd.nix).
 
 ### 3. `legion-go` (Handheld Gaming Console)
 * **Hardware**: AMD Ryzen Z1 Extreme (Phoenix, 8C/16T, Zen 4, Radeon 780M, NPU fused off).
