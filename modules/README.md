@@ -15,7 +15,7 @@ This directory contains modular, reusable **NixOS system-level** configurations.
 | **`hardware/`** | Vendor-specific hardware integrations, device firmware utilities, and on-demand chassis configurations (e.g. `framework.nix`). |
 | **`wireless/`** | Wireless networking (Wi-Fi), network management, and Bluetooth services. |
 | **`vpn/`** | Virtual Private Network (VPN) client services, daemons, and encrypted tunnels. |
-| **`gaming/`** | Gaming platforms, compatibility runtimes, and graphics/system performance optimizations. |
+| **`gaming/`** | Gaming platforms, compatibility runtimes, and graphics/system performance optimizations (see [`modules/gaming/README.md`](./gaming/README.md)). |
 | **`ai/`** | Hardware-accelerated compute runtimes, local AI engines, and inference services. |
 | **`secrets/`** | System secret management, decryption, and credential provisioning. |
 | **`input-method/`** | Input method engines (IME), internationalization, and character input mappings. |
