@@ -3,6 +3,9 @@
 > [!NOTE]
 > The documentation across this repository is mostly LLM-generated.
 
+> [!TIP]
+> Comprehensive guides, architectural deep-dives, and topic-specific documentation are available in the [Project Wiki](https://gitlab.com/kylekwong/nix-config/-/wikis/home) (note that the wiki is an asynchronous reference snapshot and may lag behind the active codebase).
+
 ## License
 
 MIT-0  
@@ -171,6 +174,30 @@ If you want to use your own wallpapers, place images into `~/Wallpaper/` and lau
 2. `sudo systemd-cryptenroll /dev/disk/by-partlabel/disk-main-luks --wipe-slot=tpm2`
 3. `sudo systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=7 /dev/disk/by-partlabel/disk-main-luks`
 
+#### Framework 16 & Supported Devices (`fwupd`)
+Firmware management on supported machines (such as the Framework Laptop 16) is handled natively via the Linux Vendor Firmware Service (LVFS) and `fwupd`, enabled declaratively in `modules/core/fwupd.nix`.
+
+> [!NOTE]
+> Ensure the laptop is plugged into AC power and the battery has at least 30% charge before initiating a firmware update.
+
+1. Fetch latest LVFS metadata:
+   ```bash
+   fwupdmgr refresh
+   ```
+2. Check for available firmware upgrades:
+   ```bash
+   fwupdmgr get-updates
+   ```
+3. Download and schedule capsule updates:
+   ```bash
+   fwupdmgr update
+   ```
+4. Reboot the system to execute the firmware flash:
+   ```bash
+   systemctl reboot
+   ```
+5. On the first boot, enter your LUKS passphrase manually and re-enroll PCR 7 following the [TPM2 / LUKS Re-enrollment](#tpm2--luks-re-enrollment) procedure above.
+
 #### GMKtec NucBox K8 Plus (UEFI Shell)
 Official BIOS & firmware releases are hosted on [GMKtec's Google Drive](https://drive.google.com/drive/folders/1y9z5q7_VEDcMsA3cGTf5SpTqgAMwJ3Xp).
 
@@ -226,5 +253,8 @@ statix check
 deadnix
 nix flake check --no-build
 ```
+
+> [!NOTE]
+> `flake.lock` is managed strictly by automated CI schedules (`update-flake-mr`). Do not update or modify lockfiles locally unless you updated `flake.nix`.
 ---
 *The repository icon is the NixOS logo, licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) by the NixOS project.*
