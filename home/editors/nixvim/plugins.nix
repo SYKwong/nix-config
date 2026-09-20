@@ -8,6 +8,16 @@
         enable_git_status = true;
         window.width = 30;
         close_if_last_window = true;
+        filesystem = {
+          filtered_items = {
+            visible = true;
+            hide_dotfiles = false;
+            hide_gitignored = false;
+            never_show = [
+              ".git"
+            ];
+          };
+        };
       };
     };
     telescope = {
@@ -18,6 +28,27 @@
         "<leader>fg" = "live_grep";
         "<leader>fb" = "buffers";
         "<leader>fh" = "help_tags";
+      };
+      settings = {
+        defaults = {
+          file_ignore_patterns = [
+            "^%.git/"
+            "[/\\]%.git/"
+            "^%.git$"
+            "[/\\]%.git$"
+          ];
+        };
+        pickers = {
+          find_files = {
+            hidden = true;
+          };
+          live_grep = {
+            additional_args = [
+              "--hidden"
+              "--glob=!**/.git/*"
+            ];
+          };
+        };
       };
     };
 

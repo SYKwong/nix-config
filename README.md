@@ -3,6 +3,9 @@
 > [!NOTE]
 > The documentation across this repository is mostly LLM-generated.
 
+> [!TIP]
+> Comprehensive guides, architectural deep-dives, and topic-specific documentation are available in the [Project Wiki](https://gitlab.com/kylekwong/nix-config/-/wikis/home) (note that the wiki is an asynchronous reference snapshot and may lag behind the active codebase).
+
 ## License
 
 MIT-0  
@@ -173,6 +176,7 @@ Instead of unstable disk assignments like `/dev/sdX` or `/dev/nvmeX`, persistent
 Currently, these are the partitions I'm using:
 | Host Name | Description | LUKS + Secure Boot | Hibernation | File System |
 |:---:|:---:|:---:|:---:|:---:|
+| `framework16` | Framework Laptop 16 (AMD 7040) | YES | YES | BTRFS |
 | `mini-pc-k8` | GMKtec K8 HTPC | NO | NO | BTRFS |
 | `legion-go` | Lenovo Legion Go (AMD Z1 Extreme) | NO | YES | BTRFS |
 
@@ -194,10 +198,79 @@ Wallpapers previously bundled in this repository were moved out to keep fresh in
 If you want to use your own wallpapers, place images into `~/Wallpaper/` and launch the picker with `SUPER + Space`.
 
 ### BIOS Update
+
+#### TPM2 / LUKS Re-enrollment
 0. Please remember your LUKS password before you do a BIOS update.  
 1. NixOS will prompt you to enter your LUKS password after booting into it.  
 2. `sudo systemd-cryptenroll /dev/disk/by-partlabel/disk-main-luks --wipe-slot=tpm2`
 3. `sudo systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=7 /dev/disk/by-partlabel/disk-main-luks`
+
+#### Framework 16 & Supported Devices (`fwupd`)
+Firmware management on supported machines (such as the Framework Laptop 16) is handled natively via the Linux Vendor Firmware Service (LVFS) and `fwupd`, enabled declaratively in `modules/core/fwupd.nix`.
+
+> [!NOTE]
+> Ensure the laptop is plugged into AC power and the battery has at least 30% charge before initiating a firmware update.
+
+1. Fetch latest LVFS metadata:
+   ```bash
+   fwupdmgr refresh
+   ```
+2. Check for available firmware upgrades:
+   ```bash
+   fwupdmgr get-updates
+   ```
+3. Download and schedule capsule updates:
+   ```bash
+   fwupdmgr update
+   ```
+4. Reboot the system to execute the firmware flash:
+   ```bash
+   systemctl reboot
+   ```
+5. On the first boot, enter your LUKS passphrase manually and re-enroll PCR 7 following the [TPM2 / LUKS Re-enrollment](#tpm2--luks-re-enrollment) procedure above.
+
+#### GMKtec NucBox K8 Plus (UEFI Shell)
+Official BIOS & firmware releases are hosted on [GMKtec's Google Drive](https://drive.google.com/drive/folders/1y9z5q7_VEDcMsA3cGTf5SpTqgAMwJ3Xp).
+
+> [!NOTE]
+> The UEFI Shell only supports **FAT32** partitions. Ventoy's storage partition is formatted as exFAT by default, which the UEFI Shell cannot read. Flash files must reside on a FAT32 filesystem (such as the internal `/boot` partition or a dedicated FAT32 USB drive).
+
+##### Method 1: Using the Internal `/boot` Partition (Recommended)
+1. Copy the BIOS update directory directly to the system's FAT32 `/boot` partition:
+   ```bash
+   sudo cp -r /path/to/AR6000-MI2_PHX_260514GMK /boot/bios-update
+   ```
+2. Reboot into firmware setup:
+   ```bash
+   systemctl reboot --firmware-setup
+   ```
+   Select your UEFI Shell from the boot options.
+3. Locate the mapped internal ESP filesystem (`fs0:`, `fs1:`, etc. via `map -r`), navigate to the folder, and run `EfiFlash.nsh`:
+   ```text
+   fs1:
+   cd bios-update
+   EfiFlash.nsh
+   ```
+4. Once the machine automatically reboots and you log back into NixOS, remove the temporary directory:
+   ```bash
+   sudo rm -rf /boot/bios-update
+   ```
+
+##### Method 2: Using a Dedicated FAT32 USB Drive
+1. Format a USB drive as standard **FAT32**.
+2. Copy the flashing files (`AfuEfix64.efi`, `AR6000-MI2.rom`, `EfiFlash.nsh`) alongside `UEFI_Shell.efi` (copied from `efi/boot/BootX64.efi`) to the root of the USB drive:
+   ```text
+   USB (FAT32)
+   ├── EFI/BOOT/BOOTX64.EFI # renamed from UEFI_Shell.efi to boot directly
+   ├── AfuEfix64.efi
+   ├── AR6000-MI2.rom
+   └── EfiFlash.nsh
+   ```
+3. Boot into the USB drive, switch to the drive in the shell, and execute `EfiFlash.nsh`:
+   ```text
+   fs0:
+   EfiFlash.nsh
+   ```
 
 ### Peer-to-Peer Remote Deployment (`deploy`)
 
@@ -223,5 +296,8 @@ statix check
 deadnix
 nix flake check --no-build
 ```
+
+> [!NOTE]
+> `flake.lock` is managed strictly by automated CI schedules (`update-flake-mr`). Do not update or modify lockfiles locally unless you updated `flake.nix`.
 ---
 *The repository icon is the NixOS logo, licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) by the NixOS project.*

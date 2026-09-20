@@ -9,10 +9,9 @@ This directory contains modular, reusable **NixOS system-level** configurations.
 | Category | Description |
 | :--- | :--- |
 | **`core/`** | Baseline system configurations applied across all hosts (bootloader, networking, security policies, user accounts, system fonts, and core packages). |
-| **`display-manager/`** | Graphical login managers, display greeters, and session initializers. |
-| **`window-manager/`** | Wayland compositors, window managers, and graphical session management. |
+| **`hyprland/`** | Hyprland Wayland compositor, UWSM session integration, and Ly display manager greeter. |
 | **`profiles/`** | Form-factor and device-type system profiles (`desktop`, `laptop`, `gaming-handheld`) bundling form-specific hardware behavior, power management, and desktop integration (see [`modules/profiles/README.md`](./profiles/README.md)). |
-| **`framework/`** | Framework laptop hardware integrations, fan curve controls, and firmware utilities. |
+| **`hardware/`** | Vendor-specific hardware integrations, device firmware utilities, and on-demand chassis configurations (e.g. `framework.nix`). |
 | **`wireless/`** | Wireless networking (Wi-Fi), network management, and Bluetooth services. |
 | **`vpn/`** | Virtual Private Network (VPN) client services, daemons, and encrypted tunnels. |
 | **`gaming/`** | Gaming platforms, compatibility runtimes, and graphics/system performance optimizations. |

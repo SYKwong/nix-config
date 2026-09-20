@@ -16,12 +16,12 @@ To activate Flatpak, import `./modules/flatpak`:
 In [`outputs.nix`](../../outputs.nix), add `./modules/flatpak` to the host's `extraModules`:
 
 ```nix
-mini-pc-k8 = {
-  username = "k8-kyle";
+<host_name> = {
+  username = "<user_name>";
   system = "x86_64-linux";
 
   extraModules = [
-    ...
+    # ...
     ./modules/flatpak  # <-- Enables Flatpak for this host
   ];
 };
@@ -49,7 +49,7 @@ modules = [
 
 Each host can maintain its own isolated list of Flatpak packages without touching shared modules.
 
-Create a `flatpak.nix` file inside the host directory (e.g. `hosts/mini-pc-k8/flatpak.nix`):
+Create a `flatpak.nix` file inside the host directory (e.g. `hosts/<hostname>/flatpak.nix`):
 
 ```nix
 {

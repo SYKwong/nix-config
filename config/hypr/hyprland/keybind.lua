@@ -30,7 +30,12 @@ hl.bind(mainMod .. " + SHIFT + Return", utils.kitty_3pane(), { description = "[A
 hl.bind(mainMod .. " + space", hl.dsp.exec_cmd(wallpaper_picker), { description = "[App] Launch Wallpaper Picker" })
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd(notifications), { description = "[App] Launch Notifications" })
 hl.bind(mainMod .. " + V", hl.dsp.exec_cmd(clipboard), { description = "[App] Launch Clipboard History" })
-hl.bind(mainMod .. " + H", hl.dsp.exec_cmd("rofi-keybinds"), { description = "[Help] Show Keybind Cheat Sheet" })
+hl.bind(
+	mainMod .. " + SHIFT + slash",
+	hl.dsp.exec_cmd("rofi-keybinds"),
+	{ description = "[Help] Show Keybind Cheat Sheet" }
+)
+hl.bind(mainMod .. " + F1", hl.dsp.exec_cmd("rofi-keybinds"), { description = "[Help] Show Keybind Cheat Sheet" })
 
 -- Window & System Management
 hl.bind(mainMod .. " + W", hl.dsp.window.close(), { description = "[Window] Close active window" })
@@ -77,18 +82,23 @@ for i = 1, 10 do
 	)
 end
 
--- Move focus and swap windows with arrow keys
-local directions = { "left", "right", "up", "down" }
-for _, direction in ipairs(directions) do
+-- Move focus and swap windows with Vim keys (H/J/K/L)
+local vim_directions = {
+	{ key = "H", direction = "left" },
+	{ key = "J", direction = "down" },
+	{ key = "K", direction = "up" },
+	{ key = "L", direction = "right" },
+}
+for _, map in ipairs(vim_directions) do
 	hl.bind(
-		mainMod .. " + " .. direction,
-		hl.dsp.focus({ direction = direction }),
-		{ description = "[Focus] Move focus " .. direction }
+		mainMod .. " + " .. map.key,
+		hl.dsp.focus({ direction = map.direction }),
+		{ description = "[Focus] Move focus " .. map.direction }
 	)
 	hl.bind(
-		mainMod .. " + SHIFT + " .. direction,
-		hl.dsp.window.swap({ direction = direction }),
-		{ description = "[Window] Swap position " .. direction }
+		mainMod .. " + SHIFT + " .. map.key,
+		hl.dsp.window.swap({ direction = map.direction }),
+		{ description = "[Window] Swap position " .. map.direction }
 	)
 end
 
@@ -130,9 +140,9 @@ hl.bind(
 )
 
 -- Power
-hl.bind(mainMod .. " + L", hl.dsp.exec_cmd(lock_screen), { description = "[Power] Lock Screen" })
+hl.bind(mainMod .. " + Escape", hl.dsp.exec_cmd(lock_screen), { description = "[Power] Lock Screen" })
 
-hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd(session_menu), { description = "[Power] Session Menu" })
+hl.bind(mainMod .. " + SHIFT + Escape", hl.dsp.exec_cmd(session_menu), { description = "[Power] Session Menu" })
 
 -- Audio
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(volume_up), { repeating = true, description = "[Audio] Raise volume" })
@@ -142,6 +152,14 @@ hl.bind(
 	{ repeating = true, description = "[Audio] Lower volume" }
 )
 hl.bind("XF86AudioMute", hl.dsp.exec_cmd(volume_toggle), { locked = true, description = "[Audio] Toggle mute" })
+
+hl.bind(mainMod .. " + up", hl.dsp.exec_cmd(volume_up), { repeating = true, description = "[Audio] Raise volume" })
+hl.bind(mainMod .. " + down", hl.dsp.exec_cmd(volume_down), { repeating = true, description = "[Audio] Lower volume" })
+hl.bind(
+	mainMod .. " + BACKSPACE",
+	hl.dsp.exec_cmd(volume_toggle),
+	{ locked = true, description = "[Audio] Toggle mute" }
+)
 
 -- Screen Brightness
 hl.bind(
@@ -156,10 +174,14 @@ hl.bind(
 )
 
 -- Media Player Control
-hl.bind(
-	"XF86AudioPlay",
-	hl.dsp.exec_cmd(media_toggle),
-	{ locked = true, description = "[Media] Toggle Play/Pause with OSD" }
-)
+hl.bind("XF86AudioPlay", hl.dsp.exec_cmd(media_toggle), { locked = true, description = "[Media] Toggle Play/Pause" })
 hl.bind("XF86AudioNext", hl.dsp.exec_cmd(media_next), { locked = true, description = "[Media] Next track" })
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd(media_prev), { locked = true, description = "[Media] Previous track" })
+
+hl.bind(
+	mainMod .. " + SHIFT + BACKSPACE",
+	hl.dsp.exec_cmd(media_toggle),
+	{ locked = true, description = "[Media] Toggle Play/Pause" }
+)
+hl.bind(mainMod .. " + left", hl.dsp.exec_cmd(media_prev), { locked = true, description = "[Media] Previous track" })
+hl.bind(mainMod .. " + right", hl.dsp.exec_cmd(media_next), { loced = true, description = "[Media] Next track" })

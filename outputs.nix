@@ -22,7 +22,7 @@ let
         nixos-hardware.nixosModules.framework-16-7040-amd
         lanzaboote.nixosModules.lanzaboote
 
-        ./modules/framework
+        ./modules/hardware/framework.nix
         ./modules/profiles/laptop
         ./modules/lanzaboote
       ];
@@ -90,14 +90,13 @@ in
         ./modules/core
 
         ./modules/ai
-        ./modules/display-manager
         ./modules/gaming
         ./modules/home-manager
+        ./modules/hyprland
         ./modules/input-method
         ./modules/secrets
         ./modules/shell-scripts
         ./modules/vpn
-        ./modules/window-manager/hyprland.nix
         ./modules/wireless
 
         ./overlays

@@ -17,6 +17,11 @@ let
   '';
 in
 {
+  programs.hyprland = {
+    enable = lib.mkDefault true;
+    withUWSM = true;
+  };
+
   security.pam.services = {
     login.fprintAuth = false;
     ly.fprintAuth = false;
