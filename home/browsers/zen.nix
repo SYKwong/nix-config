@@ -32,13 +32,15 @@
 
     profiles.default = {
       settings = {
+        "zen.tabs.show-newtab-vertical" = false;
         "zen.tabs.vertical.right-side" = true;
         "zen.urlbar.behavior" = "float";
+        "zen.view.compact.enable-at-startup" = false;
         "zen.welcome-screen.seen" = true;
         "zen.workspaces.continue-where-left-off" = true;
-        "zen.view.compact.enable-at-startup" = false;
 
         "browser.startup.homepage" = "https://home.kyle-kwong.com";
+        "browser.translations.neverTranslateLanguages" = "zh-Hant";
         "browser.uiCustomization.state" = builtins.toJSON {
           placements = {
             "widget-overflow-fixed-list" = [ ];
