@@ -60,6 +60,7 @@ apply_centered_float("float-wrapped-tui", { class = "tui-float.*" })
 apply_centered_float("media", { class = "^(qimgv|mpv)$" })
 apply_centered_float("noctalia", { class = "dev.noctalia.Noctalia" })
 apply_centered_float("zen-popups", { class = "zen-beta", title = "Library" })
+apply_centered_float("zen-popups2", { class = "zen-beta", initial_title = "" })
 
 -- =============================================================================
 -- Workspace Routing
