@@ -155,7 +155,7 @@ Currently, these are the partitions I'm using:
 | Host Name | Description | LUKS + Secure Boot | Hibernation | File System |
 |:---:|:---:|:---:|:---:|:---:|
 | `framework16` | Framework Laptop 16 (AMD 7040) | YES | YES | BTRFS |
-| `mini-pc-k8` | GMKtec K8 HTPC | NO | NO | BTRFS |
+| `mini-pc-k8` | GMKtec NucBox K8 Plus HTPC | NO | NO | BTRFS |
 
 The partition of framework16 is designed for hibernation, so it has a large swap file. You should also change the swap size to be 2 to 4GB + your RAM capacity.
 

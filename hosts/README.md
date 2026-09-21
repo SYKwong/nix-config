@@ -9,7 +9,7 @@ This directory contains host-specific configurations for individual physical mac
 | Host | Description | Architecture / Hardware | Files |
 | :--- | :--- | :--- | :--- |
 | **`framework16`** | Primary workstation laptop | AMD Ryzen 7040 series, LUKS TPM2 encryption, Lanzaboote Secure Boot | [`default.nix`](./framework16/default.nix), [`disko.nix`](./framework16/disko.nix), [`hardware-configuration.nix`](./framework16/hardware-configuration.nix), [`config.nix`](./framework16/config.nix) |
-| **`mini-pc-k8`** | HTPC / Living room desktop | GMKtec K8 (AMD Ryzen 8845HS), Btrfs, unencrypted | [`default.nix`](./mini-pc-k8/default.nix), [`disko.nix`](./mini-pc-k8/disko.nix), [`hardware-configuration.nix`](./mini-pc-k8/hardware-configuration.nix) |
+| **`mini-pc-k8`** | HTPC / Living room desktop | GMKtec NucBox K8 Plus (AMD Ryzen 8845HS), Btrfs, unencrypted | [`default.nix`](./mini-pc-k8/default.nix), [`disko.nix`](./mini-pc-k8/disko.nix), [`hardware-configuration.nix`](./mini-pc-k8/hardware-configuration.nix), [`config.nix`](./mini-pc-k8/config.nix) |
 
 ---
 
@@ -41,7 +41,7 @@ hosts/<hostname>/
    * Filesystem formatting and subvolumes (Btrfs root, home, nix, swap).
    * Storage maintenance timers (`services.btrfs.autoScrub`).
 
-4. **`config.nix` (Optional)** ([framework16](./framework16/config.nix)):
+4. **`config.nix` (Optional)** ([framework16](./framework16/config.nix), [mini-pc-k8](./mini-pc-k8/config.nix)):
    A consolidated module for any machine-specific option toggles (e.g. `custom.ai`, `custom.vpn.wireguard`) and host-specific secrets (`age.secrets`). Avoid creating micro-files for individual feature toggles.
 
 5. **`flatpak.nix` (Optional)**:
