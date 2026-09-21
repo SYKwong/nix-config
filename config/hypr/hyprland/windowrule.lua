@@ -78,6 +78,12 @@ local function assign_workspace(rule_name, match_criteria, workspace_target, ext
 	hl.window_rule(rule_definition)
 end
 
+-- Workspace 1: Web browser
+assign_workspace("browser", { class = "^(zen-beta|helium)$" }, 1)
+
+-- Workspace 2: Terminal
+assign_workspace("kitty", { class = "kitty" }, 2)
+
 -- Workspace 3: Communication
 local line_class <const> = "chrome-ophjlpahpchlmihnnnihgmmeilfjmjjc__index.html-Default"
 
