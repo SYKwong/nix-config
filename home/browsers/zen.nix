@@ -39,7 +39,10 @@
         "zen.welcome-screen.seen" = true;
         "zen.workspaces.continue-where-left-off" = true;
 
+        "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+
         "browser.startup.homepage" = "https://home.kyle-kwong.com";
+        "browser.translations.enable" = false;
         "browser.translations.neverTranslateLanguages" = "zh-Hant";
         "browser.uiCustomization.state" = builtins.toJSON {
           placements = {
@@ -52,13 +55,7 @@
               "_58204f8b-01c2-4bbc-98f8-9a90458fd9ef_-browser-action" # BlockTube
             ];
             "nav-bar" = [
-              "back-button"
-              "forward-button"
-              "stop-reload-button"
-              "customizableui-special-spring1"
-              "vertical-spacer"
               "urlbar-container"
-              "customizableui-special-spring2"
               "unified-extensions-button"
             ];
             "toolbar-menubar" = [ "menubar-items" ];
@@ -102,6 +99,26 @@
           isEssential = true;
         };
       };
+
+      userChrome = ''
+        #urlbar-zoom-button,
+        #zen-copy-url-button,
+        #zen-page-actions-copy-url,
+        #pageAction-urlbar-_test-copy-link,
+        #pageAction-urlbar-copy-url,
+        .urlbar-page-action[action-id="copy-url"],
+        .urlbar-page-action[action-id="zen-copy-url"],
+        .titlebar-button.titlebar-close,
+        .titlebar-close,
+        #titlebar-close,
+        #back-button,
+        #forward-button,
+        #stop-reload-button,
+        #reload-button,
+        #stop-button {
+          display: none !important;
+        }
+      '';
     };
   };
 }
