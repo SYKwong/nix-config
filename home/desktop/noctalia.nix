@@ -337,6 +337,7 @@ in
           vpn_status = "both";
         };
         notifications.hide_when_no_unread = true;
+        workspaces.label_source = "name";
       };
     };
   };
