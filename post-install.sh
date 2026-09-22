@@ -257,6 +257,7 @@ authenticate_nordvpn() {
 
   echo "Configuring NordVPN LAN discovery..."
   nordvpn set lan-discovery on || true
+  nordvpn set tray off || true
 }
 
 authenticate_services() {
