@@ -3,8 +3,8 @@
 {
   home.packages = with pkgs; [
     amberol
+    feishin
     jellyfin-desktop
-    supersonic
   ];
 
   programs.mpv = {

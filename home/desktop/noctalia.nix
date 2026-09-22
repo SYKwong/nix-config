@@ -271,6 +271,8 @@ in
         button_borders = false;
         card_borders = false;
         input_borders = false;
+        launch_apps_as_systemd_services = false;
+        launch_apps_custom_command = "uwsm app -- $CMD";
         polkit_agent = true;
         popup_borders = false;
         popup_shadows = false;
@@ -340,6 +342,7 @@ in
           vpn_status = "both";
         };
         notifications.hide_when_no_unread = true;
+        workspaces.label_source = "name";
       };
     };
   };

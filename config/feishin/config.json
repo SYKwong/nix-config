@@ -1,0 +1,38 @@
+{
+	"disable_auto_updates": false,
+	"enableNeteaseTranslation": false,
+	"global_media_hotkeys": false,
+	"lyrics": [
+		"NetEase",
+		"lrclib.net"
+	],
+	"mediaSession": false,
+	"playbackType": "local",
+	"should_prompt_accessibility": true,
+	"shown_accessibility_warning": false,
+	"visualizer_system_audio_consent_granted": true,
+	"window_enable_tray": true,
+	"window_exit_to_tray": true,
+	"window_minimize_to_tray": false,
+	"window_start_minimized": false,
+	"window_window_bar_style": "linux",
+	"__internal__": {
+		"migrations": {
+			"version": "1.17.0"
+		}
+	},
+	"window_has_frame": true,
+	"bounds": {
+		"height": 900,
+		"width": 1440,
+		"x": 240,
+		"y": 90
+	},
+	"maximized": true,
+	"fullscreen": false,
+	"server": {
+		"8jHQkCoVp3F4L9vHMHwHs": "7631314e8165ab3ec92200a74040251603539a"
+	},
+	"theme": "dark",
+	"window_prevent_suspend_on_playback": true
+}

@@ -5,8 +5,8 @@
 
   networking.firewall.allowedTCPPorts = [ 5000 ];
 
-  # Define custom ALSA Card Profile for mini PC chassis without phantom internal speaker/mic
-  environment.etc."alsa-card-profile/mixer/profile-sets/k8-analog.conf".text = ''
+  # Define custom ALSA Card Profile for GMKtec NucBox K8 Plus chassis without phantom internal speaker/mic
+  environment.etc."alsa-card-profile/mixer/profile-sets/k8-plus-analog.conf".text = ''
     [General]
     auto-profiles = yes
 
@@ -31,17 +31,18 @@
     '';
 
     # Assign profile set to onboard Realtek audio controller so unplugged 3.5mm jack is marked unavailable
-    pipewire.wireplumber.extraConfig."50-k8-audio" = {
+    pipewire.wireplumber.extraConfig."50-k8-plus-audio" = {
       "monitor.alsa.rules" = [
         {
           matches = [
             {
-              "device.name" = "alsa_card.pci-0000_c6_00.6";
+              "device.name" = "~alsa_card.pci.*";
+              "device.product.id" = "0x15e3";
             }
           ];
           actions = {
             update-props = {
-              "device.profile-set" = "k8-analog.conf";
+              "device.profile-set" = "k8-plus-analog.conf";
             };
           };
         }

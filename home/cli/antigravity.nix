@@ -12,6 +12,7 @@
         "command(git show)"
         "command(git branch)"
         "command(git add)"
+        "command(git rm)"
         "command(git fetch)"
         "command(git checkout)"
         "command(git switch)"
@@ -26,6 +27,8 @@
         "command(git tag)"
         "command(git describe)"
         "command(git shortlog)"
+        "command(git -C /home/${username}/nix-config.*)"
+        "command(git -C /home/${username}/Projects.*)"
 
         "command(nix flake check)"
         "command(nix flake show)"
@@ -112,11 +115,14 @@
 
       ask = [
         "command(rm)"
-        "command(git rm)"
         "command(git commit)"
         "command(git push)"
         "command(git restore)"
         "command(git reset)"
+        "command(git -C .* commit)"
+        "command(git -C .* push)"
+        "command(git -C .* restore)"
+        "command(git -C .* reset)"
         "command(nixos-rebuild)"
       ];
     };

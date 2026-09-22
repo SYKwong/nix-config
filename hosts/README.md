@@ -9,7 +9,7 @@ This directory contains host-specific configurations for individual physical mac
 | Host | Description | Architecture / Hardware | Files |
 | :--- | :--- | :--- | :--- |
 | **`framework16`** | Primary workstation laptop | AMD Ryzen 7040 series, LUKS TPM2 encryption, Lanzaboote Secure Boot | [`default.nix`](./framework16/default.nix), [`disko.nix`](./framework16/disko.nix), [`hardware-configuration.nix`](./framework16/hardware-configuration.nix), [`config.nix`](./framework16/config.nix) |
-| **`mini-pc-k8`** | HTPC / Living room desktop | GMKtec K8 (AMD Ryzen 8845HS), Btrfs, unencrypted | [`default.nix`](./mini-pc-k8/default.nix), [`disko.nix`](./mini-pc-k8/disko.nix), [`hardware-configuration.nix`](./mini-pc-k8/hardware-configuration.nix), [`config.nix`](./mini-pc-k8/config.nix) |
+| **`mini-pc-k8`** | HTPC / Living room desktop | GMKtec NucBox K8 Plus (AMD Ryzen 8845HS), Btrfs, unencrypted | [`default.nix`](./mini-pc-k8/default.nix), [`disko.nix`](./mini-pc-k8/disko.nix), [`hardware-configuration.nix`](./mini-pc-k8/hardware-configuration.nix), [`config.nix`](./mini-pc-k8/config.nix) |
 | **`legion-go`** | Handheld gaming console | Lenovo Legion Go (AMD Ryzen Z1 Extreme), Btrfs, unencrypted, Handheld Daemon | [`default.nix`](./legion-go/default.nix), [`disko.nix`](./legion-go/disko.nix), [`hardware-configuration.nix`](./legion-go/hardware-configuration.nix), [`config.nix`](./legion-go/config.nix), [`README.md`](./legion-go/README.md) |
 
 ---

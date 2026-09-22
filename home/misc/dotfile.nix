@@ -8,16 +8,16 @@ let
   symlink = path: config.lib.file.mkOutOfStoreSymlink "${config_path}/${path}";
 
   files = {
-    "hypr" = "hypr";
-
     "foot" = "foot";
-    "kitty" = "kitty";
     "glow" = "glow";
-    "starship.toml" = "starship/starship.toml";
+    "hypr" = "hypr";
+    "kitty" = "kitty";
 
     "dolphinrc" = "kde/dolphin/dolphinrc";
+    "feishin/config.json" = "feishin/config.json";
     "kservicemenurc" = "kde/dolphin/kservicemenurc";
     "qimgv/qimgv.conf" = "qimgv/qimgv.conf";
+    "starship.toml" = "starship/starship.toml";
   };
 
   stateFiles = {

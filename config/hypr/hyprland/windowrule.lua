@@ -59,6 +59,7 @@ end
 apply_centered_float("float-wrapped-tui", { class = "tui-float.*" })
 apply_centered_float("media", { class = "^(qimgv|mpv)$" })
 apply_centered_float("noctalia", { class = "dev.noctalia.Noctalia" })
+apply_centered_float("zen-popups", { class = "zen-beta", initial_title = "^(Library|)" })
 
 -- =============================================================================
 -- Workspace Routing
@@ -76,6 +77,12 @@ local function assign_workspace(rule_name, match_criteria, workspace_target, ext
 	end
 	hl.window_rule(rule_definition)
 end
+
+-- Workspace 1: Web browser
+assign_workspace("browser", { class = "^(zen-beta|helium)$" }, 1)
+
+-- Workspace 2: Terminal
+assign_workspace("kitty", { class = "kitty" }, 2)
 
 -- Workspace 3: Communication
 local line_class <const> = "chrome-ophjlpahpchlmihnnnihgmmeilfjmjjc__index.html-Default"
@@ -101,8 +108,8 @@ hl.on("window.open", function(opened_window)
 end)
 
 -- Workspace 4: Audio / Media
-assign_workspace("supersonic", { initial_title = "Supersonic" }, "4")
 assign_workspace("amberol", { class = "io.bassi.Amberol" }, "4")
+assign_workspace("feishin", { class = "feishin" }, "4")
 
 -- =============================================================================
 -- Gaming
