@@ -1,17 +1,7 @@
 inputs:
 
 let
-  inherit (inputs)
-    nixpkgs
-    nixpkgs-stable
-    home-manager
-    nixos-hardware
-    disko
-    stylix
-    lanzaboote
-    treefmt-nix
-    agenix
-    ;
+  inherit (inputs) nixpkgs;
 
   hosts = {
     framework16 = {
@@ -19,8 +9,8 @@ let
       system = "x86_64-linux";
 
       extraModules = [
-        nixos-hardware.nixosModules.framework-16-7040-amd
-        lanzaboote.nixosModules.lanzaboote
+        inputs.nixos-hardware.nixosModules.framework-16-7040-amd
+        inputs.lanzaboote.nixosModules.lanzaboote
 
         ./modules/hardware/framework.nix
         ./modules/laptop
@@ -33,10 +23,10 @@ let
       system = "x86_64-linux";
 
       extraModules = [
-        nixos-hardware.nixosModules.common-cpu-amd
-        nixos-hardware.nixosModules.common-cpu-amd-pstate
-        nixos-hardware.nixosModules.common-gpu-amd
-        nixos-hardware.nixosModules.common-pc-ssd
+        inputs.nixos-hardware.nixosModules.common-cpu-amd
+        inputs.nixos-hardware.nixosModules.common-cpu-amd-pstate
+        inputs.nixos-hardware.nixosModules.common-gpu-amd
+        inputs.nixos-hardware.nixosModules.common-pc-ssd
 
         ./modules/desktop
         ./modules/power-management/ppd.nix
@@ -52,7 +42,8 @@ in
   formatter =
     nixpkgs.lib.genAttrs (nixpkgs.lib.unique (map (host: host.system) (nixpkgs.lib.attrValues hosts)))
       (
-        system: (treefmt-nix.lib.evalModule nixpkgs.legacyPackages.${system} ./treefmt).config.build.wrapper
+        system:
+        (inputs.treefmt-nix.lib.evalModule nixpkgs.legacyPackages.${system} ./treefmt).config.build.wrapper
       );
 
   nixosConfigurations = nixpkgs.lib.mapAttrs (
@@ -62,15 +53,15 @@ in
       specialArgs = {
         inherit inputs;
         inherit (info) username;
-        pkgs-stable = nixpkgs-stable.legacyPackages.${info.system};
+        pkgs-stable = inputs.nixpkgs-stable.legacyPackages.${info.system};
         hostname = name;
       };
 
       modules = [
-        disko.nixosModules.disko
-        home-manager.nixosModules.home-manager
-        stylix.nixosModules.stylix
-        agenix.nixosModules.default
+        inputs.disko.nixosModules.disko
+        inputs.home-manager.nixosModules.home-manager
+        inputs.stylix.nixosModules.stylix
+        inputs.agenix.nixosModules.default
 
         ./modules/core
 
