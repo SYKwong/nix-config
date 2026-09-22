@@ -108,8 +108,8 @@ hl.on("window.open", function(opened_window)
 end)
 
 -- Workspace 4: Audio / Media
-assign_workspace("supersonic", { initial_title = "Supersonic" }, "4")
 assign_workspace("amberol", { class = "io.bassi.Amberol" }, "4")
+assign_workspace("feishin", { class = "feishin" }, "4")
 
 -- =============================================================================
 -- Gaming
