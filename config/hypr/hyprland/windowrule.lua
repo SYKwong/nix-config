@@ -20,6 +20,7 @@ local function apply_centered_float(rule_name, match_criteria, extra_properties)
 		float = true,
 		center = true,
 		size = default_centered_float_size,
+		dim_around = true,
 	}
 	if extra_properties then
 		for property_key, property_value in pairs(extra_properties) do
@@ -54,6 +55,7 @@ local function float_and_center(window_address)
 	end
 
 	hl.dispatch(hl.dsp.window.center({ window = window_param }))
+	hl.dispatch(hl.dsp.window.set_prop({ prop = "dim_around", value = "1", window = window_param }))
 end
 
 apply_centered_float("float-wrapped-tui", { class = "tui-float.*" })
