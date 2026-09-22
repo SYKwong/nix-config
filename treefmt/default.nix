@@ -1,6 +1,15 @@
 {
   projectRootFile = "flake.nix";
 
-  programs.nixfmt.enable = true;
-  programs.stylua.enable = true;
+  programs = {
+    # nix
+    nixfmt.enable = true;
+
+    #lua
+    stylua.enable = true;
+
+    #bash
+    shellcheck.enable = true;
+    shfmt.enable = true;
+  };
 }

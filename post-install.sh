@@ -11,25 +11,25 @@ AUTH_ONLY=false
 
 for arg in "$@"; do
   case "$arg" in
-    --auth-only|-A|auth-only)
-      AUTH_ONLY=true
-      WITH_AUTH=true
-      ;;
-    --auth|-a|auth)
-      WITH_AUTH=true
-      ;;
-    --help|-h)
-      echo "Usage: $0 [--auth] [--auth-only]"
-      echo "  --auth, -a, auth           Run full post-install setup and authenticate services"
-      echo "  --auth-only, -A, auth-only Run only service authentication (GitLab, GitHub, NordVPN, Wallpaper)"
-      exit 0
-      ;;
+  --auth-only | -A | auth-only)
+    AUTH_ONLY=true
+    WITH_AUTH=true
+    ;;
+  --auth | -a | auth)
+    WITH_AUTH=true
+    ;;
+  --help | -h)
+    echo "Usage: $0 [--auth] [--auth-only]"
+    echo "  --auth, -a, auth           Run full post-install setup and authenticate services"
+    echo "  --auth-only, -A, auth-only Run only service authentication (GitLab, GitHub, NordVPN, Wallpaper)"
+    exit 0
+    ;;
   esac
 done
 
 determine_host_identifier() {
   if [ -f /etc/hostname ]; then
-    HOST_IDENTIFIER=$(tr -d '[:space:]' < /etc/hostname)
+    HOST_IDENTIFIER=$(tr -d '[:space:]' </etc/hostname)
   else
     HOST_IDENTIFIER=$(hostname -s 2>/dev/null || hostname)
   fi
@@ -72,7 +72,7 @@ ensure_git_ssh_remote() {
   local remote_url
   remote_url=$(git -C "$SCRIPT_DIR" remote get-url origin 2>/dev/null || true)
 
-  if [[ "$remote_url" =~ ^https://([^/]+)/(.+)$ ]]; then
+  if [[ $remote_url =~ ^https://([^/]+)/(.+)$ ]]; then
     local host="${BASH_REMATCH[1]}"
     local repo_path="${BASH_REMATCH[2]}"
     local ssh_url="git@${host}:${repo_path}"
@@ -122,7 +122,7 @@ update_keys_nix() {
       in_systems=0
     }
     { print }
-  ' "$KEYS_FILE" > "${KEYS_FILE}.tmp" && mv "${KEYS_FILE}.tmp" "$KEYS_FILE"
+  ' "$KEYS_FILE" >"${KEYS_FILE}.tmp" && mv "${KEYS_FILE}.tmp" "$KEYS_FILE"
 
   nix fmt "$KEYS_FILE" 2>/dev/null || true
   echo "Successfully updated $KEYS_FILE."
