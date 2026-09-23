@@ -18,6 +18,7 @@
       statix
       wget
       wl-clipboard
+      unrar
 
       kdePackages.ark
       kdePackages.dolphin
