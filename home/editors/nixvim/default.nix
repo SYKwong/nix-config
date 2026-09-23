@@ -11,8 +11,6 @@ let
   );
 in
 {
-  stylix.targets.nixvim.enable = false;
-
   imports = [
     inputs.nixvim.homeModules.nixvim
 

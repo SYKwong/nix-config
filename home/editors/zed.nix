@@ -1,4 +1,6 @@
 {
+  stylix.targets.zed.enable = true;
+
   programs.zed-editor = {
     enable = true;
 

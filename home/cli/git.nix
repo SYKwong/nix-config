@@ -1,6 +1,8 @@
 { pkgs, username, ... }:
 
 {
+  stylix.targets.lazygit.enable = true;
+
   programs = {
     git = {
       enable = true;
@@ -41,5 +43,6 @@
     gh.enable = true;
     lazygit.enable = true;
   };
+
   home.packages = [ pkgs.glab ];
 }
