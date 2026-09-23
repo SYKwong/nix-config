@@ -1,11 +1,20 @@
-{ inputs, ... }:
+{ inputs, lib, ... }:
 
+let
+  languageDir = ./language;
+  languageFiles = map (file: languageDir + "/${file}") (
+    builtins.attrNames (
+      lib.filterAttrs (name: type: type == "regular" && lib.hasSuffix ".nix" name) (
+        builtins.readDir languageDir
+      )
+    )
+  );
+in
 {
   stylix.targets.nixvim.enable = false;
+
   imports = [
     inputs.nixvim.homeModules.nixvim
-
-    ./language
 
     ./autocmd.nix
     ./options.nix
@@ -14,7 +23,8 @@
     ./plugins.nix
     ./plugins-minuet.nix
     ./term.nix
-  ];
+  ]
+  ++ languageFiles;
 
   programs.nixvim = {
     enable = true;
