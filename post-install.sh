@@ -11,19 +11,19 @@ AUTH_ONLY=false
 
 for arg in "$@"; do
   case "$arg" in
-  --auth-only | -A | auth-only)
-    AUTH_ONLY=true
-    WITH_AUTH=true
-    ;;
-  --auth | -a | auth)
-    WITH_AUTH=true
-    ;;
-  --help | -h)
-    echo "Usage: $0 [--auth] [--auth-only]"
-    echo "  --auth, -a, auth           Run full post-install setup and authenticate services"
-    echo "  --auth-only, -A, auth-only Run only service authentication (GitLab, GitHub, NordVPN, Wallpaper)"
-    exit 0
-    ;;
+    --auth-only | -A | auth-only)
+      AUTH_ONLY=true
+      WITH_AUTH=true
+      ;;
+    --auth | -a | auth)
+      WITH_AUTH=true
+      ;;
+    --help | -h)
+      echo "Usage: $0 [--auth] [--auth-only]"
+      echo "  --auth, -a, auth           Run full post-install setup and authenticate services"
+      echo "  --auth-only, -A, auth-only Run only service authentication (GitLab, GitHub, NordVPN, Wallpaper)"
+      exit 0
+      ;;
   esac
 done
 
