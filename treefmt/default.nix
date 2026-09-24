@@ -1,22 +1,16 @@
-{
-  projectRootFile = "flake.nix";
+{ lib, ... }:
 
-  programs = {
-    # nix
-    nixfmt.enable = true;
+let
+  dir = ./.;
+  files = builtins.readDir dir;
 
-    #lua
-    stylua.enable = true;
-
-    #bash
-    shellcheck.enable = true;
-    shfmt.enable = true;
-  };
-
-  settings.formatter.shfmt.options = [
-    "-i"
-    "2"
-    "-ci"
-    "-s"
+  languageModules = lib.pipe files [
+    (lib.filterAttrs (name: _: name != "default.nix" && lib.hasSuffix ".nix" name))
+    lib.attrNames
+    (map (name: dir + "/${name}"))
   ];
+in
+{
+  imports = languageModules;
+  projectRootFile = "flake.nix";
 }
