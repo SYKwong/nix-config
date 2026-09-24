@@ -81,6 +81,14 @@ ensure_git_ssh_remote() {
   fi
 }
 
+seed_dolphin_state() {
+  local target_file="$HOME/.local/state/dolphinstaterc"
+  local template_file="$SCRIPT_DIR/config/kde/dolphin/dolphinstaterc"
+
+  rm -f "$target_file"
+  cp "$template_file" "$target_file"
+}
+
 ensure_host_ssh_key() {
   local host_key_file="/etc/ssh/ssh_host_ed25519_key.pub"
   if [ ! -f "$host_key_file" ]; then
@@ -298,6 +306,7 @@ print_reminders() {
 determine_host_identifier
 ensure_user_ssh_key
 ensure_git_ssh_remote
+seed_dolphin_state
 
 if [ "$AUTH_ONLY" = true ]; then
   authenticate_services

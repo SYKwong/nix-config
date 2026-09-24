@@ -26,7 +26,7 @@ By using `config.lib.file.mkOutOfStoreSymlink` in [`home/misc/dotfile.nix`](../h
 | **`kitty/`** | `~/.config/kitty` | Kitty terminal emulator configuration, color schemes, and declarative session blueprints (e.g. `three-pane.session`). |
 | **`foot/`** | `~/.config/foot` | Minimal Foot terminal configuration used for floating TUI wrappers (`tui-wrap`). |
 | **`starship/`** | `~/.config/starship.toml` | Starship cross-shell prompt theme and format settings. |
-| **`kde/dolphin/`** | `~/.config/dolphinrc`, `kservicemenurc`, `~/.local/state/dolphinstaterc` | KDE Dolphin file manager preferences, context menus, and window/panel layout state. |
+| **`kde/dolphin/`** | `~/.config/dolphinrc`, `kservicemenurc`, `dolphinstaterc` (template) | KDE Dolphin file manager preferences and context menus. (`dolphinstaterc` template is seeded to `~/.local/state/` via `post-install.sh`). |
 | **`qimgv/`** | `~/.config/qimgv/qimgv.conf` | Fast image viewer settings. |
 | **`glow/`** | `~/.config/glow` | CLI Markdown viewer theme and pager settings. |
 
