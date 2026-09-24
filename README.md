@@ -166,6 +166,11 @@ Wallpapers previously bundled in this repository were moved out to keep fresh in
 
 If you want to use your own wallpapers, place images into `~/Wallpaper/` and launch the picker with `SUPER + Space`.
 
+### Application Icons
+Custom application icons are centralized under the top-level `icons/` directory:
+- `icons/Line.png`: Launcher icon for the LINE Chrome web app desktop shortcut (`home/misc/add-desktop-entry.nix`).
+- `icons/protontricks.svg`: Scalable SVG icon for Protontricks (`modules/gaming/default.nix`), automatically resized into standard hicolor icon themes (16×16 to 256×256) during package build.
+
 ### BIOS Update
 
 #### TPM2 / LUKS Re-enrollment
@@ -257,4 +262,5 @@ nix flake check --no-build
 > [!NOTE]
 > `flake.lock` is managed strictly by automated CI schedules (`update-flake-mr`). Do not update or modify lockfiles locally unless you updated `flake.nix`.
 ---
-*The repository icon is the NixOS logo, licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) by the NixOS project.*
+- *The repository icon is the NixOS logo, licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) by the NixOS project.*
+- *`icons/protontricks.svg` uses the Wine icon from the KDE Breeze Icons theme, licensed under [LGPL-3.0-or-later](https://invent.kde.org/frameworks/breeze-icons/-/blob/master/COPYING-ICONS) by the KDE Community.*
