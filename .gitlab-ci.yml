@@ -26,6 +26,11 @@ stages:
       when: manual
       allow_failure: true
 
+    # Skip if changes are made in treefmt/
+    - changes:
+        - "treefmt/*"
+      when: never
+
     # Run only when nix files changed
     - changes:
         - "**/*.nix"
