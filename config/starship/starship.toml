@@ -43,6 +43,7 @@ truncation_symbol = "…/"
 "~/Pictures" = " "
 "~/Projects" = "󰲋 "
 "nix-config" = " "
+".wiki" = "󰖬 "
 
 [fill]
 symbol = " "
