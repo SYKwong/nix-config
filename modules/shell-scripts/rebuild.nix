@@ -23,10 +23,6 @@ pkgs.writeShellApplication {
   ];
 
   text = ''
-    if [ "''${EUID}" -ne 0 ]; then
-      exec sudo /run/current-system/sw/bin/rebuild "$@"
-    fi
-
     if [ -t 1 ]; then
       BOLD="\033[1m"
       GREEN="\033[1;32m"
@@ -58,6 +54,15 @@ pkgs.writeShellApplication {
 
     REPO="${config_path}"
     HOSTNAME="${hostname}"
+
+    if [ "''${EUID}" -ne 0 ]; then
+      log_info "Running formatter..."
+      (cd "$REPO" && nix fmt)
+      exec sudo env REBUILD_FORMATTED=1 /run/current-system/sw/bin/rebuild "$@"
+    elif [ "''${REBUILD_FORMATTED:-0}" -ne 1 ] && [ -n "''${SUDO_USER:-}" ] && [ "''${SUDO_USER}" != "root" ]; then
+      log_info "Running formatter as ''${SUDO_USER}..."
+      (cd "$REPO" && sudo -u "''${SUDO_USER}" -H nix fmt)
+    fi
 
     log_info "Building configuration and staging boot entry with nh..."
     if ! sudo nh os boot "$REPO" -H "$HOSTNAME" -e passwordless --bypass-root-check; then
