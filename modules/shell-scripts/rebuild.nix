@@ -58,7 +58,7 @@ pkgs.writeShellApplication {
     if [ "''${EUID}" -ne 0 ]; then
       log_info "Running formatter..."
       (cd "$REPO" && nix fmt)
-      exec sudo env REBUILD_FORMATTED=1 /run/current-system/sw/bin/rebuild "$@"
+      exec sudo /run/current-system/sw/bin/rebuild "$@"
     elif [ "''${REBUILD_FORMATTED:-0}" -ne 1 ] && [ -n "''${SUDO_USER:-}" ] && [ "''${SUDO_USER}" != "root" ]; then
       log_info "Running formatter as ''${SUDO_USER}..."
       (cd "$REPO" && sudo -u "''${SUDO_USER}" -H nix fmt)
