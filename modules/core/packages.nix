@@ -4,7 +4,6 @@
   environment.systemPackages =
     (with pkgs; [
       brightnessctl
-      deadnix
       ffmpeg
       glow
       jq
@@ -15,7 +14,6 @@
       qmk
       qmk_hid
       smartmontools
-      statix
       wget
       wl-clipboard
       unrar
