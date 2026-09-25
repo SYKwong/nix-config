@@ -15,7 +15,10 @@ stages:
   - maintenance
   - stable
 
-.nix-test-rules: &nix_test_rules
+verify-flake:
+  stage: test
+  image: nixos/nix:latest
+
   rules:
     # Only for merge requests
     - if: '$CI_PIPELINE_SOURCE != "merge_request_event"'
@@ -39,30 +42,6 @@ stages:
     - when: manual
       allow_failure: true
 
-check-format:
-  <<: *nix_test_rules
-  stage: test
-  image: nixos/nix:latest
-  cache:
-    key:
-      files:
-        - flake.lock
-    paths:
-      - .cache/nix
-    policy: pull
-  script:
-    - nix fmt
-    - |
-      if ! git diff --quiet; then
-        echo "Formatting changes detected. Run 'nix fmt' locally."
-        git diff
-        exit 1
-      fi
-
-verify-flake:
-  <<: *nix_test_rules
-  stage: test
-  image: nixos/nix:latest
   cache:
     key:
       files:
@@ -72,6 +51,13 @@ verify-flake:
     fallback_keys:
       - nix-input-cache-default
   script:
+    - nix fmt
+    - |
+      if ! git diff --quiet; then
+        echo "Formatting changes detected. Run 'nix fmt' locally."
+        git diff
+        exit 1
+      fi
     - nix flake check
 
 update-flake-mr:
