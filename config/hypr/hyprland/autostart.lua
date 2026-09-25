@@ -1,6 +1,6 @@
 hl.on("hyprland.start", function()
-	hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
-	hl.exec_cmd("uwsm-app -- foot --server")
 	hl.exec_cmd("uwsm-app -- fcitx5 -r -d")
+	hl.exec_cmd("uwsm-app -- foot --server")
+	hl.exec_cmd("uwsm-app -- steam -silent")
 	hl.exec_cmd("uwsm-app -- vesktop --start-minimized")
 end)
