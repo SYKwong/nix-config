@@ -29,6 +29,7 @@ By using `config.lib.file.mkOutOfStoreSymlink` in [`home/misc/dotfile.nix`](../h
 | **`kde/dolphin/`** | `~/.config/dolphinrc`, `kservicemenurc`, `dolphinstaterc` (template) | KDE Dolphin file manager preferences and context menus. (`dolphinstaterc` template is seeded to `~/.local/state/` via `post-install.sh`). |
 | **`qimgv/`** | `~/.config/qimgv/qimgv.conf` | Fast image viewer settings. |
 | **`glow/`** | `~/.config/glow` | CLI Markdown viewer theme and pager settings. |
+| **`zen/`** | `~/.config/zen/default/chrome/zen-themes.css` | Zen Browser mods stylesheet (`zen-themes.css`). |
 
 ---
 ## Adding a New Out-of-Store Dotfile

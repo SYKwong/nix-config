@@ -18,6 +18,7 @@ let
     "kservicemenurc" = "kde/dolphin/kservicemenurc";
     "qimgv/qimgv.conf" = "qimgv/qimgv.conf";
     "starship.toml" = "starship/starship.toml";
+    "zen/default/chrome/zen-themes.css" = "zen/zen-themes.css";
   };
 
 in
