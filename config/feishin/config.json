@@ -4,7 +4,9 @@
 	"global_media_hotkeys": false,
 	"lyrics": [
 		"NetEase",
-		"lrclib.net"
+		"lrclib.net",
+		"SimpMusic",
+		"Genius"
 	],
 	"mediaSession": false,
 	"playbackType": "local",

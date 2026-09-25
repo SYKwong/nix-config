@@ -67,8 +67,6 @@ let
 in
 
 {
-  stylix.targets.noctalia.enable = false;
-
   programs.noctalia = {
     enable = osConfig.programs.hyprland.enable;
     systemd.enable = osConfig.programs.hyprland.enable;

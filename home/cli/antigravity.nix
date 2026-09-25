@@ -41,8 +41,6 @@
         "command(nix-instantiate)"
         "command(nh search)"
 
-        "command(statix check)"
-        "command(deadnix)"
         "command(bash -n)"
 
         "command(hyprctl)"
@@ -153,9 +151,8 @@
       - Dependencies: `flake.lock` is managed strictly by CI; do not update or modify locks locally unless `flake.nix` was modified.
 
       ## NixOS & Code Conventions
-      - Formatting: Format Nix code with `nix fmt`.
-      - Linting & Evaluation: Verify Nix changes with `statix check`, `deadnix`, and flake evaluation (`nix flake check --no-build`). Do not run `nix flake check` if changes do not touch `.nix` files, unless a modified file is directly referenced or imported by a `.nix` file (e.g. `starship.toml`).
-      - Hardware files: Never edit auto-generated `hardware-configuration.nix` files (ignore any linter warnings inside them).
+      - Formatting: Format code with `nix fmt`. It currently supports bash/sh, lua, nix, and toml.
+      - Hardware files: Never edit auto-generated `hardware-configuration.nix` files.
       - Portability & Modularity: Avoid hardcoded numeric UIDs/GIDs (prefer dynamic `username` and `users` group). Keep host-specific logic in `hosts/<name>/` and reusable features in `modules/<category>/`.
       - Code Locality, Constants & Helpers: Avoid hoisting constants or helper functions to distant file headers. Assign magic numbers to named constant variables declared as late and locally as possible. Place private helper functions physically as close as possible to the consumers that use them (e.g. immediately preceding the calling function) to preserve local reading context.
       - Minimal Diff Churn: Do not reorder, move, or refactor unrelated functions or code blocks unless explicitly requested or necessary for functionality.

@@ -51,13 +51,18 @@ in
     name:
     {
       inherit name;
-      noDisplay = true;
+      settings = {
+        OnlyShowIn = "X-None;";
+      };
       exec = name;
     }
     // lib.optionalAttrs (name == "nvim") {
       exec = "nvim %F";
       terminal = true;
       mimeType = [ "text/plain" ];
+    }
+    // lib.optionalAttrs (name == "org.kde.ark") {
+      exec = "ark %U";
     }
   );
 

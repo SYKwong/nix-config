@@ -8,13 +8,13 @@
     ./keyring.nix
     ./networking.nix
     ./no_password_rebuild.nix
+    ./packages.nix
     ./security.nix
     ./shell.nix
     ./splash_screen.nix
     ./ssh.nix
     ./stylix.nix
     ./system.nix
-    ./system_packages.nix
     ./usb_drive.nix
     ./user.nix
     ./xdg.nix

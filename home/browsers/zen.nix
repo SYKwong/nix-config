@@ -5,7 +5,10 @@
     inputs.zen-browser.homeModules.beta
   ];
 
-  stylix.targets.zen-browser.profileNames = [ "default" ];
+  stylix.targets.zen-browser = {
+    enable = true;
+    profileNames = [ "default" ];
+  };
 
   programs.zen-browser = {
     enable = true;

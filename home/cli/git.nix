@@ -1,6 +1,8 @@
 { pkgs, username, ... }:
 
 {
+  stylix.targets.lazygit.enable = true;
+
   programs = {
     git = {
       enable = true;
@@ -28,12 +30,7 @@
         merge.autoStash = true;
 
         alias = {
-          co = "checkout";
-          cm = "commit -m";
-          pl = "pull";
-          ps = "push";
-          st = "status";
-          lazy = "!f() { git add -A && git commit -m \"$1\" && git push; }; f";
+          lazy = "!f() { if [ -f flake.nix ]; then nix fmt; fi && git add -A && git commit -m \"$1\" && git push; }; f";
         };
       };
     };
@@ -41,5 +38,6 @@
     gh.enable = true;
     lazygit.enable = true;
   };
+
   home.packages = [ pkgs.glab ];
 }

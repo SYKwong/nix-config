@@ -22,7 +22,6 @@
       enableTransience = true;
     };
   };
-  stylix.targets.starship.enable = false;
 
   xdg.configFile."fish/conf.d/theme.fish".text = ''
     # Modified catppuccin theme

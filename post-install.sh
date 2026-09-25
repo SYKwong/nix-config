@@ -11,14 +11,14 @@ AUTH_ONLY=false
 
 for arg in "$@"; do
   case "$arg" in
-    --auth-only|-A|auth-only)
+    --auth-only | -A | auth-only)
       AUTH_ONLY=true
       WITH_AUTH=true
       ;;
-    --auth|-a|auth)
+    --auth | -a | auth)
       WITH_AUTH=true
       ;;
-    --help|-h)
+    --help | -h)
       echo "Usage: $0 [--auth] [--auth-only]"
       echo "  --auth, -a, auth           Run full post-install setup and authenticate services"
       echo "  --auth-only, -A, auth-only Run only service authentication (GitLab, GitHub, NordVPN, Wallpaper)"
@@ -29,7 +29,7 @@ done
 
 determine_host_identifier() {
   if [ -f /etc/hostname ]; then
-    HOST_IDENTIFIER=$(tr -d '[:space:]' < /etc/hostname)
+    HOST_IDENTIFIER=$(tr -d '[:space:]' </etc/hostname)
   else
     HOST_IDENTIFIER=$(hostname -s 2>/dev/null || hostname)
   fi
@@ -72,13 +72,21 @@ ensure_git_ssh_remote() {
   local remote_url
   remote_url=$(git -C "$SCRIPT_DIR" remote get-url origin 2>/dev/null || true)
 
-  if [[ "$remote_url" =~ ^https://([^/]+)/(.+)$ ]]; then
+  if [[ $remote_url =~ ^https://([^/]+)/(.+)$ ]]; then
     local host="${BASH_REMATCH[1]}"
     local repo_path="${BASH_REMATCH[2]}"
     local ssh_url="git@${host}:${repo_path}"
     echo "Updating git remote origin from HTTPS to SSH ($ssh_url)..."
     git -C "$SCRIPT_DIR" remote set-url origin "$ssh_url"
   fi
+}
+
+seed_dolphin_state() {
+  local target_file="$HOME/.local/state/dolphinstaterc"
+  local template_file="$SCRIPT_DIR/config/kde/dolphin/dolphinstaterc"
+
+  rm -f "$target_file"
+  cp "$template_file" "$target_file"
 }
 
 ensure_host_ssh_key() {
@@ -122,7 +130,7 @@ update_keys_nix() {
       in_systems=0
     }
     { print }
-  ' "$KEYS_FILE" > "${KEYS_FILE}.tmp" && mv "${KEYS_FILE}.tmp" "$KEYS_FILE"
+  ' "$KEYS_FILE" >"${KEYS_FILE}.tmp" && mv "${KEYS_FILE}.tmp" "$KEYS_FILE"
 
   nix fmt "$KEYS_FILE" 2>/dev/null || true
   echo "Successfully updated $KEYS_FILE."
@@ -257,6 +265,7 @@ authenticate_nordvpn() {
 
   echo "Configuring NordVPN LAN discovery..."
   nordvpn set lan-discovery on || true
+  nordvpn set tray off || true
 }
 
 authenticate_services() {
@@ -297,6 +306,7 @@ print_reminders() {
 determine_host_identifier
 ensure_user_ssh_key
 ensure_git_ssh_remote
+seed_dolphin_state
 
 if [ "$AUTH_ONLY" = true ]; then
   authenticate_services

@@ -2,7 +2,7 @@
 
 set -euo pipefail
 trap 'rm -f /tmp/secret.key' EXIT
-export NIX_CONFIG="experimental-features = nix-command flakes" 
+export NIX_CONFIG="experimental-features = nix-command flakes"
 
 # Checks if the user provided at least host_name and user_password
 if [ "$#" -lt 2 ]; then
@@ -27,21 +27,21 @@ user_name=""
 if [ ! -f "./hosts/${host_name}/disko.nix" ]; then
   echo "Error: ./hosts/${host_name}/disko.nix does not exist."
   exit 1
-fi 
+fi
 
 # Fetch username from the Flake
 if fetched_user=$(nix eval --raw ".#lib.hostInfo.${host_name}.username" 2>/dev/null); then
-    echo "Found user: $fetched_user"
-    user_name=$fetched_user
+  echo "Found user: $fetched_user"
+  user_name=$fetched_user
 else
-    echo "Error: Hostname '${host_name}' or username attribute not found in flake."
-    exit 1
+  echo "Error: Hostname '${host_name}' or username attribute not found in flake."
+  exit 1
 fi
 
 set_up_full_disk_encryption() {
   if [ -n "$luks_password" ]; then
     echo "LUKS password provided. Creating secret key..."
-    echo "$luks_password" > /tmp/secret.key
+    echo "$luks_password" >/tmp/secret.key
   else
     echo "No LUKS password provided. Skipping encryption setup..."
   fi
@@ -50,7 +50,7 @@ set_up_full_disk_encryption() {
 disko_partition() {
   echo "Using ./hosts/${host_name}/disko.nix to partition your drive"
   nix run github:nix-community/disko/latest -- \
-      --mode destroy,format,mount "./hosts/${host_name}/disko.nix" --yes-wipe-all-disks
+    --mode destroy,format,mount "./hosts/${host_name}/disko.nix" --yes-wipe-all-disks
 }
 
 generate_hardware_configuration() {
@@ -81,7 +81,7 @@ cleanup_stale_boot_entries() {
 install_nixos() {
   echo "Starting NixOS installation..."
   nixos-install --no-root-password --flake ".#${host_name}"
- 
+
   echo "Setting password for user: $user_name"
   echo "root:$user_password" | nixos-enter --root /mnt -c "chpasswd"
   echo "$user_name:$user_password" | nixos-enter --root /mnt -c "chpasswd"
@@ -105,4 +105,3 @@ copy_config_to_host
 echo "Installation finished! Rebooting..."
 sleep 5
 reboot
-

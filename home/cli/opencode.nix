@@ -1,4 +1,6 @@
 {
+  stylix.targets.opencode.enable = true;
+
   programs.fish.interactiveShellInit = ''
     set -gx CLOUDFLARE_ACCOUNT_ID "4f09751ab0746bf06f0a01821fc0c3e9"
   '';

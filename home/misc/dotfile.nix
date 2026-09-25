@@ -18,13 +18,10 @@ let
     "kservicemenurc" = "kde/dolphin/kservicemenurc";
     "qimgv/qimgv.conf" = "qimgv/qimgv.conf";
     "starship.toml" = "starship/starship.toml";
+    "zen/default/chrome/zen-themes.css" = "zen/zen-themes.css";
   };
 
-  stateFiles = {
-    "dolphinstaterc" = "kde/dolphin/dolphinstaterc";
-  };
 in
 {
   xdg.configFile = builtins.mapAttrs (_: value: { source = symlink value; }) files;
-  xdg.stateFile = builtins.mapAttrs (_: value: { source = symlink value; }) stateFiles;
 }

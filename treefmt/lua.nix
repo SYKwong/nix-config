@@ -1,0 +1,5 @@
+{
+  programs = {
+    stylua.enable = true;
+  };
+}
