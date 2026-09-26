@@ -28,7 +28,6 @@ let
     # Misc
     "btop"
     "dev.noctalia.Noctalia"
-    "io.bassi.Amberol"
     "kitty"
     "mpv"
     "nvim"

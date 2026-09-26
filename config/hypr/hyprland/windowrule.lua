@@ -111,7 +111,6 @@ hl.on("window.open", function(opened_window)
 end)
 
 -- Workspace 4: Audio / Media
-assign_workspace("amberol", { class = "io.bassi.Amberol" }, "4")
 assign_workspace("feishin", { class = "feishin" }, "4")
 
 -- =============================================================================
