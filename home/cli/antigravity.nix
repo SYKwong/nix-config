@@ -117,10 +117,10 @@
         "command(git push)"
         "command(git restore)"
         "command(git reset)"
-        "command(git -C .* commit)"
-        "command(git -C .* push)"
-        "command(git -C .* restore)"
-        "command(git -C .* reset)"
+        "command(git -C /home/${username}/nix-config.* commit)"
+        "command(git -C /home/${username}/nix-config.* push)"
+        "command(git -C /home/${username}/nix-config.* restore)"
+        "command(git -C /home/${username}/nix-config.* reset)"
         "command(nixos-rebuild)"
       ];
     };
@@ -142,10 +142,10 @@
 
       ## Git & Workflow
       - Main Branch Protection: Never commit or push directly to `main`. Always create a feature or fix branch for any code changes.
-      - Wiki Repositories: For repositories ending in `.wiki` (e.g. `nix-config.wiki`), write and commit directly to `main` without creating feature branches, as GitLab wikis only render the default branch and do not support branches or MRs in their web UI.
+      - Wiki Repositories: For repositories ending in `.wiki` (e.g. `nix-config.wiki`), write, commit, and push directly to `main` automatically without creating feature branches or prompting for manual confirmation, as GitLab wikis only render the default branch and do not support branches or MRs in their web UI.
       - Branching: If currently on `main` (outside of `.wiki` repositories), automatically create and switch to a new branch for the task without asking for permission. If on another branch, ask the user whether to branch from the current branch or from `main`. If there are staged or unstaged changes, proactively ask the user if they should be stashed before switching or branching.
       - Branch Housekeeping: When on `main` (e.g. at the start of a new task after switching back), automatically prune local branches whose upstream tracking remotes were deleted or merged (including squashed MRs where `git branch -vv` reports `[origin/...: gone]`), using `git branch -D` when necessary. Never delete active local branches that have unmerged work or active remotes.
-      - Control: The user handles git commits, MR/PR creation, and merging manually. The agent should only prepare code changes, run formatters/linters, and suggest single-line commit messages unless explicitly instructed.
+      - Control: Outside of `.wiki` repositories, the user handles git commits, MR/PR creation, and merging manually. The agent should only prepare code changes, run formatters/linters, and suggest single-line commit messages unless explicitly instructed. For `.wiki` repositories, the agent handles staging, committing, and pushing automatically.
       - Commit messages: Strictly single-line Conventional Commits (e.g. `feat(...): ...`, `fix(...): ...`). Always base the commit message on the full `git diff` of all prepared changes, never just the latest incremental edit. Keep extended details for the MR/PR description.
       - Commit Workflow: Prefer the repo's `git lazy "<commit message>"` alias when suggesting staging, commit, and push steps.
       - Dependencies: `flake.lock` is managed strictly by CI; do not update or modify locks locally unless `flake.nix` was modified.
