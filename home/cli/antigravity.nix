@@ -27,8 +27,15 @@
         "command(git tag)"
         "command(git describe)"
         "command(git shortlog)"
-        "command(git -C /home/${username}/nix-config.*)"
-        "command(git -C /home/${username}/Projects.*)"
+        "command(git -C /home/${username}/Projects/nix-config.wiki status*)"
+        "command(git -C /home/${username}/Projects/nix-config.wiki diff*)"
+        "command(git -C /home/${username}/Projects/nix-config.wiki log*)"
+        "command(git -C /home/${username}/Projects/nix-config.wiki add*)"
+        "command(git -C /home/${username}/Projects/nix-config.wiki commit*)"
+        "command(git -C /home/${username}/Projects/nix-config.wiki push*)"
+        "command(git -C /home/${username}/Projects/nix-config.wiki pull*)"
+        "command(git -C /home/${username}/Projects/nix-config.wiki fetch*)"
+        "command(git -C /home/${username}/Projects/nix-config.wiki branch*)"
 
         "command(nix flake check)"
         "command(nix flake show)"
@@ -117,10 +124,6 @@
         "command(git push)"
         "command(git restore)"
         "command(git reset)"
-        "command(git -C /home/${username}/nix-config.* commit)"
-        "command(git -C /home/${username}/nix-config.* push)"
-        "command(git -C /home/${username}/nix-config.* restore)"
-        "command(git -C /home/${username}/nix-config.* reset)"
         "command(nixos-rebuild)"
       ];
     };
