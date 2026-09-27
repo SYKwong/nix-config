@@ -2,7 +2,6 @@
 
 {
   home.packages = with pkgs; [
-    amberol
     feishin
     jellyfin-desktop
   ];
@@ -21,8 +20,7 @@
       # Do not show OSD pop-up/bar when scrubbing/seeking
       osd-on-seek = "no";
 
-      autocreate-playlist = "filter";
-      directory-filter-types = "video";
+      autocreate-playlist = "same";
       directory-mode = "ignore";
       save-position-on-quit = true;
     };
