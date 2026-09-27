@@ -161,7 +161,8 @@
       - Hyprland Lua Conventions: Use standard `function table.name()` syntax instead of anonymous assignments (`table.name = function()`). Keybinding action helpers in `utils.lua` should return callback closures rather than raw command strings.
       - Desktop Shell: The environment uses Noctalia; legacy Waybar/sway-specific tools and derivations should be pruned when encountered.
 
-      ## File Operations
+      ## Command & File Operations
+      - No Compound Commands: Do not chain commands with `&&`, `||`, `;`, pipes (`|`), or subshells in `run_command`. Issue commands as individual, discrete tool calls, as compound shell syntax fails permission pattern matching and triggers interactive CLI prompts.
       - File Creation and Modification: Always use `write_to_file` or `replace_file_content` to create or edit files in the workspace. Never use `cat << 'EOF' > ...` or shell redirection in `run_command`, as shell redirection triggers CLI permission prompts.
 
       ## Provisioning & Installation Scripts (install.sh, post-install.sh)
