@@ -27,8 +27,16 @@
         "command(git tag)"
         "command(git describe)"
         "command(git shortlog)"
-        "command(git -C /home/${username}/nix-config.*)"
-        "command(git -C /home/${username}/Projects.*)"
+        "command(git -C /home/${username}/Projects/nix-config.wiki status)"
+        "command(git -C /home/${username}/Projects/nix-config.wiki diff)"
+        "command(git -C /home/${username}/Projects/nix-config.wiki log)"
+        "command(git -C /home/${username}/Projects/nix-config.wiki show)"
+        "command(git -C /home/${username}/Projects/nix-config.wiki add)"
+        "command(git -C /home/${username}/Projects/nix-config.wiki commit)"
+        "command(git -C /home/${username}/Projects/nix-config.wiki push)"
+        "command(git -C /home/${username}/Projects/nix-config.wiki pull)"
+        "command(git -C /home/${username}/Projects/nix-config.wiki fetch)"
+        "command(git -C /home/${username}/Projects/nix-config.wiki branch)"
 
         "command(nix flake check)"
         "command(nix flake show)"
@@ -117,10 +125,6 @@
         "command(git push)"
         "command(git restore)"
         "command(git reset)"
-        "command(git -C /home/${username}/nix-config.* commit)"
-        "command(git -C /home/${username}/nix-config.* push)"
-        "command(git -C /home/${username}/nix-config.* restore)"
-        "command(git -C /home/${username}/nix-config.* reset)"
         "command(nixos-rebuild)"
       ];
     };
@@ -142,7 +146,7 @@
 
       ## Git & Workflow
       - Main Branch Protection: Never commit or push directly to `main`. Always create a feature or fix branch for any code changes.
-      - Wiki Repositories: For repositories ending in `.wiki` (e.g. `nix-config.wiki`), write, commit, and push directly to `main` automatically without creating feature branches or prompting for manual confirmation, as GitLab wikis only render the default branch and do not support branches or MRs in their web UI.
+      - Wiki Repositories: For repositories ending in `.wiki` (e.g. `nix-config.wiki`), write, commit, and push directly to `main` automatically without creating feature branches or prompting for manual confirmation, as GitLab wikis only render the default branch and do not support branches or MRs in their web UI. When operating on wiki repositories via `git -C`, strictly use only git subcommands declared in the permission allowlist (`status`, `diff`, `log`, `show`, `add`, `commit`, `push`, `pull`, `fetch`, `branch`) to guarantee unattended execution without interactive confirmation prompts.
       - Branching: If currently on `main` (outside of `.wiki` repositories), automatically create and switch to a new branch for the task without asking for permission. If on another branch, ask the user whether to branch from the current branch or from `main`. If there are staged or unstaged changes, proactively ask the user if they should be stashed before switching or branching.
       - Branch Housekeeping: When on `main` (e.g. at the start of a new task after switching back), automatically prune local branches whose upstream tracking remotes were deleted or merged (including squashed MRs where `git branch -vv` reports `[origin/...: gone]`), using `git branch -D` when necessary. Never delete active local branches that have unmerged work or active remotes.
       - Control: Outside of `.wiki` repositories, the user handles git commits, MR/PR creation, and merging manually. The agent should only prepare code changes, run formatters/linters, and suggest single-line commit messages unless explicitly instructed. For `.wiki` repositories, the agent handles staging, committing, and pushing automatically.
@@ -161,7 +165,8 @@
       - Hyprland Lua Conventions: Use standard `function table.name()` syntax instead of anonymous assignments (`table.name = function()`). Keybinding action helpers in `utils.lua` should return callback closures rather than raw command strings.
       - Desktop Shell: The environment uses Noctalia; legacy Waybar/sway-specific tools and derivations should be pruned when encountered.
 
-      ## File Operations
+      ## Command & File Operations
+      - No Compound Commands: Do not chain commands with `&&`, `||`, `;`, pipes (`|`), or subshells in `run_command`. Issue commands as individual, discrete tool calls, as compound shell syntax fails permission pattern matching and triggers interactive CLI prompts.
       - File Creation and Modification: Always use `write_to_file` or `replace_file_content` to create or edit files in the workspace. Never use `cat << 'EOF' > ...` or shell redirection in `run_command`, as shell redirection triggers CLI permission prompts.
 
       ## Provisioning & Installation Scripts (install.sh, post-install.sh)
