@@ -247,16 +247,14 @@ Official BIOS & firmware releases are hosted on [GMKtec's Google Drive](https://
    ```
 
 ### Code Quality & Evaluation
-Format Nix code:
+Format and lint code (Nix, Bash, Lua, TOML via `treefmt`):
 ```bash
 nix fmt
 ```
 
-Lint and evaluate configurations:
+Evaluate configurations:
 ```bash
-statix check
-deadnix
-nix flake check --no-build
+nix flake check
 ```
 
 > [!NOTE]
