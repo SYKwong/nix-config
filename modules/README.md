@@ -25,7 +25,6 @@ This directory contains modular, reusable **NixOS system-level** configurations.
 | **`power-management/`** | Power management daemons and system power profile switching. |
 | **`flatpak/`** | Declarative Flatpak application and sandbox runtime management (on-demand; see [`modules/flatpak/README.md`](./flatpak/README.md)). |
 | **`config/`** | Shared, host-reusable system configurations intended to be imported on demand. |
-| **`misc/`** | Miscellaneous auxiliary system services and utility integrations. |
 
 ---
 

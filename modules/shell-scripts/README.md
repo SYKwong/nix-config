@@ -8,8 +8,8 @@ This directory contains custom CLI tools and helper scripts packaged as native N
 
 | Script | Entry File | Derivation Builder | Description |
 | :--- | :--- | :--- | :--- |
-| **`rebuild`** (alias: **`nrs`**) | [`rebuild.nix`](./rebuild.nix) | `writeShellApplication` | NixOS configuration rebuild engine with health checks, formatters, automated commit messages, and boot/switch modes. Run via alias `nrs` (NixOS-Rebuild Switch). |
-| **`rofi-keybinds`** | [`rofi-keybind.nix`](./rofi-keybind.nix) | `writeShellApplication` | Dynamic cheat sheet parsed from `hyprctl binds` and displayed in an interactive Rofi dmenu (`SUPER + H`). |
+| **`rebuild`** (alias: **`nrs`**) | [`rebuild.nix`](./rebuild.nix) | `writeShellApplication` | NixOS configuration rebuild engine that formats code, creates a boot entry via `nh os boot`, activates live via `switch-to-configuration`, syncs closure to local cache, and checks for pending kernel reboots. Run via alias `nrs`. |
+| **`rofi-keybinds`** | [`rofi-keybind.nix`](./rofi-keybind.nix) | `writeShellApplication` | Dynamic cheat sheet parsed from `hyprctl binds` and displayed in an interactive Rofi dmenu (`SUPER + SHIFT + /` or `SUPER + F1`). |
 | **`kb-light-manager`** | [`kb-light-manager.nix`](./kb-light-manager.nix) | `writeShellApplication` | Framework laptop keyboard backlight toggle and brightness manager using `qmk_hid`. |
 | **`tui-wrap`** | [`tui-wrap.nix`](./tui-wrap.nix) | `writeShellScriptBin` *(Exception)* | Helper to spawn arbitrary CLI and TUI tools (like Yazi or Btop) inside floating Foot terminal surfaces. Dynamically resolves user commands from runtime `PATH`. |
 
