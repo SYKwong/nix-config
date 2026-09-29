@@ -3,6 +3,7 @@
 {
   networking = {
     hostName = hostname;
+    enableIPv6 = false;
     networkmanager.enable = true;
     firewall = {
       enable = true;
