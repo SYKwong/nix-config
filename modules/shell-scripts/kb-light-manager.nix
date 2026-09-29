@@ -61,7 +61,7 @@ pkgs.writeShellApplication {
       exit 2
     fi
 
-    STATE_FILE="/tmp/kb_state_''${VID}_''${PID}"
+    STATE_FILE="''${XDG_RUNTIME_DIR:?XDG_RUNTIME_DIR is not set}/kb_state_''${VID}_''${PID}"
 
     case "$ACTION" in
       off)

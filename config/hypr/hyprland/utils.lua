@@ -1,5 +1,5 @@
 local utils = {}
-local state_file = "/tmp/hypr_workspace_layouts.json"
+local state_file = assert(os.getenv("XDG_RUNTIME_DIR"), "XDG_RUNTIME_DIR is not set") .. "/hypr_workspace_layouts.json"
 local saved_window_states = {}
 
 function utils.get_hostname()
