@@ -184,4 +184,4 @@ hl.bind(
 	{ locked = true, description = "[Media] Toggle Play/Pause" }
 )
 hl.bind(mainMod .. " + left", hl.dsp.exec_cmd(media_prev), { locked = true, description = "[Media] Previous track" })
-hl.bind(mainMod .. " + right", hl.dsp.exec_cmd(media_next), { loced = true, description = "[Media] Next track" })
+hl.bind(mainMod .. " + right", hl.dsp.exec_cmd(media_next), { locked = true, description = "[Media] Next track" })

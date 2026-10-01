@@ -11,6 +11,5 @@ hl.config({
 	},
 	cursor = {
 		inactive_timeout = 1,
-		no_hardware_cursors = true,
 	},
 })

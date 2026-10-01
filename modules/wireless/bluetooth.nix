@@ -14,7 +14,6 @@ in
       inherit (cfg) powerOnBoot;
       settings = {
         General = {
-          Enable = "Source,Sink,Media,Socket";
           Experimental = true;
         };
       };

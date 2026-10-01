@@ -150,5 +150,5 @@ services.flatpak.overrides = {
    - **Periodic Timer:** A background systemd timer updates Flatpak packages weekly (`services.flatpak.update.auto.enable = true;`).
 3. **Declarative Removal & Pruning:**
    - Removing an entry from `services.flatpak.packages` automatically uninstalls the package on the next activation (`uninstallUnmanaged = true;`).
-   - Orphaned runtimes and extensions are automatically pruned (`uninstallUnused = true;`).
+   - Orphaned runtimes and extensions are automatically pruned (`uninstallUnused`, which defaults to `uninstallUnmanaged`).
 

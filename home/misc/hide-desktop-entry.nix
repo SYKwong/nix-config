@@ -60,8 +60,21 @@ in
       terminal = true;
       mimeType = [ "text/plain" ];
     }
+    // lib.optionalAttrs (name == "qimgv") {
+      exec = "qimgv %F";
+      mimeType = [ "image/*" ];
+    }
+    // lib.optionalAttrs (name == "mpv") {
+      exec = "mpv -- %U";
+      mimeType = [ "video/*" ];
+    }
     // lib.optionalAttrs (name == "org.kde.ark") {
       exec = "ark %U";
+      mimeType = [
+        "application/zip"
+        "application/x-7z-compressed"
+        "application/x-rar"
+      ];
     }
   );
 

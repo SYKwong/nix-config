@@ -290,16 +290,14 @@ deploy <target_host> [switch|boot]
   - `deploy-fw16` (or `deploy framework16`): Deploys to Framework Laptop 16
 
 ### Code Quality & Evaluation
-Format Nix code:
+Format and lint code (Nix, Bash, Lua, TOML via `treefmt`):
 ```bash
 nix fmt
 ```
 
-Lint and evaluate configurations:
+Evaluate configurations:
 ```bash
-statix check
-deadnix
-nix flake check --no-build
+nix flake check
 ```
 
 > [!NOTE]

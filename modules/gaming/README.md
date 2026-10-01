@@ -29,9 +29,9 @@ In this repository, Gamescope operates in two distinct roles depending on host f
 
 ### 1. Handheld Appliance Session (`legion-go`)
 * **Role**: Primary display server and desktop compositor for the entire machine.
-* **Mechanism**: Activated via `programs.steam.gamescopeSession.enable = true` in [`modules/profiles/gaming-handheld/session.nix`](../profiles/gaming-handheld/session.nix).
+* **Mechanism**: Activated via `programs.steam.gamescopeSession.enable = true` in `modules/profiles/gaming-handheld/session.nix`.
 * **Display Management**: SDDM autologins directly into the `steam` gamescope session on boot.
-* **Hardware Adaptation**: Panel rotation, physical resolution (`2560x1600`), and refresh rate (`144Hz`) are declared once at the system level in [`hosts/legion-go/config.nix`](../../hosts/legion-go/config.nix).
+* **Hardware Adaptation**: Panel rotation, physical resolution (`2560x1600`), and refresh rate (`144Hz`) are declared once at the system level in `hosts/legion-go/config.nix`.
 * **Behavior**: **Every game launched on the handheld runs inside Gamescope automatically.** Zero per-game launch flags are required.
 
 ### 2. Desktop & Laptop Micro-Compositor (`framework16`, `mini-pc-k8`)

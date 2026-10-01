@@ -13,7 +13,7 @@ This directory manages custom desktop entries and hides unwanted application sho
 ### 1. `appsToHide` (Standard / Home Manager)
 For standard NixOS and Home Manager packages whose `.desktop` files live in `/run/current-system/sw/share/applications/` or the user profile.
 
-Adding an entry name to `appsToHide` generates a shadow entry with `NoDisplay=true` via Home Manager's `xdg.desktopEntries`:
+Adding an entry name to `appsToHide` generates a shadow entry with `OnlyShowIn = "X-None;"` via Home Manager's `xdg.desktopEntries` to hide it from desktop application launchers (like Noctalia):
 
 ```nix
 appsToHide = [
