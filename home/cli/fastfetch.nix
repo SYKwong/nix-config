@@ -105,6 +105,7 @@
           type = "monitor";
           key = " └  ";
           keyColor = "33";
+          format = "{width}x{height} @ {refresh-rate} Hz";
         }
         "break"
         {
