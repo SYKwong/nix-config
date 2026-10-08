@@ -56,5 +56,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    hyprland-scroll-overview = {
+      url = "github:yayuuu/hyprland-scroll-overview";
+      flake = false;
+    };
+
   };
 }

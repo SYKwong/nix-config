@@ -10,6 +10,7 @@
       kitty
       libnotify
       p7zip
+      python3
       qimgv
       qmk
       qmk_hid

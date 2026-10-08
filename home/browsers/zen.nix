@@ -74,8 +74,7 @@
             ];
             "zen-sidebar-top-buttons" = [ "zen-toggle-compact-mode" ];
             "zen-sidebar-foot-buttons" = [
-              "downloads-button"
-              "zen-workspaces-button"
+              "library-button"
               "logins-button"
             ];
           };

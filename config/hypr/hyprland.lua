@@ -1,5 +1,6 @@
 require("hyprland/environment")
 require("hyprland/autostart")
+require("hyprland/plugin")
 require("hyprland/input")
 require("hyprland/keybind")
 require("hyprland/looknfeel")
