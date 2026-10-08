@@ -18,17 +18,6 @@ hl.gesture({
 	action = utils.restore_window(),
 })
 
-local function app_launcher()
-	local command = "noctalia msg panel-toggle launcher"
-	hl.dispatch(hl.dsp.exec_cmd(command))
-end
-
-hl.gesture({
-	fingers = 3,
-	direction = "up",
-	action = app_launcher,
-})
-
 hl.gesture({
 	fingers = 3,
 	direction = "down",

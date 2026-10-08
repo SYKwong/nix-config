@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  inputs,
   ...
 }:
 
@@ -20,6 +21,12 @@ in
     enable = true;
     withUWSM = true;
   };
+
+  environment.systemPackages = [
+    (pkgs.callPackage ./scrolloverview.nix {
+      src = inputs.hyprland-scroll-overview;
+    })
+  ];
 
   security.pam.services = {
     login.fprintAuth = false;
