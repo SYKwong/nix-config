@@ -65,6 +65,7 @@
         "browser.startup.homepage" = "https://home.kyle-kwong.com";
         "browser.translations.enable" = false;
         "browser.translations.neverTranslateLanguages" = "zh-Hant";
+        "browser.urlbar.suggest.remotetab" = false;
         "browser.uiCustomization.state" = builtins.toJSON {
           placements = {
             "widget-overflow-fixed-list" = [ ];
