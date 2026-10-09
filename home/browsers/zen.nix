@@ -14,29 +14,47 @@
     enable = true;
     setAsDefaultBrowser = true;
 
-    policies = {
-      AutofillAddressEnabled = true;
-      AutofillCreditCardEnabled = false;
-      DisableAppUpdate = true;
-      DisableFeedbackCommands = true;
-      DisableFirefoxStudies = true;
-      DisablePocket = true;
-      DisableTelemetry = true;
-      DontCheckDefaultBrowser = true;
-      NoDefaultBookmarks = true;
-      OfferToSaveLogins = true;
-      EnableTrackingProtection = {
-        Value = true;
-        Locked = true;
-        Cryptomining = true;
-        Fingerprinting = true;
+    policies =
+      let
+        mkExtensionSettings = builtins.mapAttrs (
+          _: pluginId: {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/${pluginId}/latest.xpi";
+            installation_mode = "force_installed";
+          }
+        );
+      in
+      {
+        AutofillAddressEnabled = true;
+        AutofillCreditCardEnabled = false;
+        DisableAppUpdate = true;
+        DisableFeedbackCommands = true;
+        DisableFirefoxStudies = true;
+        DisablePocket = true;
+        DisableTelemetry = true;
+        DontCheckDefaultBrowser = true;
+        NoDefaultBookmarks = true;
+        OfferToSaveLogins = true;
+        EnableTrackingProtection = {
+          Value = true;
+          Locked = true;
+          Cryptomining = true;
+          Fingerprinting = true;
+        };
+
+        ExtensionSettings = mkExtensionSettings {
+          "uBlock0@raymondhill.net" = "ublock-origin";
+          "{762f9885-5a13-4abd-9c77-433dcd38b8fd}" = "return-youtube-dislikes";
+          "sponsorBlocker@ajay.app" = "sponsorblock";
+          "enhancerforyoutube@maximerf.addons.mozilla.org" = "enhancer-for-youtube";
+          "{58204f8b-01c2-4bbc-98f8-9a90458fd9ef}" = "blocktube";
+        };
       };
-    };
 
     profiles.default = {
       settings = {
         "zen.tabs.show-newtab-vertical" = false;
         "zen.tabs.vertical.right-side" = true;
+        "zen.theme.hide-unified-extensions-button" = true;
         "zen.urlbar.behavior" = "float";
         "zen.view.compact.enable-at-startup" = false;
         "zen.welcome-screen.seen" = true;
