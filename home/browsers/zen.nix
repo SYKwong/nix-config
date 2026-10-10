@@ -56,6 +56,7 @@
         "zen.tabs.vertical.right-side" = true;
         "zen.theme.hide-unified-extensions-button" = true;
         "zen.urlbar.behavior" = "float";
+        "zen.urlbar.suggestions.quick-actions" = false;
         "zen.view.compact.enable-at-startup" = false;
         "zen.welcome-screen.seen" = true;
         "zen.workspaces.continue-where-left-off" = true;
@@ -66,8 +67,15 @@
         "browser.translations.enable" = false;
         "browser.translations.neverTranslateLanguages" = "zh-Hant";
         "browser.urlbar.addons.featureGate" = false;
+        "browser.urlbar.autoFill" = true;
+        "browser.urlbar.quicksuggest.enabled" = false;
         "browser.urlbar.suggest.addons" = false;
+        "browser.urlbar.suggest.bookmark" = false;
+        "browser.urlbar.suggest.history" = true;
+        "browser.urlbar.suggest.openpage" = false;
+        "browser.urlbar.suggest.quickactions" = false;
         "browser.urlbar.suggest.remotetab" = false;
+        "browser.urlbar.suggest.topsites" = false;
         "browser.uiCustomization.state" = builtins.toJSON {
           placements = {
             "widget-overflow-fixed-list" = [ ];
@@ -139,6 +147,10 @@
         #stop-reload-button,
         #reload-button,
         #stop-button {
+          display: none !important;
+        }
+
+        #urlbar-results .urlbarView-row:nth-child(n+2) {
           display: none !important;
         }
       '';
