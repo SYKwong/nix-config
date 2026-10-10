@@ -6,6 +6,7 @@ pkgs.writeShellApplication {
   runtimeInputs = with pkgs; [
     coreutils
     hyprland
+    jq
   ];
 
   text = ''
@@ -14,15 +15,13 @@ pkgs.writeShellApplication {
     STATE_FILE="''${XDG_RUNTIME_DIR:?XDG_RUNTIME_DIR is not set}/display_brightness"
 
     help() {
-      echo "Usage: display-brightness [OPTIONS] <action> [value]"
+      echo "Usage: display-brightness [OPTIONS] <action> [step]"
       echo
       echo "Control display brightness with automatic fallback to hyprsunset software dimming."
       echo
       echo "Actions:"
       echo "  up [step]            Increase brightness (default step: 10)"
       echo "  down [step]          Decrease brightness (default step: 10)"
-      echo "  set <value>          Set brightness percentage (10-100)"
-      echo "  get                  Print current brightness percentage"
       echo
       echo "Options:"
       echo "  -h, --help           Show this help message"
@@ -34,6 +33,31 @@ pkgs.writeShellApplication {
           return 0
         fi
       done
+      return 1
+    }
+
+    is_internal_focused() {
+      if ! has_backlight; then
+        return 1
+      fi
+
+      local monitors_json
+      monitors_json="$(hyprctl monitors -j 2>/dev/null || true)"
+      if [[ -z "$monitors_json" ]]; then
+        return 0
+      fi
+
+      local focused_mon
+      focused_mon="$(printf '%s\n' "$monitors_json" | jq -r '.[] | select(.focused) | .name' 2>/dev/null || true)"
+
+      if [[ -z "$focused_mon" ]]; then
+        return 0
+      fi
+
+      if [[ "$focused_mon" =~ ^(eDP|LVDS) ]]; then
+        return 0
+      fi
+
       return 1
     }
 
@@ -78,7 +102,7 @@ pkgs.writeShellApplication {
     case "$ACTION" in
       up)
         STEP="''${PARAM:-10}"
-        if has_backlight; then
+        if is_internal_focused; then
           noctalia msg brightness-up "$STEP"
         else
           CURRENT=$(get_software_brightness)
@@ -88,28 +112,11 @@ pkgs.writeShellApplication {
 
       down)
         STEP="''${PARAM:-10}"
-        if has_backlight; then
+        if is_internal_focused; then
           noctalia msg brightness-down "$STEP"
         else
           CURRENT=$(get_software_brightness)
           set_software_brightness "$((CURRENT - STEP))"
-        fi
-        ;;
-
-      set)
-        [[ -n "$PARAM" ]] || { echo "display-brightness: 'set' requires a value" >&2; exit 2; }
-        if has_backlight; then
-          noctalia msg brightness-set "$PARAM"
-        else
-          set_software_brightness "$PARAM"
-        fi
-        ;;
-
-      get)
-        if has_backlight; then
-          noctalia msg brightness-get 2>/dev/null || get_software_brightness
-        else
-          get_software_brightness
         fi
         ;;
 
