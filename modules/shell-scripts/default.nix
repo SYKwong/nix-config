@@ -21,6 +21,7 @@ let
     rebuild = import ./rebuild.nix common;
     kb-light-manager = import ./kb-light-manager.nix common;
     rofi-keybind = import ./rofi-keybind.nix common;
+    display-brightness = import ./display-brightness.nix common;
   };
 in
 {

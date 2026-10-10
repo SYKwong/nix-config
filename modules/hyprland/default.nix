@@ -23,6 +23,7 @@ in
   };
 
   environment.systemPackages = [
+    pkgs.hyprsunset
     (pkgs.callPackage ./scrolloverview.nix {
       src = inputs.hyprland-scroll-overview;
     })

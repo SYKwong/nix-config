@@ -1,6 +1,7 @@
 hl.on("hyprland.start", function()
 	hl.exec_cmd("uwsm-app -- fcitx5 -r -d")
 	hl.exec_cmd("uwsm-app -- foot --server")
+	hl.exec_cmd("uwsm-app -- hyprsunset --identity")
 	hl.exec_cmd("uwsm-app -- steam -silent")
 	hl.exec_cmd("uwsm-app -- vesktop --start-minimized")
 end)
