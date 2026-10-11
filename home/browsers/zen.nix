@@ -90,30 +90,42 @@
               "urlbar-container"
               "unified-extensions-button"
             ];
-            "toolbar-menubar" = [ "menubar-items" ];
             "TabsToolbar" = [
               "tabbrowser-tabs"
               "ai-window-toggle"
               "smartwindow-group-tabs-button"
             ];
-            "vertical-tabs" = [ ];
-            "PersonalToolbar" = [
-              "import-button"
-              "personal-bookmarks"
-            ];
-            "zen-sidebar-top-buttons" = [ "zen-toggle-compact-mode" ];
             "zen-sidebar-foot-buttons" = [
-              "library-button"
+              "zen-toggle-compact-mode"
               "logins-button"
+              "preferences-button"
             ];
           };
           currentVersion = 26;
         };
       };
 
+      keyboardShortcuts = [
+        {
+          id = "key_openDownloads";
+          key = "j";
+          modifiers = {
+            control = false;
+            alt = false;
+            shift = false;
+            meta = false;
+            accel = true;
+          };
+        }
+        {
+          id = "key_search2";
+          disabled = true;
+        }
+      ];
+      keyboardShortcutsVersion = 21;
+
       mods = [
         "e122b5d9-d385-4bf8-9971-e137809097d0" # No Top Sites
-        "253a3a74-0cc4-47b7-8b82-996a64f030d5" # Floating History
         "4ab93b88-151c-451b-a1b7-a1e0e28fa7f8" # No Sidebar Scrollbar
         "a6335949-4465-4b71-926c-4a52d34bc9c0" # Better Find Bar
         "b51ff956-6aea-47ab-80c7-d6c047c0d510" # Disable Status Bar
@@ -132,6 +144,10 @@
       };
 
       userChrome = ''
+        #zen-sidebar-top-buttons,
+        #zen-sidebar-top-buttons-separator,
+        .pinned-tabs-container-separator,
+        #vertical-pinned-tabs-splitter,
         #urlbar-zoom-button,
         #zen-copy-url-button,
         #zen-page-actions-copy-url,
@@ -152,6 +168,14 @@
 
         #urlbar-results .urlbarView-row:nth-child(n+2) {
           display: none !important;
+        }
+
+        :root:not([zen-compact-mode="true"]) #nav-bar {
+          margin-top: 12px !important;
+        }
+
+        :root[zen-compact-mode="true"] #nav-bar {
+          margin-top: 0px !important;
         }
       '';
     };
