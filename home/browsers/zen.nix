@@ -166,7 +166,11 @@
           display: none !important;
         }
 
-        #urlbar-results .urlbarView-row:nth-child(n+2) {
+        #urlbar-results .urlbarView-row:nth-child(n+3) {
+          display: none !important;
+        }
+
+        #urlbar-results:has(.urlbarView-row:first-child:not([type="search"])) .urlbarView-row:nth-child(n+2) {
           display: none !important;
         }
 
