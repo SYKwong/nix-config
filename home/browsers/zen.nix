@@ -57,7 +57,7 @@
         "zen.theme.hide-unified-extensions-button" = true;
         "zen.urlbar.behavior" = "float";
         "zen.urlbar.suggestions.quick-actions" = false;
-        "zen.view.compact.enable-at-startup" = false;
+        "zen.view.compact.enable-at-startup" = true;
         "zen.welcome-screen.seen" = true;
         "zen.workspaces.continue-where-left-off" = true;
         "zen.workspaces.show-workspace-indicator" = false;
