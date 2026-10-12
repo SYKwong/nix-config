@@ -30,7 +30,6 @@ By using `config.lib.file.mkOutOfStoreSymlink` in [`home/misc/dotfile.nix`](../h
 | **`qimgv/`** | `~/.config/qimgv/qimgv.conf` | Fast image viewer settings. |
 | **`glow/`** | `~/.config/glow` | CLI Markdown viewer theme and pager settings. |
 | **`feishin/`** | `~/.config/feishin/config.json` | Feishin desktop music player preferences and lyrics sources. |
-| **`zen/`** | `~/.config/zen/default/chrome/zen-themes.css` | Zen Browser mods stylesheet (`zen-themes.css`). |
 
 ---
 ## Adding a New Out-of-Store Dotfile

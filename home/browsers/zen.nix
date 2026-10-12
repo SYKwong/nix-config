@@ -60,6 +60,20 @@
         "zen.view.compact.enable-at-startup" = false;
         "zen.welcome-screen.seen" = true;
         "zen.workspaces.continue-where-left-off" = true;
+        "zen.workspaces.show-workspace-indicator" = false;
+
+        # Zen Mod Preferences
+        "mod.ivaon.urlbar.hide_results" = "0";
+        "mod.superpins.essentials.grid-count" = "1";
+        "mod.superpins.pins.grid-count" = "1";
+        "theme.nosidebarscrollbar.before125b" = false;
+        "uc.essentials.gap" = "";
+        "uc.essentials.transition-speed" = "100ms";
+        "uc.essentials.width" = "Thin";
+        "uc.pins.bg" = false;
+        "uc.pins.essentials-layout" = false;
+        "uc.pins.legacy-layout" = false;
+        "uc.pins.transition-speed" = "100ms";
 
         "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
 
