@@ -17,6 +17,7 @@ This directory contains modular, reusable **NixOS system-level** configurations.
 | **`vpn/`** | Virtual Private Network (VPN) client services, daemons, and encrypted tunnels. |
 | **`gaming/`** | Gaming platforms, compatibility runtimes, and graphics/system performance optimizations (see [`modules/gaming/README.md`](./gaming/README.md)). |
 | **`ai/`** | Hardware-accelerated compute runtimes, local AI engines, and inference services. |
+| **`sunshine/`** | Low-latency Sunshine desktop and game streaming host for Moonlight clients (see [`modules/sunshine/README.md`](./sunshine/README.md)). |
 | **`secrets/`** | System secret management, decryption, and credential provisioning. |
 | **`input-method/`** | Input method engines (IME), internationalization, and character input mappings. |
 | **`shell-scripts/`** | Custom CLI utilities packaged via `writeShellApplication` (see [`modules/shell-scripts/README.md`](./shell-scripts/README.md)). |

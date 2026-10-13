@@ -72,6 +72,7 @@ in
         ./modules/input-method
         ./modules/secrets
         ./modules/shell-scripts
+        ./modules/sunshine
         ./modules/vpn
         ./modules/wireless
 
