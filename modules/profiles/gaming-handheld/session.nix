@@ -42,11 +42,21 @@
     pkgs.catppuccin-sddm-corners
   ];
 
-  # Allow user in users group to configure Wi-Fi directly in Steam UI
+  # Allow user in users group to configure Wi-Fi in Steam UI and restart display-manager for session switching
   security.polkit.extraConfig = ''
     polkit.addRule(function(action, subject) {
       if (
         action.id.indexOf("org.freedesktop.NetworkManager") == 0 &&
+        subject.isInGroup("users") &&
+        subject.local &&
+        subject.active
+      ) {
+        return polkit.Result.YES;
+      }
+
+      if (
+        action.id == "org.freedesktop.systemd1.manage-units" &&
+        action.lookup("unit") == "display-manager.service" &&
         subject.isInGroup("users") &&
         subject.local &&
         subject.active

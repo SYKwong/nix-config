@@ -9,6 +9,7 @@ pkgs.writeShellApplication {
 
   runtimeInputs = [
     pkgs.coreutils
+    pkgs.nix
     pkgs.nixos-rebuild
     pkgs.openssh
   ];

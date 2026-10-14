@@ -23,4 +23,7 @@
     "left"
     "--force-composition-rotation"
   ];
+
+  # Handheld console is a client device; disable Sunshine desktop streaming server
+  custom.sunshine.enable = false;
 }

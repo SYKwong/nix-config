@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   username,
   ...
@@ -17,11 +18,11 @@ let
         plasma*|desktop)
           mkdir -p /etc/sddm.conf.d
           printf "[Autologin]\nSession=plasma.desktop\n" > /etc/sddm.conf.d/zz-steamos-autologin.conf
-          loginctl terminate-user "$USER" || systemctl restart display-manager
+          systemctl restart display-manager.service
           ;;
         gamescope*|steam*|game)
           rm -f /etc/sddm.conf.d/zz-steamos-autologin.conf
-          loginctl terminate-user "$USER" || systemctl restart display-manager
+          systemctl restart display-manager.service
           ;;
         *)
           echo "Unknown session target: $target" >&2
@@ -46,6 +47,9 @@ in
   # KDE Plasma 6 Desktop Environment for handheld desktop mode (SteamOS style)
   services.desktopManager.plasma6.enable = true;
 
+  # KDE Plasma natively manages its own Qt styling; disable Stylix qtct platform target
+  stylix.targets.qt.enable = lib.mkForce false;
+
   environment.systemPackages = [
     steamosSessionSelect
     returnToGamingMode
@@ -57,6 +61,7 @@ in
       "d /etc/sddm.conf.d 0775 root users -"
       "d /home/${username}/Desktop 0755 ${username} users -"
       "L+ /home/${username}/Desktop/Return.desktop - - - - ${returnToGamingMode}/share/applications/Return.desktop"
+      "L+ /usr/bin/steamos-session-select - - - - ${steamosSessionSelect}/bin/steamos-session-select"
     ];
 
     # Session initialization: auto-login to KDE Plasma on first boot for setup, default to Steam Gaming Mode on subsequent boots
