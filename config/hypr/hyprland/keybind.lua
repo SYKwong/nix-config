@@ -9,8 +9,8 @@ local volume_toggle = noc .. "volume-mute"
 local volume_up = noc .. "volume-up"
 local volume_down = noc .. "volume-down"
 
-local brightness_up = noc .. "brightness-up"
-local brightness_down = noc .. "brightness-down"
+local brightness_up = "display-brightness up"
+local brightness_down = "display-brightness down"
 
 local media_toggle = noc .. "media toggle"
 local media_next = noc .. "media next"
@@ -169,6 +169,17 @@ hl.bind(
 )
 hl.bind(
 	"XF86MonBrightnessDown",
+	hl.dsp.exec_cmd(brightness_down),
+	{ repeating = true, description = "[Display] Lower brightness" }
+)
+
+hl.bind(
+	mainMod .. " + SHIFT + up",
+	hl.dsp.exec_cmd(brightness_up),
+	{ repeating = true, description = "[Display] Raise brightness" }
+)
+hl.bind(
+	mainMod .. " + SHIFT + down",
 	hl.dsp.exec_cmd(brightness_down),
 	{ repeating = true, description = "[Display] Lower brightness" }
 )

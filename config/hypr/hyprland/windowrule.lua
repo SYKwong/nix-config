@@ -63,6 +63,7 @@ apply_centered_float("media", { class = "^(qimgv|mpv)$" })
 apply_centered_float("noctalia", { class = "dev.noctalia.Noctalia" })
 apply_centered_float("zen-popups", { class = "zen-beta", initial_title = "^(Library|)" })
 apply_centered_float("vpn", { class = "Nordvpn-gui" })
+apply_centered_float("hyprland-file-chooser", { class = "xdg-desktop-portal-gtk" })
 
 -- =============================================================================
 -- Workspace Routing

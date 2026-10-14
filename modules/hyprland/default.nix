@@ -24,6 +24,7 @@ in
   };
 
   environment.systemPackages = [
+    pkgs.hyprsunset
     (pkgs.callPackage ./scrolloverview.nix {
       src = inputs.hyprland-scroll-overview;
     })
@@ -40,11 +41,11 @@ in
       enable = lib.mkDefault true;
       x11Support = false;
       settings = {
-        bigclock = true;
+        bigclock = "en";
         bigclock_12hr = true;
 
-        hide_key_hints = true;
-        hide_version_string = true;
+        corner_bottom_left = "null";
+        corner_top_left = "null";
 
         waylandsessions = "${waylandSessions}";
       };
