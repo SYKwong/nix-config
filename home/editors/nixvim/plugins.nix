@@ -49,7 +49,10 @@
             hide_dotfiles = false;
             hide_gitignored = false;
             never_show = [
+              ".astro"
               ".git"
+              "dist"
+              "node_modules"
             ];
             visible = true;
           };
@@ -74,10 +77,16 @@
       settings = {
         defaults = {
           file_ignore_patterns = [
+            "^%.astro/"
+            "[/\\]%.astro/"
             "^%.git/"
             "[/\\]%.git/"
             "^%.git$"
             "[/\\]%.git$"
+            "^dist/"
+            "[/\\]dist/"
+            "^node_modules/"
+            "[/\\]node_modules/"
           ];
         };
         pickers = {
@@ -87,7 +96,10 @@
           live_grep = {
             additional_args = [
               "--hidden"
+              "--glob=!**/.astro/*"
               "--glob=!**/.git/*"
+              "--glob=!**/dist/*"
+              "--glob=!**/node_modules/*"
             ];
           };
         };
