@@ -1,0 +1,212 @@
+/* Catppuccin Mocha (Dark) & Latte (Light) Theme for Starlight */
+
+:root {
+  /* Catppuccin Mocha Accent (Mauve) */
+  --sl-color-accent-low: #392454;
+  --sl-color-accent: #cba6f7;
+  --sl-color-accent-high: #e2caff;
+
+  /* Catppuccin Mocha Base & Grayscale */
+  --sl-color-white: #cdd6f4;       /* Text */
+  --sl-color-gray-1: #bac2de;      /* Subtext 1 */
+  --sl-color-gray-2: #a6adc8;      /* Subtext 0 */
+  --sl-color-gray-3: #9399b2;      /* Overlay 2 */
+  --sl-color-gray-4: #585b70;      /* Surface 2 */
+  --sl-color-gray-5: #313244;      /* Surface 0 */
+  --sl-color-gray-6: #181825;      /* Mantle */
+  --sl-color-black: #1e1e2e;       /* Base */
+
+  /* Catppuccin Mocha Accent Hues */
+  --sl-hue-orange: 23;
+  --sl-color-orange-low: #4a2720;
+  --sl-color-orange: #fab387;
+  --sl-color-orange-high: #ffd1b8;
+
+  --sl-hue-green: 115;
+  --sl-color-green-low: #25402a;
+  --sl-color-green: #a6e3a1;
+  --sl-color-green-high: #c6f5c2;
+
+  --sl-hue-blue: 217;
+  --sl-color-blue-low: #1e3156;
+  --sl-color-blue: #89b4fa;
+  --sl-color-blue-high: #b8d4ff;
+
+  --sl-hue-purple: 267;
+  --sl-color-purple-low: #392454;
+  --sl-color-purple: #cba6f7;
+  --sl-color-purple-high: #e2caff;
+
+  --sl-hue-red: 343;
+  --sl-color-red-low: #4d1c2b;
+  --sl-color-red: #f38ba8;
+  --sl-color-red-high: #ffb8cc;
+
+  /* Explicit UI colors */
+  --sl-color-bg: #1e1e2e;
+  --sl-color-bg-nav: #181825;
+  --sl-color-bg-sidebar: #181825;
+  --sl-color-hairline: #313244;
+  --sl-color-hairline-light: #45475a;
+  --sl-color-text: #cdd6f4;
+  --sl-color-text-accent: #cba6f7;
+  --sl-color-text-invert: #1e1e2e;
+
+  color-scheme: dark;
+}
+
+:root[data-theme='light'] {
+  /* Catppuccin Latte Accent (Mauve) */
+  --sl-color-accent-low: #e8d5fc;
+  --sl-color-accent: #8839ef;
+  --sl-color-accent-high: #7227d8;
+
+  /* Catppuccin Latte Base & Grayscale */
+  --sl-color-white: #4c4f69;       /* Text */
+  --sl-color-gray-1: #5c5f77;      /* Subtext 1 */
+  --sl-color-gray-2: #6c6f85;      /* Subtext 0 */
+  --sl-color-gray-3: #7c7f93;      /* Overlay 2 */
+  --sl-color-gray-4: #acb0be;      /* Surface 2 */
+  --sl-color-gray-5: #ccd0da;      /* Surface 0 */
+  --sl-color-gray-6: #e6e9ef;      /* Mantle */
+  --sl-color-black: #eff1f5;       /* Base */
+
+  /* Catppuccin Latte Accent Hues */
+  --sl-hue-orange: 22;
+  --sl-color-orange-low: #fde8dd;
+  --sl-color-orange: #fe640b;
+  --sl-color-orange-high: #d94f02;
+
+  --sl-hue-green: 109;
+  --sl-color-green-low: #def2db;
+  --sl-color-green: #40a02b;
+  --sl-color-green-high: #328020;
+
+  --sl-hue-blue: 220;
+  --sl-color-blue-low: #dbe6fb;
+  --sl-color-blue: #1e66f5;
+  --sl-color-blue-high: #134ecc;
+
+  --sl-hue-purple: 266;
+  --sl-color-purple-low: #e8d5fc;
+  --sl-color-purple: #8839ef;
+  --sl-color-purple-high: #7227d8;
+
+  --sl-hue-red: 347;
+  --sl-color-red-low: #fbdce2;
+  --sl-color-red: #d20f39;
+  --sl-color-red-high: #a7092c;
+
+  /* Explicit UI colors */
+  --sl-color-bg: #eff1f5;
+  --sl-color-bg-nav: #e6e9ef;
+  --sl-color-bg-sidebar: #e6e9ef;
+  --sl-color-hairline: #ccd0da;
+  --sl-color-hairline-light: #bcc0cc;
+  --sl-color-text: #4c4f69;
+  --sl-color-text-accent: #8839ef;
+  --sl-color-text-invert: #eff1f5;
+
+  color-scheme: light;
+}
+
+/* Enhancements for Catppuccin UI elements */
+header {
+  background-color: var(--sl-color-bg-nav) !important;
+  border-bottom: 1px solid var(--sl-color-hairline) !important;
+}
+
+.right-sidebar,
+aside.sl-sidebar {
+  background-color: var(--sl-color-bg-sidebar) !important;
+  border-color: var(--sl-color-hairline) !important;
+}
+
+.right-sidebar-panel a:not(:hover):not([aria-current="true"]) {
+  color: var(--sl-color-gray-2);
+}
+
+site-search kbd {
+  background-color: var(--sl-color-gray-5);
+  border-color: var(--sl-color-hairline);
+  color: var(--sl-color-gray-1);
+}
+
+.sl-link-card {
+  background-color: var(--sl-color-gray-6);
+  border-color: var(--sl-color-hairline);
+}
+
+.sl-link-card:hover {
+  background-color: var(--sl-color-gray-5);
+  border-color: var(--sl-color-accent);
+}
+
+/* Primary hero action button */
+.sl-link-button.primary {
+  background-color: var(--sl-color-accent) !important;
+  color: var(--sl-color-black) !important;
+  font-weight: 600 !important;
+  border: 1px solid var(--sl-color-accent) !important;
+}
+
+.sl-link-button.primary:hover {
+  background-color: var(--sl-color-accent-high) !important;
+  border-color: var(--sl-color-accent-high) !important;
+}
+
+.sl-link-button.secondary {
+  border-color: var(--sl-color-hairline-light) !important;
+  color: var(--sl-color-text) !important;
+}
+
+.sl-link-button.secondary:hover {
+  background-color: var(--sl-color-gray-5) !important;
+  border-color: var(--sl-color-accent) !important;
+}
+
+.sl-link-button.minimal {
+  color: var(--sl-color-gray-1) !important;
+}
+
+.sl-link-button.minimal:hover {
+  color: var(--sl-color-accent) !important;
+}
+
+/* Callout / Aside styling */
+.starlight-aside {
+  border-radius: 0.5rem;
+}
+
+.starlight-aside--note {
+  --sl-color-asides-text-accent: var(--sl-color-blue);
+  --sl-color-asides-border: var(--sl-color-blue);
+  background-color: var(--sl-color-blue-low);
+}
+
+.starlight-aside--tip {
+  --sl-color-asides-text-accent: var(--sl-color-green);
+  --sl-color-asides-border: var(--sl-color-green);
+  background-color: var(--sl-color-green-low);
+}
+
+.starlight-aside--caution {
+  --sl-color-asides-text-accent: var(--sl-color-orange);
+  --sl-color-asides-border: var(--sl-color-orange);
+  background-color: var(--sl-color-orange-low);
+}
+
+.starlight-aside--danger {
+  --sl-color-asides-text-accent: var(--sl-color-red);
+  --sl-color-asides-border: var(--sl-color-red);
+  background-color: var(--sl-color-red-low);
+}
+
+/* Code block typography: render all code and command tokens upright without italics */
+.expressive-code code span,
+.expressive-code .ec-line span,
+.expressive-code :where(span[style*='--0fs']),
+.expressive-code :where(span[style*='--1fs']) {
+  font-style: normal !important;
+}
+

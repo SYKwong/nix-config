@@ -1,10 +1,12 @@
 # nix-config  
 
+📚 **Documentation & Wiki:** [**nix.kyle-kwong.com**](https://nix.kyle-kwong.com)
+
 > [!NOTE]
 > The documentation across this repository is mostly LLM-generated.
 
 > [!TIP]
-> Comprehensive guides, architectural deep-dives, and topic-specific documentation are available in the [Project Wiki](https://gitlab.com/kylekwong/nix-config/-/wikis/home) (note that the wiki is an asynchronous reference snapshot and may lag behind the active codebase).
+> Comprehensive guides, architectural deep-dives, and topic-specific documentation are available on the documentation site at [**nix.kyle-kwong.com**](https://nix.kyle-kwong.com).
 
 ## License
 

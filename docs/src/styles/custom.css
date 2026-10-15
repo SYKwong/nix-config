@@ -1,0 +1,84 @@
+/* Fix left and right sidebars; fluid center content */
+
+@media (min-width: 72rem) {
+  /* 1. Fix right sidebar (Table of Contents) width to match left sidebar */
+  .right-sidebar-container {
+    order: 2 !important;
+    position: relative !important;
+    width: var(--sl-sidebar-width) !important;
+    min-width: var(--sl-sidebar-width) !important;
+    max-width: var(--sl-sidebar-width) !important;
+    flex: 0 0 var(--sl-sidebar-width) !important;
+  }
+
+  .right-sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    left: auto !important;
+    width: var(--sl-sidebar-width) !important;
+    max-width: var(--sl-sidebar-width) !important;
+    border-inline-start: 1px solid var(--sl-color-hairline) !important;
+  }
+
+  /* 2. Make main pane fluidly occupy 100% of the space between sidebars */
+  .main-pane {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  [data-has-sidebar][data-has-toc] .main-pane {
+    order: 1 !important;
+    width: calc(100% - var(--sl-sidebar-width)) !important;
+    max-width: calc(100% - var(--sl-sidebar-width)) !important;
+    flex: 1 1 auto !important;
+  }
+
+  /* 3. Remove arbitrary 45rem max-width constraint on content */
+  .sl-container {
+    max-width: 100% !important;
+    margin-inline: 0 !important;
+  }
+}
+
+/* Homepage (Splash): Add left and right padding equal to the sidebar width
+   so the homepage content maintains the exact same width and alignment as documentation pages */
+@media (min-width: 72rem) {
+  :root:not([data-has-sidebar]) .content-panel {
+    padding-inline: calc(var(--sl-sidebar-width) + var(--sl-content-pad-x, 1.5rem)) !important;
+  }
+}
+
+/* Landing page hero: when no graphic/image is present, center or span the full column */
+.hero:not(:has(img)):not(:has(.hero-html)) {
+  grid-template-columns: 1fr !important;
+}
+
+.hero:not(:has(img)):not(:has(.hero-html)) .stack {
+  text-align: center !important;
+}
+
+.hero:not(:has(img)):not(:has(.hero-html)) .copy {
+  align-items: center !important;
+}
+
+.hero:not(:has(img)):not(:has(.hero-html)) .actions {
+  justify-content: center !important;
+}
+
+/* Table formatting: full width and prevent hostname/identifier column from wrapping */
+.sl-markdown-content table {
+  width: 100% !important;
+  display: table !important;
+  table-layout: auto !important;
+}
+
+.sl-markdown-content :is(th:first-child, td:first-child) {
+  white-space: nowrap !important;
+  width: 1% !important;
+  padding-inline-end: 2rem !important;
+}
+
+.sl-markdown-content :is(th:first-child, td:first-child) * {
+  white-space: nowrap !important;
+}
