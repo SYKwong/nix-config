@@ -23,6 +23,8 @@
         "command(git stash list)"
         "command(git stash show)"
         "command(git stash push)"
+        "command(git stash pop)"
+        "command(git stash apply)"
         "command(git merge-base)"
         "command(git tag)"
         "command(git describe)"
