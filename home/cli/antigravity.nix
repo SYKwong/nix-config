@@ -27,10 +27,9 @@
         "command(git tag)"
         "command(git describe)"
         "command(git shortlog)"
-        "command(npm run build)"
-        "command(npm run preview)"
-        "command(npm run dev)"
-        "command(npm test)"
+        "command(git grep)"
+        "command(npm ci --ignore-scripts)"
+        "command(npx --no-install astro build)"
 
         "command(nix flake check)"
         "command(nix flake show)"
@@ -120,9 +119,6 @@
         "command(git restore)"
         "command(git reset)"
         "command(nixos-rebuild)"
-        "command(node)"
-        "command(npm)"
-        "command(npx)"
       ];
     };
 
