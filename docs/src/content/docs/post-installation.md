@@ -48,10 +48,10 @@ This interactive flow guides you through:
 1. **GitLab CLI (`glab`)**: Authenticates via web session and uploads your public SSH key to your GitLab account (enabling git SSH push/pull access immediately).
 2. **GitHub CLI (`gh`)**: Authenticates via web session and uploads your public SSH key to your GitHub account.
 3. **NordVPN**: Triggers interactive login to enable VPN connectivity.
-4. **Wallpapers**: Automatically clones the private wallpaper repository (`private-wallpaper`) via SSH, or falls back gracefully to the public wallpaper collection.
-
-
----
+4. **Wallpapers**: Automatically clones the private wallpaper repository (`private-wallpaper`) via SSH, or falls back gracefully to the public wallpaper collection:
+   - **Public Wallpapers**: Available at [GitLab Wallpaper](https://gitlab.com/kylekwong/Wallpaper) (`git clone https://gitlab.com/kylekwong/Wallpaper.git ~/Wallpaper`).
+   - **Private Wallpapers**: Alternatively clone manually via `git clone git@gitlab.com:kylekwong/private-wallpaper.git ~/Wallpaper`.
+   - **Wallpaper Picker**: Place custom images into `~/Wallpaper/` and launch the picker with `SUPER + Space`.
 
 ## Fleet Rekeying & Secret Propagation
 

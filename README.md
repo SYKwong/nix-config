@@ -156,8 +156,8 @@ Instead of unstable disk assignments like `/dev/sdX` or `/dev/nvmeX`, persistent
 Currently, these are the partitions I'm using:
 | Host Name | Description | LUKS + Secure Boot | Hibernation | File System |
 |:---:|:---:|:---:|:---:|:---:|
-| `framework16` | Framework Laptop 16 (AMD 7040) | YES | YES | BTRFS |
-| `mini-pc-k8` | GMKtec NucBox K8 Plus HTPC | NO | NO | BTRFS |
+| `framework16` | Framework Laptop 16 (AMD Ryzen 7840HS, 96GB RAM) | YES | YES | BTRFS |
+| `mini-pc-k8` | GMKtec NucBox K8 Plus (AMD Ryzen 8845HS, 64GB RAM) | NO | NO | BTRFS |
 
 The partition of framework16 is designed for hibernation, so it has a large swap file. You should also change the swap size to be 2 to 4GB + your RAM capacity.
 
@@ -209,9 +209,8 @@ Firmware management on supported machines (such as the Framework Laptop 16) is h
 Official BIOS & firmware releases are hosted on [GMKtec's Google Drive](https://drive.google.com/drive/folders/1y9z5q7_VEDcMsA3cGTf5SpTqgAMwJ3Xp).
 
 > [!NOTE]
-> The UEFI Shell only supports **FAT32** partitions. Ventoy's storage partition is formatted as exFAT by default, which the UEFI Shell cannot read. Flash files must reside on a FAT32 filesystem (such as the internal `/boot` partition or a dedicated FAT32 USB drive).
+> The UEFI Shell only supports **FAT32** partitions. Ventoy's storage partition is formatted as exFAT by default, which the UEFI Shell cannot read. Flash files must reside on a FAT32 filesystem (such as the internal `/boot` partition).
 
-##### Method 1: Using the Internal `/boot` Partition (Recommended)
 1. Copy the BIOS update directory directly to the system's FAT32 `/boot` partition:
    ```bash
    sudo cp -r /path/to/AR6000-MI2_PHX_260514GMK /boot/bios-update
@@ -230,22 +229,6 @@ Official BIOS & firmware releases are hosted on [GMKtec's Google Drive](https://
 4. Once the machine automatically reboots and you log back into NixOS, remove the temporary directory:
    ```bash
    sudo rm -rf /boot/bios-update
-   ```
-
-##### Method 2: Using a Dedicated FAT32 USB Drive
-1. Format a USB drive as standard **FAT32**.
-2. Copy the flashing files (`AfuEfix64.efi`, `AR6000-MI2.rom`, `EfiFlash.nsh`) alongside `UEFI_Shell.efi` (copied from `efi/boot/BootX64.efi`) to the root of the USB drive:
-   ```text
-   USB (FAT32)
-   ├── EFI/BOOT/BOOTX64.EFI # renamed from UEFI_Shell.efi to boot directly
-   ├── AfuEfix64.efi
-   ├── AR6000-MI2.rom
-   └── EfiFlash.nsh
-   ```
-3. Boot into the USB drive, switch to the drive in the shell, and execute `EfiFlash.nsh`:
-   ```text
-   fs0:
-   EfiFlash.nsh
    ```
 
 ### Code Quality & Evaluation

@@ -92,3 +92,13 @@ Take the matched filename **excluding `.desktop`**:
 - `/run/current-system/sw/share/applications/org.kde.ark.desktop` → `"org.kde.ark"`
 
 Add that exact string to `appsToHide` in `home/misc/hide-desktop-entry.nix`, or to `annoyingApps` if it persists.
+
+---
+
+## Application Icons
+
+Custom application icons are centralized under the top-level `icons/` directory:
+- `icons/Line.png`: Launcher icon for the LINE Chrome web app desktop shortcut (`home/misc/add-desktop-entry.nix`).
+- `icons/protontricks.svg`: Scalable SVG icon for Protontricks (`modules/gaming/default.nix`), automatically resized into standard hicolor icon themes (16×16 to 256×256) during package build.
+
+*Note: `icons/protontricks.svg` uses the Wine icon from the KDE Breeze Icons theme, licensed under [LGPL-3.0-or-later](https://invent.kde.org/frameworks/breeze-icons/-/blob/master/COPYING-ICONS) by the KDE Community.*

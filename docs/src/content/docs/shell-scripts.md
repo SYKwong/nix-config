@@ -12,7 +12,6 @@ This directory (`modules/shell-scripts/`) contains custom CLI tools and system m
 | Script | Entrypoint File | Builder | Description |
 | :--- | :--- | :--- | :--- |
 | **`rebuild`** (alias: **`nrs`**) | `modules/shell-scripts/rebuild.nix` | `writeShellApplication` | NixOS configuration rebuild engine that formats code, stages a boot entry via `nh os boot`, activates live via `switch-to-configuration`, and checks for pending kernel reboots. Run via alias `nrs`. |
-| **`deploy`** | `modules/shell-scripts/deploy.nix` | `writeShellApplication` | Remote peer NixOS deployment tool that builds configurations locally and pushes live or staged updates across local LAN via SSH and mDNS. |
 | **`hypr-virtual-monitor`** | `modules/shell-scripts/hypr-virtual-monitor.nix` | `writeShellApplication` | Dynamic headless virtual monitor controller and idle socket watchdog for Hyprland and Sunshine streaming (`start`, `stop`, `toggle`, `watchdog`). |
 | **`display-brightness`** | `modules/shell-scripts/display-brightness.nix` | `writeShellApplication` | Display brightness manager targeting focused internal display backlight with automatic fallback to `hyprsunset` software dimming for external monitors. |
 | **`rofi-keybinds`** | `modules/shell-scripts/rofi-keybind.nix` | `writeShellApplication` | Dynamic cheat sheet parsed from `hyprctl binds` and displayed in an interactive Rofi dmenu (`SUPER + SHIFT + /` or `SUPER + F1`). |

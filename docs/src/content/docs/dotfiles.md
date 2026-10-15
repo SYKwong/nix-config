@@ -30,7 +30,6 @@ By utilizing Home Manager's `config.lib.file.mkOutOfStoreSymlink`, these files p
 | **`starship/`** | `~/.config/starship.toml` | Starship cross-shell prompt theme and format settings. |
 | **`kde/dolphin/`** | `~/.config/dolphinrc`, `kservicemenurc` | KDE Dolphin file manager preferences and context menus (mutable dolphinstaterc is seeded via post-install). |
 | **`feishin/`** | `~/.config/feishin/config.json` | Feishin desktop music player preferences and lyrics sources. |
-| **`zen/`** | `~/.config/zen/default/chrome/zen-themes.css` | Zen Browser custom CSS theme and user styles. |
 | **`qimgv/`** | `~/.config/qimgv/qimgv.conf` | Fast image viewer preferences and keyboard bindings. |
 | **`glow/`** | `~/.config/glow` | CLI Markdown viewer theme and pager settings. |
 
