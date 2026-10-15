@@ -9,6 +9,7 @@
       jq
       kitty
       libnotify
+      nodejs
       p7zip
       python3
       qimgv
