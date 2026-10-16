@@ -16,10 +16,25 @@ export default defineConfig({
       customCss: ['./src/styles/catppuccin.css', './src/styles/custom.css'],
       expressiveCode: {
         themes: ['catppuccin-mocha', 'catppuccin-latte'],
+        styleOverrides: {
+          borderRadius: '0.5rem',
+          borderColor: 'var(--sl-color-hairline)',
+          codeBackground: 'var(--sl-color-gray-6)',
+          frames: {
+            editorBackground: 'var(--sl-color-gray-6)',
+            terminalBackground: 'var(--sl-color-gray-6)',
+            editorActiveTabBackground: 'var(--sl-color-gray-6)',
+            frameBoxShadowCssValue: 'none',
+          },
+        },
       },
-      social: {
-        gitlab: 'https://gitlab.com/kylekwong/nix-config',
-      },
+      social: [
+        {
+          icon: 'gitlab',
+          label: 'GitLab',
+          href: 'https://gitlab.com/kylekwong/nix-config',
+        },
+      ],
       sidebar: [
         {
           label: 'Getting Started',
