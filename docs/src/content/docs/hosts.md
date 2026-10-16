@@ -66,7 +66,6 @@ Every host is wired into the system build via the `hosts` attribute set in `outp
 ```nix
 <hostname> = {
   username = "<user_name>";
-  system = "x86_64-linux";
 
   extraModules = [
     # Host-specific NixOS system modules (e.g. nixos-hardware, laptop, desktop)

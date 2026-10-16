@@ -6,7 +6,6 @@ let
   hosts = {
     framework16 = {
       username = "fw16-kyle";
-      system = "x86_64-linux";
 
       extraModules = [
         inputs.nixos-hardware.nixosModules.framework-16-7040-amd
@@ -20,7 +19,6 @@ let
 
     mini-pc-k8 = {
       username = "k8-kyle";
-      system = "x86_64-linux";
 
       extraModules = [
         inputs.nixos-hardware.nixosModules.common-cpu-amd
@@ -39,17 +37,13 @@ in
   # Expose hosts for Bash
   lib.hostInfo = hosts;
 
-  formatter =
-    nixpkgs.lib.genAttrs (nixpkgs.lib.unique (map (host: host.system) (nixpkgs.lib.attrValues hosts)))
-      (
-        system:
-        (inputs.treefmt-nix.lib.evalModule nixpkgs.legacyPackages.${system} ./treefmt).config.build.wrapper
-      );
+  formatter.x86_64-linux =
+    (inputs.treefmt-nix.lib.evalModule nixpkgs.legacyPackages.x86_64-linux ./treefmt)
+    .config.build.wrapper;
 
   nixosConfigurations = nixpkgs.lib.mapAttrs (
     name: info:
     nixpkgs.lib.nixosSystem {
-      inherit (info) system;
       specialArgs = {
         inherit inputs;
         inherit (info) username;

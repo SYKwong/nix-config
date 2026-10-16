@@ -81,7 +81,6 @@ Rather than defining repetitive `nixosSystem` boilerplate inside `flake.nix`, al
 hosts = {
   framework16 = {
     username = "fw16-kyle";
-    system = "x86_64-linux";
 
     extraModules = [
       inputs.nixos-hardware.nixosModules.framework-16-7040-amd
@@ -95,7 +94,6 @@ hosts = {
 
   mini-pc-k8 = {
     username = "k8-kyle";
-    system = "x86_64-linux";
 
     extraModules = [
       inputs.nixos-hardware.nixosModules.common-cpu-amd
