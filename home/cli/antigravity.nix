@@ -15,6 +15,10 @@
         "command(git add)"
         "command(git rm)"
         "command(git fetch)"
+        "command(git -c core.hooksPath=/dev/null -c core.fsmonitor=false pull --ff-only origin main)"
+        "command(git -c core.hooksPath=/dev/null -c core.fsmonitor=false pull --ff-only origin master)"
+        "command(git -c core.hooksPath=/dev/null -c core.fsmonitor=false pull --ff-only origin dev)"
+        "command(git -c core.hooksPath=/dev/null -c core.fsmonitor=false pull --ff-only origin develop)"
         "command(git checkout)"
         "command(git switch)"
         "command(git ls-tree)"
@@ -149,6 +153,7 @@
       - Control: The user handles git commits, MR/PR creation, and merging manually. The agent should only prepare code changes, run formatters/linters, and suggest single-line commit messages unless explicitly instructed.
       - Commit messages: Strictly single-line Conventional Commits (e.g. `feat(...): ...`, `fix(...): ...`). Always base the commit message on the full `git diff` of all prepared changes, never just the latest incremental edit. Keep extended details for the MR/PR description.
       - Commit Workflow: Prefer the repo's `git lazy "<commit message>"` alias when suggesting staging, commit, and push steps.
+      - Pull Restrictions: Never attempt to pull on or into feature branches. Pulling from remote is strictly restricted to fast-forwarding clean local trunk branches (`main`, `master`, `dev`, `develop`) from `origin` with disabled hooks (`git -c core.hooksPath=/dev/null -c core.fsmonitor=false pull --ff-only origin <branch>`).
 
       ## Code Conventions
       - Code Locality, Constants & Helpers: Avoid hoisting constants or helper functions to distant file headers. Assign magic numbers to named constant variables declared as late and locally as possible. Place private helper functions physically as close as possible to the consumers that use them (e.g. immediately preceding the calling function) to preserve local reading context.
@@ -159,6 +164,7 @@
       ## Command & File Operations
       - No Compound Commands: Do not chain commands with `&&`, `||`, `;`, pipes (`|`), or subshells in `run_command`. Issue commands as individual, discrete tool calls, as compound shell syntax fails permission pattern matching and triggers interactive CLI prompts.
       - File Creation and Modification: Always use `write_to_file` or `replace_file_content` to create or edit files in the workspace. Never use `cat << 'EOF' > ...` or shell redirection in `run_command`, as shell redirection triggers CLI permission prompts.
+      - Nix Store Operations: Never attempt direct filesystem reads, searches, or traversals on `/nix/store` (these are hard-locked and will block execution). Always inspect configuration options, module definitions, and package metadata declaratively via `nix eval` (e.g., `nix eval .#nixosConfigurations.<host>.options.<option>` or `nix eval .#nixosConfigurations.<host>.config.<path>`). Only if declarative evaluation fails or raw source inspection is strictly unavoidable should you trigger a store read request, providing the exact path and rationale.
 
       ## Persisting Useful Workflow Improvements
       - Autonomous Edits Prohibited: If discovering a command, permission, workflow, or instruction during a task that would likely benefit future tasks, do not modify `antigravity.nix`, `AGENTS.md`, or workflow guidelines automatically.
