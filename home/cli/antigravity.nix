@@ -30,7 +30,9 @@
         "command(git describe)"
         "command(git shortlog)"
         "command(git grep)"
+        "command(npm audit)"
         "command(npm ci --ignore-scripts)"
+        "command(npm install --package-lock-only --ignore-scripts)"
         "command(npx --no-install astro build)"
 
         "command(nix flake check)"
