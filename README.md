@@ -5,9 +5,6 @@
 > [!NOTE]
 > The documentation across this repository is mostly LLM-generated.
 
-> [!TIP]
-> Comprehensive guides, architectural deep-dives, and topic-specific documentation are available on the documentation site at [**nix.kyle-kwong.com**](https://nix.kyle-kwong.com).
-
 ## License
 
 MIT-0  
