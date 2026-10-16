@@ -33,7 +33,7 @@ hero:
 ## Core Pillars
 
 1. **Centralized Flake Abstraction:**
-   All physical systems are declared as attribute sets inside a unified `outputs.nix` entry point, standardizing system architecture, primary users, and per-host system modules.
+   All physical systems are declared as attribute sets inside a unified `outputs.nix` entry point, standardizing primary users and per-host system modules.
 
 2. **Full Disk Encryption & TPM2 Auto-Unlock:**
    Supported machines (e.g. `framework16`) leverage LUKS disk encryption integrated with TPM2 hardware PCR 7 policies via `systemd-cryptenroll` and Lanzaboote UEFI Secure Boot.

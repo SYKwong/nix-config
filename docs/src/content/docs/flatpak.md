@@ -65,7 +65,6 @@ Add `./modules/flatpak` to the host's `extraModules`:
 ```nix
 <host_name> = {
   username = "<user_name>";
-  system = "x86_64-linux";
 
   extraModules = [
     # ...

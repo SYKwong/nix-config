@@ -72,7 +72,6 @@ Open `outputs.nix` and add an entry under the `hosts` attribute set:
 ```nix
 <host_name> = {
   username = "<user_name>";
-  system = "x86_64-linux";
 
   extraModules = [
     # Host-specific modules (e.g. hardware packages, laptop power, desktop)

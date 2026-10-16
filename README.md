@@ -35,7 +35,6 @@ The installer relies on a centralized `hosts` attribute set defined in `outputs.
 hosts = {
   foo = {
     username = "bar";
-    system = "x86_64-linux";
 
     extraModules = [
       ./modules/example
@@ -62,7 +61,6 @@ And the file layout of this example will be:
     ```nix
     <host_name> = {
       username = "<user_name>";
-      system = "x86_64-linux";
 
       extraModules = [
         # Host-specific NixOS system modules (e.g. hardware, laptop, desktop)

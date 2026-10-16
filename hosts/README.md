@@ -52,7 +52,6 @@ Every host is declared in the `hosts` set in [`outputs.nix`](../outputs.nix):
 ```nix
 <hostname> = {
   username = "<user_name>";
-  system = "x86_64-linux";
 
   extraModules = [
     # Host-specific NixOS system modules (e.g. nixos-hardware, laptop, desktop)

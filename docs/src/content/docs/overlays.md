@@ -87,4 +87,4 @@ Any NixOS or Home Manager module can then access stable packages directly throug
 ```
 
 > [!NOTE]
-> Alternatively, you can inject `pkgs-stable` into `specialArgs` in `outputs.nix` (`pkgs-stable = inputs.nixpkgs-stable.legacyPackages.${info.system};`), but the overlay approach above is preferred as it keeps module parameter signatures uniform across the fleet.
+> Alternatively, you can inject `pkgs-stable` into `specialArgs` in `outputs.nix` (`pkgs-stable = inputs.nixpkgs-stable.legacyPackages.x86_64-linux;`), but the overlay approach above is preferred as it keeps module parameter signatures uniform across the fleet.
