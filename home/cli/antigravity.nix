@@ -3,6 +3,7 @@
 {
   programs.antigravity-cli = {
     enable = true;
+    defaultModel = "gemini-3.8-flash-high";
 
     permissions = {
       allow = [
