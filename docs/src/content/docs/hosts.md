@@ -54,10 +54,7 @@ hosts/<hostname>/
 4. **`config.nix` (Optional)**:
    A consolidated module for machine-specific option toggles, hardware workarounds, and host-specific secrets (`age.secrets`). For example, in `mini-pc-k8`, this file configures the Realtek audio workaround and disables conflicting onboard Bluetooth controllers.
 
-5. **`flatpak.nix` (Optional)**:
-   A dedicated list of machine-specific Flatpak packages and sandbox overrides, automatically discovered and imported by `modules/flatpak/` if present.
-
-6. **`home/` (Optional)**:
+5. **`home/` (Optional)**:
    Host-specific user packages or environment settings. Automatically imported into the user's Home Manager environment by `modules/home-manager/`.
 
 ---

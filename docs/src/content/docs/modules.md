@@ -27,7 +27,6 @@ This directory contains modular, reusable **NixOS system-level** configurations.
 | **`home-manager/`** | `modules/home-manager/` | System-level Home Manager integration module binding user configurations and automatic per-host home extensions. |
 | **`lanzaboote/`** | `modules/lanzaboote/` | UEFI Secure Boot integration and cryptographic bootloader signing. |
 | **`power-management/`** | `modules/power-management/` | Power management daemons and system power profile switching. |
-| **`flatpak/`** | `modules/flatpak/` | Declarative Flatpak application and sandbox runtime management (see [Declarative Flatpak](/flatpak/)). |
 | **`config/`** | `modules/config/` | Shared, host-reusable system configurations intended to be imported on demand. |
 
 > [!IMPORTANT]

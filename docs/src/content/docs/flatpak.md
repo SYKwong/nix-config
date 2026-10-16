@@ -1,20 +1,66 @@
 ---
-title: Declarative Flatpak
-description: Declarative, reproducible Flatpak application management with host-level auto-discovery via nix-flatpak.
+title: Declarative Flatpak (On-Demand Setup)
+description: Archived reference and restoration guide for declarative Flatpak application management via nix-flatpak.
 ---
 
-This module provides declarative, reproducible Flatpak application management on NixOS powered by [`nix-flatpak`](https://github.com/gmodena/nix-flatpak).
+This page serves as an **archived reference and recipe** for declarative Flatpak management on NixOS powered by [`nix-flatpak`](https://github.com/gmodena/nix-flatpak).
 
-It operates on an **on-demand model with host-level auto-discovery**:
-- When not imported into a host, Flatpak is completely disabled with zero runtime or build overhead.
-- When imported, it automatically discovers and includes host-specific packages from `hosts/<hostname>/flatpak.nix` if present, mirroring the `hosts/<hostname>/home/` pattern used by Home Manager.
+Flatpak is currently **disabled and pruned** from the active fleet to reduce supply-chain surface area and lockfile churn. If a proprietary application or isolated runtime ever requires Flatpak in the future, follow this guide to restore the module on-demand.
 
 ---
 
-## 1. Enabling the Module
+## 1. Add Flake Input
+
+Declare `nix-flatpak` in `inputs` of `flake.nix`. Check [nix-flatpak releases](https://github.com/gmodena/nix-flatpak/releases) to find and pin the latest release tag:
+
+```nix
+inputs = {
+  # ...
+  # Check https://github.com/gmodena/nix-flatpak/releases for the latest release tag (e.g. v0.7.0, v0.8.0, etc.)
+  nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=vX.Y.Z";
+};
+```
+
+---
+
+## 2. Create the System Module (`modules/flatpak/default.nix`)
+
+Create `modules/flatpak/default.nix` with host-level auto-discovery:
+
+```nix
+{
+  inputs,
+  lib,
+  hostname,
+  ...
+}:
+
+let
+  hostFlatpak = ../../hosts/${hostname}/flatpak.nix;
+in
+{
+  imports = [
+    inputs.nix-flatpak.nixosModules.nix-flatpak
+  ]
+  ++ lib.optional (builtins.pathExists hostFlatpak) hostFlatpak;
+
+  services.flatpak = {
+    enable = true;
+    update = {
+      onActivation = true;
+      auto.enable = true;
+    };
+    uninstallUnmanaged = true;
+  };
+}
+```
+
+---
+
+## 3. Enable the Module in `outputs.nix`
 
 ### For a Specific Host Only (Recommended)
-In `outputs.nix`, add `./modules/flatpak` to the host's `extraModules`:
+Add `./modules/flatpak` to the host's `extraModules`:
 
 ```nix
 <host_name> = {
@@ -29,24 +75,19 @@ In `outputs.nix`, add `./modules/flatpak` to the host's `extraModules`:
 ```
 
 ### Or Globally for All Hosts
-In `outputs.nix`, add `./modules/flatpak` to the root `modules` list:
+Add `./modules/flatpak` to the root `modules` list in `outputs.nix`:
 
 ```nix
 modules = [
-  disko.nixosModules.disko
-  home-manager.nixosModules.home-manager
-  stylix.nixosModules.stylix
-  agenix.nixosModules.default
-
+  # ...
   ./modules/core
   ./modules/flatpak    # <-- Enables Flatpak across all machines
-  # ...
 ]
 ```
 
 ---
 
-## 2. Declaring Host-Specific Packages (`hosts/<hostname>/flatpak.nix`)
+## 4. Declaring Host-Specific Packages (`hosts/<hostname>/flatpak.nix`)
 
 Each host can maintain its own isolated list of Flatpak packages without touching shared modules. Create a `flatpak.nix` file inside the host directory (e.g. `hosts/<hostname>/flatpak.nix`):
 
@@ -71,7 +112,7 @@ Each host can maintain its own isolated list of Flatpak packages without touchin
 
 ---
 
-## 3. Declaring Common Packages
+## 5. Declaring Fleet-Wide Common Packages
 
 If certain Flatpak applications should be installed on **every** host that enables Flatpak, declare them in `modules/flatpak/default.nix`:
 
@@ -85,7 +126,7 @@ Host-specific packages merge with common packages automatically.
 
 ---
 
-## 4. Finding Application IDs
+## 6. Finding Application IDs
 
 Flatpak packages are identified by their reverse-DNS App ID:
 1. **Flathub Web:** Search [Flathub](https://flathub.org). The App ID appears at the bottom of the page and in the URL (e.g. `https://flathub.org/apps/com.spotify.Client` → `com.spotify.Client`).
@@ -96,7 +137,7 @@ Flatpak packages are identified by their reverse-DNS App ID:
 
 ---
 
-## 5. Configuring Custom Remotes
+## 7. Configuring Custom Remotes
 
 Flathub is pre-configured by default. To declare third-party or beta repositories:
 
@@ -115,7 +156,7 @@ services.flatpak.remotes = [
 
 ---
 
-## 6. Sandbox Permissions & Overrides
+## 8. Sandbox Permissions & Overrides
 
 Sandbox permissions and environment variables can be declared globally in `modules/flatpak/default.nix` or per-host in `hosts/<hostname>/flatpak.nix`:
 
@@ -138,7 +179,7 @@ services.flatpak.overrides = {
 
 ---
 
-## 7. Lifecycle, Updates & Pruning
+## 9. Lifecycle, Updates & Pruning
 
 1. **Activation:** Rebuild the system with `nrs` to install declared packages. Packages are also updated during system activation (`services.flatpak.update.onActivation = true;`).
 2. **Periodic Updates:** A background systemd timer automatically checks and updates Flatpak packages weekly (`services.flatpak.update.auto.enable = true;`).
