@@ -148,30 +148,19 @@
       - Control: The user handles git commits, MR/PR creation, and merging manually. The agent should only prepare code changes, run formatters/linters, and suggest single-line commit messages unless explicitly instructed.
       - Commit messages: Strictly single-line Conventional Commits (e.g. `feat(...): ...`, `fix(...): ...`). Always base the commit message on the full `git diff` of all prepared changes, never just the latest incremental edit. Keep extended details for the MR/PR description.
       - Commit Workflow: Prefer the repo's `git lazy "<commit message>"` alias when suggesting staging, commit, and push steps.
-      - Dependencies: `flake.lock` is managed strictly by CI; do not update or modify locks locally unless `flake.nix` was modified.
 
-      ## NixOS & Code Conventions
-      - Formatting: Format code with `nix fmt`. It currently supports bash/sh, lua, nix, and toml.
-      - Hardware files: Never edit auto-generated `hardware-configuration.nix` files.
-      - Portability & Modularity: Avoid hardcoded numeric UIDs/GIDs (prefer dynamic `username` and `users` group). Keep host-specific logic in `hosts/<name>/` and reusable features in `modules/<category>/`.
+      ## Code Conventions
       - Code Locality, Constants & Helpers: Avoid hoisting constants or helper functions to distant file headers. Assign magic numbers to named constant variables declared as late and locally as possible. Place private helper functions physically as close as possible to the consumers that use them (e.g. immediately preceding the calling function) to preserve local reading context.
       - Minimal Diff Churn: Do not reorder, move, or refactor unrelated functions or code blocks unless explicitly requested or necessary for functionality.
       - Guard Clauses & Early Returns: Prefer early returns / guard clauses over deep nesting or trailing else blocks to keep execution flow flat.
       - Variable Naming: Prefer clear, descriptive, and verbose variable names over terse abbreviations (e.g. `logical_monitor_width` instead of `mon_w`).
-      - Hyprland Lua Conventions: Use standard `function table.name()` syntax instead of anonymous assignments (`table.name = function()`). Keybinding action helpers in `utils.lua` should return callback closures rather than raw command strings.
-      - Desktop Shell: The environment uses Noctalia; legacy Waybar/sway-specific tools and derivations should be pruned when encountered.
 
       ## Command & File Operations
       - No Compound Commands: Do not chain commands with `&&`, `||`, `;`, pipes (`|`), or subshells in `run_command`. Issue commands as individual, discrete tool calls, as compound shell syntax fails permission pattern matching and triggers interactive CLI prompts.
       - File Creation and Modification: Always use `write_to_file` or `replace_file_content` to create or edit files in the workspace. Never use `cat << 'EOF' > ...` or shell redirection in `run_command`, as shell redirection triggers CLI permission prompts.
 
-      ## Provisioning & Installation Scripts (install.sh, post-install.sh)
-      - Hands-off by Default: Host onboarding and setup scripts must run unattended/non-interactively by default. Interactive setup steps (e.g. service logins) must be opt-in behind flags (e.g. `--auth`).
-      - Intent & Prompts: When an explicit setup flag is passed, proceed directly without redundant per-service confirmation prompts (`[Y/n]`), using non-interactive CLI flags where available (e.g., `glab auth login --web`).
-      - No Redundant PATH Checks: Avoid defensive `command -v` checks in onboarding scripts for tools declaratively managed via NixOS / Home Manager.
-
       ## Persisting Useful Workflow Improvements
-      - Autonomous Edits Prohibited: If discovering a command, permission, workflow, or instruction during a task that would likely benefit future tasks, do not modify `antigravity.nix` or workflow guidelines automatically.
+      - Autonomous Edits Prohibited: If discovering a command, permission, workflow, or instruction during a task that would likely benefit future tasks, do not modify `antigravity.nix`, `AGENTS.md`, or workflow guidelines automatically.
       - Protocol:
         1. Finish the current task first.
         2. Identify the improvement discovered.
@@ -179,7 +168,7 @@
         4. Ask the user whether they want to persist the improvement.
         5. If approved:
            - For command permissions, propose the exact `antigravity.nix` entry.
-           - For behavioral/workflow instructions, propose the exact `context.GEMINI` change.
+           - For behavioral/workflow instructions, propose the exact `context.GEMINI` (global) or `AGENTS.md` (repo-specific) change.
         6. Only make the change after explicit user approval.
       - Example: "I noticed that `nm` is useful for inspecting binaries during these tasks. Would you like me to add `command(nm)` to `antigravity.nix` so I can use it automatically in future tasks?"
       - Discretion: Do not ask about every command used during a task. Only suggest persisting something when it is reasonably likely to be useful across future tasks.
