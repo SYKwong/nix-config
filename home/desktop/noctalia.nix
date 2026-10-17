@@ -245,6 +245,10 @@ in
       notification = {
         history_retention_hours = 24;
         layer = "overlay";
+        filter.kitty = {
+          match = "kitty";
+          play_sound = false;
+        };
       };
 
       osd = {
