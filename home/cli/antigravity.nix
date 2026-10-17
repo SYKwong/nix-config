@@ -265,7 +265,6 @@ in
 {
   programs.antigravity-cli = {
     enable = true;
-    defaultModel = "gemini-3.8-flash-high";
 
     permissions = {
       allow = allowRules;
@@ -282,6 +281,7 @@ in
     };
 
     settings = {
+      model = "Gemini 3.8 Flash (High)";
       notifications = true;
       trustedWorkspaces = [
         "/home/${username}/nix-config"
