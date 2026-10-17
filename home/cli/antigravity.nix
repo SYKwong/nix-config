@@ -59,7 +59,6 @@
         "command(bash -n)"
         "command(hyprctl)"
         "command(noctalia)"
-        "command(notify-send)"
 
         # Coreutils & CLI Inspection
         "command(awk)"
@@ -139,6 +138,7 @@
     };
 
     settings = {
+      notifications = true;
       trustedWorkspaces = [
         "/home/${username}/nix-config"
         "/home/${username}/Projects"
@@ -151,7 +151,6 @@
       ## Communication Style
       - Keep responses concise, direct, and technical.
       - Provide clickable markdown links with `file://` scheme for modified files and code symbols.
-      - Desktop Notifications: When completing a task or waiting for user input, check if the active terminal window is currently focused via `hyprctl activewindow`. If the user is not focused on the terminal window, send a desktop notification using `notify-send -a 'Antigravity' 'Antigravity' '<summary>'`.
 
       ## Git & Workflow
       - Branch Protection: Never commit or push directly to primary trunk (`main`, `master`) or staging/pre-release branches (`dev`, `develop`). Always create a feature or fix branch for any code changes.
