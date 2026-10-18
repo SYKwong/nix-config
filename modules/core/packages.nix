@@ -4,6 +4,7 @@
   environment.systemPackages =
     (with pkgs; [
       brightnessctl
+      fd
       ffmpeg
       glow
       jq
@@ -15,6 +16,7 @@
       qimgv
       qmk
       qmk_hid
+      ripgrep
       smartmontools
       wget
       wl-clipboard

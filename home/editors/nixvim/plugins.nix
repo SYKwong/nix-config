@@ -67,6 +67,7 @@
 
     telescope = {
       enable = true;
+      extensions.fzf-native.enable = true;
       keymaps = {
         "<leader><space>" = "find_files";
         "<leader>fb" = "buffers";
@@ -97,7 +98,24 @@
         };
         pickers = {
           find_files = {
-            hidden = true;
+            find_command = [
+              "fd"
+              "--type"
+              "f"
+              "--type"
+              "l"
+              "--color"
+              "never"
+              "--hidden"
+              "--exclude"
+              ".astro"
+              "--exclude"
+              ".git"
+              "--exclude"
+              "dist"
+              "--exclude"
+              "node_modules"
+            ];
           };
           live_grep = {
             additional_args = [

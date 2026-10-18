@@ -29,5 +29,10 @@ in
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
+
+    dependencies = {
+      fd.enable = true;
+      ripgrep.enable = true;
+    };
   };
 }
