@@ -30,11 +30,17 @@
       ];
       callback.__raw = ''
         function()
-          local window_id = os.getenv("KITTY_WINDOW_ID")
-          if window_id then
-            local cmd = string.format("kitty @ set-background-opacity -m id:%s 0.95", window_id)
-            vim.fn.system(cmd)
+          if #vim.api.nvim_list_uis() == 0 then
+            return
           end
+          local window_id = os.getenv("KITTY_WINDOW_ID")
+          if not window_id then
+            return
+          end
+          vim.fn.jobstart(
+            { "kitty", "@", "set-background-opacity", "-m", "id:" .. window_id, "0.95" },
+            { detach = true }
+          )
         end
       '';
     }
@@ -47,11 +53,17 @@
       ];
       callback.__raw = ''
         function()
-          local window_id = os.getenv("KITTY_WINDOW_ID")
-          if window_id then
-            local cmd = string.format("kitty @ set-background-opacity -m id:%s 0.75", window_id)
-            vim.fn.system(cmd)
+          if #vim.api.nvim_list_uis() == 0 then
+            return
           end
+          local window_id = os.getenv("KITTY_WINDOW_ID")
+          if not window_id then
+            return
+          end
+          vim.fn.jobstart(
+            { "kitty", "@", "set-background-opacity", "-m", "id:" .. window_id, "0.75" },
+            { detach = true }
+          )
         end
       '';
     }
