@@ -21,7 +21,7 @@ for arg in "$@"; do
     --help | -h)
       echo "Usage: $0 [--auth] [--auth-only]"
       echo "  --auth, -a, auth           Run full post-install setup and authenticate services"
-      echo "  --auth-only, -A, auth-only Run only service authentication (GitLab, GitHub, NordVPN, Wallpaper)"
+      echo "  --auth-only, -A, auth-only Run only service authentication (Atuin, GitHub, GitLab, NordVPN, Wallpaper)"
       exit 0
       ;;
   esac
@@ -268,13 +268,34 @@ authenticate_nordvpn() {
   nordvpn set tray off || true
 }
 
+authenticate_atuin() {
+  echo ""
+  echo "--- Atuin Shell History Sync ---"
+  if atuin status 2>/dev/null | grep -qi "logged in"; then
+    echo "Atuin is already logged in."
+    return 0
+  fi
+
+  if [ -f "/run/agenix/atuin-credentials" ]; then
+    echo "Attempting auto-login using agenix credentials..."
+    if atuin-auto-login 2>/dev/null; then
+      echo "==> [OK] Atuin logged in successfully via agenix credentials."
+      return 0
+    fi
+  fi
+
+  echo "Atuin credentials are managed declaratively via agenix (secrets/atuin-credentials.age)."
+  echo "Once secrets are rekeyed for this host, Atuin logs in automatically on rebuild."
+}
+
 authenticate_services() {
   echo ""
   echo "=========================================="
   echo "         Service Authentication           "
   echo "=========================================="
-  authenticate_gitlab
+  authenticate_atuin
   authenticate_github
+  authenticate_gitlab
   authenticate_nordvpn
   clone_wallpaper_repo
 }
@@ -292,9 +313,10 @@ print_reminders() {
     echo "Optional service authentication:"
     echo "  Run '$0 --auth-only' to interactively authenticate services,"
     echo "  or authenticate individually whenever you are ready:"
+    echo "    - Atuin:     Managed via agenix in secrets/atuin-credentials.age (auto-authenticated)"
+    echo "    - GitHub:    gh auth login --hostname github.com --web --git-protocol ssh -s admin:public_key"
     echo "    - GitLab:    glab auth login --hostname gitlab.com --web --git-protocol ssh"
     echo "                 (or add key at https://gitlab.com/-/user_settings/ssh_keys)"
-    echo "    - GitHub:    gh auth login --hostname github.com --web --git-protocol ssh -s admin:public_key"
     echo "    - NordVPN:   nordvpn login"
     echo "    - Wallpaper: git clone git@gitlab.com:kylekwong/private-wallpaper.git ~/Wallpaper (or public: https://gitlab.com/kylekwong/Wallpaper.git)"
     echo ""

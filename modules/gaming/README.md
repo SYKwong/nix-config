@@ -21,20 +21,10 @@ Gaming configuration is declared in [`modules/gaming/default.nix`](./default.nix
 
 ---
 
-## Gamescope Architecture
+## Gamescope Architecture (`framework16`, `mini-pc-k8`)
 
-[Gamescope](https://github.com/ValveSoftware/gamescope) is Valve's Wayland micro-compositor. It isolates games inside their own virtual display server, intercepting their input and rendering before outputting a composited Wayland surface to the underlying display server.
+[Gamescope](https://github.com/ValveSoftware/gamescope) is Valve's Wayland micro-compositor. It isolates games inside their own virtual display server, intercepting their input and rendering before outputting a composited Wayland surface to Hyprland.
 
-In this repository, Gamescope operates in two distinct roles depending on host form factor:
-
-### 1. Handheld Appliance Session (`legion-go`)
-* **Role**: Primary display server and desktop compositor for the entire machine.
-* **Mechanism**: Activated via `programs.steam.gamescopeSession.enable = true` in `modules/profiles/gaming-handheld/session.nix`.
-* **Display Management**: SDDM autologins directly into the `steam` gamescope session on boot.
-* **Hardware Adaptation**: Panel rotation, physical resolution (`2560x1600`), and refresh rate (`144Hz`) are declared once at the system level in `hosts/legion-go/config.nix`.
-* **Behavior**: **Every game launched on the handheld runs inside Gamescope automatically.** Zero per-game launch flags are required.
-
-### 2. Desktop & Laptop Micro-Compositor (`framework16`, `mini-pc-k8`)
 * **Role**: On-demand, nested client window inside Hyprland.
 * **Mechanism**: Invoked per-game through Steam launch options.
 * **Behavior**: Games run directly under Hyprland by default (leveraging Hyprland's direct scanout for zero latency). Gamescope is opted into only when a game requires resolution sandboxing, upscaling, or display virtualization.
@@ -43,7 +33,7 @@ In this repository, Gamescope operates in two distinct roles depending on host f
 
 ## Why Gamescope Is Not Default on Desktops
 
-While Gamescope is the default session on the Legion Go handheld, it is intentionally **not** enabled as the default launcher for desktop/laptop sessions:
+Gamescope is intentionally **not** enabled as the default launcher for desktop/laptop sessions:
 
 1. **Display & Geometry Mismatches**: Desktops and laptops run varied displays (e.g. 16:10 2560x1600 on Framework 16 vs 16:9 4K or 1440p on external monitors). Hardcoding a global resolution breaks multi-monitor and docking workflows.
 2. **Third-Party Launchers**: Games with multi-window pre-launchers (EA App, Ubisoft Connect, Paradox, Larian Launcher) often hang, render blank windows, or fail to gain focus in a nested Gamescope container.

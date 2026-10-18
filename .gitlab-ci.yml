@@ -60,6 +60,45 @@ verify-flake:
       fi
     - nix flake check
 
+verify-docs:
+  stage: test
+  image: node:22-slim
+
+  rules:
+    # Only for merge requests
+    - if: '$CI_PIPELINE_SOURCE != "merge_request_event"'
+      when: never
+
+    # Skip draft/WIP MRs
+    - if: '$CI_MERGE_REQUEST_TITLE =~ /^(Draft:|WIP:|\[Draft\])/i'
+      when: manual
+      allow_failure: true
+
+    # Run only when docs config, dependencies, or styles changed
+    - changes:
+        - "docs/astro.config.mjs"
+        - "docs/package.json"
+        - "docs/package-lock.json"
+        - "docs/tsconfig.json"
+        - "docs/src/content.config.ts"
+        - "docs/src/styles/**"
+
+    - when: manual
+      allow_failure: true
+
+  cache:
+    key:
+      files:
+        - docs/package-lock.json
+    paths:
+      - .cache/npm
+    fallback_keys:
+      - npm-cache-default
+  script:
+    - cd docs
+    - npm ci --cache "$CI_PROJECT_DIR/.cache/npm" --ignore-scripts
+    - npx --no-install astro build
+
 update-flake-mr:
   stage: maintenance
   image: nixos/nix:latest

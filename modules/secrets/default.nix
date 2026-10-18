@@ -10,5 +10,12 @@
       group = "users";
       mode = "0400";
     };
+
+    atuin-credentials = {
+      file = ../../secrets/atuin-credentials.age;
+      owner = username;
+      group = "users";
+      mode = "0400";
+    };
   };
 }

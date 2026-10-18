@@ -1,4 +1,7 @@
+{ lib, ... }:
 {
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+
   # Early boot console rotation for native portrait panel (1600x2560)
   boot.kernelParams = [
     "video=eDP-1:panel_orientation=right_side_up"

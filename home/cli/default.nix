@@ -1,6 +1,7 @@
 {
   imports = [
     ./antigravity.nix
+    ./atuin.nix
     ./bat.nix
     ./btop.nix
     ./eza.nix

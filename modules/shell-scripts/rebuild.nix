@@ -58,6 +58,12 @@ pkgs.writeShellApplication {
     if [ "''${EUID}" -ne 0 ]; then
       log_info "Running formatter..."
       (cd "$REPO" && nix fmt)
+
+      if command -v atuin-to-fish >/dev/null 2>&1; then
+        log_info "Syncing Atuin history into Fish suggestions..."
+        atuin-to-fish || log_warn "Atuin history sync skipped or failed."
+      fi
+
       exec sudo /run/current-system/sw/bin/rebuild "$@"
     fi
 
