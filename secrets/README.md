@@ -54,3 +54,27 @@ When adding a new machine, user key, or rotating keys:
    cd secrets
    agenix --rekey
    ```
+
+---
+
+## 3. Atuin Shell History Sync (`atuin-credentials.age`)
+
+Atuin uses client-side End-to-End Encryption (E2EE) with ChaCha20-Poly1305. The server (`api.atuin.sh`) never sees plaintext commands. Authenticating any device requires your account credentials and a **24-word client encryption key**.
+
+1. **Register or Retrieve Key**:
+   - **New Account**: Run `atuin register -u <username> -e <email> -p <password>`. Atuin outputs your generated 24-word key.
+   - **Existing Account**: Run `atuin key` on an enrolled machine to print your 24-word key.
+2. **Configure Secret**:
+   Open `atuin-credentials.age`:
+   ```bash
+   cd secrets
+   agenix -e atuin-credentials.age
+   ```
+   Set the credentials:
+   ```env
+   ATUIN_USERNAME="<username>"
+   ATUIN_PASSWORD="<password>"
+   ATUIN_KEY="word1 word2 word3 ... word24"
+   ```
+3. **Rebuild**:
+   Run `nrs`. Atuin will automatically authenticate via `atuin-auto-login`.

@@ -12,7 +12,7 @@ This directory contains declarative user-space configurations managed by [Home M
 | Category | Path | Description |
 | :--- | :--- | :--- |
 | **`core/`** | `home/core/` | Baseline user environment (`xdg.userDirs`, default folder structures). |
-| **`cli/`** | `home/cli/` | Terminal utilities (`bat`, `btop`, `eza`, `fastfetch`, `fzf`, `git`, `yazi`, `zoxide`, `antigravity`). |
+| **`cli/`** | `home/cli/` | Terminal utilities (`atuin`, `bat`, `btop`, `eza`, `fastfetch`, `fzf`, `git`, `yazi`, `zoxide`, `antigravity`). |
 | **`desktop/`** | `home/desktop/` | Noctalia desktop shell (status bar, OSD, lockscreen, runner, idle management). |
 | **`browsers/`** | `home/browsers/` | Web browsers (Zen Browser, Helium). |
 | **`editors/`** | `home/editors/` | Text editors, primarily NixVim (declarative Neovim) and Zed. |
@@ -46,6 +46,13 @@ Desktop media players are segmented by workload:
 - **`feishin`**: Navidrome / Subsonic music streaming client with out-of-store configuration.
 - **`mpv`**: General media player configured with `autocreate-playlist = "same"`. Opening an audio file automatically enqueues only neighboring audio tracks from the parent folder; opening a video file only enqueues neighboring video tracks.
 - **`jellyfin-desktop`**: TV and movie streaming from local Jellyfin media servers.
+
+### 7. Shell History & Smart Suggestions (`atuin` + `atuin-to-fish`)
+Shell history is synchronized across devices headlessly via Atuin (`home/cli/atuin.nix`):
+- **Headless Sync**: Atuin operates purely as a background synchronization engine without intercepting terminal keybindings (`Ctrl+R` and Up-arrow remain native to FZF and Fish).
+- **Declarative Authentication**: Atuin automatically authenticates across the fleet using credentials stored in `secrets/atuin-credentials.age` via `atuin-auto-login` (integrated into systemd user services, `rebuild`, and `atuin-to-fish`), eliminating interactive login prompts. See [Atuin Shell History Sync Setup](/secrets/#4-atuin-shell-history-sync-setup-atuin-credentialsage) for instructions on registering or obtaining your 24-word encryption key.
+- **Autosuggestion Bridging**: Fish's inline ghost-text autosuggestions query local Fish history. To keep suggestions populated with synced commands across machines, `atuin-to-fish` runs automatically at the start of `rebuild` (`nrs`), extracting newly synced commands from Atuin and merging them into Fish history.
+- **Live Prompt Sync**: `fish/conf.d/history-merge.fish` merges newly written commands on prompt, ensuring open sessions immediately reflect incoming suggestions.
 
 ---
 

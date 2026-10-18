@@ -52,4 +52,11 @@
     set -g fish_pager_color_completion cdd6f4
     set -g fish_pager_color_description 6c7086
   '';
+
+  xdg.configFile."fish/conf.d/history-merge.fish".text = ''
+    # Automatically merge new history into session memory on prompt
+    function __sync_history --on-event fish_prompt
+      builtin history merge
+    end
+  '';
 }

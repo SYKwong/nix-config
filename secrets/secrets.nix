@@ -14,4 +14,5 @@ in
     keys.users."mini-pc-k8"
     keys.systems."mini-pc-k8"
   ];
+  "atuin-credentials.age".publicKeys = allKeys;
 }
