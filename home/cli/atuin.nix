@@ -45,6 +45,7 @@ let
         import subprocess
         import sys
         import time
+        from datetime import datetime
 
         # Ensure ATUIN_SESSION is present so atuin subcommands do not fail
         if "ATUIN_SESSION" not in os.environ:
@@ -84,11 +85,14 @@ let
             with open(fish_hist_path, "r", encoding="utf-8", errors="replace") as f:
                 for line in f:
                     if line.startswith("- cmd:"):
-                        existing_cmds.add(line[6:].strip())
+                        raw_cmd = line[6:].rstrip("\r\n").strip()
+                        existing_cmds.add(raw_cmd)
+                        unescaped = raw_cmd.replace("\\\\", "\x00").replace("\\n", "\n").replace("\x00", "\\")
+                        existing_cmds.add(unescaped)
 
         try:
             res = subprocess.run(
-                ["atuin", "history", "list", "--cmd-only", "--print0"],
+                ["atuin", "history", "list", "--format", "{time}\t{command}", "--print0", "-r", "false"],
                 capture_output=True,
                 check=False,
             )
@@ -98,25 +102,41 @@ let
         if res.returncode != 0 or not res.stdout:
             sys.exit(0)
 
-        new_cmds = []
+        new_entries = []
         seen = set()
         for raw in res.stdout.split(b"\x00"):
-            cmd = raw.decode("utf-8", errors="replace").strip()
-            if cmd and cmd not in existing_cmds and cmd not in seen:
-                seen.add(cmd)
-                new_cmds.append(cmd)
+            if not raw:
+                continue
+            parts = raw.decode("utf-8", errors="replace").split("\t", 1)
+            if len(parts) == 2:
+                time_str, cmd = parts[0].strip(), parts[1].strip()
+                try:
+                    cmd_time = int(datetime.strptime(time_str, "%Y-%m-%d %H:%M:%S").timestamp())
+                except Exception:
+                    cmd_time = int(time.time())
+            else:
+                cmd = raw.decode("utf-8", errors="replace").strip()
+                cmd_time = int(time.time())
 
-        if not new_cmds:
+            escaped = cmd.replace("\r", "").replace("\\", "\\\\").replace("\n", "\\n")
+            if (
+                cmd
+                and cmd not in existing_cmds
+                and escaped not in existing_cmds
+                and cmd not in seen
+            ):
+                seen.add(cmd)
+                new_entries.append((escaped, cmd_time))
+
+        if not new_entries:
             print("Fish suggestions are already up to date with Atuin.")
             sys.exit(0)
 
-        now = int(time.time())
         try:
             with open(fish_hist_path, "a", encoding="utf-8") as f:
-                for cmd in new_cmds:
-                    escaped_cmd = cmd.replace("\r", "").replace("\n", "\\n")
-                    f.write(f"- cmd: {escaped_cmd}\n  when: {now}\n")
-            print(f"Synced {len(new_cmds)} new commands from Atuin into Fish suggestions.")
+                for escaped_cmd, cmd_time in new_entries:
+                    f.write(f"- cmd: {escaped_cmd}\n  when: {cmd_time}\n")
+            print(f"Synced {len(new_entries)} new commands from Atuin into Fish suggestions.")
             subprocess.run(["fish", "-c", "builtin history merge"], capture_output=True, check=False)
         except Exception as e:
             print(f"Failed to append commands to Fish history: {e}")
