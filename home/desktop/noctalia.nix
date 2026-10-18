@@ -70,6 +70,10 @@ in
         inherit (current_host_config) ui_scale;
       };
 
+      audio = {
+        enable_sounds = false;
+      };
+
       bar = {
         order = [ "default" ];
         default = {
@@ -103,6 +107,7 @@ in
           scale = 1.0;
           shadow = false;
           show_on_workspace_switch = true;
+          show_tooltip = false;
           smart_auto_hide = false;
           thickness = 34;
           widget_spacing = 6;
@@ -197,6 +202,10 @@ in
       };
       location.auto_locate = true;
 
+      lockscreen = {
+        grace_period_seconds = 2;
+      };
+
       lockscreen_widgets = {
         enabled = true;
         schema_version = 2;
@@ -215,11 +224,13 @@ in
               background_color = "surface_variant";
               background_opacity = 0.88;
               background_radius = 12.0;
-              center_password_text = false;
+              center_password_text = true;
               input_opacity = 1.0;
               input_radius = 6.0;
               layout = "compact";
               show_caps_lock = true;
+              show_password_reveal = false;
+              show_unlock_hint = false;
             };
           };
 
@@ -265,14 +276,15 @@ in
 
       shell = {
         animation.enabled = false;
-        button_borders = false;
-        card_borders = false;
-        input_borders = false;
+        button_borders = true;
+        card_borders = true;
+        input_borders = true;
         launch_apps_as_systemd_services = false;
         launch_apps_custom_command = "uwsm app -- $CMD";
         polkit_agent = true;
-        popup_borders = false;
+        popup_borders = true;
         popup_shadows = false;
+        show_close_buttons = false;
         show_location = false;
 
         mpris.blacklist = [
@@ -284,6 +296,7 @@ in
         ];
 
         launcher = {
+          layout = "simple";
           categories = false;
           compact = true;
           fetch_exchange_rates = false;
@@ -293,12 +306,15 @@ in
         };
 
         panel = {
+          border_color = "primary";
+          border_width = 2.0;
           control_center_placement = "floating";
           session_placement = "floating";
           session_position = "center";
           transparency_mode = "glass";
           wallpaper_placement = "floating";
           wallpaper_position = "center";
+          wallpaper_show_names = false;
         };
 
         screenshot.directory = "~/Pictures/Screenshots/";
@@ -333,6 +349,8 @@ in
         media = {
           hide_album_art = true;
           title_scroll = "always";
+          hide_when_no_media = true;
+          hide_when_idle = true;
         };
         network = {
           show_label = false;
