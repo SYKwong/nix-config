@@ -76,6 +76,12 @@
       };
       settings = {
         defaults = {
+          layout_config = {
+            horizontal = {
+              preview_cutoff = 0;
+            };
+            preview_cutoff = 0;
+          };
           file_ignore_patterns = [
             "^%.astro/"
             "[/\\]%.astro/"

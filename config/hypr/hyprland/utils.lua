@@ -65,6 +65,12 @@ function utils.kitty_term()
 	end
 end
 
+function utils.kitty_2pane()
+	return function()
+		launch_kitty("two-pane.session")
+	end
+end
+
 function utils.kitty_3pane()
 	return function()
 		launch_kitty("three-pane.session")

@@ -25,7 +25,7 @@ By utilizing Home Manager's `config.lib.file.mkOutOfStoreSymlink`, these files p
 | Application / Directory | Target Destination in `$HOME` | Description |
 | :--- | :--- | :--- |
 | **`hypr/`** | `~/.config/hypr` | Hyprland compositor configuration written in pure Lua (keybindings, window rules, layer rules, animations, and monitor layout utilities). |
-| **`kitty/`** | `~/.config/kitty` | Kitty terminal emulator configuration, color schemes, and declarative session blueprints (e.g. `three-pane.session`). |
+| **`kitty/`** | `~/.config/kitty` | Kitty terminal emulator configuration, color schemes, and declarative session blueprints (e.g. `two-pane.session`, `three-pane.session`). |
 | **`foot/`** | `~/.config/foot` | Minimal Foot terminal configuration used for floating TUI wrappers (`tui-wrap`). |
 | **`starship/`** | `~/.config/starship.toml` | Starship cross-shell prompt theme and format settings. |
 | **`kde/dolphin/`** | `~/.config/dolphinrc`, `kservicemenurc` | KDE Dolphin file manager preferences and context menus (mutable dolphinstaterc is seeded via post-install). |
