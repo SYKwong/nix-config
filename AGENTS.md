@@ -22,3 +22,20 @@
 - When adding or updating features, keep documentation in `docs/src/content/docs/` synchronized with the implementation.
 - Only run `npx --no-install astro build` in `docs/` when adding, removing, or renaming documentation pages, or when modifying `docs/astro.config.mjs`, `docs/package.json`, or `docs/src/styles/` (skip the build for routine content edits to existing `.md` files). If `docs/node_modules/` is missing when a build is required, initialize it via `npm ci --ignore-scripts` in `docs/`.
 - Maintain Catppuccin theme conventions and upright code typography.
+
+## Antigravity CLI Verification (`home/cli/antigravity.nix`)
+- Mandatory Test Suite: Whenever `home/cli/antigravity.nix` is modified, execute the verification suite before marking a task ready for merge:
+  1. **Pass (Auto-approved / 0 prompts)**:
+     - Nested substitution: `echo $(basename $(dirname $(which git)))`
+     - Backtick pipeline substitution: `cat \`which git\` | head -n 1`
+     - Arithmetic pipeline substitution: `head -n $((3 + 2)) flake.nix | tail -n 2`
+     - Quoted substitution: `echo "Kernel: $(uname -s)" | tr '[:lower:]' '[:upper:]'`
+     - Multi-substitution: `echo "$(uname -s) has uptime $(uptime | awk '{print $3}')"`
+     - Standard pipeline: `git log -n 5 --oneline | head -n 2`
+  2. **Fail (Auto-denied via denyRules)**:
+     - Direct denial: `sudo echo blocked` (must return hook denial)
+     - Denied inner substitution: `echo $(sudo echo blocked)` (must return hook denial)
+     - Denied pipeline segment: `echo hello | sudo tee /dev/null` (must return hook denial)
+  3. **Ask (Interactive permission required)**:
+     - Unvetted substitution: `echo $(whoami)` (must prompt user for permission)
+
