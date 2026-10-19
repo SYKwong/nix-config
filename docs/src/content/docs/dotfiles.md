@@ -46,3 +46,47 @@ By utilizing Home Manager's `config.lib.file.mkOutOfStoreSymlink`, these files p
    ```
 3. Run `nrs` once to establish the initial symlink in `~/.config/`.
 4. Subsequent edits to `./config/my-app/config.conf` take effect immediately without rebuilding.
+
+---
+
+## Hyprland Window Rules & Media Rendering
+
+### Selective Tab Opacity for Zen Browser (`config/hypr/hyprland/windowrule.lua`)
+
+In Hyprland, global window decorations (`config/hypr/hyprland/looknfeel.lua`) enforce an active opacity multiplier (`active_opacity = 0.95`) and 3-pass dual-kawase blur. While this provides a clean frosted-glass aesthetic for terminal buffers and code editors, it degrades in-tab video playback by allowing desktop wallpaper patterns and underlying windows to bleed into the video frame, crushing black levels.
+
+#### The Architectural Difference: Gecko vs. Chromium
+
+- **Chromium / Helium (`UseOzonePlatform`)**: Promotes video players into independent Wayland subsurfaces (`wl_subsurface`). Video quads remain 100% opaque regardless of the compositor's window-level alpha multiplier.
+- **Gecko / Zen Browser (`WebRender`)**: Flattens the entire web page, DOM overlays, and `<video>` tags into a single unified top-level `wl_surface`. Hyprland applies the 0.95 alpha multiplier across the entire buffer indiscriminately, which previously forced users to fullscreen videos to trigger `fullscreen-force-opaque`.
+
+#### The Declarative Helper (`make_browser_tab_opaque`)
+
+Rather than forcing the entire browser permanently opaque—which sacrifices translucency during normal browsing—`config/hypr/hyprland/windowrule.lua` implements `make_browser_tab_opaque`:
+
+```lua
+local function make_browser_tab_opaque(title_keyword, browser_class)
+	local target_browser_class <const> = browser_class or "zen-beta"
+
+	hl.window_rule({
+		name = "opaque-zen-tab-" .. string.lower(title_keyword),
+		match = {
+			class = target_browser_class,
+			title = ".*" .. title_keyword .. " — Zen Browser.*",
+		},
+		opacity = 1.0,
+		opaque = true,
+	})
+end
+
+make_browser_tab_opaque("YouTube")
+```
+
+- **Scoped Title Regex**: Scopes title matching to `.*<Keyword> — Zen Browser.*` to prevent false positives from other desktop applications while matching both browse and video playback pages (e.g., `<Video Title> - YouTube — Zen Browser`).
+- **Targeted Opacity Override**: Forces `opacity = 1.0` and `opaque = true` only when a targeted media tab is active, delivering true black levels and solid video in tiled/windowed mode.
+- **Extensible Site Registration**: New media streaming services can be registered one by one:
+  ```lua
+  make_browser_tab_opaque("Twitch")
+  make_browser_tab_opaque("Netflix")
+  ```
+
