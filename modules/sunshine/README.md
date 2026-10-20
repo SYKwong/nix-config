@@ -17,6 +17,7 @@ modules/sunshine/
 ## Capabilities
 
 - **Hardware Acceleration**: Automatically leverages GPU hardware encoding (VA-API on AMD Radeon) for low-latency streaming (up to 120 FPS / 4K / HDR).
+- **Direct Wayland Capture (`wlr`)**: Uses `wlr-screencopy-unstable-v1` DMA-BUF capture directly with Hyprland, bypassing XDG Desktop Portal prompts and preventing `hyprland-share-picker` dialogs on service startup.
 - **Firewall Integration**: Automatically opens required TCP (`47984, 47989, 47990, 48010`) and UDP (`47998-48000, 48002, 48010`) ports.
 - **Input & Capture Permissions**: Configures `uinput` rules and grants `cap_sys_admin+p` capabilities for direct KMS/DRM display capture.
 - **Automated Virtual Display**: Automatically provisions a headless display (`HEADLESS-1`) and an on-demand idle watchdog when connecting via Moonlight.
@@ -30,6 +31,9 @@ Declared in [`default.nix`](./default.nix) and configurable per-host in `hosts/<
 ```nix
 # Toggle Sunshine service across the host (default: true)
 custom.sunshine.enable = true;
+
+# Autostart Sunshine upon graphical session login (default: true)
+custom.sunshine.autoStart = true;
 
 # Automated tablet virtual secondary display (default: true)
 custom.sunshine.tabletDisplay.enable = true;

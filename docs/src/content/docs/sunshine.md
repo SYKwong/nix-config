@@ -10,9 +10,11 @@ Provides a self-hosted [Sunshine](https://github.com/LizardByte/Sunshine) game a
 ## Capabilities & Architecture
 
 - **Hardware-Accelerated Encoding**: Automatically leverages GPU hardware encoding (VA-API on AMD Radeon GPUs) for ultra-low latency, high-framerate streaming (up to 120 FPS / 4K / HDR).
+- **Direct Wayland Capture (`capture = wlr`)**: Configured to use `wlr-screencopy-unstable-v1` DMA-BUF capture directly with Hyprland. Bypasses XDG Desktop Portal screencast prompts, preventing interactive `hyprland-share-picker` dialogs from appearing upon systemd user service startup.
 - **Default-Enabled Across Fleet**: Registered in common system modules (`outputs.nix`) and enabled by default (`custom.sunshine.enable = true`).
+- **Autostart Control**: Runs automatically upon graphical login (`custom.sunshine.autoStart = true`). Can be toggled to `false` per-host if on-demand startup is preferred.
 - **Firewall Integration**: Automatically provisions open TCP (`47984, 47989, 47990, 48010`) and UDP (`47998-48000, 48002, 48010`) ports.
-- **Input Emulation & KMS Capture**: Configures `uinput` rules, grants `video` and `input` permissions, and assigns `cap_sys_admin+p` capabilities to the Sunshine binary for direct DRM/KMS frame capture.
+- **Input Emulation & Permissions**: Configures `uinput` rules, grants `video` and `input` permissions, and assigns `cap_sys_admin+p` capabilities to the Sunshine binary.
 - **Opt-Out Toggle**: Can be disabled per-host in `hosts/<hostname>/config.nix`:
   ```nix
   custom.sunshine.enable = false;
