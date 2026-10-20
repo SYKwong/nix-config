@@ -1,326 +1,105 @@
-# nix-config  
+# nix-config
+
+[![Documentation](https://img.shields.io/badge/docs-nix.kyle--kwong.com-blue?style=flat-square)](https://nix.kyle-kwong.com)
+[![License: MIT-0](https://img.shields.io/badge/license-MIT--0-green?style=flat-square)](https://spdx.org/licenses/MIT-0.html)
+
+Declarative multi-host **NixOS** and **Home Manager** configuration fleet managing workstations, laptops, and gaming consoles.
 
 📚 **Documentation & Wiki:** [**nix.kyle-kwong.com**](https://nix.kyle-kwong.com)
 
-> [!NOTE]
-> The documentation across this repository is mostly LLM-generated.
+---
 
-## License
+## Active Fleet
 
-MIT-0  
-You can use my code without any attribution, but I would appreciate if you do.
-Please note that some parts of this repo might be sublicensed to something else because I didn't write them.
+| Host | Form Factor | Hardware | Highlights | Config |
+| :--- | :--- | :--- | :--- | :--- |
+| **`framework16`** | Workstation Laptop | Framework Laptop 16 (Ryzen 7840HS, 96GB RAM) | LUKS + TPM2, Lanzaboote Secure Boot, 100GB swap hibernation | [`hosts/framework16`](./hosts/framework16/) |
+| **`mini-pc-k8`** | Living Room HTPC | GMKtec NucBox K8 Plus (Ryzen 8845HS, 64GB RAM) | Btrfs, custom ALSA profile, Flatpak discovery | [`hosts/mini-pc-k8`](./hosts/mini-pc-k8/) |
 
-## Adopting This Configuration (For Other Users)
+---
 
-> 📖 **Full Guide:** [**Adoption & Forking Guide**](https://nix.kyle-kwong.com/adoption/)
+## Quick Start
 
-If you are browsing this repository and want to adopt this configuration for your own machines, **fork this repository to your own GitLab or GitHub account first**.
-
-### Why Fork First?
-Forking the repository ensures that `post-install.sh` can automatically:
-1. Rebind your git remote origin from HTTPS to SSH (`git@<forge>:<your-username>/nix-config.git`).
-2. Authenticate with your GitHub or GitLab account (`gh` / `glab`) and upload your newly generated user SSH public key.
-3. Automatically commit and push your machine's hardware configuration (`hosts/<hostname>/hardware-configuration.nix`) and host keys back to your own repository without permission errors.
-
-### Automated Setup (`adopt.sh`)
+### 1. Adopting for Your Own Hardware
+Before installing, **fork this repository** to your own GitLab or GitHub account, then sanitize personal credentials and scaffold your target machine profile using the automated adoption script:
 
 ```bash
-# 1. Fork this repository on GitHub or GitLab, then clone YOUR fork:
+# 1. Clone YOUR fork:
 git clone https://github.com/<your-username>/nix-config.git  # or https://gitlab.com/<your-username>/nix-config.git
 cd nix-config
 
-# 2. Run adopt.sh to sanitize the repo and scaffold your machine:
+# 2. Sanitize personal credentials and scaffold your machine:
 ./adopt.sh <your-hostname> <your-username> [--laptop | --desktop] [--luks]
 
-# 3. Verify or edit your drive ID in hosts/<your-hostname>/disko.nix:
+# 3. Verify or edit your persistent drive ID in hosts/<your-hostname>/disko.nix:
 #    device = "/dev/disk/by-id/..." (discover via: ls -l /dev/disk/by-id/)
 
-# 4. (Optional) In outputs.nix, add nixos-hardware profiles for your device:
-#    - Exact OEM model (e.g. inputs.nixos-hardware.nixosModules.framework-16-7040-amd)
-#    - Or generic components: common-cpu-amd, common-gpu-amd, common-pc-ssd
-
-# 5. Commit and push your adopted setup to your fork:
+# 4. Commit and push to your fork:
 git add .
 git commit -m "feat: adopt configuration for <your-hostname>"
 git push origin main
 ```
 
-**What `adopt.sh` does automatically:**
-1. **Purges Inaccessible Secrets**: Deletes all `secrets/*.age` and resets `modules/secrets/default.nix` to an empty set (`age.secrets = {};`), preventing Agenix evaluation errors.
-2. **Removes Private Network Shares**: Deletes personal SMB NAS configurations (`networkshare.nix`) and unlinks them from `modules/desktop` and `modules/laptop`.
-3. **Sanitizes AI Providers**: Removes personal Cloudflare Workers AI credentials from `home/cli/opencode.nix` while keeping local Ollama intact.
-4. **Scaffolds Target Host**: Removes the author's host directories (`hosts/framework16`, `hosts/mini-pc-k8`) and generates `hosts/<your-hostname>/` with a clean `disko.nix` (encrypted LUKS with TPM2 auto-unlock or unencrypted Btrfs) and a stub `hardware-configuration.nix`.
-5. **Configures `outputs.nix`**: Registers your machine and username in `outputs.nix` with the selected form-factor module (`./modules/laptop` or `./modules/desktop`) and commented `nixos-hardware` template profiles.
+> 📖 **Full Guide:** [**Adoption & Forking Guide**](https://nix.kyle-kwong.com/adoption/)
 
-> [!NOTE]
-> `adopt.sh` requires only standard Bash and coreutils; it does not require Nix to be installed on the host machine. Pre-formatted templates are generated automatically.
+---
 
-### Hardware Profiles (`nixos-hardware`)
+### 2. Bootstrapping a New Machine
+Boot into a **NixOS Live USB** environment with active networking:
 
-[NixOS/nixos-hardware](https://github.com/NixOS/nixos-hardware) provides optimized kernel parameters, power management, and hardware quirks.
-
-1. **Find an OEM Model Profile**:
-   - Browse the repository directory structure: paths convert to flake attributes by replacing slashes with hyphens (e.g., `framework/16-7040-amd` → `inputs.nixos-hardware.nixosModules.framework-16-7040-amd`, `lenovo/thinkpad/t14/amd/gen3` → `inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen3`).
-2. **If No Exact OEM Profile Exists (e.g. Desktops, Mini PCs, Unlisted Laptops)**:
-   - Combine generic component modules in `extraModules` under `outputs.nix`:
-     - **CPU**: `common-cpu-amd` (+ `common-cpu-amd-pstate` for modern Ryzen) or `common-cpu-intel`
-     - **GPU**: `common-gpu-amd`, `common-gpu-intel`, or `common-gpu-nvidia`
-     - **Storage**: `common-pc-ssd` (desktop) or `common-pc-laptop-ssd` (laptop)
-3. **If You Omit `nixos-hardware`**:
-   - Adding these profiles is optional. NixOS will always generate a bootable baseline configuration in `hardware-configuration.nix` during installation.
-
-### Installation & Post-Installation Flow
-
-1. **Boot NixOS Live USB & Install**:
-   ```bash
-   git clone https://github.com/<your-username>/nix-config.git  # or https://gitlab.com/<your-username>/nix-config.git
-   cd nix-config
-   sudo ./install.sh "<your-hostname>" "<user_password>" ["<luks_password>"]
-   ```
-2. **First Boot & Onboarding**:
-   Reboot into your new installation and run:
-   ```bash
-   cd ~/nix-config
-   ./post-install.sh
-   ```
-   `post-install.sh` converts your git origin to SSH, registers your public keys in `secrets/keys.nix`, enrolls TPM2 for LUKS (if enabled), and uploads your SSH key to GitLab/GitHub.
-3. **(Optional) Agenix Configuration**:
-   - If you want to manage secrets, add your SSH public key (`~/.ssh/id_ed25519.pub`) to `secrets/keys.nix` and create secrets with `agenix -e <secret-name>.age`.
-
-### Modules with Secret References
-
-Even after running `adopt.sh`, one user-space module references a runtime secret path that originally expected the author's credentials:
-- **Atuin History Sync (`home/cli/atuin.nix`)**: Checks `/run/agenix/atuin-credentials` for automatic sync. Without this secret, `atuin-auto-login` skips cleanly; authenticate manually with `atuin login` or rekey your own credentials with Agenix.
-
-## How to Use  
-
-### Install Script Usage
-
-This script is meant to be used in a NixOS live USB environment.  
-Clone the repository and `cd` into it:
 ```bash
-git clone https://gitlab.com/kylekwong/nix-config.git
+# 1. Clone your fork in the live environment:
+git clone https://github.com/<your-username>/nix-config.git  # or https://gitlab.com/<your-username>/nix-config.git
 cd nix-config
+
+# 2. Run the automated installer:
+sudo ./install.sh "<your-hostname>" "<user_password>" ["<luks_password>"]
 ```
 
-#### 0. If You Want to Use LUKS (Full Disk Encryption) and Secure Boot
-Boot into BIOS and erase all Secure Boot settings:
-- On Framework 16: `Administer Secure Boot` -> `Erase all Secure Boot Settings`  
+After installation and rebooting into your new system, complete automated onboarding:
 
-#### 1. How the Flake is Structured
-
-The installer relies on a centralized `hosts` attribute set defined in `outputs.nix` and exposed via `flake.nix`.
-
-```nix
-# outputs.nix
-hosts = {
-  foo = {
-    username = "bar";
-
-    extraModules = [
-      ./modules/example
-    ];
-  };
-};
-```
-
-And the file layout of this example will be:
-```
-.  
-├── install.sh
-├── outputs.nix
-└── hosts/
-    └── foo/
-        ├── default.nix
-        ├── hardware-configuration.nix
-        └── disko.nix
-```
-
-#### 2. Adding a new machine  
-- Step 1: Define the Host Entry  
-    - Open `outputs.nix` and define your machine under the `hosts` attribute set. `extraModules` is required:
-    ```nix
-    <host_name> = {
-      username = "<user_name>";
-
-      extraModules = [
-        # Host-specific NixOS system modules (e.g. hardware, laptop, desktop)
-      ];
-    };
-    ```  
-
-- Step 2: Create Host Directory and Disk Scheme  
-    - Create the host directory:
-    ```bash
-    mkdir -p ./hosts/<host_name>
-    ```
-    
-    - Define your partitioning scheme in `./hosts/<host_name>/disko.nix`.
-    
-    - Create a stub `./hosts/<host_name>/hardware-configuration.nix` (it will be auto-generated by `install.sh` during installation):
-    ```nix
-    {
-
-    }
-    ```
-
-    - Create `./hosts/<host_name>/default.nix` with the following content:
-    ```nix
-    {
-      imports = [
-        ./disko.nix
-        ./hardware-configuration.nix
-        # ./config.nix # (Optional: host-specific module options / secrets)
-      ];
-    }
-    ```
-
-#### 3. Running the Installer
-``` bash
-sudo ./install.sh "<host_name>" "<user_password>" ["<luks_password>"]
-```
-After the install, the script reboots your system.
-
-#### 4. Post-Installation Setup
-If using LUKS + Secure Boot, enter BIOS after reboot and enable Secure Boot, then boot into the newly installed NixOS system.
-
-1. Open a terminal, change to the repository directory (`~/nix-config`), and run:
 ```bash
+cd ~/nix-config
 ./post-install.sh
 ```
-This script runs non-interactively (hands-off) and automatically:
-- Converts git remote origin from HTTPS to SSH (`git@gitlab.com:...`).
-- Enrolls TPM2 (`systemd-cryptenroll`) against PCR 7 for automatic LUKS unlock if a LUKS partition is detected.
-- Generates host (`/etc/ssh/ssh_host_ed25519_key`) and user (`~/.ssh/id_ed25519`) SSH keys if they do not already exist.
-- Registers public keys under `networking.hostName` in `secrets/keys.nix`.
-- Prints reminder commands for service logins (GitLab, GitHub, NordVPN).
 
-2. *(Optional)* Authenticate services and register SSH keys interactively:
-```bash
-./post-install.sh --auth-only
-```
-*(Or run with `--auth` to perform baseline setup and authentication together)*
+> 📖 **Full Guides:** [**System Installation Guide**](https://nix.kyle-kwong.com/installation/) • [**Post-Installation Setup**](https://nix.kyle-kwong.com/post-installation/)
 
-3. Commit and push the updated keys and generated hardware configuration:
-```bash
-git lazy "feat(<host_name>): add host keys and hardware configuration"
-```
-
-4. On an authorized machine (e.g. `framework16`), pull and re-encrypt secrets:
-```bash
-git pull
-cd secrets
-agenix --rekey
-git lazy "chore(secrets): rekey secrets for <host_name>"
-```
-
-5. On the new machine, pull the re-encrypted secrets and rebuild:
-```bash
-git pull
-nrs
-```
-
-### For the Different Configs
-
-`hardware-configuration.nix` is host-specific and auto-generated by `install.sh`.  
-
-For the Framework 16 config, if you are using the 7040 AMD series without an expansion bay graphics module, the repository's existing `hosts/framework16/hardware-configuration.nix` can be used directly as-is without re-generating.  
-
-[`disko.nix`](https://github.com/nix-community/disko) defines the disk partition scheme.  
-
-Instead of unstable disk assignments like `/dev/sdX` or `/dev/nvmeX`, persistent disk IDs (`/dev/disk/by-id/...`) are used to uniquely identify target drives.  
-Currently, these are the partitions I'm using:
-| Host Name | Description | LUKS + Secure Boot | Hibernation | File System |
-|:---:|:---:|:---:|:---:|:---:|
-| `framework16` | Framework Laptop 16 (AMD Ryzen 7840HS, 96GB RAM) | YES | YES | BTRFS |
-| `mini-pc-k8` | GMKtec NucBox K8 Plus (AMD Ryzen 8845HS, 64GB RAM) | NO | NO | BTRFS |
-
-The partition of framework16 is designed for hibernation, so it has a large swap file. You should also change the swap size to be 2 to 4GB + your RAM capacity.
-
-### Wallpaper
-Wallpapers previously bundled in this repository were moved out to keep fresh installs fast and repository history clean:
-- **Public Wallpapers**: A public collection is available [here](https://gitlab.com/kylekwong/Wallpaper) (`git clone https://gitlab.com/kylekwong/Wallpaper.git ~/Wallpaper`).
-- **Private Wallpapers**: My `private-wallpaper` repository is cloned via SSH to `~/Wallpaper` when running `./post-install.sh --auth-only`. If cloning fails (e.g. no access to the private repository), it automatically falls back to cloning the public repository. Alternatively, clone manually via `git clone git@gitlab.com:kylekwong/private-wallpaper.git ~/Wallpaper`.
-
-If you want to use your own wallpapers, place images into `~/Wallpaper/` and launch the picker with `SUPER + Space`.
-
-### Application Icons
-Custom application icons are centralized under the top-level `icons/` directory:
-- `icons/Line.png`: Launcher icon for the LINE Chrome web app desktop shortcut (`home/misc/add-desktop-entry.nix`).
-- `icons/protontricks.svg`: Scalable SVG icon for Protontricks (`modules/gaming/default.nix`), automatically resized into standard hicolor icon themes (16×16 to 256×256) during package build.
-
-### BIOS Update
-
-#### TPM2 / LUKS Re-enrollment
-0. Please remember your LUKS password before you do a BIOS update.  
-1. NixOS will prompt you to enter your LUKS password after booting into it.  
-2. `sudo systemd-cryptenroll /dev/disk/by-partlabel/disk-main-luks --wipe-slot=tpm2`
-3. `sudo systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=7 /dev/disk/by-partlabel/disk-main-luks`
-
-#### Framework 16 & Supported Devices (`fwupd`)
-Firmware management on supported machines (such as the Framework Laptop 16) is handled natively via the Linux Vendor Firmware Service (LVFS) and `fwupd`, enabled declaratively in `modules/core/fwupd.nix`.
-
-> [!NOTE]
-> Ensure the laptop is plugged into AC power and the battery has at least 30% charge before initiating a firmware update.
-
-1. Fetch latest LVFS metadata:
-   ```bash
-   fwupdmgr refresh
-   ```
-2. Check for available firmware upgrades:
-   ```bash
-   fwupdmgr get-updates
-   ```
-3. Download and schedule capsule updates:
-   ```bash
-   fwupdmgr update
-   ```
-4. Reboot the system to execute the firmware flash:
-   ```bash
-   systemctl reboot
-   ```
-5. On the first boot, enter your LUKS passphrase manually and re-enroll PCR 7 following the [TPM2 / LUKS Re-enrollment](#tpm2--luks-re-enrollment) procedure above.
-
-#### GMKtec NucBox K8 Plus (UEFI Shell)
-Official BIOS & firmware releases are hosted on [GMKtec's Google Drive](https://drive.google.com/drive/folders/1y9z5q7_VEDcMsA3cGTf5SpTqgAMwJ3Xp).
-
-> [!NOTE]
-> The UEFI Shell only supports **FAT32** partitions. Ventoy's storage partition is formatted as exFAT by default, which the UEFI Shell cannot read. Flash files must reside on a FAT32 filesystem (such as the internal `/boot` partition).
-
-1. Copy the BIOS update directory directly to the system's FAT32 `/boot` partition:
-   ```bash
-   sudo cp -r /path/to/AR6000-MI2_PHX_260514GMK /boot/bios-update
-   ```
-2. Reboot into firmware setup:
-   ```bash
-   systemctl reboot --firmware-setup
-   ```
-   Select your UEFI Shell from the boot options.
-3. Locate the mapped internal ESP filesystem (`fs0:`, `fs1:`, etc. via `map -r`), navigate to the folder, and run `EfiFlash.nsh`:
-   ```text
-   fs1:
-   cd bios-update
-   EfiFlash.nsh
-   ```
-4. Once the machine automatically reboots and you log back into NixOS, remove the temporary directory:
-   ```bash
-   sudo rm -rf /boot/bios-update
-   ```
-
-### Code Quality & Evaluation
-Format and lint code (Nix, Bash, Lua, TOML via `treefmt`):
-```bash
-nix fmt
-```
-
-Evaluate configurations:
-```bash
-nix flake check
-```
-
-> [!NOTE]
-> `flake.lock` is managed strictly by automated CI schedules (`update-flake-mr`). Do not update or modify lockfiles locally unless you updated `flake.nix`.
 ---
-- *The repository icon is the NixOS logo, licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) by the NixOS project.*
-- *`icons/protontricks.svg` uses the Wine icon from the KDE Breeze Icons theme, licensed under [LGPL-3.0-or-later](https://invent.kde.org/frameworks/breeze-icons/-/blob/master/COPYING-ICONS) by the KDE Community.*
+
+## Daily Driver Cheatsheet
+
+```bash
+# Rebuild and activate live system generation
+nrs
+
+# Format and lint code (Nix, Bash, Lua, TOML via treefmt)
+nix fmt
+
+# Flake evaluation check
+nix flake check
+
+# Stage, commit with Conventional Commits, and push
+git lazy "<commit message>"
+```
+
+---
+
+## Documentation Index
+
+The complete documentation is maintained in-tree under [`docs/`](./docs/) and deployed to [**nix.kyle-kwong.com**](https://nix.kyle-kwong.com):
+
+| Category | Key Pages |
+| :--- | :--- |
+| **Getting Started** | [System Installation](https://nix.kyle-kwong.com/installation/) • [Adoption & Forking](https://nix.kyle-kwong.com/adoption/) • [Post-Installation Setup](https://nix.kyle-kwong.com/post-installation/) • [BIOS & Firmware Updates](https://nix.kyle-kwong.com/bios-update/) |
+| **Architecture & Fleet** | [Flake Architecture](https://nix.kyle-kwong.com/architecture/) • [Split CI Architecture](https://nix.kyle-kwong.com/split-ci/) • [Host Configurations](https://nix.kyle-kwong.com/hosts/) • [Home Manager](https://nix.kyle-kwong.com/home-manager/) • [Out-of-Store Dotfiles](https://nix.kyle-kwong.com/dotfiles/) |
+| **Modules & Features** | [System Modules](https://nix.kyle-kwong.com/modules/) • [Gaming & Gamescope](https://nix.kyle-kwong.com/gaming/) • [Sunshine Streaming & Tablet Display](https://nix.kyle-kwong.com/sunshine/) • [Declarative Flatpak](https://nix.kyle-kwong.com/flatpak/) • [Custom Shell Scripts](https://nix.kyle-kwong.com/shell-scripts/) • [Nixpkgs Overlays](https://nix.kyle-kwong.com/overlays/) |
+| **Guides & Operations** | [Secrets Management (Agenix)](https://nix.kyle-kwong.com/secrets/) • [Managing Desktop Entries](https://nix.kyle-kwong.com/desktop-entries/) • [Code Quality & Evaluation](https://nix.kyle-kwong.com/code-quality/) |
+
+---
+
+## License & Attributions
+
+- Configuration files and scripts are licensed under [MIT-0](https://spdx.org/licenses/MIT-0.html) (no attribution required, but appreciated).
+- Repository icon: NixOS logo, licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) by the NixOS project.
+- `icons/protontricks.svg`: Wine icon from KDE Breeze Icons, licensed under [LGPL-3.0-or-later](https://invent.kde.org/frameworks/breeze-icons/-/blob/master/COPYING-ICONS).

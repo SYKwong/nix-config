@@ -63,6 +63,12 @@ Each host declares its partition scheme in `hosts/<host_name>/disko.nix`. Disko 
 - `/@nix` → `/nix`
 - `/@swap` → `/.swapvol` (`framework16`) or `/.swap` (`mini-pc-k8`)
 
+> [!TIP]
+> **Hibernation Swap Sizing**: For hosts configured with hibernation support (such as `framework16`), size the swap partition or swapfile to **RAM capacity + 2 to 4GB** (e.g. 96GB RAM → 100GB swap) in `disko.nix` to ensure sufficient capacity for system memory images.
+
+> [!NOTE]
+> **Framework Laptop 16 Hardware Configuration**: For Framework Laptop 16 systems with AMD Ryzen 7040 series without an expansion bay graphics module, the repository's baseline [`hosts/framework16/hardware-configuration.nix`](https://gitlab.com/kylekwong/nix-config/-/blob/main/hosts/framework16/hardware-configuration.nix) can be referenced directly as a known-good template without re-probing.
+
 ---
 
 ## Adding a New Machine

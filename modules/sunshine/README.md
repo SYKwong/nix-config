@@ -1,83 +1,95 @@
 # Sunshine Streaming Module (`modules/sunshine/`)
 
-Provides a self-hosted [Sunshine](https://github.com/LizardByte/Sunshine) game and desktop streaming server for use with [Moonlight](https://moonlight-stream.org/) clients (such as Android tablets, phones, or secondary PCs).
+Provides a self-hosted [Sunshine](https://github.com/LizardByte/Sunshine) game and desktop streaming server for use with [Moonlight](https://moonlight-stream.org/) clients (tablets, phones, handhelds, or secondary PCs).
 
 ---
 
-## Capabilities & Defaults
+## Directory Taxonomy
 
-- **Systemd User Service**: Starts automatically on graphical session login (`graphical-session.target`).
-- **Hardware Acceleration**: Automatically leverages GPU hardware encoding (VA-API on AMD Radeon GPUs) for low-latency, high-framerate streaming (up to 120 FPS / 4K / HDR).
-- **Firewall Integration**: Automatically opens required TCP (`47984, 47989, 47990, 48010`) and UDP (`47998-48000, 48002, 48010`) ports.
-- **Input Emulation**: Automatically provisions `uinput` rules and adds the active user to `input`, `uinput`, and `video` groups for virtual mouse, keyboard, and gamepad emulation.
-- **KMS / DRM Capture**: Sets `cap_sys_admin+p` on the Sunshine binary for direct frame capture capabilities.
-
----
-
-## Configuration
-
-The module is included in common system modules and **enabled by default** across hosts.
-
-To disable on a specific device, set in [`hosts/<hostname>/config.nix`](../../hosts/):
-
-```nix
-custom.sunshine.enable = false;
+```text
+modules/sunshine/
+├── default.nix                 # Sunshine server service, firewall, and tabletDisplay options
+└── README.md                   # Streaming module overview and developer reference
 ```
 
 ---
 
-## Initial Setup & Pairing
+## Capabilities
 
-1. **Access Web Configuration**:
-   Open [`https://localhost:47990`](https://localhost:47990) in your browser. (Accept the self-signed TLS certificate warning).
-2. **Set Credentials**:
-   On first launch, create an administrative username and password for Sunshine.
-3. **Pair with Moonlight**:
-   - Open Moonlight on your client device (e.g. Samsung tablet).
-   - Tap your host machine. Moonlight will display a 4-digit PIN.
-   - Enter the PIN in the Sunshine Web UI under the **PIN** tab.
+- **Hardware Acceleration**: Automatically leverages GPU hardware encoding (VA-API on AMD Radeon) for low-latency streaming (up to 120 FPS / 4K / HDR).
+- **Firewall Integration**: Automatically opens required TCP (`47984, 47989, 47990, 48010`) and UDP (`47998-48000, 48002, 48010`) ports.
+- **Input & Capture Permissions**: Configures `uinput` rules and grants `cap_sys_admin+p` capabilities for direct KMS/DRM display capture.
+- **Automated Virtual Display**: Automatically provisions a headless display (`HEADLESS-1`) and an on-demand idle watchdog when connecting via Moonlight.
 
 ---
 
-## Zero-Touch Secondary Display (Automated Workflow)
+## Configuration Options
 
-When `custom.sunshine.tabletDisplay.enable = true` (default), the module registers an automated **Tablet Display** profile in Sunshine:
+Declared in [`default.nix`](./default.nix) and configurable per-host in `hosts/<hostname>/config.nix`:
 
-1. **Connect from Tablet**:
-   - Open Moonlight on the tablet.
-   - Tap **Tablet Display**.
-   - Sunshine automatically calls `hypr-virtual-monitor start HEADLESS-1`, reading Moonlight's requested client resolution and framerate (`SUNSHINE_CLIENT_WIDTH`, `SUNSHINE_CLIENT_HEIGHT`, `SUNSHINE_CLIENT_FPS`) to spawn the virtual monitor in Hyprland with exact dimensions and 120Hz refresh rate.
-2. **Disconnect from Tablet**:
-   - Tap **Quit Session** in Moonlight (or exit the app) to trigger immediate cleanup.
-   - **Automated Idle Watchdog (15-Minute Timeout)**: Started on-demand via `prep-cmd` only when a stream begins. If the tablet screen is locked, sleeps, or unplugs without an explicit quit, the `sunshine-watchdog` service detects the paused stream and automatically terminates `HEADLESS-1` and resets Sunshine after 15 minutes (`tabletDisplay.idleTimeout = 900`). All open workspaces safely migrate back to your primary monitor. Zero background overhead when not streaming.
+```nix
+# Toggle Sunshine service across the host (default: true)
+custom.sunshine.enable = true;
 
-You never need to touch the PC or run manual commands.
+# Automated tablet virtual secondary display (default: true)
+custom.sunshine.tabletDisplay.enable = true;
+
+# Idle watchdog timeout in seconds before auto-teardown (default: 900)
+custom.sunshine.tabletDisplay.idleTimeout = 900;
+```
 
 ---
 
-## Manual Virtual Monitor CLI (`hypr-virtual-monitor`)
+## Quick Setup & Management
 
-You can also control the virtual display manually via CLI if desired:
+### 1. Web Management Interface (Pairing)
+- **URL**: [`https://localhost:47990`](https://localhost:47990) *(accept the self-signed TLS certificate warning)*.
+- **First Launch**: Create administrative username and password.
+- **Client Pairing**: Tap your PC in Moonlight on your client device to generate a 4-digit PIN, then enter it in the Sunshine Web UI under the **PIN** tab.
+
+### 2. Service Debugging & Inspection
+Sunshine runs as a systemd user service attached to `graphical-session.target`:
 
 ```bash
-# Toggle headless monitor
+# Check service status
+systemctl --user status sunshine
+
+# Follow live streaming and connection logs
+journalctl --user -u sunshine -f
+
+# Restart service after configuration adjustments
+systemctl --user restart sunshine
+```
+
+---
+
+## Manual Virtual Display Controls (`hypr-virtual-monitor`)
+
+Headless monitors can be managed manually via [`hypr-virtual-monitor`](../shell-scripts/hypr-virtual-monitor.nix):
+
+```bash
+# Toggle headless monitor on/off
 hypr-virtual-monitor toggle
 
-# Explicit start / stop
+# Explicit start or stop
 hypr-virtual-monitor start HEADLESS-1
 hypr-virtual-monitor stop HEADLESS-1
 ```
 
 ---
 
-## USB Tethering (Zero-Network / Offline Mode)
+## USB Tethering (Zero-Latency Offline Mode)
 
-To stream with zero latency (<1ms), eliminate Wi-Fi jitter, and work completely without a local network/router:
+For sub-millisecond latency (<0.5ms) without Wi-Fi jitter:
+1. Connect client tablet directly to the PC via a USB-C cable.
+2. Enable **USB Tethering** on the client device.
+3. Moonlight connects via the PC's USB IP or hostname (`<hostname>.local`).
+4. NetworkManager automatically flags the tethered interface with `ipv4.never-default = true` to preserve primary internet routing.
 
-1. **Connect USB-C Cable**: Connect the tablet directly to the PC via a USB cable.
-2. **Enable USB Tethering on Tablet**
-3. **Connect via Moonlight**:
-   - In Moonlight on the tablet, tap **`+` (Add Host)**.
-   - Enter your PC's USB tethered IP (or hostname `mini-pc-k8.local`). Android DHCP assigns the PC an address on the `192.168.42.x` subnet.
-   - Tap **Tablet Display** to stream directly across the physical USB bus.
-   - *Note*: NetworkManager automatically marks the USB interface as `never-default`, preventing the tablet from overriding your PC's primary internet connection.
+---
+
+## Documentation
+
+For full architectural diagrams, watchdog socket polling details, and Moonlight client configuration, refer to the online guide:
+
+📖 **[Sunshine Streaming & Tablet Display Documentation](https://nix.kyle-kwong.com/sunshine/)**

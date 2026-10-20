@@ -56,3 +56,11 @@ pkgs.writeShellApplication {
 ## Registering a New Script
 1. Create `./modules/shell-scripts/<script-name>.nix`.
 2. Import it in [`modules/shell-scripts/default.nix`](./default.nix) under the `scripts` set to automatically expose it in `environment.systemPackages`.
+
+---
+
+## Documentation
+
+For full details on authoring shell scripts, runtime environment wrapping, and existing utilities, refer to the online guide:
+
+📖 **[Custom Shell Scripts Documentation](https://nix.kyle-kwong.com/shell-scripts/)**

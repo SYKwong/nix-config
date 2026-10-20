@@ -4,106 +4,62 @@ This directory provisions system-level gaming infrastructure across the fleet, i
 
 ---
 
-## Architecture Overview
+## Directory Taxonomy
 
-```
+```text
 modules/gaming/
 ├── default.nix                 # Centralized gaming stack definition
-└── README.md                   # Architecture, Gamescope guide, and launch recipes
-```
-
-Gaming configuration is declared in [`modules/gaming/default.nix`](./default.nix) and imported across all hosts via [`outputs.nix`](../../outputs.nix):
-
-1. **Steam**: Installed with local network game transfer firewall ports opened, Protontricks enabled, and pre-bundled **`proton-ge-bin`** compatibility tools registered via `programs.steam.extraCompatPackages`.
-2. **Gamescope**: System-wide micro-compositor enabled with Wayland WSI support (`programs.gamescope.enableWsi = true`).
-3. **GameMode**: Feral Interactive GameMode daemon configured to pause background maintenance tasks (e.g. `nixos-cache-warm.service`) during active gameplay.
-4. **Game Devices Udev Rules**: Controller and joystick udev rules (`game-devices-udev-rules`) providing non-root access to DualSense, Xbox, Switch, and handheld controllers.
-
----
-
-## Gamescope Architecture (`framework16`, `mini-pc-k8`)
-
-[Gamescope](https://github.com/ValveSoftware/gamescope) is Valve's Wayland micro-compositor. It isolates games inside their own virtual display server, intercepting their input and rendering before outputting a composited Wayland surface to Hyprland.
-
-* **Role**: On-demand, nested client window inside Hyprland.
-* **Mechanism**: Invoked per-game through Steam launch options.
-* **Behavior**: Games run directly under Hyprland by default (leveraging Hyprland's direct scanout for zero latency). Gamescope is opted into only when a game requires resolution sandboxing, upscaling, or display virtualization.
-
----
-
-## Why Gamescope Is Not Default on Desktops
-
-Gamescope is intentionally **not** enabled as the default launcher for desktop/laptop sessions:
-
-1. **Display & Geometry Mismatches**: Desktops and laptops run varied displays (e.g. 16:10 2560x1600 on Framework 16 vs 16:9 4K or 1440p on external monitors). Hardcoding a global resolution breaks multi-monitor and docking workflows.
-2. **Third-Party Launchers**: Games with multi-window pre-launchers (EA App, Ubisoft Connect, Paradox, Larian Launcher) often hang, render blank windows, or fail to gain focus in a nested Gamescope container.
-3. **Hyprland Direct Scanout**: Hyprland already performs direct scanout for fullscreen windows (Wayland and XWayland), sending frames directly to the display controller without compositor composition latency.
-4. **Cursor Trapping**: Gamescope confines the cursor to its virtual boundary, complicating multi-monitor navigation and desktop workspace switching.
-
----
-
-## Gamescope Launch Recipes (Steam Launch Options)
-
-To run a specific game inside Gamescope on a desktop or laptop, right-click the game in Steam, open **Properties → General → Launch Options**, and use one of the recipes below:
-
-### 1. Standard Windowed Fullscreen
-Renders the game at 1080p and displays it borderless fullscreen at your monitor's refresh rate:
-```bash
-gamescope -W 1920 -H 1080 -f -r 144 -- %command%
-```
-
-### 2. AMD FSR Upscaling (Performance Boost)
-Renders the game internally at 720p and upscales to 1080p using AMD FidelityFX Super Resolution (FSR):
-```bash
-gamescope -w 1280 -h 720 -W 1920 -H 1080 -F fsr -f -- %command%
-```
-*(Adjust sharpness in-game or via `--fsr-sharpness <0-20>`, default is 2).*
-
-### 3. Pixel-Perfect Integer Scaling (Retro & Pixel Art)
-Forces integer scaling without blur or bilinear filtering for low-resolution or retro titles:
-```bash
-gamescope -w 640 -h 480 -W 1920 -H 1080 -S integer -f -- %command%
-```
-
-### 4. Frame Rate Limiting & Latency Tuning
-Caps rendering rate at 60 FPS with low-latency presentation:
-```bash
-gamescope -W 1920 -H 1080 -r 60 --limiter-spatial -f -- %command%
-```
-
-### 5. High Dynamic Range (HDR)
-Enables HDR mastering and wide color gamut output on supported OLED/HDR monitors:
-```bash
-gamescope --hdr-enabled --hdr-debug-force-output -W 2560 -H 1440 -f -- %command%
+└── README.md                   # Gaming stack overview and reference
 ```
 
 ---
 
-## Gamescope Command-Line Reference
+## Architecture & Components
 
-| Flag | Argument | Description |
-| :--- | :--- | :--- |
-| **`-w`, `-h`** | `<width>`, `<height>` | Internal game render resolution (what the game sees). |
-| **`-W`, `-H`** | `<width>`, `<height>` | Output window/display resolution (target display size). |
-| **`-r`** | `<hz>` | Target display refresh rate (e.g. `60`, `120`, `144`). |
-| **`-f`** | *None* | Fullscreen mode. |
-| **`-b`** | *None* | Borderless windowed mode. |
-| **`-F`** | `fsr`, `nis`, `linear`, `nearest` | Upscaling filter algorithm. |
-| **`-S`** | `integer`, `fit`, `fill`, `stretch` | Scaling mode for aspect ratio handling. |
-| **`--force-grab-cursor`** | *None* | Confine cursor to Gamescope window. |
-| **`--cursor <path>`** | `<file>` | Custom cursor path. |
-| **`--hdr-enabled`** | *None* | Enable HDR metadata and compositing. |
+Configuration is declared in [`default.nix`](./default.nix) and imported across all hosts via [`outputs.nix`](../../outputs.nix):
+
+1. **Steam**: Installed via `programs.steam.enable = true` with local network game transfer firewall ports opened and Protontricks enabled.
+2. **Proton-GE (`extraCompatPackages`)**: Pre-bundles `proton-ge-bin` directly into Steam's compatibility dropdown without requiring manual GUI downloads.
+3. **Gamescope**: System-wide micro-compositor enabled with Wayland WSI support (`programs.gamescope.enableWsi = true`).
+4. **GameMode**: Feral Interactive GameMode daemon configured to pause background maintenance tasks (such as `nixos-cache-warm.service`) during active gameplay.
+5. **Controller Udev Rules**: Provisions `game-devices-udev-rules` for non-root access to DualSense, Xbox, Switch, and handheld controllers.
+6. **Management GUI**: Bundles `protonup-qt` for installing and managing custom Proton and Wine versions.
 
 ---
 
-## Native Wayland vs. Gamescope Comparison
+## Why Gamescope Is Opted-In Per Game
 
-| Feature | Direct Hyprland (Default) | Native Wayland (`PROTON_ENABLE_WAYLAND=1`) | Gamescope (`gamescope --`) |
-| :--- | :--- | :--- | :--- |
-| **Driver** | XWayland / Native Wayland | Wine `winewayland.drv` | Gamescope internal Xwayland / Wayland |
-| **Steam Overlay** | Functional | Broken | Functional |
-| **Steam Input / Menus** | Functional | Inconsistent | Functional |
-| **FSR / Integer Upscaling** | Game-dependent | Game-dependent | Built-in hardware scaling |
-| **Latency** | Direct Scanout (Lowest) | Native (Lowest) | Minimal (~1 frame overhead) |
-| **Multi-window Launchers** | Functional | Functional | Prone to focus/rendering bugs |
-| **Best For** | Modern Steam titles | Benchmark latency / testing | Retro games, broken resolution pickers, FSR |
+Games run directly under Hyprland by default to leverage direct scanout for lowest possible latency. Gamescope is not set as the default desktop launcher because:
+- **Display Geometry Mismatches**: Desktops and laptops run varied aspect ratios (16:10 2560x1600 on Framework 16 vs 16:9 external displays) that break with hardcoded resolutions.
+- **Third-Party Launchers**: Multi-window pre-launchers (EA App, Ubisoft Connect, Paradox) often fail to render or gain focus inside nested Gamescope containers.
+- **Cursor Trapping**: Gamescope confines cursor navigation, complicating multi-monitor workflows.
+
+---
+
+## Steam Launch Options Cheat Sheet
+
+To run a game inside Gamescope, open the game's **Properties → General → Launch Options** in Steam:
+
+| Use Case | Launch Option Command |
+| :--- | :--- |
+| **Standard Fullscreen** | `gamescope -W 1920 -H 1080 -f -r 144 -- %command%` |
+| **AMD FSR Upscaling** | `gamescope -w 1280 -h 720 -W 1920 -H 1080 -F fsr -f -- %command%` |
+| **Integer Scaling (Retro)** | `gamescope -w 640 -h 480 -W 1920 -H 1080 -S integer -f -- %command%` |
+| **60 FPS Frame Limiting** | `gamescope -W 1920 -H 1080 -r 60 --limiter-spatial -f -- %command%` |
+| **HDR Output** | `gamescope --hdr-enabled --hdr-debug-force-output -W 2560 -H 1440 -f -- %command%` |
+
+### Key CLI Flags Reference:
+- `-w`, `-h`: Internal render resolution (what the game sees).
+- `-W`, `-H`: Output display resolution (target window/monitor size).
+- `-r`: Display refresh rate in Hz (e.g. `60`, `120`, `144`).
+- `-F`: Upscaling filter (`fsr`, `linear`, `nearest`).
+- `-S`: Scaling mode (`integer`, `fit`, `fill`, `stretch`).
+- `-f` / `-b`: Fullscreen / Borderless windowed.
+
+---
+
+## Documentation
+
+For full architectural deep-dives, latency benchmarks, and the complete Wayland vs Gamescope comparison matrix, refer to the online guide:
+
+📖 **[Gaming & Gamescope Documentation](https://nix.kyle-kwong.com/gaming/)**

@@ -37,3 +37,28 @@ This directory contains modular, reusable **NixOS system-level** configurations.
    * Modules in this directory should be host-agnostic. Host-specific overrides or hardware bindings belong in [`hosts/<hostname>/`](../hosts).
 3. **Packaging Scripts**:
    * Custom CLI utilities are standardly packaged with `pkgs.writeShellApplication` and declared `runtimeInputs` (see [`modules/shell-scripts/README.md`](./shell-scripts/README.md) for conventions and exceptions).
+
+---
+
+## Wiring Modules into Hosts
+
+System modules are integrated into machine closures via [`outputs.nix`](../outputs.nix):
+- **Fleet-Wide Modules**: Imported across all systems via `commonModules` in `outputs.nix` (e.g. `core/`, `hyprland/`, `gaming/`, `sunshine/`, `shell-scripts/`).
+- **Host-Specific Modules**: Appended to a host's `extraModules` list in `outputs.nix`:
+  ```nix
+  <hostname> = {
+    username = "<user>";
+    extraModules = [
+      ./modules/laptop    # Power management & battery optimizations
+      ./modules/desktop   # Workstation shared capabilities
+    ];
+  };
+  ```
+
+---
+
+## Documentation
+
+For system architecture diagrams, module organization, and cross-host configuration, refer to the online guide:
+
+📖 **[NixOS System Modules Documentation](https://nix.kyle-kwong.com/modules/)**

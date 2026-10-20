@@ -32,7 +32,6 @@ hosts/<hostname>/
 ├── hardware-configuration.nix  # Kernel modules and drivers (auto-generated)
 ├── disko.nix                   # Partition scheme, filesystems, and encryption
 ├── config.nix                  # (Optional) Host-specific toggles, quirks, and secrets
-├── flatpak.nix                 # (Optional) Host Flatpak packages (auto-imported)
 └── home/                       # (Optional) Per-host Home Manager overrides
     └── default.nix
 ```

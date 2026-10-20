@@ -57,6 +57,18 @@ flowchart TD
    - The watchdog periodically polls active Sunshine streaming sockets (`:47989`, `:48010`) using `ss`.
    - If the stream remains paused or disconnected continuously for **15 minutes** (`custom.sunshine.tabletDisplay.idleTimeout = 900`), the watchdog automatically destroys `HEADLESS-1`, restarts Sunshine to drop stale sessions, and sends a desktop notification. Zero background polling occurs when not streaming.
 
+### 4. Manual Virtual Monitor CLI (`hypr-virtual-monitor`)
+While Moonlight connections automatically provision and tear down `HEADLESS-1` via hooks, you can also control virtual displays manually:
+
+```bash
+# Toggle headless monitor on/off
+hypr-virtual-monitor toggle
+
+# Explicitly create or remove a virtual monitor
+hypr-virtual-monitor start HEADLESS-1
+hypr-virtual-monitor stop HEADLESS-1
+```
+
 ---
 
 ## USB Tethering (Zero-Latency / Offline Mode)

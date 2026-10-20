@@ -32,6 +32,21 @@ By using `config.lib.file.mkOutOfStoreSymlink` in [`home/misc/dotfile.nix`](../h
 | **`feishin/`** | `~/.config/feishin/config.json` | Feishin desktop music player preferences and lyrics sources. |
 
 ---
+
+## Live Reload Cheatsheet
+
+Because files are symlinked out-of-store directly to the working repository, edits take effect immediately upon reloading the client:
+
+| Application | Config Path | Live Reload Method |
+| :--- | :--- | :--- |
+| **Hyprland** | `config/hypr/` | `hyprctl reload` |
+| **Kitty** | `config/kitty/` | `Ctrl + Shift + F5` |
+| **Starship** | `config/starship/` | Instant (reflected on next terminal prompt) |
+| **Dolphin / KDE** | `config/kde/` | Close and restart application |
+| **Feishin / Qimgv / Glow** | `config/<app>/` | Close and restart application |
+
+---
+
 ## Adding a New Out-of-Store Dotfile
 1. Create the configuration file or folder in `./config/<app>/`.
 2. Register the mapping in [`home/misc/dotfile.nix`](../home/misc/dotfile.nix) under the `files` attribute set:
@@ -41,3 +56,11 @@ By using `config.lib.file.mkOutOfStoreSymlink` in [`home/misc/dotfile.nix`](../h
    };
    ```
 3. Run `nrs` once to establish the initial symlink in `~/.config/`.
+
+---
+
+## Documentation
+
+For full details on live reloading, out-of-store symlink mechanics, and application-specific settings, refer to the online guide:
+
+📖 **[Out-of-Store Dotfiles Documentation](https://nix.kyle-kwong.com/dotfiles/)**
