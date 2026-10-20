@@ -8,6 +8,22 @@ hl.window_rule({
 	opaque = true,
 })
 
+local function make_browser_tab_opaque(title_keyword, browser_class)
+	local target_browser_class <const> = browser_class or "zen-beta"
+
+	hl.window_rule({
+		name = "opaque-zen-tab-" .. string.lower(title_keyword),
+		match = {
+			class = target_browser_class,
+			title = ".*" .. title_keyword .. " — Zen Browser.*",
+		},
+		opacity = 1.0,
+		opaque = true,
+	})
+end
+
+make_browser_tab_opaque("YouTube")
+
 -- =============================================================================
 -- Centered Floating Windows
 -- =============================================================================

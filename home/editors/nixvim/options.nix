@@ -13,5 +13,7 @@
     scrolloff = 8;
     updatetime = 250;
     clipboard = "unnamedplus";
+    swapfile = false;
+    undofile = true;
   };
 }

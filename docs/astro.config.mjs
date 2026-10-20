@@ -14,6 +14,44 @@ export default defineConfig({
       title: 'nix-config',
       description: 'Declarative NixOS & Home Manager Configuration Fleet',
       customCss: ['./src/styles/catppuccin.css', './src/styles/custom.css'],
+      head: [
+        {
+          tag: 'script',
+          content: `
+            document.addEventListener('keydown', (event) => {
+              if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+              if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+              const target = event.target;
+              if (target instanceof HTMLElement && (target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName))) return;
+              if (document.querySelector('dialog[open], [role="dialog"][aria-modal="true"]')) return;
+              const selection = window.getSelection();
+              if (selection && selection.toString().length > 0) return;
+
+              const path = window.location.pathname.replace(/\\/+$/, '') || '/';
+              if (event.key === 'ArrowLeft') {
+                const prev = document.querySelector('a[rel="prev"]');
+                if (prev instanceof HTMLElement) {
+                  prev.click();
+                } else if (path === '/installation') {
+                  window.location.href = '/';
+                }
+              } else if (event.key === 'ArrowRight') {
+                const next = document.querySelector('a[rel="next"]');
+                if (next instanceof HTMLElement) {
+                  next.click();
+                } else if (path === '/') {
+                  const heroLink = document.querySelector('.hero .actions a.primary, .hero a[href]');
+                  if (heroLink instanceof HTMLElement) {
+                    heroLink.click();
+                  } else {
+                    window.location.href = '/installation/';
+                  }
+                }
+              }
+            });
+          `,
+        },
+      ],
       expressiveCode: {
         themes: ['catppuccin-mocha', 'catppuccin-latte'],
         styleOverrides: {
@@ -40,6 +78,7 @@ export default defineConfig({
           label: 'Getting Started',
           items: [
             { label: 'System Installation', slug: 'installation' },
+            { label: 'Adoption & Forking', slug: 'adoption' },
             { label: 'Post-Installation Setup', slug: 'post-installation' },
             { label: 'BIOS & Firmware', slug: 'bios-update' },
           ],
@@ -48,6 +87,7 @@ export default defineConfig({
           label: 'Architecture & Hosts',
           items: [
             { label: 'Flake Architecture', slug: 'architecture' },
+            { label: 'Split CI Architecture', slug: 'split-ci' },
             { label: 'Host Configurations', slug: 'hosts' },
             { label: 'Home Manager', slug: 'home-manager' },
             { label: 'Out-of-Store Dotfiles', slug: 'dotfiles' },

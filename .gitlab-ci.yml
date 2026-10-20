@@ -62,7 +62,7 @@ verify-flake:
 
 verify-docs:
   stage: test
-  image: node:22-slim
+  image: node:lts-slim
 
   rules:
     # Only for merge requests

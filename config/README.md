@@ -23,7 +23,7 @@ By using `config.lib.file.mkOutOfStoreSymlink` in [`home/misc/dotfile.nix`](../h
 | Directory | Target Destination | Description |
 | :--- | :--- | :--- |
 | **`hypr/`** | `~/.config/hypr` | Hyprland compositor configuration written in pure Lua (keybinds, window rules, layer rules, animations, layout utilities). |
-| **`kitty/`** | `~/.config/kitty` | Kitty terminal emulator configuration, color schemes, and declarative session blueprints (e.g. `three-pane.session`). |
+| **`kitty/`** | `~/.config/kitty` | Kitty terminal emulator configuration, color schemes, and declarative session blueprints (e.g. `two-pane.session`, `three-pane.session`). |
 | **`foot/`** | `~/.config/foot` | Minimal Foot terminal configuration used for floating TUI wrappers (`tui-wrap`). |
 | **`starship/`** | `~/.config/starship.toml` | Starship cross-shell prompt theme and format settings. |
 | **`kde/dolphin/`** | `~/.config/dolphinrc`, `kservicemenurc`, `dolphinstaterc` (template) | KDE Dolphin file manager preferences and context menus. (`dolphinstaterc` template is seeded to `~/.local/state/` via `post-install.sh`). |

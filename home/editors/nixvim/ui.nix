@@ -23,6 +23,7 @@
           indent_blankline.enabled = true;
           neo_tree = true;
           noice = true;
+          notify = true;
           which_key = true;
         };
       };
@@ -77,6 +78,10 @@
         };
       };
 
+      notify = {
+        enable = true;
+        settings.background_colour = "#000000";
+      };
     };
   };
 }

@@ -7,13 +7,16 @@ This guide covers bootstrapping a new machine using the automated installation s
 
 ---
 
+> [!NOTE]
+> Planning to adopt or fork this configuration for your own hardware? Follow the [Adoption & Forking Guide](/adoption/) first.
+
 ## Prerequisites
 
 1. Boot into a **NixOS Live USB** environment.
 2. Ensure you have an active network connection (Wi-Fi or Ethernet).
-3. Clone the repository and navigate into it:
+3. Clone your adopted fork repository and navigate into it:
    ```bash
-   git clone https://gitlab.com/kylekwong/nix-config.git
+   git clone https://github.com/<your-username>/nix-config.git  # or https://gitlab.com/<your-username>/nix-config.git
    cd nix-config
    ```
 

@@ -23,8 +23,8 @@ hero:
 
 | Section | Description | Key Pages |
 | :--- | :--- | :--- |
-| **Getting Started** | Setting up new machines from scratch | [System Installation](/installation/) • [Post-Installation](/post-installation/) • [BIOS & Firmware](/bios-update/) |
-| **Architecture** | Flake organization and machine topologies | [Flake Architecture](/architecture/) • [Hosts Inventory](/hosts/) • [Home Manager](/home-manager/) • [Dotfiles](/dotfiles/) |
+| **Getting Started** | Setting up new machines from scratch | [System Installation](/installation/) • [Adoption & Forking](/adoption/) • [Post-Installation](/post-installation/) • [BIOS & Firmware](/bios-update/) |
+| **Architecture** | Flake organization and machine topologies | [Flake Architecture](/architecture/) • [Split CI Architecture](/split-ci/) • [Hosts Inventory](/hosts/) • [Home Manager](/home-manager/) • [Dotfiles](/dotfiles/) |
 | **Modules** | Reusable system capabilities and integrations | [System Modules](/modules/) • [Sunshine Streaming](/sunshine/) • [Gaming & Gamescope](/gaming/) • [Flatpak](/flatpak/) • [Shell Scripts](/shell-scripts/) • [Overlays](/overlays/) |
 | **Operations** | Day-to-day maintenance and security | [Secrets (agenix)](/secrets/) • [Desktop Entries](/desktop-entries/) • [Code Quality](/code-quality/) |
 

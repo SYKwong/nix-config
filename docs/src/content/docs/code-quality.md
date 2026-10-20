@@ -67,3 +67,4 @@ Commit messages must strictly follow the **Conventional Commits** specification 
 
 - **`flake.lock` Management:** The `flake.lock` file is managed strictly by automated CI schedules (`update-flake-mr`). Do not update or modify lockfiles locally unless you updated `flake.nix`.
 - **Pre-merge Verification:** Automated CI pipelines test flake evaluation, formatting, and linting on all merge requests before they can be merged into `main`.
+- **Dual-Forge Architecture:** Fleet evaluations and automated maintenance bots run natively on GitLab CI, while GitHub Actions is restricted strictly to documentation deployments. See [Split CI Architecture](/split-ci/) for the complete rationale and operational model.

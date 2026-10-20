@@ -138,12 +138,19 @@ let
   pipelineAllowHook =
     pkgs.writers.writePython3Bin "agy-pipeline-allow"
       {
-        flakeIgnore = [ "E501" ];
+        flakeIgnore = [
+          "E203"
+          "E501"
+          "W503"
+          "W504"
+        ];
       }
       ''
         import json
         import re
         import shlex
+        import shutil
+        import subprocess
         import sys
 
         ALLOWED_COMMANDS = json.loads(
@@ -169,9 +176,123 @@ let
             return cleaned_cmd == target or cleaned_cmd.startswith(target + " ")
 
 
+        def extract_substitutions(cmd_str):
+            subs = []
+            i = 0
+            n = len(cmd_str)
+            in_single_quote = False
+            in_double_quote = False
+
+            while i < n:
+                c = cmd_str[i]
+                if c == "\\":
+                    i += 2
+                    continue
+                if c == "'" and not in_double_quote:
+                    in_single_quote = not in_single_quote
+                    i += 1
+                    continue
+                if c == '"' and not in_single_quote:
+                    in_double_quote = not in_double_quote
+                    i += 1
+                    continue
+
+                if not in_single_quote:
+                    if c == "$" and i + 2 < n and cmd_str[i + 1:i + 3] == "((":
+                        start = i + 3
+                        depth = 2
+                        j = start
+                        sub_single = False
+                        sub_double = False
+                        while j < n and depth > 0:
+                            ch = cmd_str[j]
+                            if ch == "\\":
+                                j += 2
+                                continue
+                            if ch == "'" and not sub_double:
+                                sub_single = not sub_single
+                            elif ch == '"' and not sub_single:
+                                sub_double = not sub_double
+                            elif not sub_single and not sub_double:
+                                if ch == "(":
+                                    depth += 1
+                                elif ch == ")":
+                                    depth -= 1
+                            j += 1
+                        if depth == 0:
+                            expr = cmd_str[start:j - 2].strip()
+                            subs.append(("arith", cmd_str[i:j], expr, in_double_quote))
+                            i = j
+                            continue
+                    elif (c == "$" or c == "<") and i + 1 < n and cmd_str[i + 1] == "(":
+                        kind = "cmd" if c == "$" else "proc"
+                        start = i + 2
+                        depth = 1
+                        j = start
+                        sub_single = False
+                        sub_double = False
+                        while j < n and depth > 0:
+                            ch = cmd_str[j]
+                            if ch == "\\":
+                                j += 2
+                                continue
+                            if ch == "'" and not sub_double:
+                                sub_single = not sub_single
+                            elif ch == '"' and not sub_single:
+                                sub_double = not sub_double
+                            elif not sub_single and not sub_double:
+                                if ch == "(":
+                                    depth += 1
+                                elif ch == ")":
+                                    depth -= 1
+                            j += 1
+                        if depth == 0:
+                            inner_cmd = cmd_str[start:j - 1].strip()
+                            subs.append((kind, cmd_str[i:j], inner_cmd, in_double_quote))
+                            i = j
+                            continue
+                    elif c == "`":
+                        start = i + 1
+                        j = start
+                        while j < n and cmd_str[j] != "`":
+                            if cmd_str[j] == "\\":
+                                j += 1
+                            j += 1
+                        if j < n and cmd_str[j] == "`":
+                            inner_cmd = cmd_str[start:j].strip()
+                            subs.append(("cmd", cmd_str[i:j + 1], inner_cmd, in_double_quote))
+                            i = j + 1
+                            continue
+                i += 1
+            return subs
+
+
         def evaluate_command(cmd_str):
+            cmd_str = cmd_str.strip()
+            if not cmd_str:
+                return "ask"
+
+            if "\n" in cmd_str or "\r" in cmd_str:
+                return "ask"
+
+            substitutions = extract_substitutions(cmd_str)
+            for kind, _, inner, _ in substitutions:
+                if kind in ("cmd", "proc"):
+                    inner_decision = evaluate_command(inner)
+                    if inner_decision == "deny":
+                        return "deny"
+                    if inner_decision != "allow":
+                        return "ask"
+                elif kind == "arith":
+                    if not re.match(r"^[\d\s+\-*/%()]+$", inner):
+                        return "ask"
+
+            normalized_cmd = cmd_str
+            for _, full_expr, _, _ in substitutions:
+                normalized_cmd = normalized_cmd.replace(full_expr, "__ARG__")
+
             try:
-                lexer = shlex.shlex(cmd_str, posix=True, punctuation_chars="|;&><")
+                lexer = shlex.shlex(normalized_cmd, posix=True, punctuation_chars="|;&><")
                 lexer.whitespace_split = False
                 tokens = list(lexer)
             except Exception:
@@ -182,23 +303,23 @@ let
 
             operators = {"|", ";", "&&", "||", ">", ">>", "<", "&"}
             segments = []
-            current_segment = []
+            current = []
             has_non_pipe_operator = False
 
-            for token in tokens:
-                if token in operators:
-                    if token != "|":
+            for tok in tokens:
+                if tok in operators:
+                    if tok != "|":
                         has_non_pipe_operator = True
-                    elif not current_segment:
+                    elif not current:
                         return "ask"
-                    if current_segment:
-                        segments.append(" ".join(current_segment))
-                        current_segment = []
+                    if current:
+                        segments.append(" ".join(current).strip())
+                        current = []
                 else:
-                    current_segment.append(token)
+                    current.append(tok)
 
-            if current_segment:
-                segments.append(" ".join(current_segment))
+            if current:
+                segments.append(" ".join(current).strip())
             elif "|" in tokens:
                 return "ask"
 
@@ -206,9 +327,6 @@ let
                 cleaned = clean_segment(seg)
                 if any(matches_rule(cleaned, target) for target in DENIED_COMMANDS):
                     return "deny"
-
-            if "`" in cmd_str or "$(" in cmd_str or "\n" in cmd_str or "\r" in cmd_str:
-                return "ask"
 
             if has_non_pipe_operator or not segments:
                 return "ask"
@@ -222,6 +340,43 @@ let
             return "ask"
 
 
+        def resolve_command(cmd_str):
+            substitutions = extract_substitutions(cmd_str)
+            if not substitutions:
+                return cmd_str
+
+            resolved = cmd_str
+            for kind, full_expr, inner, in_double in substitutions:
+                if kind == "arith":
+                    try:
+                        if re.match(r"^[\d\s+\-*/%()]+$", inner):
+                            val = str(eval(inner, {"__builtins__": None}, {}))
+                            resolved = resolved.replace(full_expr, val, 1)
+                    except Exception:
+                        pass
+                elif kind in ("cmd", "proc"):
+                    resolved_inner = resolve_command(inner)
+                    try:
+                        proc = subprocess.run(
+                            resolved_inner,
+                            shell=True,
+                            executable=shutil.which("bash") or "/bin/sh",
+                            capture_output=True,
+                            text=True,
+                            timeout=5,
+                        )
+                        out = proc.stdout.strip()
+                        if in_double:
+                            val = out.replace("\\", "\\\\").replace('"', '\\"')
+                        else:
+                            words = out.split()
+                            val = " ".join(shlex.quote(w) for w in words)
+                        resolved = resolved.replace(full_expr, val, 1)
+                    except Exception:
+                        pass
+            return resolved
+
+
         def main():
             try:
                 raw = sys.stdin.read()
@@ -233,29 +388,60 @@ let
                 print(json.dumps({"decision": "ask"}))
                 return
 
-            tool_call = data.get("toolCall", {})
-            if tool_call.get("name") != "run_command":
+            tool_call = data.get("toolCall") or data.get("tool_call") or {}
+            tool_name = (
+                tool_call.get("name") or tool_call.get("tool_name") or ""
+            ).lower()
+            if tool_name not in ("run_command", "runcommand"):
                 print(json.dumps({"decision": "ask"}))
                 return
 
-            cmd_line = tool_call.get("args", {}).get("CommandLine", "").strip()
+            args = tool_call.get("args") or tool_call.get("arguments") or {}
+            cmd_line = (
+                args.get("CommandLine")
+                or args.get("command_line")
+                or args.get("command")
+                or ""
+            ).strip()
             if not cmd_line:
                 print(json.dumps({"decision": "ask"}))
                 return
 
             decision = evaluate_command(cmd_line)
-            if decision == "allow":
-                print(json.dumps({
+            if decision != "allow":
+                if decision == "deny":
+                    print(
+                        json.dumps({
+                            "decision": "deny",
+                            "reason": "Command matches denyRules",
+                        })
+                    )
+                else:
+                    print(json.dumps({"decision": "ask"}))
+                return
+
+            substitutions = extract_substitutions(cmd_line)
+            if substitutions:
+                resolved_cmd = resolve_command(cmd_line)
+                if resolved_cmd != cmd_line and evaluate_command(resolved_cmd) == "allow":
+                    print(
+                        json.dumps({
+                            "decision": "allow",
+                            "reason": "Approved command substitution from allowRules",
+                            "permissionOverrides": [f"command({cmd_line})"],
+                            "overwrite": {
+                                "CommandLine": resolved_cmd,
+                            },
+                        })
+                    )
+                    return
+
+            print(
+                json.dumps({
                     "decision": "allow",
-                    "reason": "Approved command/pipeline from allowRules"
-                }))
-            elif decision == "deny":
-                print(json.dumps({
-                    "decision": "deny",
-                    "reason": "Command matches denyRules"
-                }))
-            else:
-                print(json.dumps({"decision": "ask"}))
+                    "reason": "Approved command/pipeline from allowRules",
+                })
+            )
 
 
         if __name__ == "__main__":
@@ -312,7 +498,7 @@ in
       - Variable Naming: Prefer clear, descriptive, and verbose variable names over terse abbreviations (e.g. `logical_monitor_width` instead of `mon_w`).
 
       ## Command & File Operations
-      - Command Execution & Pipelines: Pipelines composed exclusively of read-only inspection utilities (e.g. `git`, `grep`, `awk`, `sed`, `jq`, `head`, `tail`, `sort`, `uniq`, `wc`, `cat`, `cut`, `tr`, `find`, `fd`) are permitted and auto-approved via the pipeline PreToolUse hook. Do not chain mutating commands with `&&`, `||`, `;`, or shell redirection in `run_command`.
+      - Command Execution & Pipelines: Pipelines and command substitutions composed exclusively of read-only inspection utilities (e.g. `git`, `grep`, `awk`, `sed`, `jq`, `head`, `tail`, `sort`, `uniq`, `wc`, `cat`, `cut`, `tr`, `find`, `fd`, `strings`, `which`, `nm`) are permitted and auto-approved via the pipeline PreToolUse hook. Do not chain mutating commands with `&&`, `||`, `;`, or shell redirection in `run_command`.
       - File Creation and Modification: Always use `write_to_file` or `replace_file_content` to create or edit files in the workspace. Never use `cat << 'EOF' > ...` or shell redirection in `run_command`, as shell redirection triggers CLI permission prompts.
       - Nix Store Operations: Never attempt direct filesystem reads, searches, or traversals on `/nix/store` (these are hard-locked and will block execution). Always inspect configuration options, module definitions, and package metadata declaratively via `nix eval` (e.g., `nix eval .#nixosConfigurations.<host>.options.<option>` or `nix eval .#nixosConfigurations.<host>.config.<path>`). Only if declarative evaluation fails or raw source inspection is strictly unavoidable should you trigger a store read request, providing the exact path and rationale.
 
