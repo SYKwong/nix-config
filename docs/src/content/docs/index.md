@@ -79,3 +79,4 @@ nix flake check
 | :--- | :--- | :--- | :--- |
 | **[`framework16`](/hosts/)** | Primary Workstation Laptop | Framework Laptop 16 (AMD Ryzen 7840HS, 96GB RAM) | LUKS + TPM2, Lanzaboote Secure Boot, Btrfs + Swap Hibernation |
 | **[`mini-pc-k8`](/hosts/)** | HTPC / Living Room Desktop | GMKtec NucBox K8 Plus (AMD Ryzen 8845HS, 64GB RAM) | Harmonia binary cache, Btrfs, Custom ALSA profile |
+| **[`legion-go`](/hosts/)** | Handheld Gaming Console | Lenovo Legion Go (AMD Ryzen Z1 Extreme, 16GB RAM) | Steam Gamescope + KDE Plasma 6, Handheld Daemon, Display rotation |

@@ -31,7 +31,7 @@ git clone https://github.com/<your-username>/nix-config.git  # or https://gitlab
 cd nix-config
 
 # 2. Run adopt.sh to sanitize the repo and scaffold your machine:
-./adopt.sh <your-hostname> <your-username> [--laptop | --desktop] [--luks]
+./adopt.sh <your-hostname> <your-username> [--laptop | --desktop | --handheld] [--luks]
 
 # 3. Verify or edit your drive ID in hosts/<your-hostname>/disko.nix:
 #    device = "/dev/disk/by-id/..." (discover via: ls -l /dev/disk/by-id/)
@@ -48,10 +48,10 @@ git push origin main
 
 **What `adopt.sh` does automatically:**
 1. **Purges Inaccessible Secrets**: Deletes all `secrets/*.age` and resets `modules/secrets/default.nix` to an empty set (`age.secrets = {};`), preventing Agenix evaluation errors.
-2. **Removes Private Network Shares**: Deletes personal SMB NAS configurations (`networkshare.nix`) and unlinks them from `modules/desktop` and `modules/laptop`.
+2. **Removes Private Network Shares**: Deletes personal SMB NAS configurations (`networkshare.nix`) and unlinks them from form-factor profiles.
 3. **Sanitizes AI Providers**: Removes personal Cloudflare Workers AI credentials from `home/cli/opencode.nix` while keeping local Ollama intact.
-4. **Scaffolds Target Host**: Removes the author's host directories (`hosts/framework16`, `hosts/mini-pc-k8`) and generates `hosts/<your-hostname>/` with a clean `disko.nix` (encrypted LUKS with TPM2 auto-unlock or unencrypted Btrfs) and a stub `hardware-configuration.nix`.
-5. **Configures `outputs.nix`**: Registers your machine and username in `outputs.nix` with the selected form-factor module (`./modules/laptop` or `./modules/desktop`) and commented `nixos-hardware` template profiles.
+4. **Scaffolds Target Host**: Removes the author's host directories (`hosts/framework16`, `hosts/mini-pc-k8`, `hosts/legion-go`) and generates `hosts/<your-hostname>/` with a clean `disko.nix` (encrypted LUKS with TPM2 auto-unlock or unencrypted Btrfs) and a stub `hardware-configuration.nix`.
+5. **Configures `outputs.nix`**: Registers your machine and username in `outputs.nix` with the selected form-factor profile (`./modules/profiles/desktop`, `./modules/profiles/laptop`, or `./modules/profiles/gaming-handheld`) and commented `nixos-hardware` template profiles.
 
 > [!NOTE]
 > `adopt.sh` requires only standard Bash and coreutils; it does not require Nix to be installed on the host machine. Pre-formatted templates are generated automatically.

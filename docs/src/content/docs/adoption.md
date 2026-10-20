@@ -30,7 +30,7 @@ git clone https://github.com/<your-username>/nix-config.git  # or https://gitlab
 cd nix-config
 
 # 2. Run adopt.sh to sanitize the repository and scaffold your machine:
-./adopt.sh <your-hostname> <your-username> [--laptop | --desktop] [--luks]
+./adopt.sh <your-hostname> <your-username> [--laptop | --desktop | --handheld] [--luks]
 
 # 3. Verify or edit your drive ID in hosts/<your-hostname>/disko.nix:
 #    device = "/dev/disk/by-id/..." (discover via: ls -l /dev/disk/by-id/)
@@ -49,6 +49,7 @@ git push origin main
 | `<username>` | **Required**. Primary user account name (e.g. `alice`). |
 | `--laptop` | Enables portable device modules (power management, sleep hooks). |
 | `--desktop` | Enables desktop workstation modules (*default*). |
+| `--handheld` | Enables gaming handheld profile (Steam Gamescope session, Handheld Daemon, touch-friendly UI). |
 | `--luks` | Configures LUKS disk encryption with TPM2 auto-unlock in `disko.nix`. |
 | `--disk <path>` | Pre-configures persistent drive device path in `disko.nix`. |
 | `--remote <url>` | Sets the git remote `origin` to your fork repository URL. |
@@ -57,10 +58,10 @@ git push origin main
 ### What `adopt.sh` Automates
 
 1. **Purges Inaccessible Secrets**: Removes all `secrets/*.age` and empties `modules/secrets/default.nix` (`age.secrets = {};`), preventing Agenix evaluation errors.
-2. **Removes Private Network Shares**: Deletes personal SMB NAS modules (`networkshare.nix`) and unlinks them from `modules/desktop` and `modules/laptop`.
+2. **Removes Private Network Shares**: Deletes personal SMB NAS modules (`networkshare.nix`) and unlinks them from form-factor profiles.
 3. **Sanitizes AI Providers**: Removes personal Cloudflare Workers AI credentials from `home/cli/opencode.nix` while keeping local Ollama intact.
-4. **Scaffolds Target Host**: Removes existing host directories and generates `hosts/<your-hostname>/` containing `default.nix`, `disko.nix` (encrypted LUKS or unencrypted Btrfs), and a stub `hardware-configuration.nix`.
-5. **Registers Host in `outputs.nix`**: Updates the `hosts` set with `<your-hostname>` and `<your-username>` importing the chosen form factor module and commented hardware tuning templates.
+4. **Scaffolds Target Host**: Removes existing host directories (`framework16`, `mini-pc-k8`, `legion-go`) and generates `hosts/<your-hostname>/` containing `default.nix`, `disko.nix` (encrypted LUKS or unencrypted Btrfs), and a stub `hardware-configuration.nix`.
+5. **Registers Host in `outputs.nix`**: Updates the `hosts` set with `<your-hostname>` and `<your-username>` importing the chosen form factor module (`./modules/profiles/desktop`, `./modules/profiles/laptop`, or `./modules/profiles/gaming-handheld`) and commented hardware tuning templates.
 
 > [!NOTE]
 > `adopt.sh` uses standard POSIX/Bash tools and does not require Nix. It can be run on any existing Linux, macOS, or WSL system prior to flashing installation media. All generated files are pre-formatted to repository code style standards.

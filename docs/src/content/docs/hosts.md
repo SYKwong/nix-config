@@ -17,8 +17,9 @@ This section documents host-specific machine configurations within the fleet. Ea
 
 | Host | Role | Hardware Specs | Boot & Storage | Key Modules & Hardware Quirks |
 | :--- | :--- | :--- | :--- | :--- |
-| **`framework16`** | Primary Workstation Laptop | Framework Laptop 16 (AMD Ryzen 7840HS, 96GB RAM) | LUKS (TPM2 auto-unlock), Lanzaboote Secure Boot, Btrfs with 100GB hibernation swap (`/.swapvol`) | QMK keyboard backlight manager (`kb-light-manager`), laptop power management (`modules/laptop`), `nixos-hardware` integration |
+| **`framework16`** | Primary Workstation Laptop | Framework Laptop 16 (AMD Ryzen 7840HS, 96GB RAM) | LUKS (TPM2 auto-unlock), Lanzaboote Secure Boot, Btrfs with 100GB hibernation swap (`/.swapvol`) | QMK keyboard backlight manager (`kb-light-manager`), laptop power management (`modules/profiles/laptop`), `nixos-hardware` integration |
 | **`mini-pc-k8`** | HTPC / Living Room Workstation | GMKtec NucBox K8 Plus (AMD Ryzen 8845HS, 64GB RAM) | Unencrypted Btrfs, 8GB swap | Harmonia local binary cache (`services.harmonia.cache`), custom ALSA card profile (`k8-plus-analog.conf`), Intel Bluetooth de-authorization (`8087:0029`), Flatpak auto-discovery |
+| **`legion-go`** | Handheld Gaming Console | Lenovo Legion Go (AMD Ryzen Z1 Extreme, 16GB LPDDR5X) | Unencrypted Btrfs, 20GB swap (`/.swap/swapfile`) | Dual-session architecture (Steam Gamescope + KDE Plasma 6), Handheld Daemon (`hhd`), portrait display rotation, Detached TrueStrike controller Bluetooth pairing |
 
 ---
 
@@ -71,8 +72,11 @@ Every host is wired into the system build via the `hosts` attribute set in `outp
   username = "<user_name>";
 
   extraModules = [
-    # Host-specific NixOS system modules (e.g. laptop or desktop)
-    ./modules/laptop
+    # Host form-factor profile:
+    # ./modules/profiles/laptop
+    # ./modules/profiles/desktop
+    # ./modules/profiles/gaming-handheld
+    ./modules/profiles/laptop
 
     # Hardware tuning via nixos-hardware:
     # 1. Exact OEM device profile:
@@ -96,6 +100,23 @@ When declaring a host:
   - GPU: `common-gpu-amd`, `common-gpu-intel`, `common-gpu-nvidia`
   - Storage: `common-pc-ssd`, `common-pc-laptop-ssd`
 - **Baseline Fallback**: `nixos-hardware` is optional. The kernel modules and drivers generated into `hosts/<hostname>/hardware-configuration.nix` by `install.sh` provide a fully bootable baseline without external hardware modules.
+
+---
+
+## Handheld Gaming (`legion-go`)
+
+The `legion-go` profile demonstrates configuring a keyboardless gaming handheld via `modules/profiles/gaming-handheld`:
+
+- **Dual-Session Architecture (SteamOS-style)**:
+  - **Gaming Mode (Default)**: Boots directly into a dedicated Steam Gamescope session with controller navigation, gamescope display rotation/scaling, and Handheld Daemon (`hhd`) overlay.
+  - **Desktop Mode**: Touch-friendly KDE Plasma 6 (Wayland) session. Switch from Steam via the Power menu ("Switch to Desktop"), and return to Gaming Mode via the desktop shortcut `Return to Gaming Mode` (`~/Desktop/Return.desktop`) or `steamos-session-select gamescope`.
+  - **First-Boot Behavior**: On the initial boot after installation, SDDM automatically logs into KDE Plasma 6 to allow convenient network setup and running `./post-install.sh`. Subsequent boots launch directly into Steam Gaming Mode.
+- **Hardware Portrait Scanout Quirks**:
+  - The 8.8" 144Hz internal display is rotated right-side up at boot via early kernel parameters (`video=eDP-1:panel_orientation=right_side_up`, `fbcon=rotate:1`).
+  - Gamescope handles compositing rotation via `--force-orientation left`.
+- **Controllers & Power Management**:
+  - Detachable TrueStrike controllers, gyro aiming, optical mouse sensor, and TDP curves managed by Handheld Daemon (`services.handheld-daemon.adjustor.enable = true`).
+  - Uses `suspend-then-hibernate` into a 20 GB swapfile (`/.swap/swapfile`).
 
 ---
 

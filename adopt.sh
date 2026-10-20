@@ -16,6 +16,7 @@ Arguments:
 Options:
   --laptop                 Include laptop-specific modules (power management, sleep hooks)
   --desktop                Include desktop-specific modules (default)
+  --handheld               Include handheld gaming modules (Steam Gamescope session, Handheld Daemon)
   --luks                   Enable LUKS disk encryption with TPM2 auto-unlock in disko.nix
   --disk <device_path>     Set persistent disk device path
                            (default: /dev/disk/by-id/REPLACE_WITH_YOUR_DISK_ID)
@@ -37,7 +38,7 @@ host_name="$1"
 user_name="$2"
 shift 2
 
-is_laptop=false
+form_factor="desktop"
 is_luks=false
 keep_reference=false
 disk_device="/dev/disk/by-id/REPLACE_WITH_YOUR_DISK_ID"
@@ -46,11 +47,15 @@ remote_url=""
 while [ "$#" -gt 0 ]; do
   case "$1" in
     --laptop)
-      is_laptop=true
+      form_factor="laptop"
       shift
       ;;
     --desktop)
-      is_laptop=false
+      form_factor="desktop"
+      shift
+      ;;
+    --handheld)
+      form_factor="handheld"
       shift
       ;;
     --luks)
@@ -129,23 +134,44 @@ EOF
 
 purge_network_shares() {
   echo "==> Removing author's private NAS network shares..."
-  rm -f "$SCRIPT_DIR/modules/desktop/networkshare.nix" "$SCRIPT_DIR/modules/laptop/networkshare.nix"
+  rm -f "$SCRIPT_DIR/modules/profiles/desktop/networkshare.nix" "$SCRIPT_DIR/modules/profiles/laptop/networkshare.nix" \
+    "$SCRIPT_DIR/modules/desktop/networkshare.nix" "$SCRIPT_DIR/modules/laptop/networkshare.nix"
 
-  cat <<'EOF' >"$SCRIPT_DIR/modules/desktop/default.nix"
+  if [ -d "$SCRIPT_DIR/modules/profiles/desktop" ]; then
+    cat <<'EOF' >"$SCRIPT_DIR/modules/profiles/desktop/default.nix"
 {
   imports = [
     ./wireless-config.nix
   ];
 }
 EOF
+  elif [ -d "$SCRIPT_DIR/modules/desktop" ]; then
+    cat <<'EOF' >"$SCRIPT_DIR/modules/desktop/default.nix"
+{
+  imports = [
+    ./wireless-config.nix
+  ];
+}
+EOF
+  fi
 
-  cat <<'EOF' >"$SCRIPT_DIR/modules/laptop/default.nix"
+  if [ -d "$SCRIPT_DIR/modules/profiles/laptop" ]; then
+    cat <<'EOF' >"$SCRIPT_DIR/modules/profiles/laptop/default.nix"
 {
   imports = [
     ./sleep.nix
   ];
 }
 EOF
+  elif [ -d "$SCRIPT_DIR/modules/laptop" ]; then
+    cat <<'EOF' >"$SCRIPT_DIR/modules/laptop/default.nix"
+{
+  imports = [
+    ./sleep.nix
+  ];
+}
+EOF
+  fi
 }
 
 sanitize_opencode() {
@@ -206,9 +232,10 @@ scaffold_host() {
     mkdir -p "$ref_dir"
     [ -d "$SCRIPT_DIR/hosts/framework16" ] && mv "$SCRIPT_DIR/hosts/framework16" "$ref_dir/"
     [ -d "$SCRIPT_DIR/hosts/mini-pc-k8" ] && mv "$SCRIPT_DIR/hosts/mini-pc-k8" "$ref_dir/"
+    [ -d "$SCRIPT_DIR/hosts/legion-go" ] && mv "$SCRIPT_DIR/hosts/legion-go" "$ref_dir/"
   else
-    echo "==> Removing author's host directories (framework16, mini-pc-k8)..."
-    rm -rf "$SCRIPT_DIR/hosts/framework16" "$SCRIPT_DIR/hosts/mini-pc-k8"
+    echo "==> Removing author's host directories (framework16, mini-pc-k8, legion-go)..."
+    rm -rf "$SCRIPT_DIR/hosts/framework16" "$SCRIPT_DIR/hosts/mini-pc-k8" "$SCRIPT_DIR/hosts/legion-go"
   fi
 
   local target_host_dir="$SCRIPT_DIR/hosts/$host_name"
@@ -377,9 +404,11 @@ EOF
 
 configure_outputs() {
   echo "==> Updating outputs.nix with host '$host_name' (user: $user_name)..."
-  local extra_module="./modules/desktop"
-  if [ "$is_laptop" = true ]; then
-    extra_module="./modules/laptop"
+  local extra_module="./modules/profiles/desktop"
+  if [ "$form_factor" = "laptop" ]; then
+    extra_module="./modules/profiles/laptop"
+  elif [ "$form_factor" = "handheld" ]; then
+    extra_module="./modules/profiles/gaming-handheld"
   fi
 
   cat <<EOF >"$SCRIPT_DIR/outputs.nix"
