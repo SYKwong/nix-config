@@ -345,7 +345,7 @@ in
       };
 
       widget = {
-        clock.format = "{:%-I:%M %p}";
+        clock.format = "{:%b %d %-I:%M%p}";
         media = {
           hide_album_art = true;
           title_scroll = "always";
@@ -357,6 +357,13 @@ in
           vpn_status = "both";
         };
         notifications.hide_when_no_unread = true;
+        tray = {
+          drawer = true;
+          pinned = [
+            "Fcitx"
+            "org.fcitx.Fcitx5"
+          ];
+        };
         workspaces.label_source = "name";
       };
     };
