@@ -28,7 +28,7 @@ cd ~/nix-config
 ```
 
 ### What `post-install.sh` Does Automatically (Hands-off):
-- **Converts Git Remote:** Converts `origin` from HTTPS to SSH (`git@gitlab.com:kylekwong/nix-config.git`).
+- **Converts Git Remote:** Converts `origin` from HTTPS to SSH (e.g. `git@gitlab.com:<your-username>/nix-config.git` or GitHub equivalent based on your clone URL).
 - **Enrolls TPM2:** Automatically runs `systemd-cryptenroll` against PCR 7 (`--tpm2-device=auto --tpm2-pcrs=7`) if a LUKS container and TPM2 device are detected (automatically skipped on unencrypted storage).
 - **Generates SSH Keys:** Creates ed25519 keys for both the host (`/etc/ssh/ssh_host_ed25519_key`) and the user (`~/.ssh/id_ed25519`) if they do not exist.
 - **Registers Public Keys:** Injects the newly generated public keys directly into `secrets/keys.nix` under the current hostname.

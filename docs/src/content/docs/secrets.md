@@ -5,6 +5,11 @@ description: Managing encrypted system credentials, tokens, and cryptographic ke
 
 This directory (`secrets/`) manages encrypted system credentials, tokens, and cryptographic keys using [agenix](https://github.com/ryantm/agenix).
 
+> [!IMPORTANT]
+> **Adopting This Repository**: All `.age` files in this directory are encrypted with the author's private keys and are inaccessible to external users. Running `./adopt.sh <hostname> <username>` automatically purges these secrets and resets `secrets/keys.nix` and `secrets/secrets.nix`.
+>
+> Note that `home/cli/atuin.nix` expects `/run/agenix/atuin-credentials` for auto-login (which skips cleanly if absent; authenticate manually with `atuin login`).
+
 ---
 
 ## 1. Key Architecture & Single Source of Truth

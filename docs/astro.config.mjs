@@ -40,6 +40,7 @@ export default defineConfig({
           label: 'Getting Started',
           items: [
             { label: 'System Installation', slug: 'installation' },
+            { label: 'Adoption & Forking', slug: 'adoption' },
             { label: 'Post-Installation Setup', slug: 'post-installation' },
             { label: 'BIOS & Firmware', slug: 'bios-update' },
           ],
@@ -48,6 +49,7 @@ export default defineConfig({
           label: 'Architecture & Hosts',
           items: [
             { label: 'Flake Architecture', slug: 'architecture' },
+            { label: 'Split CI Architecture', slug: 'split-ci' },
             { label: 'Host Configurations', slug: 'hosts' },
             { label: 'Home Manager', slug: 'home-manager' },
             { label: 'Out-of-Store Dotfiles', slug: 'dotfiles' },

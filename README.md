@@ -11,6 +11,88 @@ MIT-0
 You can use my code without any attribution, but I would appreciate if you do.
 Please note that some parts of this repo might be sublicensed to something else because I didn't write them.
 
+## Adopting This Configuration (For Other Users)
+
+> 📖 **Full Guide:** [**Adoption & Forking Guide**](https://nix.kyle-kwong.com/adoption/)
+
+If you are browsing this repository and want to adopt this configuration for your own machines, **fork this repository to your own GitLab or GitHub account first**.
+
+### Why Fork First?
+Forking the repository ensures that `post-install.sh` can automatically:
+1. Rebind your git remote origin from HTTPS to SSH (`git@<forge>:<your-username>/nix-config.git`).
+2. Authenticate with your GitHub or GitLab account (`gh` / `glab`) and upload your newly generated user SSH public key.
+3. Automatically commit and push your machine's hardware configuration (`hosts/<hostname>/hardware-configuration.nix`) and host keys back to your own repository without permission errors.
+
+### Automated Setup (`adopt.sh`)
+
+```bash
+# 1. Fork this repository on GitHub or GitLab, then clone YOUR fork:
+git clone https://github.com/<your-username>/nix-config.git  # or https://gitlab.com/<your-username>/nix-config.git
+cd nix-config
+
+# 2. Run adopt.sh to sanitize the repo and scaffold your machine:
+./adopt.sh <your-hostname> <your-username> [--laptop | --desktop] [--luks]
+
+# 3. Verify or edit your drive ID in hosts/<your-hostname>/disko.nix:
+#    device = "/dev/disk/by-id/..." (discover via: ls -l /dev/disk/by-id/)
+
+# 4. (Optional) In outputs.nix, add nixos-hardware profiles for your device:
+#    - Exact OEM model (e.g. inputs.nixos-hardware.nixosModules.framework-16-7040-amd)
+#    - Or generic components: common-cpu-amd, common-gpu-amd, common-pc-ssd
+
+# 5. Commit and push your adopted setup to your fork:
+git add .
+git commit -m "feat: adopt configuration for <your-hostname>"
+git push origin main
+```
+
+**What `adopt.sh` does automatically:**
+1. **Purges Inaccessible Secrets**: Deletes all `secrets/*.age` and resets `modules/secrets/default.nix` to an empty set (`age.secrets = {};`), preventing Agenix evaluation errors.
+2. **Removes Private Network Shares**: Deletes personal SMB NAS configurations (`networkshare.nix`) and unlinks them from `modules/desktop` and `modules/laptop`.
+3. **Sanitizes AI Providers**: Removes personal Cloudflare Workers AI credentials from `home/cli/opencode.nix` while keeping local Ollama intact.
+4. **Scaffolds Target Host**: Removes the author's host directories (`hosts/framework16`, `hosts/mini-pc-k8`) and generates `hosts/<your-hostname>/` with a clean `disko.nix` (encrypted LUKS with TPM2 auto-unlock or unencrypted Btrfs) and a stub `hardware-configuration.nix`.
+5. **Configures `outputs.nix`**: Registers your machine and username in `outputs.nix` with the selected form-factor module (`./modules/laptop` or `./modules/desktop`) and commented `nixos-hardware` template profiles.
+
+> [!NOTE]
+> `adopt.sh` requires only standard Bash and coreutils; it does not require Nix to be installed on the host machine. Pre-formatted templates are generated automatically.
+
+### Hardware Profiles (`nixos-hardware`)
+
+[NixOS/nixos-hardware](https://github.com/NixOS/nixos-hardware) provides optimized kernel parameters, power management, and hardware quirks.
+
+1. **Find an OEM Model Profile**:
+   - Browse the repository directory structure: paths convert to flake attributes by replacing slashes with hyphens (e.g., `framework/16-7040-amd` → `inputs.nixos-hardware.nixosModules.framework-16-7040-amd`, `lenovo/thinkpad/t14/amd/gen3` → `inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen3`).
+2. **If No Exact OEM Profile Exists (e.g. Desktops, Mini PCs, Unlisted Laptops)**:
+   - Combine generic component modules in `extraModules` under `outputs.nix`:
+     - **CPU**: `common-cpu-amd` (+ `common-cpu-amd-pstate` for modern Ryzen) or `common-cpu-intel`
+     - **GPU**: `common-gpu-amd`, `common-gpu-intel`, or `common-gpu-nvidia`
+     - **Storage**: `common-pc-ssd` (desktop) or `common-pc-laptop-ssd` (laptop)
+3. **If You Omit `nixos-hardware`**:
+   - Adding these profiles is optional. NixOS will always generate a bootable baseline configuration in `hardware-configuration.nix` during installation.
+
+### Installation & Post-Installation Flow
+
+1. **Boot NixOS Live USB & Install**:
+   ```bash
+   git clone https://github.com/<your-username>/nix-config.git  # or https://gitlab.com/<your-username>/nix-config.git
+   cd nix-config
+   sudo ./install.sh "<your-hostname>" "<user_password>" ["<luks_password>"]
+   ```
+2. **First Boot & Onboarding**:
+   Reboot into your new installation and run:
+   ```bash
+   cd ~/nix-config
+   ./post-install.sh
+   ```
+   `post-install.sh` converts your git origin to SSH, registers your public keys in `secrets/keys.nix`, enrolls TPM2 for LUKS (if enabled), and uploads your SSH key to GitLab/GitHub.
+3. **(Optional) Agenix Configuration**:
+   - If you want to manage secrets, add your SSH public key (`~/.ssh/id_ed25519.pub`) to `secrets/keys.nix` and create secrets with `agenix -e <secret-name>.age`.
+
+### Modules with Secret References
+
+Even after running `adopt.sh`, one user-space module references a runtime secret path that originally expected the author's credentials:
+- **Atuin History Sync (`home/cli/atuin.nix`)**: Checks `/run/agenix/atuin-credentials` for automatic sync. Without this secret, `atuin-auto-login` skips cleanly; authenticate manually with `atuin login` or rekey your own credentials with Agenix.
+
 ## How to Use  
 
 ### Install Script Usage

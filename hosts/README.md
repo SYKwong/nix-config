@@ -2,6 +2,9 @@
 
 This directory contains host-specific configurations for individual physical machines. Each subdirectory corresponds to a `hostname` declared in [`outputs.nix`](../outputs.nix).
 
+> [!NOTE]
+> **Adopting This Configuration**: External users should consult the [Adoption & Forking Guide](https://nix.kyle-kwong.com/adoption/) and use [`adopt.sh`](../adopt.sh) (`./adopt.sh <hostname> <username>`) to automatically purge personal configurations and scaffold a new host profile in this directory. There is no reason to keep `framework16` or `mini-pc-k8` unless using them as reference templates.
+
 ---
 
 ## Active Hosts
@@ -54,7 +57,12 @@ Every host is declared in the `hosts` set in [`outputs.nix`](../outputs.nix):
   username = "<user_name>";
 
   extraModules = [
-    # Host-specific NixOS system modules (e.g. nixos-hardware, laptop, desktop)
+    # Host-specific NixOS system modules (e.g. laptop or desktop)
+    ./modules/laptop
+
+    # Hardware tuning via nixos-hardware:
+    # 1. Exact OEM device profile (e.g. inputs.nixos-hardware.nixosModules.framework-16-7040-amd)
+    # 2. Or generic component profiles (e.g. common-cpu-amd, common-gpu-amd, common-pc-ssd)
   ];
 };
 ```

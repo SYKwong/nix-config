@@ -8,6 +8,9 @@ This section documents host-specific machine configurations within the fleet. Ea
 > [!NOTE]
 > Shared modules—including Sunshine streaming with zero-touch tablet display, Hyprland, gaming, and shell scripts—are enabled by default across all fleet machines via `outputs.nix`. The table below highlights host-specific roles, hardware specifications, and quirks.
 
+> [!TIP]
+> **Adopting This Configuration**: External users should consult the [Adoption & Forking Guide](/adoption/) and run `./adopt.sh <hostname> <username>` to purge personal configurations and automatically scaffold a new host directory tailored to their hardware. There is no reason to keep the author's `framework16` or `mini-pc-k8` directories unless using them as a reference template.
+
 ---
 
 ## Active Fleet Inventory
@@ -68,10 +71,31 @@ Every host is wired into the system build via the `hosts` attribute set in `outp
   username = "<user_name>";
 
   extraModules = [
-    # Host-specific NixOS system modules (e.g. nixos-hardware, laptop, desktop)
+    # Host-specific NixOS system modules (e.g. laptop or desktop)
+    ./modules/laptop
+
+    # Hardware tuning via nixos-hardware:
+    # 1. Exact OEM device profile:
+    inputs.nixos-hardware.nixosModules.framework-16-7040-amd
+
+    # 2. Or generic component profiles (if no exact device profile exists):
+    # inputs.nixos-hardware.nixosModules.common-cpu-amd
+    # inputs.nixos-hardware.nixosModules.common-cpu-amd-pstate
+    # inputs.nixos-hardware.nixosModules.common-gpu-amd
+    # inputs.nixos-hardware.nixosModules.common-pc-ssd
   ];
 };
 ```
+
+### Hardware Profiles (`nixos-hardware`)
+
+When declaring a host:
+- **OEM Device Profiles**: Check [NixOS/nixos-hardware](https://github.com/NixOS/nixos-hardware). Directory paths convert to module attributes by replacing slashes with hyphens (e.g., `lenovo/thinkpad/x1/6th-gen` becomes `inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x1-6th-gen`).
+- **Generic Architecture Modules**: For custom PCs, mini PCs (like `mini-pc-k8`), or unlisted laptops, compose common component profiles:
+  - CPU: `common-cpu-amd`, `common-cpu-amd-pstate`, `common-cpu-intel`, `common-cpu-intel-pstate`
+  - GPU: `common-gpu-amd`, `common-gpu-intel`, `common-gpu-nvidia`
+  - Storage: `common-pc-ssd`, `common-pc-laptop-ssd`
+- **Baseline Fallback**: `nixos-hardware` is optional. The kernel modules and drivers generated into `hosts/<hostname>/hardware-configuration.nix` by `install.sh` provide a fully bootable baseline without external hardware modules.
 
 ---
 
