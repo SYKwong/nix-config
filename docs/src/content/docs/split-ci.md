@@ -21,7 +21,7 @@ flowchart LR
 
     subgraph gitlab_ci ["GitLab CI/CD (Merge Gatekeeper)"]
         gitlab --> test["verify-flake<br/>(nixos/nix:latest container)"]
-        gitlab --> docs_check["verify-docs<br/>(node:22-slim container)"]
+        gitlab --> docs_check["verify-docs<br/>(node:lts-slim container)"]
         gitlab --> lock_bot["update-flake-mr<br/>(scheduled flake update bot)"]
         gitlab --> stable_tag["create-weekly-stable<br/>(tag rotation bot)"]
     end
@@ -55,7 +55,7 @@ When GitHub Actions is down, pull requests are frozen in an unmergeable state. I
 
 GitLab CI jobs execute directly inside pristine, official OCI container images:
 - **`nixos/nix:latest`**: Runs `nix fmt` verification and `nix flake check` in an unadulterated Nix environment.
-- **`node:22-slim`**: Verifies that Astro Starlight documentation builds cleanly without pulling extraneous build tools.
+- **`node:lts-slim`**: Verifies that Astro Starlight documentation builds cleanly without pulling extraneous build tools.
 
 In contrast to cloud VM runners that execute multi-step setup scripts on shared host environments, GitLab CI spins up fresh container instances for each job. Combined with GitLab's `FF_USE_FASTZIP` caching (`.cache/nix` keyed on `flake.lock` and `.cache/npm` keyed on `docs/package-lock.json`), builds remain completely reproducible, isolated, and fast.
 
@@ -122,7 +122,7 @@ The split architecture strictly contains operational blast radiuses:
 | :--- | :--- | :--- |
 | **Outage Impact on Merges** | **Zero Impact**: Highly reliable runners; merges proceed normally | **Zero Impact**: Outages only delay wiki CDN updates; never blocks merges |
 | **Primary Responsibility** | `nix flake check`, `nix fmt`, lock updates, release tags | Building & publishing Astro Starlight wiki to Pages |
-| **Execution Model** | Native OCI containers (`nixos/nix`, `node:22-slim`) | Shared Ubuntu VM runners (`ubuntu-latest`) |
+| **Execution Model** | Native OCI containers (`nixos/nix`, `node:lts-slim`) | Shared Ubuntu VM runners (`ubuntu-latest`) |
 | **Dependency Model** | Raw bash scripts inside container images | Composite actions (`actions/checkout`, `setup-node`) |
 | **Action Churn** | None (no external marketplace actions) | Periodic Node runtime upgrades & action bumps |
 | **Automated MR / PR Creation** | Native Git Push Options via `CI_JOB_TOKEN` | Requires Personal Access Token or GitHub App |
@@ -219,7 +219,7 @@ If you are adopting or forking this repository, choose the deployment and CI top
    Connect your GitLab repository directly to Cloudflare Pages or Vercel with the build settings listed above. This eliminates the GitHub mirror, GitHub Actions workflows, and PAT maintenance while preserving GitLab CI's rock-solid merge gatekeeping.
 
 3. **Consolidate on GitLab (GitLab CI + GitLab Pages)**:
-   Delete `.github/` and add a `pages` job to `.gitlab-ci.yml` using `node:22-slim` to build and serve the wiki directly through GitLab Pages.
+   Delete `.github/` and add a `pages` job to `.gitlab-ci.yml` using `node:lts-slim` to build and serve the wiki directly through GitLab Pages.
 
 4. **Consolidate on GitHub (GitHub Actions Only)**:
    Delete `.gitlab-ci.yml`, set up `determinate-nix-action` for pull request checks, and deploy to GitHub Pages. Be aware that GitHub Actions outages can block pull request merges under branch protection rules.

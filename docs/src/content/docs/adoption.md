@@ -207,7 +207,7 @@ Delete the `.github/` directory and deploy your documentation via native **GitLa
 ```yaml
 pages:
   stage: stable
-  image: node:22-slim
+  image: node:lts-slim
   script:
     - cd docs
     - npm ci --ignore-scripts
