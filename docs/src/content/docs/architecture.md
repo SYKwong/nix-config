@@ -35,12 +35,12 @@ nix-config/
 │
 ├── hosts/                      # Host-specific hardware and partition definitions
 │   ├── framework16/            # Framework Laptop 16 (Ryzen 7040, LUKS, Secure Boot)
-│   └── mini-pc-k8/             # GMKtec K8 Plus Mini PC (Ryzen 8845HS HTPC)
+│   ├── mini-pc-k8/             # GMKtec K8 Plus Mini PC (Ryzen 8845HS HTPC)
+│   └── legion-go/              # Lenovo Legion Go (Ryzen Z1 Extreme Handheld Console)
 │
 ├── modules/                    # Reusable NixOS system modules
 │   ├── core/                   # Baseline system configuration (boot, network, security, packages)
-│   ├── laptop/                 # Portable device power management and lid handling
-│   ├── desktop/                # Workstation capabilities and shared desktop services
+│   ├── profiles/               # Form-factor profiles (desktop, laptop, gaming-handheld)
 │   ├── hyprland/               # Hyprland compositor, UWSM session, Ly greeter
 │   ├── sunshine/               # Sunshine desktop streaming and automated tablet virtual display
 │   ├── shell-scripts/          # Custom CLI utilities packaged via writeShellApplication
@@ -87,7 +87,7 @@ hosts = {
       inputs.lanzaboote.nixosModules.lanzaboote
 
       ./modules/hardware/framework.nix
-      ./modules/laptop
+      ./modules/profiles/laptop
       ./modules/lanzaboote
     ];
   };
@@ -101,8 +101,21 @@ hosts = {
       inputs.nixos-hardware.nixosModules.common-gpu-amd
       inputs.nixos-hardware.nixosModules.common-pc-ssd
 
-      ./modules/desktop
+      ./modules/profiles/desktop
       ./modules/power-management/ppd.nix
+    ];
+  };
+
+  legion-go = {
+    username = "legion-go-kyle";
+
+    extraModules = [
+      inputs.nixos-hardware.nixosModules.common-cpu-amd
+      inputs.nixos-hardware.nixosModules.common-cpu-amd-pstate
+      inputs.nixos-hardware.nixosModules.common-gpu-amd
+      inputs.nixos-hardware.nixosModules.common-pc-ssd
+
+      ./modules/profiles/gaming-handheld
     ];
   };
 };

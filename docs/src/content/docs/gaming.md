@@ -19,13 +19,18 @@ NixOS gaming configurations are declared in [`modules/gaming/default.nix`](https
 
 ---
 
-## Gamescope: Micro-Compositor (`framework16`, `mini-pc-k8`)
+## Gamescope: Micro-Compositor Across Form Factors
 
-[Gamescope](https://github.com/ValveSoftware/gamescope) is Valve's Wayland micro-compositor. It isolates games inside their own virtual display server, intercepting their input and rendering before outputting a composited Wayland surface to Hyprland.
+[Gamescope](https://github.com/ValveSoftware/gamescope) is Valve's Wayland micro-compositor. It isolates games inside their own virtual display server, intercepting their input and rendering before outputting a composited Wayland surface.
 
-* **Role**: On-demand, nested client window inside Hyprland.
-* **Mechanism**: Invoked per-game through Steam launch options.
-* **Behavior**: Games run directly under Hyprland by default (leveraging Hyprland's direct scanout for zero latency). Gamescope is opted into only when a game requires resolution sandboxing, upscaling, or display virtualization.
+* **Desktops & Laptops (`framework16`, `mini-pc-k8`)**:
+  * **Role**: On-demand, nested client window inside Hyprland.
+  * **Mechanism**: Invoked per-game through Steam launch options.
+  * **Behavior**: Games run directly under Hyprland by default (leveraging Hyprland's direct scanout for zero latency). Gamescope is opted into only when a game requires resolution sandboxing, upscaling, or display virtualization.
+* **Handheld Gaming (`legion-go`)**:
+  * **Role**: Primary standalone session compositor (SteamOS-style standalone session).
+  * **Mechanism**: Boots directly into a dedicated Steam Gamescope session via SDDM.
+  * **Behavior**: Manages controller input, hardware portrait panel rotation (`--force-orientation left`), and Handheld Daemon (`hhd`) TDP overlays. Touch-friendly KDE Plasma 6 Desktop Mode is accessible via Steam's power menu.
 
 ---
 

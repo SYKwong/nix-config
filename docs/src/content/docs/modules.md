@@ -13,8 +13,7 @@ This directory contains modular, reusable **NixOS system-level** configurations.
 | :--- | :--- | :--- |
 | **`core/`** | `modules/core/` | Baseline system configuration applied across all hosts (bootloader, networking, security policies, user accounts, system fonts, and core packages). |
 | **`hyprland/`** | `modules/hyprland/` | Hyprland Wayland compositor, UWSM session integration, and Ly display manager greeter. |
-| **`desktop/`** | `modules/desktop/` | Shared workstation capabilities and desktop services (network shares, desktop portal helpers). |
-| **`laptop/`** | `modules/laptop/` | Portable device power management, battery optimization profiles, and sleep/wake handling. |
+| **`profiles/`** | `modules/profiles/` | Form-factor system profiles (`desktop`, `laptop`, `gaming-handheld`) bundling form-specific hardware behavior, power management, and desktop integration. |
 | **`hardware/`** | `modules/hardware/` | Vendor-specific hardware integrations and firmware utilities (e.g. `framework.nix`). |
 | **`wireless/`** | `modules/wireless/` | Wireless networking (Wi-Fi), network management, and Bluetooth stack. |
 | **`vpn/`** | `modules/vpn/` | Virtual Private Network (VPN) client services, WireGuard tunnels, and encrypted routing. |
