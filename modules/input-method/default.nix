@@ -9,7 +9,7 @@
       waylandFrontend = true;
       ignoreUserConfig = true; # Required for using the following settings
       addons = with pkgs; [
-        fcitx5-mozc
+        fcitx5-mozc-ut
         kdePackages.fcitx5-chinese-addons
         fcitx5-table-extra
       ];

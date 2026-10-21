@@ -62,7 +62,10 @@ in
       inherit (cfg) openFirewall;
       inherit (cfg) capSysAdmin;
 
-      settings = lib.mkIf cfg.tabletDisplay.enable {
+      settings = {
+        capture = "wlr";
+      }
+      // lib.optionalAttrs cfg.tabletDisplay.enable {
         output_name = "HEADLESS-1";
       };
 

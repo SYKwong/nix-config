@@ -29,3 +29,44 @@ Create an overlay file (e.g. `overlays/my-package.nix`):
 ```
 
 Then add `./my-package.nix` to `imports` in [`overlays/default.nix`](./default.nix).
+
+---
+
+## Common Patterns
+
+### 1. Patching an Upstream Package
+```nix
+{
+  nixpkgs.overlays = [
+    (final: prev: {
+      package-name = prev.package-name.overrideAttrs (oldAttrs: {
+        patches = (oldAttrs.patches or [ ]) ++ [ ./fix.patch ];
+      });
+    })
+  ];
+}
+```
+
+### 2. Exposing Pinned Channels (`pkgs.stable`)
+Mount stable channels onto `pkgs.stable` so any module can consume them cleanly:
+```nix
+{ inputs, ... }:
+{
+  nixpkgs.overlays = [
+    (final: prev: {
+      stable = import inputs.nixpkgs-stable {
+        inherit (prev.stdenv.hostPlatform) system;
+        config.allowUnfree = prev.config.allowUnfree;
+      };
+    })
+  ];
+}
+```
+
+---
+
+## Documentation
+
+For full details on existing fleet overlays and package overrides, refer to the online guide:
+
+📖 **[Nixpkgs Overlays Documentation](https://nix.kyle-kwong.com/overlays/)**

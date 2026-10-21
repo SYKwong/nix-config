@@ -17,11 +17,12 @@
 - Intent & Prompts: When an explicit setup flag is passed, proceed directly without redundant per-service confirmation prompts (`[Y/n]`), using non-interactive CLI flags where available (e.g., `glab auth login --web`).
 - No Redundant PATH Checks: Avoid defensive `command -v` checks in onboarding scripts for tools declaratively managed via NixOS / Home Manager.
 
-## Documentation Site
-- Documentation is maintained in-tree under `docs/` using Astro Starlight and deployed to `nix.kyle-kwong.com`.
-- When adding or updating features, keep documentation in `docs/src/content/docs/` synchronized with the implementation.
-- Only run `npx --no-install astro build` in `docs/` when adding, removing, or renaming documentation pages, or when modifying `docs/astro.config.mjs`, `docs/package.json`, or `docs/src/styles/` (skip the build for routine content edits to existing `.md` files). If `docs/node_modules/` is missing when a build is required, initialize it via `npm ci --ignore-scripts` in `docs/`.
-- Maintain Catppuccin theme conventions and upright code typography.
+## Documentation & README Conventions
+- Lean READMEs: Keep root and module-level `README.md` files lean, concise, and focused strictly on immediate directory taxonomy, file maps, key option toggles, and daily quick-reference commands. Avoid duplicating multi-step guides, operational walkthroughs, reference tables, or setup tutorials in READMEs.
+- Heavy on Starlight Wiki: Centralize all comprehensive operational documentation, architectural deep-dives, hardware specifications, launch recipes, and multi-step tutorials in-tree under `docs/src/content/docs/` (deployed to `nix.kyle-kwong.com`). Every module README must conclude with a direct link to its corresponding Starlight wiki page.
+- Synchronization: When adding or updating features, keep documentation in `docs/src/content/docs/` synchronized with the implementation.
+- Build Policy: Only run `npx --no-install astro build` in `docs/` when adding, removing, or renaming documentation pages, or when modifying `docs/astro.config.mjs`, `docs/package.json`, or `docs/src/styles/` (skip the build for routine content edits to existing `.md` files). If `docs/node_modules/` is missing when a build is required, initialize it via `npm ci --ignore-scripts` in `docs/`.
+- Styling: Maintain Catppuccin theme conventions and upright code typography.
 
 ## Antigravity CLI Verification (`home/cli/antigravity.nix`)
 - Mandatory Test Suite: Whenever `home/cli/antigravity.nix` is modified, execute the verification suite before marking a task ready for merge:

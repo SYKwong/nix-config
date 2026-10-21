@@ -36,20 +36,31 @@ Custom desktop launchers and rules for hiding unwanted third-party app shortcuts
 All machines import this common [`home/`](./) directory directly via [`modules/home-manager/default.nix`](../modules/home-manager/default.nix). If a machine requires user packages or settings unique to that host, place them in `hosts/<hostname>/home/` (with a `default.nix`), which is automatically imported if it exists.
 
 ### 5. Idle Management
-Idle timeouts and power states are managed natively by Noctalia ([`home/desktop/noctalia.nix`](./desktop/noctalia.nix)) using the Wayland `ext_idle_notifier_v1` protocol, consolidating idle handling without external daemons like `hypridle`.
+Idle timeouts and power states are managed natively by Noctalia ([`home/desktop/noctalia.nix`](./desktop/noctalia.nix)) using the Wayland `ext_idle_notifier_v1` protocol, dynamically scaling between laptops (1x) and desktops/HTPCs (3x multiplier):
+- **Laptop Baseline (1x)**: 2.5 min screen dim (`brightnessctl -s set 5%`) → 5 min lock → 5.5 min screen off (DPMS) → 10 min suspend.
+- **Desktop Scaled (3x)**: 7.5 min screen dim → 15 min lock → 16.5 min screen off.
 
-#### Desktop Scaling Multiplier (`idle_scale`)
-To accommodate living-room HTPC and desktop workstation environments where aggressive power saving is disruptive, `home/desktop/noctalia.nix` dynamically adjusts idle intervals based on host type:
-- **Laptops (`framework16`):** Uses baseline timeouts (`idle_scale = 1`).
-- **Desktops / HTPCs (`mini-pc-k8`):** Applies a 3x multiplier (`idle_scale = 3`) when `is_desktop = true`.
+---
 
-#### Timeline & Behaviors
-| Laptop (1x) | Desktop (3x) | Target / Action | Behavior Name | Description |
-| :--- | :--- | :--- | :--- | :--- |
-| **2.5 min** (150s) | **7.5 min** (450s) | Backlight Dim | `dim` | Reduces screen brightness to 5% (`brightnessctl -s set 5%`); automatically restored on activity (`brightnessctl -r`). |
-| **5 min** (300s) | **15 min** (900s) | Screen Lock | `lock` | Triggers Noctalia's built-in session lock. |
-| **5.5 min** (330s) | **16.5 min** (990s) | Screen Off | `screen-off` | Powers down displays via Wayland DPMS; wakes automatically on input. |
-| **5.5 min** (330s) | *N/A* | Keyboard Light *(Framework 16)* | `kb-backlight` | Turns off keyboard backlight (`kb-light-manager off 32ac 0012`); restores on activity. |
-| **10 min** (600s) | *N/A* | Suspend *(Framework 16)* | `suspend-then-hibernate` | Executes `systemctl suspend-then-hibernate`. |
+## Developer Quick Reference
 
-*Note: Sleep and lid-close events are monitored directly via `systemd-logind` (`PrepareForSleep` delay inhibitors), ensuring the screen is locked before the system suspends regardless of idle status.*
+### 1. Adding a New CLI Utility or App
+- Declare standalone programs in [`home/cli/default.nix`](./cli/default.nix) via `programs.<name>.enable = true;` or append to `home.packages = with pkgs; [ <name> ];`.
+- For GUI or desktop apps, check the appropriate category (`browsers/`, `editors/`, `media/`, `social/`).
+
+### 2. Modifying Shell Aliases & Environment
+- Interactive shell aliases and functions are declared in [`home/shell/alias.nix`](./shell/alias.nix) (e.g. `nrs`, `git lazy`).
+
+### 3. Applying Changes
+- Rebuild and activate user generation:
+  ```bash
+  nrs
+  ```
+
+---
+
+## Documentation
+
+For full details on desktop entries, declarative application state merging, category-scoped playlists, and Atuin shell history sync, refer to the online guide:
+
+📖 **[Home Manager User Configuration](https://nix.kyle-kwong.com/home-manager/)**
