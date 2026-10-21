@@ -136,7 +136,33 @@ update-flake-mr:
       git add flake.lock
       git commit -m "chore(flake): update flake.lock"
 
-      # 5. Push with MR creation options
+      # 5. Close superseded open dependency update MRs and clean up their branches
+      AUTH_HEADER="JOB-TOKEN: $CI_JOB_TOKEN"
+      if [ -n "$PROJECT_API_TOKEN" ]; then
+        AUTH_HEADER="PRIVATE-TOKEN: $PROJECT_API_TOKEN"
+      fi
+
+      curl -s --header "$AUTH_HEADER" \
+        "$CI_API_V4_URL/projects/$CI_PROJECT_ID/merge_requests?state=opened&labels=dependencies&per_page=100" > open_mrs.json
+
+      nix eval --impure --raw --expr '
+        let
+          raw = builtins.readFile ./open_mrs.json;
+          data = builtins.fromJSON raw;
+          old = builtins.filter (mr: mr.source_branch != "'"$BRANCH_NAME"'") data;
+        in
+          builtins.concatStringsSep "\n" (builtins.map (mr: "${toString mr.iid} ${mr.source_branch}") old)
+      ' 2>/dev/null | while read -r OLD_IID OLD_BRANCH; do
+        if [ -n "$OLD_IID" ]; then
+          echo "Closing superseded MR !${OLD_IID} (branch ${OLD_BRANCH})..."
+          curl -s --request PUT --header "$AUTH_HEADER" \
+            "$CI_API_V4_URL/projects/$CI_PROJECT_ID/merge_requests/$OLD_IID?state_event=close" >/dev/null
+          git push origin --delete "$OLD_BRANCH" >/dev/null 2>&1 || true
+        fi
+      done
+      rm -f open_mrs.json
+
+      # 6. Push with MR creation options
       git push -f origin "$BRANCH_NAME" \
         -o merge_request.create \
         -o merge_request.target="$CI_DEFAULT_BRANCH" \
