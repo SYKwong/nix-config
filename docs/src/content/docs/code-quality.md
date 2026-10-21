@@ -41,11 +41,50 @@ This verifies the integrity of all NixOS system closures, Home Manager configura
 ## 3. Git Workflow & Conventional Commits
 
 ### Commit Workflow
-The repository provides a streamlined git alias, `git lazy`, which automatically runs `nix fmt` (if `flake.nix` is present), stages all changes, creates a commit, and pushes to upstream:
+The repository provides a streamlined git alias, `git lazy`, which formats code, stages changes, creates a commit, and pushes to upstream:
 
 ```bash
 git lazy "<commit message>"
 ```
+
+#### Under the Hood
+The alias executes an inline shell function designed to balance automated code formatting with safety across heterogeneous Git repositories:
+
+```bash
+f() {
+  # 1. Resolve repository root (supports invocation from any subdirectory)
+  top="$(git rev-parse --show-toplevel 2>/dev/null)"
+
+  # 2. Check for flake-based configuration
+  if [ -f "$top/flake.nix" ]; then
+    out="$( (cd "$top" && nix fmt) 2>&1 )"
+    res=$?
+
+    if [ $res -ne 0 ]; then
+      case "$out" in
+        # Suppress errors if the flake does not provide a formatter (e.g. treefmt-nix is not set up)
+        *"does not provide attribute"*"formatter"*) ;;
+        # Abort if formatting failed due to genuine syntax or evaluation errors
+        *) echo "$out" >&2; return 1 ;;
+      esac
+    elif [ -n "$out" ]; then
+      # Print formatter summary if successful
+      echo "$out"
+    fi
+  fi
+
+  # 3. Stage all modifications, commit with message, and push upstream
+  git add -A && git commit -m "$1" && git push
+}
+```
+
+#### Behavior Across Repository Types
+
+| Repository Type | Formatting Behavior | Outcome |
+| :--- | :--- | :--- |
+| **Flakes with a configured `formatter`** | Runs `nix fmt` from root, displays summary | Formats and commits if clean; aborts on syntax error |
+| **Flakes without a `formatter`** | Catches missing attribute error | Silently skips formatting without errors and commits |
+| **Non-Flake Repositories** | Bypasses `nix fmt` step entirely | Immediately stages, commits, and pushes |
 
 ### Commit Message Conventions
 Commit messages must strictly follow the **Conventional Commits** specification with a single-line format:
