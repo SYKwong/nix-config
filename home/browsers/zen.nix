@@ -155,6 +155,13 @@
           position = 100;
           isEssential = true;
         };
+
+        "github" = {
+          id = "b1c2d3e4-f5a6-7890-abcd-ef1234567890";
+          url = "https://github.com";
+          position = 200;
+          isEssential = true;
+        };
       };
 
       userChrome = ''
