@@ -115,7 +115,6 @@ Official BIOS installers are hosted on [Lenovo Support for Legion Go (8APU1)](ht
 ### Pre-Update Checklist
 - **AC Power**: Connect the 65W AC power adapter and ensure the battery is charged to at least **25%**.
 - **Keyboard / Dock**: Connect a physical USB keyboard or docking station to navigate BIOS menus if needed.
-- **Secure Boot**: Ensure Secure Boot is **Disabled** in BIOS setup before flashing.
 
 ### 1. Download & Extract Firmware Capsule
 1. Download the latest Legion Go BIOS update executable (`.exe`) from Lenovo's support portal.
