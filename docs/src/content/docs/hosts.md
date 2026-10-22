@@ -116,6 +116,8 @@ The `legion-go` profile demonstrates configuring a keyboardless gaming handheld 
 - **Controllers & Power Management**:
   - Detachable TrueStrike controllers, gyro aiming, optical mouse sensor, and TDP curves managed by Handheld Daemon (`services.handheld-daemon.adjustor.enable = true`).
   - Uses `suspend-then-hibernate` into a 20 GB swapfile (`/.swap/swapfile`).
+- **Firmware Updates**:
+  - Supported via LVFS ([`fwupd`](/bios-update/#framework-16--supported-devices-fwupd)), with an offline capsule extraction fallback via `fwupdtool` for Windows BIOS installers (see [BIOS & Firmware Updates](/bios-update/#lenovo-legion-go-manual-capsule-via-fwupdtool)).
 
 ---
 

@@ -130,3 +130,11 @@ deploy legion-go boot
 ```
 
 Hosts resolve automatically via mDNS (`legion-go.local`).
+
+---
+
+## BIOS & Firmware Updates
+
+Lenovo Legion Go supports standard LVFS updates via `fwupdmgr` (see [Framework 16 & Supported Devices](https://nix.kyle-kwong.com/bios-update/#framework-16--supported-devices-fwupd)), as well as offline installation of Windows BIOS `.exe` packages via `fwupdtool`:
+
+📖 **[Lenovo Legion Go BIOS Update Guide](https://nix.kyle-kwong.com/bios-update/#lenovo-legion-go-manual-capsule-via-fwupdtool)**
