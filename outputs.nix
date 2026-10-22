@@ -41,40 +41,54 @@ in
     (inputs.treefmt-nix.lib.evalModule nixpkgs.legacyPackages.x86_64-linux ./treefmt)
     .config.build.wrapper;
 
-  nixosConfigurations = nixpkgs.lib.mapAttrs (
-    name: info:
-    nixpkgs.lib.nixosSystem {
-      specialArgs = {
-        inherit inputs;
-        inherit (info) username;
-        hostname = name;
+  nixosConfigurations =
+    (nixpkgs.lib.mapAttrs (
+      name: info:
+      nixpkgs.lib.nixosSystem {
+        specialArgs = {
+          inherit inputs;
+          inherit (info) username;
+          hostname = name;
+        };
+
+        modules = [
+          inputs.disko.nixosModules.disko
+          inputs.home-manager.nixosModules.home-manager
+          inputs.stylix.nixosModules.stylix
+          inputs.agenix.nixosModules.default
+
+          ./modules/core
+
+          ./modules/ai
+          ./modules/gaming
+          ./modules/home-manager
+          ./modules/hyprland
+          ./modules/input-method
+          ./modules/secrets
+          ./modules/shell-scripts
+          ./modules/sunshine
+          ./modules/vpn
+          ./modules/wireless
+
+          ./overlays
+
+          ./hosts/${name}
+
+        ]
+        ++ info.extraModules;
+      }
+    ) hosts)
+    // {
+      installer = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = {
+          inherit inputs;
+          hostname = "installer";
+        };
+        modules = [
+          inputs.disko.nixosModules.disko
+          ./hosts/installer
+        ];
       };
-
-      modules = [
-        inputs.disko.nixosModules.disko
-        inputs.home-manager.nixosModules.home-manager
-        inputs.stylix.nixosModules.stylix
-        inputs.agenix.nixosModules.default
-
-        ./modules/core
-
-        ./modules/ai
-        ./modules/gaming
-        ./modules/home-manager
-        ./modules/hyprland
-        ./modules/input-method
-        ./modules/secrets
-        ./modules/shell-scripts
-        ./modules/sunshine
-        ./modules/vpn
-        ./modules/wireless
-
-        ./overlays
-
-        ./hosts/${name}
-
-      ]
-      ++ info.extraModules;
-    }
-  ) hosts;
+    };
 }

@@ -28,9 +28,10 @@ flowchart LR
 
     gitlab -- "Unidirectional Push Mirror<br/>(Fine-Grained PAT)" --> github["GitHub Repository<br/><b>Read-Only Mirror</b>"]
 
-    subgraph github_actions ["GitHub Actions (Edge Deployment)"]
+    subgraph github_actions ["GitHub Actions (Artifacts & Deployment)"]
         github -- "Push to main (docs/**)" --> deploy["deploy-docs.yml<br/>(Astro Starlight Build)"]
         deploy --> pages["GitHub Pages CDN<br/>(nix.kyle-kwong.com)"]
+        github -- "Monthly schedule / dispatch" --> build_iso["build-iso.yml<br/>(Custom Installer ISO)"]
     end
 ```
 

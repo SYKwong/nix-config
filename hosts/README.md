@@ -13,6 +13,7 @@ This directory contains host-specific configurations for individual physical mac
 | :--- | :--- | :--- | :--- |
 | **`framework16`** | Primary workstation laptop | Framework Laptop 16 (AMD Ryzen 7840HS, 96GB RAM), LUKS TPM2 encryption, Lanzaboote Secure Boot | [`default.nix`](./framework16/default.nix), [`disko.nix`](./framework16/disko.nix), [`hardware-configuration.nix`](./framework16/hardware-configuration.nix), [`config.nix`](./framework16/config.nix) |
 | **`mini-pc-k8`** | HTPC / Living room desktop | GMKtec NucBox K8 Plus (AMD Ryzen 8845HS, 64GB RAM), Btrfs, unencrypted | [`default.nix`](./mini-pc-k8/default.nix), [`disko.nix`](./mini-pc-k8/disko.nix), [`hardware-configuration.nix`](./mini-pc-k8/hardware-configuration.nix), [`config.nix`](./mini-pc-k8/config.nix) |
+| **`installer`** | Custom Live ISO | Generic x86_64 installer (`installer.local`), mDNS, pre-baked SSH keys, Disko | [`default.nix`](./installer/default.nix), [`README.md`](./installer/README.md) |
 
 ---
 

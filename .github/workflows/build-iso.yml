@@ -1,0 +1,72 @@
+name: Build Custom Installer ISO
+
+on:
+  schedule:
+    # Monthly build on the 1st of every month at 04:00 UTC
+    - cron: '0 4 1 * *'
+  workflow_dispatch:
+
+concurrency:
+  group: 'build-iso-${{ github.ref }}'
+  cancel-in-progress: true
+
+jobs:
+  build-iso:
+    name: Build Installer ISO
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            warn-dirty = false
+
+      - name: Build Installer ISO
+        run: |
+          nix build .#nixosConfigurations.installer.config.system.build.isoImage --print-build-logs
+
+      - name: Prepare ISO artifact and checksum
+        id: prepare-artifact
+        run: |
+          mkdir -p dist
+          iso_path=$(find result/iso -name "*.iso" | head -n 1)
+          if [ -z "$iso_path" ]; then
+            echo "Error: No ISO image found in result/iso" >&2
+            exit 1
+          fi
+          echo "Found ISO: $iso_path"
+          iso_name=$(basename "$iso_path")
+          cp "$iso_path" "dist/$iso_name"
+          (cd dist && sha256sum "$iso_name" > "$iso_name.sha256")
+          echo "iso_name=$iso_name" >> "$GITHUB_OUTPUT"
+
+      - name: Upload ISO Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.prepare-artifact.outputs.iso_name }}
+          path: dist/
+          retention-days: 30
+          if-no-files-found: error
+
+      - name: Publish or Update GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: installer
+          name: "NixOS Custom Installer ISO"
+          body: |
+            Rolling release of the custom minimal NixOS installer ISO featuring:
+            - Zero-configuration mDNS hostname resolution as `installer.local`
+            - Pre-baked SSH public keys for passwordless root login
+            - Embedded Disko, Git, 7-Zip, Neovim, and basic CLI utilities
+          prerelease: false
+          make_latest: false
+          files: |
+            dist/*.iso
+            dist/*.sha256
