@@ -4,6 +4,12 @@ on:
   schedule:
     # Monthly build on the 1st of every month at 04:00 UTC
     - cron: '0 4 1 * *'
+  push:
+    branches: [main]
+    paths:
+      - 'hosts/installer/**'
+      - 'secrets/keys.nix'
+      - '.github/workflows/build-iso.yml'
   workflow_dispatch:
 
 concurrency:
@@ -46,6 +52,8 @@ jobs:
           cp "$iso_path" "dist/$iso_name"
           (cd dist && sha256sum "$iso_name" > "$iso_name.sha256")
           echo "iso_name=$iso_name" >> "$GITHUB_OUTPUT"
+          echo "build_date=$(date -u +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
+          echo "short_sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Upload ISO Artifact
         uses: actions/upload-artifact@v4
@@ -59,12 +67,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: installer
-          name: "NixOS Custom Installer ISO"
-          body: |
-            Rolling release of the custom minimal NixOS installer ISO featuring:
-            - Zero-configuration mDNS hostname resolution as `installer.local`
-            - Pre-baked SSH public keys for passwordless root login
-            - Embedded Disko, Git, 7-Zip, Neovim, and basic CLI utilities
+          name: "${{ steps.prepare-artifact.outputs.build_date }} (${{ steps.prepare-artifact.outputs.short_sha }}) · Installer ISO"
           prerelease: false
           make_latest: false
           files: |

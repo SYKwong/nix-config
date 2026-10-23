@@ -22,7 +22,7 @@ The baseline installation workflow uses the repository's custom NixOS installer 
 
 Choose one of two methods to get the installer image:
 
-- **Download Pre-built (Recommended)**: Download the latest generated hybrid ISO directly from the rolling **[GitHub Release (`installer`)](https://github.com/kylekwong/nix-config/releases/tag/installer)**.
+- **Download Pre-built (Recommended)**: Download the latest generated hybrid ISO directly from the rolling **[GitHub Release (`installer`)](https://github.com/SYKwong/nix-config/releases/tag/installer)**.
 - **Or Build Locally**:
   ```bash
   # Build hybrid UEFI/BIOS ISO on any workstation running Nix (~60s):
@@ -57,11 +57,10 @@ Once the target machine boots from the installer USB:
    ```
    *(Alternatively, log in directly at the physical console; `root` and `nixos` accounts are pre-configured with passwordless access).*
 
-2. **Pull Latest Commits & Run the Installer**:
+2. **Run the Installer**:
    ```bash
-   cd ~/nix-config
-   git pull
-   sudo ./install.sh "<host_name>" "<user_password>" ["<luks_password>"]
+   # Run directly from anywhere in the live environment:
+   sudo install-nixos "<host_name>" "<user_password>" ["<luks_password>"]
    ```
 
 ---
@@ -81,18 +80,28 @@ If bootstrapping a machine using the official generic NixOS minimal installation
    ```
 4. Run the installer:
    ```bash
-   sudo ./install.sh "<host_name>" "<user_password>" ["<luks_password>"]
+   sudo nix run .#install-nixos -- "<host_name>" "<user_password>" ["<luks_password>"]
    ```
 
 ---
 
-## 3. Automated Installer Mechanics (`install.sh`)
+## 3. Automated Installer Mechanics (`install-nixos`)
 
-The root [`install.sh`](https://gitlab.com/kylekwong/nix-config/-/blob/main/install.sh) script handles disk wiping, Disko partitioning, filesystem formatting, generating baseline hardware configuration, and initiating the initial NixOS system closure build.
+The declarative [`install-nixos`](https://gitlab.com/kylekwong/nix-config/-/blob/main/hosts/installer/install-nixos.nix) package (pre-installed on the custom ISO and available via `nix run .#install-nixos`) handles disk wiping, Disko partitioning, filesystem formatting, generating baseline hardware configuration, and initiating the initial NixOS system closure build.
 
 ```bash
-sudo ./install.sh "<host_name>" "<user_password>" ["<luks_password>"]
+# On custom installer ISO:
+sudo install-nixos "<host_name>" "<user_password>" ["<luks_password>"]
+
+# On standard live media:
+sudo nix run .#install-nixos -- "<host_name>" "<user_password>" ["<luks_password>"]
 ```
+
+> [!NOTE]
+> **Dual Execution Architecture**:
+> - **Pre-installed on Custom ISO**: On the repository's custom installer ISO, `install-nixos` is pre-baked into `environment.systemPackages` (via [`hosts/installer/default.nix`](https://gitlab.com/kylekwong/nix-config/-/blob/main/hosts/installer/default.nix)), allowing zero-build execution directly from `$PATH`.
+> - **Flake `apps` for Generic Live Media**: [`hosts/installer/outputs.nix`](https://gitlab.com/kylekwong/nix-config/-/blob/main/hosts/installer/outputs.nix) exports `install-nixos` as flake `packages` and `apps` (`.#install-nixos`, `.#default`). This allows running the installer on any official generic NixOS live USB via `nix run .#install-nixos` without compiling the custom ISO image.
+> - **Why `post-install` differs**: Unlike `install-nixos`, onboarding tools like `post-install` only execute *after* a host is installed and booted into its own system closure, so they reside strictly in `modules/shell-scripts/` without redundant flake app boilerplate.
 
 ### Script Arguments
 
@@ -163,7 +172,7 @@ Create an empty stub file at `./hosts/<host_name>/hardware-configuration.nix`:
 
 }
 ```
-*(This file will be automatically populated with detected kernel modules and drivers by `install.sh` during installation).*
+*(This file will be automatically populated with detected kernel modules and drivers by `install-nixos` during installation).*
 
 ### Step 5: Create Host Entrypoint (`default.nix`)
 Create `./hosts/<host_name>/default.nix`:

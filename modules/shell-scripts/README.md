@@ -9,6 +9,7 @@ This directory contains custom CLI tools and helper scripts packaged as native N
 | Script | Entry File | Derivation Builder | Description |
 | :--- | :--- | :--- | :--- |
 | **`rebuild`** (alias: **`nrs`**) | [`rebuild.nix`](./rebuild.nix) | `writeShellApplication` | NixOS configuration rebuild engine that formats code, creates a boot entry via `nh os boot`, activates live via `switch-to-configuration`, syncs closure to local cache, and checks for pending kernel reboots. Run via alias `nrs`. |
+| **`post-install`** | [`post-install.nix`](./post-install.nix) | `writeShellApplication` | Post-installation onboarding engine for TPM2 auto-unlock enrollment, host/user SSH key generation, agenix secret rekeying, and forge authentication. |
 | **`hypr-virtual-monitor`** | [`hypr-virtual-monitor.nix`](./hypr-virtual-monitor.nix) | `writeShellApplication` | Dynamic headless virtual monitor controller and idle socket watchdog for Hyprland and Sunshine streaming (`start`, `stop`, `toggle`, `watchdog`). |
 | **`rofi-keybinds`** | [`rofi-keybind.nix`](./rofi-keybind.nix) | `writeShellApplication` | Dynamic cheat sheet parsed from `hyprctl binds` and displayed in an interactive Rofi dmenu (`SUPER + SHIFT + /` or `SUPER + F1`). |
 | **`kb-light-manager`** | [`kb-light-manager.nix`](./kb-light-manager.nix) | `writeShellApplication` | Framework laptop keyboard backlight toggle and brightness manager using `qmk_hid`. |

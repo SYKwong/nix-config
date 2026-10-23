@@ -9,6 +9,7 @@
 let
   keys = import ../../secrets/keys.nix;
   userPublicKeys = builtins.attrValues keys.users;
+  installNixos = pkgs.callPackage ./install-nixos.nix { };
 in
 {
   imports = [
@@ -46,6 +47,7 @@ in
   environment.systemPackages = with pkgs; [
     curl
     git
+    installNixos
     neovim
     p7zip
     parted

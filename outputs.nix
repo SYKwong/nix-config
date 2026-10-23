@@ -41,6 +41,8 @@ in
     (inputs.treefmt-nix.lib.evalModule nixpkgs.legacyPackages.x86_64-linux ./treefmt)
     .config.build.wrapper;
 
+  inherit (import ./hosts/installer/outputs.nix { inherit nixpkgs; }) packages apps;
+
   nixosConfigurations =
     (nixpkgs.lib.mapAttrs (
       name: info:

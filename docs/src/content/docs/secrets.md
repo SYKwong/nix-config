@@ -55,7 +55,7 @@ agenix -e <secret-name>.age
 
 ### Rekey Secrets (Adding a New Host or Rotating Keys)
 When adding a new machine, changing user keys, or rotating credentials:
-1. Run [`./post-install.sh`](/post-installation/) on the new machine to automatically generate keys and insert them into `secrets/keys.nix` (or add them manually).
+1. Run [`post-install`](/post-installation/) on the new machine to automatically generate keys and insert them into `secrets/keys.nix` (or add them manually).
 2. Ensure the host or user key is included in the recipient list in `secrets/secrets.nix` (new hosts added to `keys.systems` are included automatically in `allKeys`).
 3. Re-encrypt all existing secrets on an authorized machine with access to an existing private key:
    ```bash

@@ -31,7 +31,7 @@ flowchart LR
     subgraph github_actions ["GitHub Actions (Artifacts & Deployment)"]
         github -- "Push to main (docs/**)" --> deploy["deploy-docs.yml<br/>(Astro Starlight Build)"]
         deploy --> pages["GitHub Pages CDN<br/>(nix.kyle-kwong.com)"]
-        github -- "Monthly schedule / dispatch" --> build_iso["build-iso.yml<br/>(Custom Installer ISO)"]
+        github -- "Schedule / push / dispatch" --> build_iso["build-iso.yml<br/>(Custom Installer ISO)"]
     end
 ```
 
@@ -106,7 +106,7 @@ While GitLab excels at isolated container pipelines and native git bot workflows
 - Automated Let's Encrypt TLS certificate provisioning and renewal for custom apex/subdomains (`nix.kyle-kwong.com`).
 - Broad discoverability within the open-source ecosystem.
 
-Restricting GitHub Actions exclusively to [`.github/workflows/deploy-docs.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/deploy-docs.yml) confines GitHub runner execution strictly to non-critical static site generation.
+Restricting GitHub Actions to [`.github/workflows/deploy-docs.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/deploy-docs.yml) and [`.github/workflows/build-iso.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/build-iso.yml) confines GitHub runner execution strictly to non-critical static site generation and automated installer ISO artifact releases.
 
 ### F. Blast Radius Containment & Defense-in-Depth
 
@@ -119,10 +119,10 @@ The split architecture strictly contains operational blast radiuses:
 
 ## 3. Comparison Matrix: GitLab CI vs. GitHub Actions
 
-| Evaluation Vector | GitLab CI (Fleet Validation & Merges) | GitHub Actions (Docs Deployment Only) |
+| Evaluation Vector | GitLab CI (Fleet Validation & Merges) | GitHub Actions (Docs & Artifact Releases) |
 | :--- | :--- | :--- |
-| **Outage Impact on Merges** | **Zero Impact**: Highly reliable runners; merges proceed normally | **Zero Impact**: Outages only delay wiki CDN updates; never blocks merges |
-| **Primary Responsibility** | `nix flake check`, `nix fmt`, lock updates, release tags | Building & publishing Astro Starlight wiki to Pages |
+| **Outage Impact on Merges** | **Zero Impact**: Highly reliable runners; merges proceed normally | **Zero Impact**: Outages only delay wiki CDN updates or installer ISO releases; never blocks merges |
+| **Primary Responsibility** | `nix flake check`, `nix fmt`, lock updates, release tags | Building & publishing Astro Starlight wiki to Pages and releasing custom installer ISOs |
 | **Execution Model** | Native OCI containers (`nixos/nix`, `node:lts-slim`) | Shared Ubuntu VM runners (`ubuntu-latest`) |
 | **Dependency Model** | Raw bash scripts inside container images | Composite actions (`actions/checkout`, `withastro/action`) |
 | **Action Churn** | None (no external marketplace actions) | Periodic Node runtime upgrades & action bumps |

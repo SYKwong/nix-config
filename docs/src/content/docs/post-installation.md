@@ -3,7 +3,7 @@ title: Post-Installation & Onboarding
 description: Onboarding steps for TPM2 hardware enrollment, SSH keys, repository remotes, and agenix secrets.
 ---
 
-Following an automated installation via `install.sh`, complete the onboarding steps to configure cryptographic hardware bindings, SSH keys, repository remotes, and agenix secrets.
+Following an automated installation via `install-nixos`, complete the onboarding steps to configure cryptographic hardware bindings, SSH keys, repository remotes, and agenix secrets.
 
 ---
 
@@ -18,16 +18,15 @@ Following an automated installation via `install.sh`, complete the onboarding st
 
 ---
 
-## Running `post-install.sh`
+## Running `post-install`
 
-Navigate to the cloned repository in your home directory (`~/nix-config`):
+The declarative onboarding script is pre-installed globally across all fleet workstations:
 
 ```bash
-cd ~/nix-config
-./post-install.sh
+post-install
 ```
 
-### What `post-install.sh` Does Automatically (Hands-off):
+### What `post-install` Does Automatically (Hands-off):
 - **Converts Git Remote:** Converts `origin` from HTTPS to SSH (e.g. `git@gitlab.com:<your-username>/nix-config.git` or GitHub equivalent based on your clone URL).
 - **Enrolls TPM2:** Automatically runs `systemd-cryptenroll` against PCR 7 (`--tpm2-device=auto --tpm2-pcrs=7`) if a LUKS container and TPM2 device are detected (automatically skipped on unencrypted storage).
 - **Generates SSH Keys:** Creates ed25519 keys for both the host (`/etc/ssh/ssh_host_ed25519_key`) and the user (`~/.ssh/id_ed25519`) if they do not exist.
@@ -40,9 +39,9 @@ cd ~/nix-config
 To authenticate command-line services and automatically register your new user SSH key with remote providers, run:
 
 ```bash
-./post-install.sh --auth-only
+post-install --auth-only
 ```
-*(Or run `./post-install.sh --auth` during initial setup).*
+*(Or run `post-install --auth` during initial setup).*
 
 This interactive flow guides you through:
 1. **Atuin Shell History Sync**: Shell history credentials (`secrets/atuin-credentials.age`) are managed declaratively via Agenix, authenticating the host automatically upon rebuild without interactive prompts. See the [Atuin Secret Setup](/secrets/#4-atuin-shell-history-sync-setup-atuin-credentialsage) guide for instructions on registering or obtaining your 24-word encryption key.

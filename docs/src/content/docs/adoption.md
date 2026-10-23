@@ -3,7 +3,7 @@ title: Adoption & Forking Guide
 description: Automated repository sanitization, host bootstrapping, hardware selection, and forking workflow for new users.
 ---
 
-If you are browsing this repository and want to adopt or fork this configuration for your own machines, **do not run `install.sh` against the existing host profiles directly**.
+If you are browsing this repository and want to adopt or fork this configuration for your own machines, **do not run `install-nixos` against the existing host profiles directly**.
 
 The existing host profiles (`framework16`, `mini-pc-k8`) reference persistent hardware drive IDs (`/dev/disk/by-id/...`), custom NAS network mounts, and private cryptographic keys to decrypt `secrets/*.age`. Attempting to build or install them on other machines will fail with decryption or missing drive errors.
 
@@ -13,7 +13,7 @@ The existing host profiles (`framework16`, `mini-pc-k8`) reference persistent ha
 
 Before cloning or bootstrapping, **fork this repository to your own GitLab or GitHub account**.
 
-Forking first ensures that [`post-install.sh`](/post-installation/) can seamlessly complete post-installation onboarding:
+Forking first ensures that [`post-install`](/post-installation/) can seamlessly complete post-installation onboarding:
 1. **Dynamic SSH Remote:** Automatically rebinds your git remote origin from HTTPS to SSH (`git@<forge>:<your-username>/nix-config.git`).
 2. **Key Enrollment:** Authenticates with your personal GitHub or GitLab account (`gh` / `glab`) and uploads your new machine's user SSH public key.
 3. **Automated Push:** Commits and pushes your machine's probed hardware configuration (`hosts/<hostname>/hardware-configuration.nix`) and host public keys directly back to your own repository without permission errors.
@@ -102,7 +102,7 @@ If your machine is a custom desktop, a mini PC (such as the GMKtec NucBox K8 Plu
   - Laptop with NVMe / SATA SSD: `inputs.nixos-hardware.nixosModules.common-pc-laptop-ssd`
 
 ### Operating Without `nixos-hardware`
-Configuring `nixos-hardware` modules is optional. Even if omitted, `install.sh` automatically probes your system hardware and generates a fully bootable kernel and driver configuration in `hosts/<your-hostname>/hardware-configuration.nix`.
+Configuring `nixos-hardware` modules is optional. Even if omitted, `install-nixos` automatically probes your system hardware and generates a fully bootable kernel and driver configuration in `hosts/<your-hostname>/hardware-configuration.nix`.
 
 ---
 
@@ -232,4 +232,4 @@ pages:
 
 Once your adopted configuration is committed and pushed to your fork:
 1. Boot into the NixOS Live USB.
-2. Proceed to the [System Installation Guide](/installation/) to prepare disk partitions and run `install.sh`.
+2. Proceed to the [System Installation Guide](/installation/) to prepare disk partitions and run `install-nixos`.

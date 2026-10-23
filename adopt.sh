@@ -466,7 +466,7 @@ configure_git_remote() {
       echo ""
       echo "==> [NOTICE] Git remote 'origin' still points to the author's upstream repository:"
       echo "    $current_origin"
-      echo "    Make sure to fork this repo and update origin to your fork so post-install.sh"
+      echo "    Make sure to fork this repo and update origin to your fork so post-install"
       echo "    can push your SSH keys and hardware configuration back to your fork:"
       echo "    git remote set-url origin git@<forge>:<your-username>/nix-config.git"
     fi
@@ -506,10 +506,12 @@ echo "   git commit -m \"feat: adopt configuration for $host_name\""
 echo "   git push origin <branch>"
 echo "4. Boot your target machine into the NixOS Live USB, clone YOUR fork, and run:"
 if [ "$is_luks" = true ]; then
-  echo "   sudo ./install.sh \"$host_name\" \"<user_password>\" \"<luks_password>\""
+  echo "   sudo install-nixos \"$host_name\" \"<user_password>\" \"<luks_password>\""
+  echo "   (or on generic media: sudo nix run .#install-nixos -- \"$host_name\" \"<user_password>\" \"<luks_password>\")"
 else
-  echo "   sudo ./install.sh \"$host_name\" \"<user_password>\""
+  echo "   sudo install-nixos \"$host_name\" \"<user_password>\""
+  echo "   (or on generic media: sudo nix run .#install-nixos -- \"$host_name\" \"<user_password>\")"
 fi
-echo "5. After installation, reboot and run ./post-install.sh to enroll TPM2, convert your"
+echo "5. After installation, reboot and run post-install to enroll TPM2, convert your"
 echo "   remote to SSH, and upload host SSH keys to your GitLab/GitHub account."
 echo ""

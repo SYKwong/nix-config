@@ -30,12 +30,12 @@ graph TD
 nix-config/
 ├── flake.nix                   # Flake input definitions and lockfile reference
 ├── outputs.nix                 # Centralized host definitions and module pipeline
-├── install.sh                  # Unattended installer for new machines
-├── post-install.sh             # Automated onboarding, TPM2 enrollment, and key setup
+├── adopt.sh                    # Automated adoption and profile scaffolding
 │
 ├── hosts/                      # Host-specific hardware and partition definitions
 │   ├── framework16/            # Framework Laptop 16 (Ryzen 7040, LUKS, Secure Boot)
-│   └── mini-pc-k8/             # GMKtec K8 Plus Mini PC (Ryzen 8845HS HTPC)
+│   ├── mini-pc-k8/             # GMKtec K8 Plus Mini PC (Ryzen 8845HS HTPC)
+│   └── installer/              # Custom live ISO host and flake apps (install-nixos)
 │
 ├── modules/                    # Reusable NixOS system modules
 │   ├── core/                   # Baseline system configuration (boot, network, security, packages)

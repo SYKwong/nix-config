@@ -52,15 +52,16 @@ Boot into a **NixOS Live USB** environment with active networking:
 git clone https://github.com/<your-username>/nix-config.git  # or https://gitlab.com/<your-username>/nix-config.git
 cd nix-config
 
-# 2. Run the automated installer:
-sudo ./install.sh "<your-hostname>" "<user_password>" ["<luks_password>"]
+# 2. Run the automated installer (pre-installed on custom ISO, or via nix run):
+sudo install-nixos "<your-hostname>" "<user_password>" ["<luks_password>"]
+# Or on generic live media:
+sudo nix run .#install-nixos -- "<your-hostname>" "<user_password>" ["<luks_password>"]
 ```
 
 After installation and rebooting into your new system, complete automated onboarding:
 
 ```bash
-cd ~/nix-config
-./post-install.sh
+post-install
 ```
 
 > 📖 **Full Guides:** [**System Installation Guide**](https://nix.kyle-kwong.com/installation/) • [**Post-Installation Setup**](https://nix.kyle-kwong.com/post-installation/)
