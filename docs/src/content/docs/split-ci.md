@@ -152,6 +152,19 @@ Mark the GitHub repository description as a read-only mirror pointing back to yo
 [Read-Only Mirror] Primary development on GitLab: https://gitlab.com/<username>/nix-config
 ```
 
+### 4. GitHub Actions Repository Permissions
+To allow the automated installer ISO release workflow ([`.github/workflows/build-iso.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/build-iso.yml)) to compile and publish releases and the documentation workflow ([`.github/workflows/deploy-docs.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/deploy-docs.yml)) to deploy to Pages on the GitHub mirror or fork:
+- **Actions Execution Policy**: In GitHub repository **Settings** → **Actions** → **General** → **Actions permissions**, select **"Allow select actions and reusable workflows"**, check **"Allow actions created by GitHub"**, and configure the explicit pattern allowlist:
+  ```text
+  cachix/*,
+  pnpm/*,
+  softprops/*,
+  withastro/*,
+  ```
+- **Workflow Permissions**: Under **Workflow permissions**, select **Read and write permissions** (required for creating/updating releases, tagging `installer`, and uploading release binaries via `softprops/action-gh-release`) and check **Allow GitHub Actions to create and approve pull requests**.
+- **Pages Source**: In **Settings** → **Pages** → **Build and deployment** → **Source**, select **GitHub Actions** (enables automatic OIDC token provisioning with `pages: write` and `id-token: write` for `actions/deploy-pages`).
+- **Fork Enablement**: If the downstream repository is a fork, navigate to the **Actions** tab and click **"I understand my workflows, go ahead and enable them"** (Actions are disabled by default on newly created forks).
+
 ---
 
 ## 5. Alternatives to GitHub Actions for Wiki Hosting

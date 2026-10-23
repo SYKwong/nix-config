@@ -20,7 +20,55 @@ Forking first ensures that [`post-install`](/post-installation/) can seamlessly 
 
 ---
 
-## 2. Automated Adoption (`adopt.sh`)
+## 2. GitHub Fork Configuration (Actions & Permissions)
+
+If your fork or mirror is hosted on GitHub, GitHub enforces strict security restrictions on newly created repositories and forks. To ensure that both the automated ISO builder ([`.github/workflows/build-iso.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/build-iso.yml)) and documentation publisher ([`.github/workflows/deploy-docs.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/deploy-docs.yml)) execute successfully, configure these settings in your GitHub repository:
+
+### A. Enable Workflows on your Fork
+By default, GitHub disables Actions on forked repositories to prevent unintended runner usage:
+1. Navigate to the **Actions** tab in your fork (`https://github.com/<your-username>/nix-config/actions`).
+2. Click the green button: **"I understand my workflows, go ahead and enable them"**.
+
+### B. Action Execution Policy (Allowed Actions)
+The repository adheres to the principle of least privilege, restricting execution to official GitHub actions and an explicit third-party vendor allowlist:
+1. Navigate to **Settings** → **Actions** → **General**.
+2. Under **Actions permissions**, select **"Allow select actions and reusable workflows"**.
+3. Check **"Allow actions created by GitHub"** (permits official actions like `actions/checkout`, `actions/upload-artifact`, and `actions/deploy-pages`).
+4. In the **"Allow specified actions and reusable workflows"** text box, enter the repository's exact pattern allowlist:
+   ```text
+   cachix/*,
+   pnpm/*,
+   softprops/*,
+   withastro/*,
+   ```
+5. Click **Save**.
+
+### C. Grant Workflow Write Permissions
+The installer ISO workflow compiles the ISO and publishes it to your fork's GitHub Releases, which requires write access to repository contents, while future bot automations require pull request permissions:
+1. In **Settings** → **Actions** → **General**, scroll down to **Workflow permissions**.
+2. Select **Read and write permissions**.
+3. Check **Allow GitHub Actions to create and approve pull requests**.
+4. Click **Save**.
+
+> [!WARNING]
+> If repository workflow permissions remain set to the default *Read repository contents permission*, `build-iso.yml` will compile the ISO but fail at the release upload step with `Resource not accessible by integration (HTTP 403)`.
+
+### D. Configure GitHub Pages Deployment Source
+To deploy the Starlight documentation site to GitHub Pages:
+1. Navigate to **Settings** → **Pages**.
+2. Under **Build and deployment** → **Source**, select **GitHub Actions** from the dropdown (do *not* select "Deploy from a branch").
+3. This automatically enables GitHub Pages OIDC deployment, granting the `pages: write` and `id-token: write` permissions required by `actions/deploy-pages`.
+
+### Workflow Capabilities & Required Permissions Matrix
+
+| Workflow | File | Key Actions | Required Permissions | Function |
+| :--- | :--- | :--- | :--- | :--- |
+| **Build Installer ISO** | [`.github/workflows/build-iso.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/build-iso.yml) | `cachix/install-nix-action`, `actions/upload-artifact`, `softprops/action-gh-release` | `contents: write` | Builds live installer ISO via Nix, uploads monthly build artifact, and publishes rolling release assets |
+| **Deploy Documentation** | [`.github/workflows/deploy-docs.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/deploy-docs.yml) | `withastro/action`, `actions/deploy-pages` | `contents: read`, `pages: write`, `id-token: write` | Builds Astro Starlight site and deploys to GitHub Pages edge CDN using OIDC token authentication |
+
+---
+
+## 3. Automated Adoption (`adopt.sh`)
 
 An automated adoption script ([`adopt.sh`](https://gitlab.com/kylekwong/nix-config/-/blob/main/adopt.sh)) is provided at the repository root to sanitize the codebase and bootstrap your machine profile in a single command.
 
@@ -67,7 +115,7 @@ git push origin main
 
 ---
 
-## 3. Hardware Tuning with `nixos-hardware`
+## 4. Hardware Tuning with `nixos-hardware`
 
 Hardware configurations benefit from vendor-tested kernel parameters, microcode updates, and power profiles provided by [NixOS/nixos-hardware](https://github.com/NixOS/nixos-hardware).
 
@@ -106,7 +154,7 @@ Configuring `nixos-hardware` modules is optional. Even if omitted, `install-nixo
 
 ---
 
-## 4. Modules with Secret References
+## 5. Modules with Secret References
 
 Even after `adopt.sh` clears system-level secrets, one user-space module references a runtime secret file:
 
@@ -116,7 +164,7 @@ Even after `adopt.sh` clears system-level secrets, one user-space module referen
 
 ---
 
-## 5. Continuous Integration & The Split CI Architecture
+## 6. Continuous Integration & The Split CI Architecture
 
 This repository uses a **split CI architecture** by design:
 - **GitLab CI ([`.gitlab-ci.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.gitlab-ci.yml))**: Serves as the primary, authoritative CI engine for the fleet. It runs system-level flake validations (`nix flake check`), tree formatting enforcement (`nix fmt`), documentation build verification, and automated `flake.lock` update bots with merge request creation.
@@ -228,7 +276,7 @@ pages:
 
 ---
 
-## 6. Next Steps: Installing the System
+## 7. Next Steps: Installing the System
 
 Once your adopted configuration is committed and pushed to your fork:
 1. Boot into the NixOS Live USB.
