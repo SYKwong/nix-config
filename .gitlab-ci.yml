@@ -156,7 +156,7 @@ update-flake-mr:
         "$CI_API_V4_URL/projects/$CI_PROJECT_ID/merge_requests?state=opened&labels=dependencies&per_page=100" > open_mrs.json
 
       CHECK_PASSED=true
-      if ! nix flake check 2> check_err.txt; then
+      if ! { nix fmt && nix flake check; } 2> check_err.txt; then
         CHECK_PASSED=false
         cat check_err.txt >&2
 
