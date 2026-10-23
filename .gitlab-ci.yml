@@ -56,10 +56,14 @@ verify-flake:
       - nix-input-cache-default
   script:
     - |
-      if [[ "$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME" =~ ^flake-update- ]] && [ "$CI_COMMIT_TITLE" = "chore(flake): update flake.lock" ]; then
-        echo "Flake evaluation already passed in update-flake-mr; skipping duplicate check."
-        exit 0
-      fi
+      case "$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME" in
+        flake-update-*)
+          if [ "$CI_COMMIT_TITLE" = "chore(flake): update flake.lock" ]; then
+            echo "Flake evaluation already passed in update-flake-mr; skipping duplicate check."
+            exit 0
+          fi
+          ;;
+      esac
     - nix fmt
     - |
       if ! git diff --quiet; then
@@ -143,7 +147,7 @@ update-flake-mr:
       fi
 
       # 4. Query open dependency MRs and evaluate flake check
-      AUTH_HEADER=(-H "JOB-TOKEN: $CI_JOB_TOKEN")
+      AUTH_HEADER=()
       if [ -n "$PROJECT_API_TOKEN" ]; then
         AUTH_HEADER=(-H "PRIVATE-TOKEN: $PROJECT_API_TOKEN")
       fi
@@ -156,17 +160,28 @@ update-flake-mr:
         CHECK_PASSED=false
         cat check_err.txt >&2
 
-        ERROR_LINES=$(sed -E 's/\x1b\[[0-9;]*[a-zA-Z]//g' check_err.txt | grep -E '^\s*error:' || true)
-        if [ -z "$ERROR_LINES" ]; then
-          ERROR_LINES=$(sed -E 's/\x1b\[[0-9;]*[a-zA-Z]//g' check_err.txt | tail -n 20)
-        fi
-
-        ERROR_SIG=$(printf '%s\n' "$ERROR_LINES" \
-          | sed -E \
-              -e 's|/nix/store/[a-z0-9]{32}-|/nix/store/HASH-|g' \
-              -e 's|\.[0-9]{8}\.[0-9a-f]{7,}|.DATE.REV|g' \
-              -e 's|(\.nix):[0-9]+(:[0-9]+)?|\1|g' \
-          | sha256sum | awk '{print $1}')
+        ERROR_SIG=$(nix eval --impure --raw --expr '
+          let
+            replaceRegex = regex: repl: s:
+              builtins.concatStringsSep repl (builtins.filter builtins.isString (builtins.split regex s));
+            raw = builtins.readFile ./check_err.txt;
+            lines = builtins.filter builtins.isString (builtins.split "\n" raw);
+            cleanLines = builtins.map (replaceRegex "\u001b\\[[0-9;]*[a-zA-Z]" "") lines;
+            errLines = builtins.filter (l: builtins.match "[[:space:]]*error:.*" l != null) cleanLines;
+            len = builtins.length cleanLines;
+            n = if len < 20 then len else 20;
+            selected =
+              if errLines != [] then errLines
+              else builtins.genList (i: builtins.elemAt cleanLines (len - n + i)) n;
+            normalize = s:
+              replaceRegex "/nix/store/[a-z0-9]{32}-" "/nix/store/HASH-" (
+                replaceRegex "\\.[0-9]{8}\\.[0-9a-f]{7,}" ".DATE.REV" (
+                  replaceRegex "\\.nix:[0-9]+:[0-9]+|\\.nix:[0-9]+" ".nix" s
+                )
+              );
+          in
+            builtins.hashString "sha256" (builtins.concatStringsSep "\n" (builtins.map normalize selected))
+        ')
 
         MATCHING_IID=$(nix eval --impure --raw --expr '
           let
@@ -227,7 +242,8 @@ update-flake-mr:
       rm -f open_mrs.json
 
       # Also clean up any lingering stale flake-update branches on remote
-      git ls-remote --heads origin 'refs/heads/flake-update-*' | awk '{print $2}' | sed 's|^refs/heads/||' | while read -r REMOTE_BRANCH; do
+      git ls-remote --heads origin 'refs/heads/flake-update-*' | while read -r _ REF; do
+        REMOTE_BRANCH="${REF#refs/heads/}"
         if [ -n "$REMOTE_BRANCH" ]; then
           echo "Deleting stale remote branch ${REMOTE_BRANCH}..."
           git push origin --delete "$REMOTE_BRANCH" >/dev/null 2>&1 || true
@@ -247,9 +263,21 @@ update-flake-mr:
           -o merge_request.squash=true \
           -o merge_request.merge_when_pipeline_succeeds
       else
-        ERROR_EXCERPT=$(printf '%s\n' "$ERROR_LINES" | tail -n 15)
-        ERROR_EXCERPT="${ERROR_EXCERPT//:/ }"
-        ERROR_EXCERPT="${ERROR_EXCERPT//$'\n'/\\n}"
+        ERROR_EXCERPT=$(nix eval --impure --raw --expr '
+          let
+            replaceRegex = regex: repl: s:
+              builtins.concatStringsSep repl (builtins.filter builtins.isString (builtins.split regex s));
+            raw = builtins.readFile ./check_err.txt;
+            lines = builtins.filter builtins.isString (builtins.split "\n" raw);
+            cleanLines = builtins.map (s: replaceRegex ":" " " (replaceRegex "\u001b\\[[0-9;]*[a-zA-Z]" "" s)) lines;
+            errLines = builtins.filter (l: builtins.match "[[:space:]]*error .*" l != null) cleanLines;
+            pool = if errLines != [] then errLines else cleanLines;
+            len = builtins.length pool;
+            n = if len < 15 then len else 15;
+            tailLines = builtins.genList (i: builtins.elemAt pool (len - n + i)) n;
+          in
+            builtins.concatStringsSep "\\n" tailLines
+        ')
         MR_DESCRIPTION="The following flake inputs were updated:\n$SUMMARY\n\n### nix flake check failed\n\`\`\`\n$ERROR_EXCERPT\n\`\`\`\n<!-- error-sig=$ERROR_SIG -->"
 
         git push -f origin "$BRANCH_NAME" \
