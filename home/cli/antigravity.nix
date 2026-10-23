@@ -16,6 +16,7 @@ let
     "command(git grep)"
     "command(git log)"
     "command(git ls-files)"
+    "command(git ls-remote)"
     "command(git ls-tree)"
     "command(git merge-base)"
     "command(git remote)"
@@ -31,6 +32,13 @@ let
     "command(git status)"
     "command(git switch)"
     "command(git tag)"
+    "command(glab ci lint)"
+    "command(glab ci list)"
+    "command(glab ci status)"
+    "command(glab ci trace)"
+    "command(glab ci view)"
+    "command(glab mr list)"
+    "command(glab mr view)"
 
     # Node & Documentation Tooling
     "command(npm audit)"
