@@ -51,13 +51,13 @@ flowchart TD
 
 2. **Graceful Teardown**:
    - Exiting the stream or tapping **Quit Session** in Moonlight triggers the `prep-cmd` `undo` action: `hypr-virtual-monitor stop HEADLESS-1`.
-   - Hyprland removes `HEADLESS-1` and automatically returns active workspaces to your primary monitor.
+   - Windows on `HEADLESS-1` are automatically evacuated to workspace 1, and the primary monitor's active workspace is preserved while `HEADLESS-1` and its workspace are removed.
 
 3. **On-Demand Idle Watchdog (15-Minute Timeout)**:
    - Sunshine treats client disconnects (or tablet screen locks) as "paused" sessions to allow game reconnection, leaving `HEADLESS-1` open in Hyprland.
    - An on-demand systemd service (`sunshine-watchdog.service`) is launched by `hypr-virtual-monitor start` and stopped on explicit quit.
    - The watchdog periodically polls active Sunshine streaming sockets (`:47989`, `:48010`) using `ss`.
-   - If the stream remains paused or disconnected continuously for **15 minutes** (`custom.sunshine.tabletDisplay.idleTimeout = 900`), the watchdog automatically destroys `HEADLESS-1` and restarts Sunshine to drop stale sessions. Zero background polling occurs when not streaming.
+   - If the stream remains paused or disconnected continuously for **15 minutes** (`custom.sunshine.tabletDisplay.idleTimeout = 900`), the watchdog automatically evacuates windows to workspace 1, destroys `HEADLESS-1`, and restarts Sunshine to drop stale sessions. Zero background polling occurs when not streaming.
 
 ### 4. Manual Virtual Monitor CLI (`hypr-virtual-monitor`)
 While Moonlight connections automatically provision and tear down `HEADLESS-1` via hooks, you can also control virtual displays manually:
