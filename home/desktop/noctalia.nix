@@ -112,12 +112,16 @@ in
           thickness = 34;
           widget_spacing = 6;
 
-          center = [ "group:g1" ];
+          start = [
+            "workspaces"
+            "media"
+          ];
+          center = [ "clock" ];
           end = [
-            "group:g2"
+            "group:utilities"
+            "group:system"
             "session"
           ];
-          start = [ "media" ];
 
           monitor.primary = {
             match = current_host_config.output_monitor;
@@ -130,14 +134,11 @@ in
               accordion_direction = "end";
               enabled = true;
               fill = "surface_variant";
-              id = "g1";
+              id = "utilities";
               members = [
-                "clock"
-                "workspaces"
-                "bluetooth"
-                "network"
-                "volume"
-                "battery"
+                "tray"
+                "clipboard"
+                "notifications"
               ];
               opacity = 1.0;
               padding = 6.0;
@@ -148,11 +149,12 @@ in
               accordion_direction = "end";
               enabled = true;
               fill = "surface_variant";
-              id = "g2";
+              id = "system";
               members = [
-                "tray"
-                "notifications"
-                "clipboard"
+                "network"
+                "bluetooth"
+                "volume"
+                "battery"
               ];
               opacity = 1.0;
               padding = 6.0;
