@@ -88,7 +88,7 @@ in
           capsule_thickness = 0.76;
           concave_edge_corners = false;
           contact_shadow = false;
-          enabled = true;
+          enabled = false;
           font_weight = 500;
           hover_highlight = true;
           layer = "top";
@@ -118,6 +118,11 @@ in
             "session"
           ];
           start = [ "media" ];
+
+          monitor.primary = {
+            match = current_host_config.output_monitor;
+            enabled = true;
+          };
 
           capsule_group = [
             {
@@ -302,6 +307,7 @@ in
           fetch_exchange_rates = false;
           show_app_origin_indicator = false;
           sort_by_usage = false;
+          track_usage = false;
           providers.session.global = true;
         };
 
@@ -317,7 +323,10 @@ in
           wallpaper_show_names = false;
         };
 
-        screenshot.directory = "~/Pictures/Screenshots/";
+        screenshot = {
+          directory = "~/Pictures/Screenshots/";
+          show_cursor = true;
+        };
       };
 
       system.monitor.enabled = false;

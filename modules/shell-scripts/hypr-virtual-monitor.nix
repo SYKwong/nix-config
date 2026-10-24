@@ -29,7 +29,7 @@ pkgs.writeShellApplication {
       if ! is_running; then
         hyprctl output create headless "$OUTPUT_NAME"
       fi
-      hyprctl eval "hl.monitor({ output = \"$OUTPUT_NAME\", mode = \"''${WIDTH}x''${HEIGHT}@''${FPS}Hz\", position = \"auto-right\", scale = \"$SCALE\" })"
+      hyprctl eval "hl.monitor({ output = \"$OUTPUT_NAME\", mode = \"''${WIDTH}x''${HEIGHT}@''${FPS}Hz\", position = \"auto-right\", scale = \"$SCALE\", reserved_area = { top = 20, bottom = 0, left = 0, right = 0 } })"
       systemctl --user start sunshine-watchdog.service >/dev/null 2>&1 || true
     }
 

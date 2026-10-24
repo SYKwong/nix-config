@@ -53,6 +53,11 @@ else
 	hl.monitor({ output = "HDMI-1", mode = "1920x1080@60" })
 end
 
+hl.monitor({
+	output = "HEADLESS-1",
+	reserved_area = { top = 20, bottom = 0, left = 0, right = 0 },
+})
+
 local saved_states = utils.load_workspace_states()
 for ws_id, layout_name in pairs(saved_states) do
 	hl.workspace_rule({ workspace = ws_id, layout = layout_name })
