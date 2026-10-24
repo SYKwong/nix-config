@@ -261,9 +261,17 @@ in
       notification = {
         history_retention_hours = 24;
         layer = "overlay";
-        filter.kitty = {
-          match = "kitty";
-          play_sound = false;
+        filter = {
+          kitty = {
+            match = "kitty";
+            play_sound = false;
+          };
+          sunshine = {
+            match = "sunshine";
+            play_sound = false;
+            save_history = false;
+            show_toast = false;
+          };
         };
       };
 

@@ -9,7 +9,6 @@ pkgs.writeShellApplication {
     hyprland
     iproute2
     jq
-    libnotify
     systemd
   ];
 
@@ -64,7 +63,6 @@ pkgs.writeShellApplication {
             hyprctl output remove "$OUTPUT_NAME"
           fi
           systemctl --user restart sunshine >/dev/null 2>&1 || true
-          notify-send -a 'Sunshine' 'Tablet Display' "Session idle for $((max_idle / 60)) minutes: virtual monitor removed." >/dev/null 2>&1 || true
           exit 0
         fi
       done
