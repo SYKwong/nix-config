@@ -56,6 +56,14 @@ hl.bind(mainMod .. " + slash", hl.dsp.layout("colresize +conf"), { description =
 -- Screenshots
 hl.bind(mainMod .. " + S", hl.dsp.exec_cmd(snip), { description = "[Screenshot] Capture area to file and clipboard" })
 
+-- Display Navigation
+hl.bind(mainMod .. " + grave", hl.dsp.focus({ monitor = "+1" }), { description = "[Display] Focus next display" })
+hl.bind(
+	mainMod .. " + SHIFT + grave",
+	hl.dsp.window.move({ monitor = "+1" }),
+	{ description = "[Window] Move active window to next display" }
+)
+
 -- Workspace Cycling
 hl.bind(mainMod .. " + TAB", hl.dsp.focus({ workspace = "e+1" }), { description = "[Workspace] Focus next workspace" })
 hl.bind(
