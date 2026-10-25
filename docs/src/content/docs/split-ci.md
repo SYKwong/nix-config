@@ -95,7 +95,7 @@ git push -f origin "$BRANCH_NAME" \
 Using pure `git push` options:
 - No personal access token is stored or exposed in CI environment variables.
 - The pipeline authenticates using GitLab's short-lived, job-scoped `CI_JOB_TOKEN`.
-- The Merge Request is automatically pre-validated with `nix flake check` inside `update-flake-mr` (deduplicating repeated upstream `nixpkgs` breakages by comparing normalized error hashes against any currently open `dependencies` MR), formatted with the exact `nix flake update` summary, and assigned to the repository owner. Full system closure build verification and automatic merge are handled safely by `flake-update-verifier` on the local desktop workstation (`mini-pc-k8`) during off-peak hours, ensuring broken upstream `nixpkgs` revisions never touch `main`.
+- The Merge Request is created with the exact `nix flake update` summary and assigned to the repository owner. Full system closure build verification and automatic merge are handled safely by `flake-update-verifier` on the local desktop workstation (`mini-pc-k8`) during off-peak hours, ensuring broken upstream `nixpkgs` revisions never touch `main`.
 - Tag rotation (`create-weekly-stable`) tags the commit and purges tags older than 12 weeks using native git commands in an Alpine container.
 
 ### E. Zero-Cost Edge CDN for Documentation

@@ -24,8 +24,8 @@ verify-flake:
     - if: '$CI_PIPELINE_SOURCE != "merge_request_event"'
       when: never
 
-    # Skip automated flake-update MRs that already failed in update-flake-mr
-    - if: '$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ /^flake-update-/ && $CI_COMMIT_TITLE == "chore(flake): update flake.lock" && $CI_MERGE_REQUEST_DESCRIPTION =~ /error-sig=/'
+    # Skip automated flake-update MRs (verified locally by workstation flake-update-verifier)
+    - if: '$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ /^flake-update-/'
       when: never
 
     # Skip draft/WIP MRs
@@ -55,15 +55,6 @@ verify-flake:
     fallback_keys:
       - nix-input-cache-default
   script:
-    - |
-      case "$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME" in
-        flake-update-*)
-          if [ "$CI_COMMIT_TITLE" = "chore(flake): update flake.lock" ]; then
-            echo "Flake evaluation already passed in update-flake-mr; skipping duplicate check."
-            exit 0
-          fi
-          ;;
-      esac
     - nix fmt
     - |
       if ! git diff --quiet; then
@@ -146,68 +137,7 @@ update-flake-mr:
         exit 0
       fi
 
-      # 4. Query open dependency MRs and evaluate flake check
-      AUTH_HEADER=()
-      if [ -n "$PROJECT_API_TOKEN" ]; then
-        AUTH_HEADER=(-H "PRIVATE-TOKEN: $PROJECT_API_TOKEN")
-      fi
-
-      curl -s "${AUTH_HEADER[@]}" \
-        "$CI_API_V4_URL/projects/$CI_PROJECT_ID/merge_requests?state=opened&labels=dependencies&per_page=100" > open_mrs.json
-
-      CHECK_PASSED=true
-      if ! { nix fmt && nix flake check; } 2> check_err.txt; then
-        CHECK_PASSED=false
-        cat check_err.txt >&2
-
-        ERROR_SIG=$(nix eval --impure --raw --expr '
-          let
-            replaceRegex = regex: repl: s:
-              builtins.concatStringsSep repl (builtins.filter builtins.isString (builtins.split regex s));
-            raw = builtins.readFile ./check_err.txt;
-            lines = builtins.filter builtins.isString (builtins.split "\n" raw);
-            cleanLines = builtins.map (replaceRegex "\u001b\\[[0-9;]*[a-zA-Z]" "") lines;
-            errLines = builtins.filter (l: builtins.match "[[:space:]]*error:.*" l != null) cleanLines;
-            len = builtins.length cleanLines;
-            n = if len < 20 then len else 20;
-            selected =
-              if errLines != [] then errLines
-              else builtins.genList (i: builtins.elemAt cleanLines (len - n + i)) n;
-            normalize = s:
-              replaceRegex "/nix/store/[a-z0-9]{32}-" "/nix/store/HASH-" (
-                replaceRegex "\\.[0-9]{8}\\.[0-9a-f]{7,}" ".DATE.REV" (
-                  replaceRegex "\\.nix:[0-9]+:[0-9]+|\\.nix:[0-9]+" ".nix" s
-                )
-              );
-          in
-            builtins.hashString "sha256" (builtins.concatStringsSep "\n" (builtins.map normalize selected))
-        ')
-
-        MATCHING_IID=$(nix eval --impure --raw --expr '
-          let
-            raw = builtins.readFile ./open_mrs.json;
-            data = builtins.fromJSON raw;
-            matches =
-              if builtins.isList data then
-                builtins.filter (mr:
-                  let
-                    desc = if mr ? description && builtins.isString mr.description then mr.description else "";
-                  in
-                    builtins.match ".*error-sig='"$ERROR_SIG"'.*" desc != null
-                ) data
-              else [];
-          in
-            if matches == [] then "" else toString (builtins.head matches).iid
-        ' 2>/dev/null || true)
-
-        if [ -n "$MATCHING_IID" ]; then
-          echo "nix flake check failed with the same error signature ($ERROR_SIG) as open MR !${MATCHING_IID}. Skipping MR creation."
-          rm -f open_mrs.json check_err.txt
-          exit 0
-        fi
-      fi
-
-      # 5. Create a unique branch name and commit
+      # 4. Create branch and commit
       BRANCH_NAME="flake-update-$(date +%Y-%m-%d)"
       git checkout -b "$BRANCH_NAME"
       RAW_LINES=$(grep '•' update_summary.txt)
@@ -218,80 +148,25 @@ update-flake-mr:
       git add flake.lock
       git commit -m "chore(flake): update flake.lock"
 
-      # 6. Close superseded open dependency update MRs and clean up their branches
-      nix eval --impure --raw --expr '
-        let
-          raw = builtins.readFile ./open_mrs.json;
-          data = builtins.fromJSON raw;
-          old = if builtins.isList data then data else [];
-        in
-          builtins.concatStringsSep "\n" (builtins.map (mr: "${toString mr.iid} ${mr.source_branch}") old)
-      ' 2>/dev/null | while read -r OLD_IID OLD_BRANCH; do
-        if [ -n "$OLD_IID" ]; then
-          if [ -n "$PROJECT_API_TOKEN" ]; then
-            echo "Closing superseded MR !${OLD_IID}..."
-            curl -s --request PUT "${AUTH_HEADER[@]}" \
-              "$CI_API_V4_URL/projects/$CI_PROJECT_ID/merge_requests/$OLD_IID?state_event=close" >/dev/null
-          else
-            echo "Note: PROJECT_API_TOKEN is not set; skipping API closure of MR !${OLD_IID}."
-          fi
-          echo "Deleting superseded remote branch ${OLD_BRANCH}..."
-          git push origin --delete "$OLD_BRANCH" >/dev/null 2>&1 || true
-        fi
-      done
-      rm -f open_mrs.json
-
-      # Also clean up any lingering stale flake-update branches on remote
+      # 5. Clean up any stale flake-update branches on remote (closes superseded MRs)
       git ls-remote --heads origin 'refs/heads/flake-update-*' | while read -r _ REF; do
         REMOTE_BRANCH="${REF#refs/heads/}"
-        if [ -n "$REMOTE_BRANCH" ]; then
+        if [ -n "$REMOTE_BRANCH" ] && [ "$REMOTE_BRANCH" != "$BRANCH_NAME" ]; then
           echo "Deleting stale remote branch ${REMOTE_BRANCH}..."
           git push origin --delete "$REMOTE_BRANCH" >/dev/null 2>&1 || true
         fi
       done
 
-      # 7. Push with MR creation options
-      if [ "$CHECK_PASSED" = true ]; then
-        git push -f origin "$BRANCH_NAME" \
-          -o merge_request.create \
-          -o merge_request.target="$CI_DEFAULT_BRANCH" \
-          -o merge_request.title="chore(flake): update flake.lock ($(date +%Y-%m-%d))" \
-          -o merge_request.description="The following flake inputs were updated:\n$SUMMARY" \
-          -o merge_request.remove_source_branch \
-          -o merge_request.label="dependencies" \
-          -o merge_request.assignee_id="$GITLAB_USER_ID" \
-          -o merge_request.squash=true
-      else
-        ERROR_EXCERPT=$(nix eval --impure --raw --expr '
-          let
-            replaceRegex = regex: repl: s:
-              builtins.concatStringsSep repl (builtins.filter builtins.isString (builtins.split regex s));
-            raw = builtins.readFile ./check_err.txt;
-            lines = builtins.filter builtins.isString (builtins.split "\n" raw);
-            cleanLines = builtins.map (s: replaceRegex ":" " " (replaceRegex "\u001b\\[[0-9;]*[a-zA-Z]" "" s)) lines;
-            errLines = builtins.filter (l: builtins.match "[[:space:]]*error .*" l != null) cleanLines;
-            pool = if errLines != [] then errLines else cleanLines;
-            len = builtins.length pool;
-            n = if len < 15 then len else 15;
-            tailLines = builtins.genList (i: builtins.elemAt pool (len - n + i)) n;
-          in
-            builtins.concatStringsSep "\\n" tailLines
-        ')
-        MR_DESCRIPTION="The following flake inputs were updated:\n$SUMMARY\n\n### nix flake check failed\n\`\`\`\n$ERROR_EXCERPT\n\`\`\`\n<!-- error-sig=$ERROR_SIG -->"
-
-        git push -f origin "$BRANCH_NAME" \
-          -o merge_request.create \
-          -o merge_request.target="$CI_DEFAULT_BRANCH" \
-          -o merge_request.title="chore(flake): update flake.lock ($(date +%Y-%m-%d))" \
-          -o merge_request.description="$MR_DESCRIPTION" \
-          -o merge_request.remove_source_branch \
-          -o merge_request.label="dependencies" \
-          -o merge_request.assignee_id="$GITLAB_USER_ID" \
-          -o merge_request.squash=true
-
-        rm -f check_err.txt
-        exit 1
-      fi
+      # 6. Push with MR creation options
+      git push -f origin "$BRANCH_NAME" \
+        -o merge_request.create \
+        -o merge_request.target="$CI_DEFAULT_BRANCH" \
+        -o merge_request.title="chore(flake): update flake.lock ($(date +%Y-%m-%d))" \
+        -o merge_request.description="The following flake inputs were updated:\n$SUMMARY" \
+        -o merge_request.remove_source_branch \
+        -o merge_request.label="dependencies" \
+        -o merge_request.assignee_id="$GITLAB_USER_ID" \
+        -o merge_request.squash=true
 
 create-weekly-stable:
   stage: stable
