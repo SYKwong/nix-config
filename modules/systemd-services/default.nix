@@ -1,0 +1,5 @@
+{
+  imports = [
+    ./wallpaper-sync.nix
+  ];
+}

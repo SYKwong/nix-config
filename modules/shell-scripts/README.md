@@ -14,6 +14,7 @@ This directory contains custom CLI tools and helper scripts packaged as native N
 | **`rofi-keybinds`** | [`rofi-keybind.nix`](./rofi-keybind.nix) | `writeShellApplication` | Dynamic cheat sheet parsed from `hyprctl binds` and displayed in an interactive Rofi dmenu (`SUPER + SHIFT + /` or `SUPER + F1`). |
 | **`kb-light-manager`** | [`kb-light-manager.nix`](./kb-light-manager.nix) | `writeShellApplication` | Framework laptop keyboard backlight toggle and brightness manager using `qmk_hid`. |
 | **`display-brightness`** | [`display-brightness.nix`](./display-brightness.nix) | `writeShellApplication` | Display brightness manager targeting focused internal display backlight with automatic fallback to `hyprsunset` software dimming for external monitors. |
+| **`wallpaper-sync`** | [`wallpaper-sync.nix`](./wallpaper-sync.nix) | `writeShellApplication` | Automated synchronization engine for the `~/Wallpaper` git repository with safe rebase, remote connectivity checks, and timestamped auto-commits. |
 | **`tui-wrap`** | [`tui-wrap.nix`](./tui-wrap.nix) | `writeShellScriptBin` *(Exception)* | Helper to spawn arbitrary CLI and TUI tools (like Yazi or Btop) inside floating Foot terminal surfaces. Dynamically resolves user commands from runtime `PATH`. |
 
 ---

@@ -69,6 +69,7 @@ in
           ./modules/secrets
           ./modules/shell-scripts
           ./modules/sunshine
+          ./modules/systemd-services
           ./modules/vpn
           ./modules/wireless
 

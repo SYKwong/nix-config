@@ -16,6 +16,7 @@ This directory (`modules/shell-scripts/`) contains custom CLI tools and system m
 | **`display-brightness`** | `modules/shell-scripts/display-brightness.nix` | `writeShellApplication` | Display brightness manager targeting focused internal display backlight with automatic fallback to `hyprsunset` software dimming for external monitors. |
 | **`rofi-keybinds`** | `modules/shell-scripts/rofi-keybind.nix` | `writeShellApplication` | Dynamic cheat sheet parsed from `hyprctl binds` and displayed in an interactive Rofi dmenu (`SUPER + SHIFT + /` or `SUPER + F1`). |
 | **`kb-light-manager`** | `modules/shell-scripts/kb-light-manager.nix` | `writeShellApplication` | Framework laptop keyboard backlight toggle and brightness manager using `qmk_hid`. |
+| **`wallpaper-sync`** | `modules/shell-scripts/wallpaper-sync.nix` | `writeShellApplication` | Automated synchronization engine for the `~/Wallpaper` git repository with safe rebase, remote connectivity checks, and timestamped auto-commits. |
 | **`tui-wrap`** | `modules/shell-scripts/tui-wrap.nix` | `writeShellScriptBin` *(Exception)* | Helper to spawn arbitrary CLI and TUI tools (like Yazi or Btop) inside floating Foot terminal surfaces. Dynamically resolves user commands from runtime `PATH`. |
 
 ---

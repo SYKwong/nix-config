@@ -52,6 +52,7 @@ This interactive flow guides you through:
    - **Public Wallpapers**: Available at [GitLab Wallpaper](https://gitlab.com/kylekwong/Wallpaper) (`git clone https://gitlab.com/kylekwong/Wallpaper.git ~/Wallpaper`).
    - **Private Wallpapers**: Alternatively clone manually via `git clone git@gitlab.com:kylekwong/private-wallpaper.git ~/Wallpaper`.
    - **Wallpaper Picker**: Place custom images into `~/Wallpaper/` and launch the picker with `SUPER + Space`.
+   - **Automated Daily Sync**: Automatically pulls remote updates and pushes local additions/deletions daily via a systemd user timer (`wallpaper-sync.timer`), or on demand with `wallpaper-sync`.
 
 ## Fleet Rekeying & Secret Propagation
 

@@ -24,6 +24,7 @@ let
     rofi-keybind = import ./rofi-keybind.nix common;
     display-brightness = import ./display-brightness.nix common;
     hypr-virtual-monitor = import ./hypr-virtual-monitor.nix common;
+    wallpaper-sync = import ./wallpaper-sync.nix common;
   };
 in
 {
