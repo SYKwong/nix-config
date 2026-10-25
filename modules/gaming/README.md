@@ -21,7 +21,7 @@ Configuration is declared in [`default.nix`](./default.nix) and imported across 
 1. **Steam**: Installed via `programs.steam.enable = true` with local network game transfer firewall ports opened and Protontricks enabled.
 2. **Proton-GE (`extraCompatPackages`)**: Pre-bundles `proton-ge-bin` directly into Steam's compatibility dropdown without requiring manual GUI downloads.
 3. **Gamescope**: System-wide micro-compositor enabled with Wayland WSI support (`programs.gamescope.enableWsi = true`).
-4. **GameMode**: Feral Interactive GameMode daemon configured to pause background maintenance tasks (such as `nixos-cache-warm.service`) during active gameplay.
+4. **GameMode**: Feral Interactive GameMode daemon for automatic CPU governor, GPU clock, and process priority optimization during active gameplay.
 5. **Controller Udev Rules**: Provisions `game-devices-udev-rules` for non-root access to DualSense, Xbox, Switch, and handheld controllers.
 6. **Management GUI**: Bundles `protonup-qt` for installing and managing custom Proton and Wine versions.
 

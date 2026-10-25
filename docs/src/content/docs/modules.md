@@ -24,7 +24,7 @@ This directory contains modular, reusable **NixOS system-level** configurations.
 | **`secrets/`** | `modules/secrets/` | System secret management, decryption, and credential provisioning via agenix. |
 | **`input-method/`** | `modules/input-method/` | Input method engines (Fcitx5), internationalization, and character input mappings. |
 | **`shell-scripts/`** | `modules/shell-scripts/` | Custom CLI utilities packaged via `writeShellApplication` (see [Custom Shell Scripts](/shell-scripts/)). |
-| **`systemd-services/`** | `modules/systemd-services/` | Standalone background services and scheduled timers not tied to specific domain modules. |
+| **`systemd-services/`** | `modules/systemd-services/` | Standalone background services and scheduled timers not tied to specific domain modules (e.g. overnight flake update verification, wallpaper sync). |
 | **`home-manager/`** | `modules/home-manager/` | System-level Home Manager integration module binding user configurations and automatic per-host home extensions. |
 | **`lanzaboote/`** | `modules/lanzaboote/` | UEFI Secure Boot integration and cryptographic bootloader signing. |
 | **`power-management/`** | `modules/power-management/` | Power management daemons and system power profile switching. |

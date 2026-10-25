@@ -41,11 +41,6 @@
 
     gamemode = {
       enable = true;
-      settings = {
-        custom = {
-          start = "${pkgs.systemd}/bin/systemctl --user stop nixos-cache-warm.service 2>/dev/null || true";
-        };
-      };
     };
   };
 

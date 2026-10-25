@@ -49,8 +49,8 @@ hosts/<hostname>/
 4. **`config.nix` (Optional)** ([framework16](./framework16/config.nix), [mini-pc-k8](./mini-pc-k8/config.nix)):
    A consolidated module for any machine-specific option toggles (e.g. `custom.ai`, `custom.vpn.wireguard`) and host-specific secrets (`age.secrets`). Avoid creating micro-files for individual feature toggles.
 
-5. **`home/` (Optional)** ([mini-pc-k8](./mini-pc-k8/home/default.nix)):
-   Host-specific user packages or environment settings. Automatically imported into the user's Home Manager environment by `modules/home-manager/`.
+5. **`home/` (Optional)**:
+   Host-specific user packages or environment settings. Automatically imported into the user's Home Manager environment by `modules/home-manager/` if a `hosts/<hostname>/home/` directory exists.
 
 ---
 
