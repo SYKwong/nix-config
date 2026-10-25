@@ -114,9 +114,11 @@ in
 
           start = [
             "workspaces"
-            "media"
           ];
-          center = [ "clock" ];
+          center = [
+            "media"
+            "clock"
+          ];
           end = [
             "group:utilities"
             "group:system"
@@ -364,7 +366,10 @@ in
       };
 
       widget = {
-        clock.format = "{:%b %d %-I:%M%p}";
+        clock = {
+          format = "{:%b %d %-I:%M%p}";
+          anchor = true;
+        };
         media = {
           hide_album_art = true;
           title_scroll = "always";
