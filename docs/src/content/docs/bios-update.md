@@ -146,6 +146,6 @@ Flashing a new BIOS resets UEFI NVRAM settings to factory defaults. Once the upd
 
 1. Power on holding **`Volume Up` + `Power`** (or press **`F2`** on an attached keyboard) during boot to enter BIOS setup.
 2. Restore essential settings:
-   - **Configuration → UMA Frame Buffer Size**: Change from default back to **`6G`** (allocates 6 GB of shared LPDDR5X RAM to the Radeon 780M GPU for Steam Gamescope).
+   - **Configuration → UMA Frame Buffer Size**: Change from default back to **`8G`** (options: 3G, 4G, 8G; allocates 8 GB of shared LPDDR5X RAM to the Radeon 780M GPU for Steam Gamescope).
    - **Security → Secure Boot**: Ensure Secure Boot remains **`Disabled`**.
 3. Press **`F10`** to save changes and exit. The device will boot normally into Steam Gaming Mode.

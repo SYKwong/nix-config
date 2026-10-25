@@ -77,3 +77,11 @@ Tailored for stationary workstations and living room media PCs with stable power
 
 * **Static CIFS Mounts**: Direct systemd automounts with credentials managed via Agenix (`age.secrets.smb-credentials`).
 * **Power & Performance**: Uses `power-profiles-daemon` with performance and balanced governors, omitting battery conservation logic.
+
+---
+
+## Documentation
+
+For fleet architecture and host profile composition, refer to the online guide:
+
+📖 **[System Profiles Documentation](https://nix.kyle-kwong.com/hosts/)**

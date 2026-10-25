@@ -104,20 +104,121 @@ When declaring a host:
 
 ## Handheld Gaming (`legion-go`)
 
-The `legion-go` profile demonstrates configuring a keyboardless gaming handheld via `modules/profiles/gaming-handheld`:
+The `legion-go` profile demonstrates configuring a keyboardless gaming handheld via `modules/profiles/gaming-handheld` and `hosts/legion-go/`:
 
-- **Dual-Session Architecture (SteamOS-style)**:
-  - **Gaming Mode (Default)**: Boots directly into a dedicated Steam Gamescope session with controller navigation, gamescope display rotation/scaling, and Handheld Daemon (`hhd`) overlay.
-  - **Desktop Mode**: Touch-friendly KDE Plasma 6 (Wayland) session. Switch from Steam via the Power menu ("Switch to Desktop"), and return to Gaming Mode via the desktop shortcut `Return to Gaming Mode` (`~/Desktop/Return.desktop`) or `steamos-session-select gamescope`.
-  - **First-Boot Behavior**: On the initial boot after installation, SDDM automatically logs into KDE Plasma 6 to allow convenient network setup and running `./post-install.sh`. Subsequent boots launch directly into Steam Gaming Mode.
-- **Hardware Portrait Scanout Quirks**:
-  - The 8.8" 144Hz internal display is rotated right-side up at boot via early kernel parameters (`video=eDP-1:panel_orientation=right_side_up`, `fbcon=rotate:1`).
-  - Gamescope handles compositing rotation via `--force-orientation left`.
-- **Controllers & Power Management**:
-  - Detachable TrueStrike controllers, gyro aiming, optical mouse sensor, and TDP curves managed by Handheld Daemon (`services.handheld-daemon.adjustor.enable = true`).
-  - Uses `suspend-then-hibernate` into a 20 GB swapfile (`/.swap/swapfile`).
-- **Firmware Updates**:
-  - Supported via LVFS ([`fwupd`](/bios-update/#framework-16--supported-devices-fwupd)), with an offline capsule extraction fallback via `fwupdtool` for Windows BIOS installers (see [BIOS & Firmware Updates](/bios-update/#lenovo-legion-go-manual-capsule-via-fwupdtool)).
+### Hardware Profile & Technical Specifications
+
+| Component | Specification | NixOS / Linux Consideration |
+| :--- | :--- | :--- |
+| **APU** | AMD Ryzen Z1 Extreme (8C/16T, Zen 4, up to 30W TDP) | Handled by `common-cpu-amd` + `common-cpu-amd-pstate` |
+| **Graphics** | AMD Radeon 780M (12 CUs RDNA 3, up to 2.7 GHz) | Handled by `common-gpu-amd` + Mesa Radv driver (8 GB VRAM recommended in BIOS; options: 3G, 4G, 8G) |
+| **Memory** | 16 GB LPDDR5X-7500 MHz shared | System & VRAM dynamically allocated |
+| **Internal Display** | 8.8" QHD+ (2560x1600), 144Hz, 16:10 IPS touchscreen | **Native portrait scanout (1600x2560)**; requires DRM & compositor 90° rotation |
+| **Storage** | M.2 2242 PCIe 4.0 NVMe SSD (`/dev/nvme0n1`) | Unencrypted Btrfs with zstd compression and 20 GB hibernation swapfile |
+| **Controllers** | Lenovo TrueStrike detachable controllers, trackpad, gyro | Managed by Handheld Daemon (`hhd`) for DualSense/Xbox emulation and mapping |
+| **Wireless** | Wi-Fi 6E + Bluetooth 5.2 | Managed by NetworkManager; Bluetooth powered on at boot for detached controllers |
+| **Power & Sleep** | 49.2 Wh battery, 65W USB-C PD | `suspend-then-hibernate` (1h s2idle sleep transitioning to Btrfs hibernation) |
+
+### Storage & Partitioning Scheme (`hosts/legion-go/disko.nix`)
+
+The Legion Go uses an **unencrypted Btrfs** layout partitioned via Disko:
+
+```text
+/dev/nvme0n1 (GPT)
+├── Partition 1: ESP (2 GB, vfat, /boot, umask=0077)
+└── Partition 2: root (100%, Btrfs with zstd compression, noatime)
+    ├── Subvolume /root -> /
+    ├── Subvolume /home -> /home
+    ├── Subvolume /nix  -> /nix
+    └── Subvolume /swap -> /.swap (20 GB swapfile for 16 GB RAM hibernation + paging)
+```
+
+* **Ergonomics**: A handheld console has no physical keyboard attached during boot. Unencrypted Btrfs eliminates early-boot virtual keyboard passphrase entry friction and allows fast, seamless boots directly into Steam.
+* **Performance**: Omitting disk encryption eliminates dm-crypt AES context-switching overhead and CPU contention on the shared APU power budget, reserving maximal compute for game rendering.
+* **Hibernation Support**: The 20 GB swapfile (`/.swap/swapfile`) provides ample headroom for 16 GB RAM hibernation. Modern systemd (v255+) and Linux 6.12+ auto-detect and resume from Btrfs swapfiles without manual `resume_offset` parameters.
+
+### Display Panel Orientation Quirk
+
+The internal 8.8" panel is physically manufactured in portrait orientation (`1600x2560`). Upstream Linux kernel DRM quirk identifies the device (`Legion Go 8APU1`) with `lcd1600x2560_leftside_up` (`DRM_MODE_PANEL_ORIENTATION_LEFT_UP`).
+
+* **Early Boot (TTY & Plymouth)**: Rotated right-side up in `hosts/legion-go/config.nix` via kernel parameters:
+  ```nix
+  boot.kernelParams = [
+    "video=eDP-1:panel_orientation=right_side_up"
+    "fbcon=rotate:1"
+  ];
+  ```
+* **Compositor (Gamescope)**: Gamescope applies hardware-accelerated composition rotation using `--force-orientation left` alongside target output geometry `-w 2560 -h 1600 -W 2560 -H 1600 -r 144 --prefer-output eDP-1`.
+
+### Handheld Daemon (`services.handheld-daemon`)
+
+Provides full Linux hardware enablement for the Lenovo TrueStrike controllers and thermal management:
+* **Gamepad Emulation**: Emulates a standard DualSense or Xbox controller for out-of-the-box Steam and Proton compatibility.
+* **Button & Sensor Mapping**: Maps back grip buttons (Y1, Y2, Y3, M2, M3) and the optical trackpad/mouse sensor.
+* **Motion Aiming**: Exposes controller gyroscope data directly to Steam Input.
+* **Thumbstick RGB & TDP**: Controls thumbstick RGB lighting and thermal power limits (TDP) via the `adjustor` plugin (`services.handheld-daemon.adjustor.enable = true`), which automatically provisions the `acpi_call` kernel module.
+
+### Dual-Session Architecture: Gaming & Desktop Modes
+
+Mimicking SteamOS and Bazzite-deck, the handheld profile provisions a console-first experience with a touch-friendly desktop environment available on demand:
+
+1. **Gaming Mode (Default)**: Dedicated Steam Gamescope Session booting straight into Steam Big Picture with controller navigation, Gamescope scaling, and Handheld Daemon overlay.
+2. **Desktop Mode (On Demand)**: Touch-friendly **KDE Plasma 6 (Wayland)** environment with on-screen virtual keyboard (`qtvirtualkeyboard`), gesture navigation, and desktop file management.
+
+#### Mode Switching Workflow (SteamOS Style)
+Session transitions avoid login greeter prompts and require zero physical keyboard input:
+* **Switch to Desktop**: Selecting "Switch to Desktop" from Steam Big Picture invokes `steamos-session-select plasma`. The helper writes a temporary autologin override to `/etc/sddm.conf.d/zz-steamos-autologin.conf` (`Session=plasma.desktop`) and terminates the user session via `loginctl terminate-user`. SDDM immediately reloads and autologins into KDE Plasma 6.
+* **Return to Gaming Mode**: The desktop shortcut `Return to Gaming Mode` (`~/Desktop/Return.desktop`) or application launcher entry invokes `steamos-session-select gamescope`. The helper deletes the temporary autologin override and terminates the user session, prompting SDDM to reload the default Steam Gamescope session.
+* **First-Boot Initialization Sentinel**: An `ExecStartPre` drop-in on `display-manager.service` checks for `/var/lib/handheld-first-boot-done`:
+  * **First Boot**: If absent, it forces `Session=plasma.desktop` and creates the sentinel file, booting straight into KDE Plasma 6 for initial Wi-Fi setup and running post-installation scripts.
+  * **Subsequent Boots**: If present, any temporary session override is automatically removed upon reboot, guaranteeing the console defaults back to Steam Gaming Mode.
+
+### Day-2 Operations: Peer-to-Peer Remote Deployment (`deploy`)
+
+Typing rebuild commands on an 8.8" touchscreen without a physical keyboard is ergonomically difficult. Furthermore, running unattended background update timers on a handheld configured for hibernation is risky: if a new generation is staged in the bootloader while an older session hibernates, waking the system triggers resume mismatches (`PM: Image mismatch`) and dirty filesystem corruption.
+
+Instead, the console is updated remotely from your primary workstation (`framework16` or `mini-pc-k8`) via the `deploy` tool (`modules/shell-scripts/deploy.nix`):
+
+```bash
+# Build locally on workstation and activate live on Legion Go over mDNS
+deploy legion-go
+
+# Or stage update for next boot
+deploy legion-go boot
+```
+
+### Provisioning & Installation
+
+1. **BIOS Configuration**:
+   * Connect a USB-C hub/dock with keyboard and flash media.
+   * Power on holding `Volume Up` + `Power` (or press `F2`) to enter BIOS setup.
+   * **Configuration -> UMA Frame Buffer Size**: Set to **8G** (options: 3G, 4G, 8G; allocates 8 GB of shared LPDDR5X RAM to the Radeon 780M GPU).
+   * **Security -> Secure Boot**: Disabled.
+2. **Installation Methods**:
+   * **Method A: Remote LAN Deployment via `nixos-anywhere` (Recommended)**:
+     Set temporary root password on the console (`sudo passwd root`), pre-cache the closure on your workstation (`nix build .#nixosConfigurations.legion-go.config.system.build.toplevel`), and execute:
+     ```bash
+     nix run github:nix-community/nixos-anywhere -- \
+       --generate-hardware-config nixos-generate-config ./hosts/legion-go/hardware-configuration.nix \
+       --flake .#legion-go \
+       root@<legion-go-ip>
+     ```
+   * **Method B: Custom Fleet Installer ISO (`install-nixos`)**:
+     Boot the console using the custom fleet installer ISO (`hosts/installer`), connect via SSH (`ssh root@installer.local`), and run:
+     ```bash
+     install-nixos legion-go "<user_password>"
+     ```
+3. **First-Boot Onboarding**:
+   * Machine automatically boots into KDE Plasma 6 on first run.
+   * Run `post-install --auth` in a terminal to enroll host SSH keys.
+   * Extract public host key (`ssh root@legion-go.local "cat /etc/ssh/ssh_host_ed25519_key.pub"`), add to `secrets/keys.nix`, and rekey secrets via `agenix --rekey`.
+   * Subsequent boots default directly to Steam Gaming Mode.
+
+### Firmware & BIOS Updates
+
+Lenovo Legion Go supports standard LVFS updates via `fwupdmgr` (see [Framework 16 & Supported Devices](/bios-update/#framework-16--supported-devices-fwupd)), as well as offline installation of Windows BIOS `.exe` packages via `fwupdtool`:
+
+📖 **[Lenovo Legion Go BIOS Update Guide](/bios-update/#lenovo-legion-go-manual-capsule-via-fwupdtool)**
 
 ---
 
