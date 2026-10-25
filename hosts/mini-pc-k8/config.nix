@@ -1,6 +1,8 @@
 { config, ... }:
 
 {
+  custom.systemd-services.flake-update-verifier.enable = true;
+
   age.secrets.harmonia-signing-key.file = ../../secrets/harmonia-signing-key.age;
 
   networking.firewall.allowedTCPPorts = [ 5000 ];

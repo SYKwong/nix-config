@@ -1,7 +1,6 @@
 {
   boot = {
     consoleLogLevel = 3;
-    initrd.verbose = false;
     initrd.systemd.services.systemd-vconsole-setup.enable = false;
     kernelParams = [
       "quiet"

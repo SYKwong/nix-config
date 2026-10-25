@@ -54,6 +54,17 @@ Shell history is synchronized across devices headlessly via Atuin (`home/cli/atu
 - **Autosuggestion Bridging**: Fish's inline ghost-text autosuggestions query local Fish history. To keep suggestions populated with synced commands across machines, `atuin-to-fish` runs automatically at the start of `rebuild` (`nrs`), extracting newly synced commands from Atuin and merging them into Fish history.
 - **Live Prompt Sync**: `fish/conf.d/history-merge.fish` merges newly written commands on prompt, ensuring open sessions immediately reflect incoming suggestions.
 
+### 8. Declarative Zen Browser Pins & Essentials (`home/browsers/zen.nix`)
+Zen Browser workspaces, pinned tabs, and global essentials are managed declaratively via `programs.zen-browser.profiles.<name>.pins` through `inputs.zen-browser.homeModules.beta`:
+- **Pin Identification (`id`)**: Every pin requires a unique RFC 4122 Version 4 UUID string. Generate a fresh ID via the standard CLI command `uuidgen`:
+  ```bash
+  uuidgen
+  # Output: ddcbb895-1e7d-4e6c-9192-16c72361028a
+  ```
+  Zen Browser injects this string as `zenSyncId` (`"{<uuid>}"`) inside `zen-sessions.jsonlz4`. It acts as the tab's immutable primary key to track identity across window lifecycles, workspace switches, and nested folder structures (`folderParentId`).
+- **Session Reconciliation (`pinsForce`)**: When `pinsForce = true` and `pinsForceAction = "remove"`, Home Manager compares existing session tabs against declared pins during activation. Undeclared pinned tabs are pruned from the session, while declared pins have their URLs, labels, and ordering (`position`) reconciled without duplicating tabs.
+- **Global Essentials (`isEssential = true`)**: Pins with `isEssential = true` are pinned globally across all Zen workspaces (displayed at the top of the sidebar or in SuperPins grids). Pins without this flag are workspace-scoped.
+
 ---
 
 ## Noctalia Idle Management

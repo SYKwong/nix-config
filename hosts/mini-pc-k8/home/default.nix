@@ -1,5 +1,0 @@
-{
-  imports = [
-    ./warm-cache.nix
-  ];
-}

@@ -42,7 +42,7 @@ hero:
    Fast-iterating GUI and window manager configurations (Hyprland Lua configs, Kitty sessions, Starship themes) are linked out-of-store directly to the working repository, allowing instantaneous reloads without triggering full NixOS rebuilds.
 
 4. **Hands-off Provisioning:**
-   New machines are bootstrapped using unattended installer (`install.sh`) and onboarding (`post-install.sh`) scripts that automatically format disks, initialize hardware configs, generate SSH keys, and configure cryptographic secrets.
+   New machines are bootstrapped using declarative installer (`install-nixos`) and onboarding (`post-install`) scripts that automatically format disks, initialize hardware configs, generate SSH keys, and configure cryptographic secrets.
 
 ---
 

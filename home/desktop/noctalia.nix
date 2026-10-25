@@ -93,7 +93,7 @@ in
           capsule_thickness = 0.76;
           concave_edge_corners = false;
           contact_shadow = false;
-          enabled = true;
+          enabled = false;
           font_weight = 500;
           hover_highlight = true;
           layer = "top";
@@ -117,12 +117,23 @@ in
           thickness = 34;
           widget_spacing = 6;
 
-          center = [ "group:g1" ];
+          start = [
+            "workspaces"
+          ];
+          center = [
+            "media"
+            "clock"
+          ];
           end = [
-            "group:g2"
+            "group:utilities"
+            "group:system"
             "session"
           ];
-          start = [ "media" ];
+
+          monitor.primary = {
+            match = current_host_config.output_monitor;
+            enabled = true;
+          };
 
           capsule_group = [
             {
@@ -130,14 +141,11 @@ in
               accordion_direction = "end";
               enabled = true;
               fill = "surface_variant";
-              id = "g1";
+              id = "utilities";
               members = [
-                "clock"
-                "workspaces"
-                "bluetooth"
-                "network"
-                "volume"
-                "battery"
+                "tray"
+                "clipboard"
+                "notifications"
               ];
               opacity = 1.0;
               padding = 6.0;
@@ -148,11 +156,12 @@ in
               accordion_direction = "end";
               enabled = true;
               fill = "surface_variant";
-              id = "g2";
+              id = "system";
               members = [
-                "tray"
-                "notifications"
-                "clipboard"
+                "network"
+                "bluetooth"
+                "volume"
+                "battery"
               ];
               opacity = 1.0;
               padding = 6.0;
@@ -261,9 +270,17 @@ in
       notification = {
         history_retention_hours = 24;
         layer = "overlay";
-        filter.kitty = {
-          match = "kitty";
-          play_sound = false;
+        filter = {
+          kitty = {
+            match = "kitty";
+            play_sound = false;
+          };
+          sunshine = {
+            match = "sunshine";
+            play_sound = false;
+            save_history = false;
+            show_toast = false;
+          };
         };
       };
 
@@ -307,6 +324,7 @@ in
           fetch_exchange_rates = false;
           show_app_origin_indicator = false;
           sort_by_usage = false;
+          track_usage = false;
           providers.session.global = true;
         };
 
@@ -322,7 +340,10 @@ in
           wallpaper_show_names = false;
         };
 
-        screenshot.directory = "~/Pictures/Screenshots/";
+        screenshot = {
+          directory = "~/Pictures/Screenshots/";
+          show_cursor = true;
+        };
       };
 
       system.monitor.enabled = false;
@@ -350,7 +371,10 @@ in
       };
 
       widget = {
-        clock.format = "{:%b %d %-I:%M%p}";
+        clock = {
+          format = "{:%b %d %-I:%M%p}";
+          anchor = true;
+        };
         media = {
           hide_album_art = true;
           title_scroll = "always";

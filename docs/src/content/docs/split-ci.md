@@ -28,9 +28,10 @@ flowchart LR
 
     gitlab -- "Unidirectional Push Mirror<br/>(Fine-Grained PAT)" --> github["GitHub Repository<br/><b>Read-Only Mirror</b>"]
 
-    subgraph github_actions ["GitHub Actions (Edge Deployment)"]
+    subgraph github_actions ["GitHub Actions (Artifacts & Deployment)"]
         github -- "Push to main (docs/**)" --> deploy["deploy-docs.yml<br/>(Astro Starlight Build)"]
         deploy --> pages["GitHub Pages CDN<br/>(nix.kyle-kwong.com)"]
+        github -- "Schedule / push / dispatch" --> build_iso["build-iso.yml<br/>(Custom Installer ISO)"]
     end
 ```
 
@@ -88,14 +89,13 @@ git push -f origin "$BRANCH_NAME" \
   -o merge_request.remove_source_branch \
   -o merge_request.label="dependencies" \
   -o merge_request.assignee_id="$GITLAB_USER_ID" \
-  -o merge_request.squash=true \
-  -o merge_request.merge_when_pipeline_succeeds
+  -o merge_request.squash=true
 ```
 
 Using pure `git push` options:
 - No personal access token is stored or exposed in CI environment variables.
 - The pipeline authenticates using GitLab's short-lived, job-scoped `CI_JOB_TOKEN`.
-- The Merge Request is automatically created, formatted with the exact `nix flake update` summary, assigned to the repository owner, and queued to merge automatically once `verify-flake` passes.
+- The Merge Request is created with the exact `nix flake update` summary and assigned to the repository owner. Full system closure build verification and automatic merge are handled safely by `flake-update-verifier` on the local desktop workstation (`mini-pc-k8`) during off-peak hours, ensuring broken upstream `nixpkgs` revisions never touch `main`.
 - Tag rotation (`create-weekly-stable`) tags the commit and purges tags older than 12 weeks using native git commands in an Alpine container.
 
 ### E. Zero-Cost Edge CDN for Documentation
@@ -105,7 +105,7 @@ While GitLab excels at isolated container pipelines and native git bot workflows
 - Automated Let's Encrypt TLS certificate provisioning and renewal for custom apex/subdomains (`nix.kyle-kwong.com`).
 - Broad discoverability within the open-source ecosystem.
 
-Restricting GitHub Actions exclusively to [`.github/workflows/deploy-docs.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/deploy-docs.yml) confines GitHub runner execution strictly to non-critical static site generation.
+Restricting GitHub Actions to [`.github/workflows/deploy-docs.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/deploy-docs.yml) and [`.github/workflows/build-iso.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/build-iso.yml) confines GitHub runner execution strictly to non-critical static site generation and automated installer ISO artifact releases.
 
 ### F. Blast Radius Containment & Defense-in-Depth
 
@@ -118,10 +118,10 @@ The split architecture strictly contains operational blast radiuses:
 
 ## 3. Comparison Matrix: GitLab CI vs. GitHub Actions
 
-| Evaluation Vector | GitLab CI (Fleet Validation & Merges) | GitHub Actions (Docs Deployment Only) |
+| Evaluation Vector | GitLab CI (Fleet Validation & Merges) | GitHub Actions (Docs & Artifact Releases) |
 | :--- | :--- | :--- |
-| **Outage Impact on Merges** | **Zero Impact**: Highly reliable runners; merges proceed normally | **Zero Impact**: Outages only delay wiki CDN updates; never blocks merges |
-| **Primary Responsibility** | `nix flake check`, `nix fmt`, lock updates, release tags | Building & publishing Astro Starlight wiki to Pages |
+| **Outage Impact on Merges** | **Zero Impact**: Highly reliable runners; merges proceed normally | **Zero Impact**: Outages only delay wiki CDN updates or installer ISO releases; never blocks merges |
+| **Primary Responsibility** | `nix flake check`, `nix fmt`, lock updates, release tags | Building & publishing Astro Starlight wiki to Pages and releasing custom installer ISOs |
 | **Execution Model** | Native OCI containers (`nixos/nix`, `node:lts-slim`) | Shared Ubuntu VM runners (`ubuntu-latest`) |
 | **Dependency Model** | Raw bash scripts inside container images | Composite actions (`actions/checkout`, `withastro/action`) |
 | **Action Churn** | None (no external marketplace actions) | Periodic Node runtime upgrades & action bumps |
@@ -150,6 +150,19 @@ Mark the GitHub repository description as a read-only mirror pointing back to yo
 ```text
 [Read-Only Mirror] Primary development on GitLab: https://gitlab.com/<username>/nix-config
 ```
+
+### 4. GitHub Actions Repository Permissions
+To allow the automated installer ISO release workflow ([`.github/workflows/build-iso.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/build-iso.yml)) to compile and publish releases and the documentation workflow ([`.github/workflows/deploy-docs.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/deploy-docs.yml)) to deploy to Pages on the GitHub mirror or fork:
+- **Actions Execution Policy**: In GitHub repository **Settings** → **Actions** → **General** → **Actions permissions**, select **"Allow select actions and reusable workflows"**, check **"Allow actions created by GitHub"**, and configure the explicit pattern allowlist:
+  ```text
+  cachix/*,
+  pnpm/*,
+  softprops/*,
+  withastro/*,
+  ```
+- **Workflow Permissions**: Under **Workflow permissions**, select **Read and write permissions** (required for creating/updating releases, tagging `installer`, and uploading release binaries via `softprops/action-gh-release`) and check **Allow GitHub Actions to create and approve pull requests**.
+- **Pages Source**: In **Settings** → **Pages** → **Build and deployment** → **Source**, select **GitHub Actions** (enables automatic OIDC token provisioning with `pages: write` and `id-token: write` for `actions/deploy-pages`).
+- **Fork Enablement**: If the downstream repository is a fork, navigate to the **Actions** tab and click **"I understand my workflows, go ahead and enable them"** (Actions are disabled by default on newly created forks).
 
 ---
 

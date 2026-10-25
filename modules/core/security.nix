@@ -1,3 +1,6 @@
 {
-  security.polkit.enable = true;
+  security = {
+    polkit.enable = true;
+    rtkit.enable = true;
+  };
 }

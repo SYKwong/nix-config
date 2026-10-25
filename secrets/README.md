@@ -67,7 +67,7 @@ agenix -e <secret-name>.age
    At runtime, NixOS decrypts the secret to `/run/agenix/my-secret` (accessible via `config.age.secrets.my-secret.path`).
 
 ### Rekey Secrets (Adding or Rotating Keys)
-1. Run `./post-install.sh` on the new machine to generate host keys and insert them into [`keys.nix`](keys.nix) (or add them manually).
+1. Run `post-install` on the new machine to generate host keys and insert them into [`keys.nix`](keys.nix) (or add them manually).
 2. Ensure the host or user key is in the recipient list in [`secrets.nix`](secrets.nix) (hosts in `keys.systems` are included automatically in `allKeys`).
 3. Re-encrypt all secrets on an authorized machine with access to an existing private key:
    ```bash
