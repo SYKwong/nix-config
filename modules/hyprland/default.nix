@@ -31,7 +31,10 @@ in
 
   security.pam.services = {
     login.fprintAuth = false;
-    ly.fprintAuth = false;
+    ly = {
+      fprintAuth = false;
+      enableGnomeKeyring = config.services.gnome.gnome-keyring.enable;
+    };
   };
 
   services.displayManager = {

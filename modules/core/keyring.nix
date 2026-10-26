@@ -12,8 +12,4 @@
   ];
 
   services.dbus.packages = [ pkgs.gcr_4 ];
-
-  security.pam.services = {
-    ly.enableGnomeKeyring = true;
-  };
 }
