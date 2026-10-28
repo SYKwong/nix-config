@@ -63,7 +63,7 @@ let
         nix eval \
           --raw \
           "git+file://$flake?rev=$target_sha#nixosConfigurations" \
-          --apply 'configs: builtins.concatStringsSep "\n" (builtins.attrNames configs)'
+          --apply 'configs: builtins.concatStringsSep "\n" (builtins.filter (name: name != "installer") (builtins.attrNames configs))'
       )
 
       targets=()
