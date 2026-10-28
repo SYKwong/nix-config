@@ -511,6 +511,9 @@ in
       - File Creation and Modification: Always use `write_to_file` or `replace_file_content` to create or edit files in the workspace. Never use `cat << 'EOF' > ...` or shell redirection in `run_command`, as shell redirection triggers CLI permission prompts.
       - Nix Store Operations: Never attempt direct filesystem reads, searches, or traversals on `/nix/store` (these are hard-locked and will block execution). Always inspect configuration options, module definitions, and package metadata declaratively via `nix eval` (e.g., `nix eval .#nixosConfigurations.<host>.options.<option>` or `nix eval .#nixosConfigurations.<host>.config.<path>`). Only if declarative evaluation fails or raw source inspection is strictly unavoidable should you trigger a store read request, providing the exact path and rationale.
 
+      ## Documentation & Markdown
+      - Mandatory Documentation Synchronization: Whenever modifying code, scripts, or configurations, always proactively identify and update all related documentation and markdown files (such as project wikis, module/directory READMEs, architecture specs, and topic guides) before concluding the task. Never leave documentation updates for a follow-up prompt unless clarification is needed.
+
       ## Persisting Useful Workflow Improvements
       - Autonomous Edits Prohibited: If discovering a command, permission, workflow, or instruction during a task that would likely benefit future tasks, do not modify `antigravity.nix`, `AGENTS.md`, or workflow guidelines automatically.
       - Protocol:
