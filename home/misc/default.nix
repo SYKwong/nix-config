@@ -3,5 +3,6 @@
     ./dotfile.nix
     ./hide-desktop-entry.nix
     ./add-desktop-entry.nix
+    ./desktop-cache.nix
   ];
 }

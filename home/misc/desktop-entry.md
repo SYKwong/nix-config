@@ -5,6 +5,7 @@ This directory manages custom desktop entries and hides unwanted application sho
 ## Files
 - [`add-desktop-entry.nix`](./add-desktop-entry.nix): Declares custom `.desktop` entries (e.g., web app wrappers like LINE).
 - [`hide-desktop-entry.nix`](./hide-desktop-entry.nix): Hides entries using two tiers depending on how the application installs its `.desktop` file.
+- [`desktop-cache.nix`](./desktop-cache.nix): Purges stale KDE Sycoca caches (`~/.cache/ksycoca6*`) and reloads the Dolphin background daemon on activation to invalidate NixOS 1970 timestamp caching.
 
 ---
 
@@ -86,3 +87,11 @@ Take the filename **excluding `.desktop`**:
 - `/run/current-system/sw/share/applications/org.kde.ark.desktop` $\rightarrow$ `"org.kde.ark"`
 
 Add that exact string to `appsToHide` in [`hide-desktop-entry.nix`](./hide-desktop-entry.nix), or to `annoyingApps` if it still appears in the launcher.
+
+---
+
+## KDE Sycoca & Dolphin Cache Invalidation
+
+KDE applications (such as Dolphin) query MIME associations and file actions via **KSycoca** (KDE System Configuration Cache, version 6). 
+
+On NixOS, fixed `1970-01-01` directory timestamps prevent KSycoca from detecting new or modified `.desktop` files across generation switches. [`desktop-cache.nix`](./desktop-cache.nix) registers an automated Home Manager activation hook (`home.activation.pruneKsycoca`) that purges `~/.cache/ksycoca6*` and restarts `plasma-dolphin.service` whenever you rebuild your system.

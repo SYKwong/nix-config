@@ -11,6 +11,7 @@ This guide explains how to manage custom desktop application launchers and how t
 
 - **`add-desktop-entry.nix`**: Declares custom `.desktop` entries (such as web application wrappers like LINE).
 - **`hide-desktop-entry.nix`**: Provides a two-tier mechanism to suppress unwanted application icons.
+- **`desktop-cache.nix`**: Purges stale KDE Sycoca binary caches (`~/.cache/ksycoca6*`) and reloads the Dolphin background daemon on Home Manager activation.
 
 ---
 
@@ -92,6 +93,24 @@ Take the matched filename **excluding `.desktop`**:
 - `/run/current-system/sw/share/applications/org.kde.ark.desktop` → `"org.kde.ark"`
 
 Add that exact string to `appsToHide` in `home/misc/hide-desktop-entry.nix`, or to `annoyingApps` if it persists.
+
+---
+
+## KDE Sycoca & Dolphin Cache Invalidation
+
+KDE applications (such as Dolphin) do not scan raw `.desktop` files on every file click. Instead, they query **KSycoca** (KDE System Configuration Cache, version 6), which maintains pre-indexed binary files under `~/.cache/ksycoca6_<locale>_<hash>=` for rapid $O(1)$ MIME handler and service menu lookup.
+
+### The NixOS Timestamp Invalidation Trap
+Under traditional FHS Linux distributions, KSycoca detects when `.desktop` files are added or modified by checking directory modification times (`mtime`) on `/usr/share/applications/`. 
+
+On NixOS, all paths in `/nix/store` and `/etc/profiles/` have their timestamps fixed to the Unix epoch + 1s (`1970-01-01 00:00:01 UTC`) for build reproducibility. Because directory `mtime` never changes, KSycoca's automatic cache validation check (`TimestampChecker::checkDirectoriesTimestamps`) never detects changes across NixOS or Home Manager profile switches. Additionally, Dolphin's persistent background daemon (`plasma-dolphin.service` / `dolphin --daemon`) holds existing cache files memory-mapped indefinitely.
+
+### Automated Activation Hook
+[`home/misc/desktop-cache.nix`](./desktop-cache.nix) registers an automated Home Manager activation hook (`home.activation.pruneKsycoca`) executed after `writeBoundary`:
+
+1. **Purges Stale Binary Caches**: Removes all `~/.cache/ksycoca6*` cache files whenever generations switch.
+2. **Reloads Dolphin Daemon**: Executes `systemctl --user try-restart plasma-dolphin.service`, ensuring running file manager daemon instances re-index available handlers immediately.
+3. **In-Process Rebuild**: The next time Dolphin or any KDE application requests file handlers, KSycoca discovers the cache is missing and reconstructs a fresh database directly against the new generation's profile.
 
 ---
 
