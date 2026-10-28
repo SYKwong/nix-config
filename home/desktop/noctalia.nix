@@ -79,10 +79,10 @@ in
         default = {
           auto_hide = false;
           background_opacity = 0.0;
-          border = "outline";
+          border = "outline_variant";
           border_width = 0.0;
           capsule = true;
-          capsule_fill = "surface_variant";
+          capsule_fill = "surface_container";
           capsule_opacity = 1.0;
           capsule_padding = 6.0;
           capsule_thickness = 0.76;
@@ -135,7 +135,7 @@ in
               accordion = false;
               accordion_direction = "end";
               enabled = true;
-              fill = "surface_variant";
+              fill = "surface_container";
               id = "utilities";
               members = [
                 "tray"
@@ -150,7 +150,7 @@ in
               accordion = false;
               accordion_direction = "end";
               enabled = true;
-              fill = "surface_variant";
+              fill = "surface_container";
               id = "system";
               members = [
                 "network"
@@ -167,6 +167,7 @@ in
 
       control_center = {
         calendar.show_events_card = false;
+        media.show_visualizer = false;
         shortcuts = [
           { type = "caffeine"; }
           { type = "nightlight"; }
@@ -230,7 +231,7 @@ in
             type = "login_box";
 
             settings = {
-              background_color = "surface_variant";
+              background_color = "surface_container";
               background_opacity = 0.88;
               background_radius = 12.0;
               center_password_text = true;
@@ -255,7 +256,7 @@ in
             settings = {
               background_opacity = 0.0;
               center_text = false;
-              color = "outline";
+              color = "outline_variant";
               format = "{:%m/%d}\\n{::%-I:%M %p}";
             };
           };
@@ -317,6 +318,7 @@ in
           categories = false;
           compact = true;
           fetch_exchange_rates = false;
+          ignore_mouse = true;
           show_app_origin_indicator = false;
           sort_by_usage = false;
           track_usage = false;

@@ -4,6 +4,7 @@ local wallpaper_picker = noc .. "panel-toggle wallpaper"
 local notifications = noc .. "panel-toggle control-center notifications"
 local clipboard = noc .. "panel-toggle clipboard"
 local snip = noc .. "screenshot-region"
+local screenshot_full_annotate = noc .. "screenshot-fullscreen --annotate"
 
 local volume_toggle = noc .. "volume-mute"
 local volume_up = noc .. "volume-up"
@@ -55,6 +56,11 @@ hl.bind(mainMod .. " + slash", hl.dsp.layout("colresize +conf"), { description =
 
 -- Screenshots
 hl.bind(mainMod .. " + S", hl.dsp.exec_cmd(snip), { description = "[Screenshot] Capture area to file and clipboard" })
+hl.bind(
+	mainMod .. " + SHIFT + S",
+	hl.dsp.exec_cmd(screenshot_full_annotate),
+	{ description = "[Screenshot] Capture fullscreen with annotation" }
+)
 
 -- Display Navigation
 hl.bind(mainMod .. " + grave", hl.dsp.focus({ monitor = "+1" }), { description = "[Display] Focus next display" })
