@@ -17,6 +17,7 @@ let
       glab
       jq
       nix
+      openssh
     ];
 
     text = ''
