@@ -383,6 +383,7 @@ in
         notifications.hide_when_no_unread = true;
         tray = {
           drawer = true;
+          detached_panel = true;
           pinned = [
             "Fcitx"
             "org.fcitx.Fcitx5"
