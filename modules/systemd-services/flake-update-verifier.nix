@@ -66,20 +66,22 @@ let
           --apply 'configs: builtins.concatStringsSep "\n" (builtins.attrNames configs)'
       )
 
-      build_failed=false
+      targets=()
       while IFS= read -r host; do
         [ -n "$host" ] || continue
-
-        echo "Verifying build for $host on revision $target_sha..."
-        if ! nix build --no-link \
-          "git+file://$flake?rev=$target_sha#nixosConfigurations.$host.config.system.build.toplevel"; then
-          echo "Build failed for $host on revision $target_sha."
-          build_failed=true
-          break
-        fi
+        targets+=("git+file://$flake?rev=$target_sha#nixosConfigurations.$host.config.system.build.toplevel")
       done <<< "$hosts"
 
-      if [ "$build_failed" = true ]; then
+      if [ "''${#targets[@]}" -eq 0 ]; then
+        echo "No host configurations found to verify. Skipping."
+        exit 0
+      fi
+
+      echo "Verifying build for all hosts on revision $target_sha:"
+      echo "$hosts"
+
+      if ! nix build --no-link "''${targets[@]}"; then
+        echo "Build failed for one or more hosts on revision $target_sha."
         echo "Verification failed for MR !$mr_iid. Storing failed SHA to prevent redundant retries."
         mkdir -p "$(dirname "$stamp_file")"
         echo "$target_sha" > "$stamp_file"
