@@ -126,10 +126,15 @@ pkgs.writeShellApplication {
       printf "%b=======================================================%b\n" "$YELLOW" "$RESET"
       echo ""
 
+      REBOOT_PROMPT_TIMEOUT_SECONDS=10
       printf "%bWould you like to reboot now to apply the changes? (y/N): %b" "$BOLD" "$RESET"
-      read -r reply
-      if [[ "$reply" =~ ^[Yy]$ ]]; then
-        reboot
+      if read -r -t "$REBOOT_PROMPT_TIMEOUT_SECONDS" reply; then
+        if [[ "$reply" =~ ^[Yy]$ ]]; then
+          reboot
+        fi
+      else
+        echo ""
+        log_info "Prompt timed out after ''${REBOOT_PROMPT_TIMEOUT_SECONDS}s. Skipping reboot."
       fi
     fi
   '';

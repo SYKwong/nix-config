@@ -11,12 +11,24 @@ This directory (`modules/shell-scripts/`) contains custom CLI tools and system m
 
 | Script | Entrypoint File | Builder | Description |
 | :--- | :--- | :--- | :--- |
-| **`rebuild`** (alias: **`nrs`**) | `modules/shell-scripts/rebuild.nix` | `writeShellApplication` | NixOS configuration rebuild engine that formats code, stages a boot entry via `nh os boot`, activates live via `switch-to-configuration`, and checks for pending kernel reboots. Run via alias `nrs`. |
+| **`rebuild`** (alias: **`nrs`**) | `modules/shell-scripts/rebuild.nix` | `writeShellApplication` | NixOS configuration rebuild engine that formats code, stages a boot entry via `nh os boot`, activates live via `switch-to-configuration`, and checks for pending kernel reboots (with a 10s auto-skip prompt). Run via alias `nrs`. |
 | **`hypr-virtual-monitor`** | `modules/shell-scripts/hypr-virtual-monitor.nix` | `writeShellApplication` | Dynamic headless virtual monitor controller and idle socket watchdog for Hyprland and Sunshine streaming (`start`, `stop`, `toggle`, `watchdog`). |
 | **`display-brightness`** | `modules/shell-scripts/display-brightness.nix` | `writeShellApplication` | Display brightness manager targeting focused internal display backlight with automatic fallback to `hyprsunset` software dimming for external monitors. |
 | **`rofi-keybinds`** | `modules/shell-scripts/rofi-keybind.nix` | `writeShellApplication` | Dynamic cheat sheet parsed from `hyprctl binds` and displayed in an interactive Rofi dmenu (`SUPER + SHIFT + /` or `SUPER + F1`). |
 | **`kb-light-manager`** | `modules/shell-scripts/kb-light-manager.nix` | `writeShellApplication` | Framework laptop keyboard backlight toggle and brightness manager using `qmk_hid`. |
 | **`tui-wrap`** | `modules/shell-scripts/tui-wrap.nix` | `writeShellScriptBin` *(Exception)* | Helper to spawn arbitrary CLI and TUI tools (like Yazi or Btop) inside floating Foot terminal surfaces. Dynamically resolves user commands from runtime `PATH`. |
+
+---
+
+## System Rebuild Workflow (`rebuild` / `nrs`)
+
+The system rebuild engine standardizes configuration deployment across all hosts:
+
+1. **Formatting**: Runs `nix fmt` automatically prior to building to keep the repository formatted.
+2. **Atuin Sync**: Bridges newly synced shell history into local Fish suggestions via `atuin-to-fish`.
+3. **Staging & Live Activation**: Creates a new bootloader entry via `nh os boot` and activates live system changes via `switch-to-configuration switch`.
+4. **Binary Cache Synchronization**: On remote hosts, synchronizes the newly built system closure back to `mini-pc-k8` over SSH if reachable.
+5. **Pending Kernel Reboot Check**: Compares the running kernel (`uname -r`) against the newly staged kernel in `/nix/var/nix/profiles/system/kernel`. If a kernel update is pending, prompts the user to reboot immediately with an automatic **10-second timeout** (`read -r -t 10`) to prevent blocking unattended or automated rebuilds.
 
 ---
 
