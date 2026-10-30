@@ -1,6 +1,11 @@
 { pkgs, username, ... }:
 
 let
+  projectRepos = [
+    "nixos-hardware"
+    "noctalia"
+  ];
+
   allowRules = [
     # Git Operations
     "command(git -c core.hooksPath=/dev/null -c core.fsmonitor=false pull --ff-only origin dev)"
@@ -479,8 +484,8 @@ in
       notifications = true;
       trustedWorkspaces = [
         "/home/${username}/nix-config"
-        "/home/${username}/Projects"
-      ];
+      ]
+      ++ map (repo: "/home/${username}/Projects/${repo}") projectRepos;
     };
 
     context.GEMINI = ''
