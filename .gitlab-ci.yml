@@ -122,20 +122,17 @@ update-flake-mr:
     - git remote set-url origin "https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
   script:
     - |
-      # 1. Run the update
-      nix flake update 2> update_summary.txt
+      # 1. Update nixpkgs first as the gating check
+      nix flake update nixpkgs 2> update_summary.txt
 
-      # 2. Check if flake.lock changed at all
-      if git diff --exit-code flake.lock; then
-        echo "No updates available."
+      # 2. Check if nixpkgs changed; if not, short-circuit immediately
+      if git diff --exit-code flake.lock >/dev/null; then
+        echo "nixpkgs has not updated. Skipping full flake update and MR creation."
         exit 0
       fi
 
-      # 3. Only create an MR if nixpkgs was among the updated inputs
-      if ! grep -q "Updated input 'nixpkgs':" update_summary.txt; then
-        echo "flake.lock changed, but nixpkgs was not updated in this cycle. Skipping MR creation."
-        exit 0
-      fi
+      # 3. nixpkgs advanced: update remaining inputs and append to summary
+      nix flake update 2>> update_summary.txt
 
       # 4. Create branch and commit
       BRANCH_NAME="flake-update-$(date +%Y-%m-%d)"
