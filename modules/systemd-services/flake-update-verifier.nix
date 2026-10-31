@@ -46,7 +46,26 @@ let
 
       mr_iid=$(echo "$mr_json" | jq -r '.iid')
       source_branch=$(echo "$mr_json" | jq -r '.source_branch')
-      target_sha=$(echo "$mr_json" | jq -r '.sha')
+
+      echo "Fetching main and $source_branch from origin..."
+      if ! git fetch origin main "$source_branch"; then
+        echo "Failed to fetch main and $source_branch from origin. Skipping."
+        exit 1
+      fi
+
+      if ! git merge-base --is-ancestor origin/main "origin/$source_branch"; then
+        echo "MR !$mr_iid ($source_branch) is behind origin/main. Rebasing onto main..."
+        if ! glab mr rebase "$mr_iid" --skip-ci; then
+          echo "Failed to rebase MR !$mr_iid onto main."
+          exit 1
+        fi
+        if ! git fetch origin "$source_branch"; then
+          echo "Failed to fetch rebased $source_branch from origin. Skipping."
+          exit 1
+        fi
+      fi
+
+      target_sha=$(git rev-parse "origin/$source_branch")
 
       stamp_file="''${XDG_CACHE_HOME:-$HOME/.cache}/flake-update-verifier/last_failed_sha"
       if [ -f "$stamp_file" ] && [ "$(cat "$stamp_file")" = "$target_sha" ]; then
@@ -55,11 +74,6 @@ let
       fi
 
       echo "Found open dependency MR !$mr_iid ($source_branch) at SHA $target_sha."
-      echo "Fetching $source_branch from origin..."
-      if ! git fetch origin "$source_branch"; then
-        echo "Failed to fetch $source_branch from origin. Skipping."
-        exit 1
-      fi
 
       hosts=$(
         nix eval \
@@ -93,7 +107,7 @@ let
           error_excerpt=$(tail -n 40 "$build_log")
         fi
 
-        note_body=$(printf '### `flake-update-verifier` build failed on `%s`\n\n```text\n%s\n```' "$target_sha" "$error_excerpt")
+        note_body=$(printf "### \`flake-update-verifier\` build failed on \`%s\`\n\n\`\`\`text\n%s\n\`\`\`" "$target_sha" "$error_excerpt")
         if ! glab mr note create "$mr_iid" --resolvable=false --unique -m "$note_body"; then
           echo "Warning: failed to post failure note to MR !$mr_iid."
         fi
@@ -109,6 +123,7 @@ let
       fi
 
       echo "All host configurations built successfully! Merging MR !$mr_iid into main..."
+      glab mr update "$mr_iid" --unlabel build-error --yes >/dev/null 2>&1 || true
       glab mr merge "$mr_iid" --squash --yes --remove-source-branch
       echo "Successfully merged verified MR !$mr_iid into main."
 
