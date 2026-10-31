@@ -21,7 +21,7 @@ modules/systemd-services/
 | Unit | Scope | Type | Description |
 | :--- | :--- | :--- | :--- |
 | **`wallpaper-sync`** | User (`systemd.user`) | Timer + Oneshot Service | Runs daily to execute `wallpaper-sync`, pulling remote updates and pushing local changes for `~/Wallpaper`. Enabled by default across workstation hosts (`custom.systemd-services.wallpaper-sync.enable`). |
-| **`flake-update-verifier`** | User (`systemd.user`) | Timer + Oneshot Service | Runs overnight (`03:00–07:00`) on workstations (`mini-pc-k8`) to build test open dependency MRs, pre-warm the local Harmonia binary cache, and auto-merge verified updates via `glab` (`custom.systemd-services.flake-update-verifier.enable`). |
+| **`flake-update-verifier`** | User (`systemd.user`) | Timer + Oneshot Service | Runs overnight (`03:00–07:00`) on workstations (`mini-pc-k8`) to build test open dependency MRs, label failed MRs with `build-error` and post build error excerpts, and auto-merge verified updates via `glab` (`custom.systemd-services.flake-update-verifier.enable`). |
 
 ---
 

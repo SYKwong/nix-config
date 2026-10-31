@@ -15,6 +15,7 @@ let
       coreutils
       git
       glab
+      gnused
       jq
       nix
       openssh
@@ -81,8 +82,26 @@ let
       echo "Verifying build for all hosts on revision $target_sha:"
       echo "$hosts"
 
-      if ! nix build --no-link "''${targets[@]}"; then
+      build_log=$(mktemp)
+      trap 'rm -f "$build_log"' EXIT
+
+      if ! nix build --no-link "''${targets[@]}" 2>&1 | tee "$build_log" >&2; then
         echo "Build failed for one or more hosts on revision $target_sha."
+
+        error_excerpt=$(sed -n '/^error:/,$p' "$build_log" | head -n 60)
+        if [ -z "$error_excerpt" ]; then
+          error_excerpt=$(tail -n 40 "$build_log")
+        fi
+
+        note_body=$(printf '### `flake-update-verifier` build failed on `%s`\n\n```text\n%s\n```' "$target_sha" "$error_excerpt")
+        if ! glab mr note create "$mr_iid" --resolvable=false --unique -m "$note_body"; then
+          echo "Warning: failed to post failure note to MR !$mr_iid."
+        fi
+
+        if ! glab mr update "$mr_iid" --label build-error --yes; then
+          echo "Warning: failed to add build-error label to MR !$mr_iid."
+        fi
+
         echo "Verification failed for MR !$mr_iid. Storing failed SHA to prevent redundant retries."
         mkdir -p "$(dirname "$stamp_file")"
         echo "$target_sha" > "$stamp_file"
