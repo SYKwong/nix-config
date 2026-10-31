@@ -143,37 +143,35 @@ in
     enable = lib.mkEnableOption "automated flake update verification and auto-merge service";
   };
 
-  config = {
+  config = lib.mkIf cfg.enable {
     environment.systemPackages = [
       flakeUpdateVerifier
     ];
 
-    systemd.user = lib.mkIf cfg.enable {
-      services.flake-update-verifier = {
-        description = "Verify open dependency flake update merge requests and auto-merge if builds pass";
-        after = [ "network-online.target" ];
-        wants = [ "network-online.target" ];
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = "${flakeUpdateVerifier}/bin/flake-update-verifier";
-          Nice = 19;
-          CPUSchedulingPolicy = "idle";
-          IOSchedulingClass = "idle";
-          Environment = [
-            "SSH_AUTH_SOCK=%t/gcr/ssh"
-          ];
-        };
+    systemd.user.services.flake-update-verifier = {
+      description = "Verify open dependency flake update merge requests and auto-merge if builds pass";
+      after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${flakeUpdateVerifier}/bin/flake-update-verifier";
+        Nice = 19;
+        CPUSchedulingPolicy = "idle";
+        IOSchedulingClass = "idle";
+        Environment = [
+          "SSH_AUTH_SOCK=%t/gcr/ssh"
+        ];
       };
+    };
 
-      timers.flake-update-verifier = {
-        description = "Scheduled verification of open flake update merge requests";
-        timerConfig = {
-          OnCalendar = "*-*-* 03..07:00:00";
-          Persistent = false;
-          RandomizedDelaySec = "15m";
-        };
-        wantedBy = [ "timers.target" ];
+    systemd.user.timers.flake-update-verifier = {
+      description = "Scheduled verification of open flake update merge requests";
+      timerConfig = {
+        OnCalendar = "*-*-* 03..07:00:00";
+        Persistent = false;
+        RandomizedDelaySec = "15m";
       };
+      wantedBy = [ "timers.target" ];
     };
   };
 }
