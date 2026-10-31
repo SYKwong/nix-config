@@ -24,6 +24,13 @@ let
     text = ''
       set -euo pipefail
 
+      force=false
+      for arg in "$@"; do
+        if [ "$arg" = "--force" ] || [ "$arg" = "-f" ]; then
+          force=true
+        fi
+      done
+
       export SSH_AUTH_SOCK="''${SSH_AUTH_SOCK:-/run/user/$(id -u)/gcr/ssh}"
 
       flake="''${HOME}/nix-config"
@@ -68,7 +75,7 @@ let
       target_sha=$(git rev-parse "origin/$source_branch")
 
       stamp_file="''${XDG_CACHE_HOME:-$HOME/.cache}/flake-update-verifier/last_failed_sha"
-      if [ -f "$stamp_file" ] && [ "$(cat "$stamp_file")" = "$target_sha" ]; then
+      if [ "$force" = false ] && [ -f "$stamp_file" ] && [ "$(cat "$stamp_file")" = "$target_sha" ]; then
         echo "Revision $target_sha on MR !$mr_iid previously failed verification. Skipping until updated."
         exit 0
       fi
@@ -136,31 +143,37 @@ in
     enable = lib.mkEnableOption "automated flake update verification and auto-merge service";
   };
 
-  config = lib.mkIf cfg.enable {
-    systemd.user.services.flake-update-verifier = {
-      description = "Verify open dependency flake update merge requests and auto-merge if builds pass";
-      after = [ "network-online.target" ];
-      wants = [ "network-online.target" ];
-      serviceConfig = {
-        Type = "oneshot";
-        ExecStart = "${flakeUpdateVerifier}/bin/flake-update-verifier";
-        Nice = 19;
-        CPUSchedulingPolicy = "idle";
-        IOSchedulingClass = "idle";
-        Environment = [
-          "SSH_AUTH_SOCK=%t/gcr/ssh"
-        ];
-      };
-    };
+  config = {
+    environment.systemPackages = [
+      flakeUpdateVerifier
+    ];
 
-    systemd.user.timers.flake-update-verifier = {
-      description = "Scheduled verification of open flake update merge requests";
-      timerConfig = {
-        OnCalendar = "*-*-* 03..07:00:00";
-        Persistent = false;
-        RandomizedDelaySec = "15m";
+    systemd.user = lib.mkIf cfg.enable {
+      services.flake-update-verifier = {
+        description = "Verify open dependency flake update merge requests and auto-merge if builds pass";
+        after = [ "network-online.target" ];
+        wants = [ "network-online.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = "${flakeUpdateVerifier}/bin/flake-update-verifier";
+          Nice = 19;
+          CPUSchedulingPolicy = "idle";
+          IOSchedulingClass = "idle";
+          Environment = [
+            "SSH_AUTH_SOCK=%t/gcr/ssh"
+          ];
+        };
       };
-      wantedBy = [ "timers.target" ];
+
+      timers.flake-update-verifier = {
+        description = "Scheduled verification of open flake update merge requests";
+        timerConfig = {
+          OnCalendar = "*-*-* 03..07:00:00";
+          Persistent = false;
+          RandomizedDelaySec = "15m";
+        };
+        wantedBy = [ "timers.target" ];
+      };
     };
   };
 }
