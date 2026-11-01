@@ -107,7 +107,7 @@ assign_workspace("kitty", { class = "kitty" }, 2)
 -- Workspace 3: Communication
 local line_class <const> = "chrome-ophjlpahpchlmihnnnihgmmeilfjmjjc__index.html-Default"
 
-assign_workspace("vesktop", { class = "vesktop" }, "3 silent", { opacity = 0.9 })
+assign_workspace("vesktop", { class = "vesktop" }, "3 silent", { opacity = 1.0 })
 assign_workspace("line", { class = "^" .. line_class .. "$" }, "3 silent")
 
 -- Automatically float secondary LINE instances (e.g. popout chats, dialogs)
