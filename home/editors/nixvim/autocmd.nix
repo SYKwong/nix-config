@@ -61,7 +61,7 @@
             return
           end
           vim.fn.jobstart(
-            { "kitty", "@", "set-background-opacity", "-m", "id:" .. window_id, "0.75" },
+            { "kitty", "@", "set-background-opacity", "-m", "id:" .. window_id, "0.88" },
             { detach = true }
           )
         end

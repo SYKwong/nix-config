@@ -53,7 +53,7 @@ By utilizing Home Manager's `config.lib.file.mkOutOfStoreSymlink`, these files p
 
 ### Selective Tab Opacity for Zen Browser (`config/hypr/hyprland/windowrule.lua`)
 
-In Hyprland, global window decorations (`config/hypr/hyprland/looknfeel.lua`) enforce an active opacity multiplier (`active_opacity = 0.95`) and 3-pass dual-kawase blur. While this provides a clean frosted-glass aesthetic for terminal buffers and code editors, it degrades in-tab video playback by allowing desktop wallpaper patterns and underlying windows to bleed into the video frame, crushing black levels.
+In Hyprland, global window decorations (`config/hypr/hyprland/looknfeel.lua`) enforce an active opacity multiplier (`active_opacity = 0.95`) and single-pass dual-kawase blur. While this provides a clean frosted-glass aesthetic for terminal buffers and code editors, it degrades in-tab video playback by allowing desktop wallpaper patterns and underlying windows to bleed into the video frame, crushing black levels.
 
 #### The Architectural Difference: Gecko vs. Chromium
 
