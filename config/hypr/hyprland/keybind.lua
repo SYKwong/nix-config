@@ -25,7 +25,11 @@ local mainMod = "SUPER"
 local utils = require("hyprland/utils")
 
 -- Core Applications & Menus
-hl.bind(mainMod .. " + SUPER_L", hl.dsp.exec_cmd(app_launcher), { description = "[App] Launch Application Menu" })
+hl.bind(
+	mainMod .. " + SUPER_L",
+	hl.dsp.exec_cmd(app_launcher),
+	{ release = true, description = "[App] Launch Application Menu" }
+)
 hl.bind(mainMod .. " + Return", utils.kitty_term(), { description = "[App] Launch Kitty Terminal" })
 hl.bind(mainMod .. " + CTRL + Return", utils.kitty_2pane(), { description = "[App] Launch 2-Pane Kitty Terminal" })
 hl.bind(mainMod .. " + SHIFT + Return", utils.kitty_3pane(), { description = "[App] Launch 3-Pane Kitty Terminal" })
