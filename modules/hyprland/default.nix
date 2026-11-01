@@ -1,6 +1,6 @@
 {
   pkgs,
-  inputs,
+  # inputs,
   ...
 }:
 
@@ -16,9 +16,10 @@
 
   environment.systemPackages = [
     pkgs.hyprsunset
-    (pkgs.callPackage ./scrolloverview.nix {
-      src = inputs.hyprland-scroll-overview;
-    })
+    # Temporarily disabled until hyprland-scroll-overview supports Hyprland 0.57+
+    # (pkgs.callPackage ./scrolloverview.nix {
+    #   src = inputs.hyprland-scroll-overview;
+    # })
   ];
 
   security.pam.services = {

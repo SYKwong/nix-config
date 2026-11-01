@@ -1,7 +1,7 @@
 -- Hyprland plugin configuration and loading
 
 local plugin_candidates = {
-	"/run/current-system/sw/lib/libscrolloverview.so",
+	-- "/run/current-system/sw/lib/libscrolloverview.so",
 }
 
 local loaded_plugin = false
