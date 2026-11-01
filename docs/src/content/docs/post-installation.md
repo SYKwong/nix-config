@@ -53,6 +53,11 @@ This interactive flow guides you through:
    - **Private Wallpapers**: Alternatively clone manually via `git clone git@gitlab.com:kylekwong/private-wallpaper.git ~/Wallpaper`.
    - **Wallpaper Picker**: Place custom images into `~/Wallpaper/` and launch the picker with `SUPER + Space`.
    - **Automated Daily Sync**: Automatically pulls remote updates and pushes local additions/deletions daily via a systemd user timer (`wallpaper-sync.timer`), or on demand with `wallpaper-sync`.
+6. **Antigravity Cross-Machine Memory (`dev-notes`)**: Clone your private notes repository to enable cross-machine agent learning:
+   ```bash
+   git clone git@gitlab.com:kylekwong/dev-notes.git ~/Projects/dev-notes
+   ```
+   Antigravity CLI automatically pulls updates at session start and pushes learned notes on session completion. See the [Antigravity Agent Memory Guide](/home-manager/#9-antigravity-agent-memory--just-in-time-sync-homecliantigravitynix) for details.
 
 ## Fleet Rekeying & Secret Propagation
 

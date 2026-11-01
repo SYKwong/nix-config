@@ -2,6 +2,7 @@
 
 let
   projectRepos = [
+    "dev-notes"
     "nixos-hardware"
     "noctalia"
   ];
@@ -532,6 +533,16 @@ in
         6. Only make the change after explicit user approval.
       - Example: "I noticed that `nm` is useful for inspecting binaries during these tasks. Would you like me to add `command(nm)` to `antigravity.nix` so I can use it automatically in future tasks?"
       - Discretion: Do not ask about every command used during a task. Only suggest persisting something when it is reasonably likely to be useful across future tasks.
+
+      ## Project Memory & Cross-Machine Knowledge
+      - In-Tree Memory: For internal projects that support it, maintain persistent notes in `.agents/memory.md` or `AGENTS.md`.
+      - External Projects: For external, upstream, or client repositories where `.agents/` is not viable:
+        - Maintain notes in `~/Projects/dev-notes/projects/<repo-name>.md`.
+        - Never create or commit `.agents/` or memory files in the external repo's working tree.
+      - Recording Knowledge: When resolving a non-trivial bug, establishing an architecture pattern, or discovering a persistent preference:
+        1. Propose the concise takeaway to the user before concluding the task.
+        2. With user approval, save it to the appropriate memory file.
+        3. Notes in `~/Projects/dev-notes` automatically sync across all your machines on session start and finish.
     '';
   };
 
@@ -547,6 +558,23 @@ in
               timeout = 5;
             }
           ];
+        }
+      ];
+    };
+
+    dev-notes-sync = {
+      SessionStart = [
+        {
+          type = "command";
+          command = "[ -d ~/Projects/dev-notes/.git ] && GIT_SSH_COMMAND=\"ssh -o BatchMode=yes -o ConnectTimeout=3\" git -C ~/Projects/dev-notes pull --rebase --autostash -q 2>/dev/null || true; echo '{}'";
+          timeout = 6;
+        }
+      ];
+      Stop = [
+        {
+          type = "command";
+          command = "[ -d ~/Projects/dev-notes/.git ] && [ -n \"$(git -C ~/Projects/dev-notes status --porcelain 2>/dev/null)\" ] && git -C ~/Projects/dev-notes add -A && git -C ~/Projects/dev-notes commit -m 'sync(notes): automated update' -q && GIT_SSH_COMMAND=\"ssh -o BatchMode=yes -o ConnectTimeout=3\" git -C ~/Projects/dev-notes push -q 2>/dev/null || true; echo '{}'";
+          timeout = 6;
         }
       ];
     };

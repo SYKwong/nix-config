@@ -65,6 +65,33 @@ Zen Browser workspaces, pinned tabs, and global essentials are managed declarati
 - **Session Reconciliation (`pinsForce`)**: When `pinsForce = true` and `pinsForceAction = "remove"`, Home Manager compares existing session tabs against declared pins during activation. Undeclared pinned tabs are pruned from the session, while declared pins have their URLs, labels, and ordering (`position`) reconciled without duplicating tabs.
 - **Global Essentials (`isEssential = true`)**: Pins with `isEssential = true` are pinned globally across all Zen workspaces (displayed at the top of the sidebar or in SuperPins grids). Pins without this flag are workspace-scoped.
 
+### 9. Antigravity Agent Memory & Just-in-Time Sync (`home/cli/antigravity.nix`)
+Antigravity CLI (`agy`) persistent memory and cross-machine knowledge synchronization is managed through two complementary mechanisms:
+- **In-Tree Memory (`.agents/memory.md` / `AGENTS.md`)**: Used for repositories that accept in-tree agent memory and documentation. Memories are committed and travel natively alongside codebase changes via Git.
+- **Out-of-Tree Dev Notes (`~/Projects/dev-notes`)**: For external, upstream, or client repositories where adding `.agents/` or `AGENTS.md` is forbidden or would pollute upstream pull requests.
+
+#### Setting Up the Private `dev-notes` Repository
+To initialize cross-machine agent memory across your fleet:
+
+1. **Create a Private Repository**: Create a private repository named `dev-notes` on GitLab (or GitHub).
+2. **Clone to Workstations**:
+   ```bash
+   git clone git@gitlab.com:<your-username>/dev-notes.git ~/Projects/dev-notes
+   ```
+3. **Scaffold Directory Structure**:
+   ```bash
+   mkdir -p ~/Projects/dev-notes/projects
+   touch ~/Projects/dev-notes/global.md
+   ```
+   - **`global.md`**: Cross-project user preferences, common hardware quirks, and fleet conventions.
+   - **`projects/<repo-name>.md`**: Per-project learnings, API keys/environment notes, and architecture workarounds for external codebases (e.g. `nixpkgs.md`, `linux-kernel.md`).
+
+#### Just-in-Time Lifecycle Hooks
+Instead of continuous background daemons, synchronization is automated just-in-time via `home/cli/antigravity.nix`:
+- **`SessionStart`**: Automatically runs `git pull --rebase --autostash -q` in `~/Projects/dev-notes` before your first prompt.
+- **`Stop`**: Automatically checks for unstaged notes changes upon conversation completion, commits them, and pushes to remote.
+- **Offline Resilient**: Uses SSH guards (`BatchMode=yes`, `ConnectTimeout=3`). If working offline (or before `dev-notes` is cloned), the hooks safely bypass in milliseconds without blocking prompt execution.
+
 ---
 
 ## Noctalia Idle Management
