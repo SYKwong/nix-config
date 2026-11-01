@@ -14,6 +14,10 @@
       thumbfast-vanilla-osc
     ];
     config = {
+      vo = "gpu-next";
+      target-colorspace-hint = true;
+      target-colorspace-hint-mode = "source";
+
       # Disable built-in OSC so thumbfast-vanilla-osc provides the controller
       osc = false;
 

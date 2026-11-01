@@ -26,6 +26,7 @@ local hosts = {
 			position = "0x0",
 			scale = "1.0",
 			cm = "dcip3",
+			bitdepth = 10,
 		},
 	},
 	["mini-pc-k8"] = {
@@ -34,6 +35,7 @@ local hosts = {
 			mode = "3840x2160@60Hz",
 			position = "0x0",
 			scale = "2",
+			bitdepth = 10,
 		},
 	},
 	desktop = {
