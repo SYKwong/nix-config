@@ -92,6 +92,9 @@ Instead of continuous background daemons, synchronization is automated just-in-t
 - **`Stop`**: Automatically checks for unstaged notes changes upon conversation completion, commits them, and pushes to remote.
 - **Offline Resilient**: Uses SSH guards (`BatchMode=yes`, `ConnectTimeout=3`). If working offline (or before `dev-notes` is cloned), the hooks safely bypass in milliseconds without blocking prompt execution.
 
+#### Pre-Approved Git Workspaces
+To streamline multi-repo workflows without interactive permission prompts, `home/cli/antigravity.nix` automatically approves safe read and staging Git subcommands (e.g., `status`, `diff`, `log`, `branch`, `checkout`, `switch`, `fetch`, `add`, `rm`) scoped via `git -C <dir>` across trusted workspaces (`~/nix-config` and `~/Projects/<repo>`). Mutating operations (`commit`, `push`, `reset`, `restore`) remain strictly guarded.
+
 ---
 
 ## Noctalia Idle Management
