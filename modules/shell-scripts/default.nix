@@ -17,13 +17,16 @@ let
       ;
   };
 
+  rebuild = import ./rebuild.nix common;
+
   scripts = {
-    rebuild = import ./rebuild.nix common;
+    inherit rebuild;
     post-install = import ./post-install.nix common;
     kb-light-manager = import ./kb-light-manager.nix common;
     rofi-keybind = import ./rofi-keybind.nix common;
     display-brightness = import ./display-brightness.nix common;
     hypr-virtual-monitor = import ./hypr-virtual-monitor.nix common;
+    update-wallpaper = import ./update-wallpaper.nix (common // { inherit rebuild; });
   };
 in
 {

@@ -24,8 +24,8 @@ verify-flake:
     - if: '$CI_PIPELINE_SOURCE != "merge_request_event"'
       when: never
 
-    # Skip automated flake-update MRs (verified locally by workstation flake-update-verifier)
-    - if: '$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ /^flake-update-/'
+    # Skip automated update MRs (verified locally: flake-update-*, wallpaper-update-*, etc.)
+    - if: '$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ /^[a-z0-9-]+-update-/'
       when: never
 
     # Skip draft/WIP MRs
