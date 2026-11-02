@@ -174,7 +174,7 @@ update-flake-mr:
       # 6. Create branch and commit
       BRANCH_NAME="flake-update-$(date +%Y-%m-%d)"
       git checkout -b "$BRANCH_NAME"
-      RAW_LINES=$(grep '•' update_summary.txt)
+      RAW_LINES=$(grep '•' update_summary.txt | grep -v "Removed input 'wallpapers'")
       SUMMARY="${RAW_LINES//•/*}"
       SUMMARY="${SUMMARY//$'\n'/\\n}"
       SUMMARY="${SUMMARY//:/ }"
