@@ -61,11 +61,12 @@ The script automatically detects the local wallpaper source repository by probin
 | Priority | Path | Category | Rationale |
 | :---: | :--- | :--- | :--- |
 | **0** | `$WALLPAPER_DIR` | Environment Variable | Explicit runtime override passed by caller. |
-| **1** | `~/data/private-wallpaper` | **Primary Default** | NAS CIFS share matching upstream repo name (`private-wallpaper.git`). Eliminates duplicate local disk storage. |
-| **2** | `~/Pictures/[Ww]allpaper[s]` | User Media | Standard XDG Pictures directory (accepts `wallpaper`, `Wallpaper`, `wallpapers`, `Wallpapers`). |
-| **3** | `~/[Ww]allpaper[s]` | Legacy Local | Home directory legacy path (accepts `Wallpaper`, `wallpaper`, `Wallpapers`, `wallpapers`) for backwards compatibility during migration. |
+| **1** | `~/Projects/private-wallpaper` | **Primary Default** | Local development workspace in `~/Projects` matching upstream repo name. Fast NVMe storage eliminates prompt/listing latency. |
+| **2** | `~/Projects/[Ww]allpaper[s]` | Workspace | Local development directory (accepts `wallpaper`, `Wallpaper`, `wallpapers`, `Wallpapers`). |
+| **3** | `~/Pictures/[Ww]allpaper[s]` | User Media | Standard XDG Pictures directory (accepts `wallpaper`, `Wallpaper`, `wallpapers`, `Wallpapers`, and `private-wallpaper`). |
+| **4** | `~/[Ww]allpaper[s]` | Legacy Local | Home directory legacy path (accepts `Wallpaper`, `wallpaper`, `Wallpapers`, `wallpapers`) for backwards compatibility during migration. |
 
-If none of the candidate paths contain an initialized `.git` repository, the script falls back to `~/data/private-wallpaper` and halts with a descriptive error.
+If none of the candidate paths contain an initialized `.git` repository, the script falls back to `~/Projects/private-wallpaper` and exits with an error.
 
 ---
 

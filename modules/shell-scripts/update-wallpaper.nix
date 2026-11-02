@@ -59,7 +59,12 @@ pkgs.writeShellApplication {
       fi
 
       for candidate_path in \
-        "/home/${username}/data/private-wallpaper" \
+        "/home/${username}/Projects/private-wallpaper" \
+        "/home/${username}/Projects/wallpaper" \
+        "/home/${username}/Projects/Wallpaper" \
+        "/home/${username}/Projects/wallpapers" \
+        "/home/${username}/Projects/Wallpapers" \
+        "/home/${username}/Pictures/private-wallpaper" \
         "/home/${username}/Pictures/wallpaper" \
         "/home/${username}/Pictures/Wallpaper" \
         "/home/${username}/Pictures/wallpapers" \
@@ -74,7 +79,7 @@ pkgs.writeShellApplication {
         fi
       done
 
-      echo "/home/${username}/data/private-wallpaper"
+      echo "/home/${username}/Projects/private-wallpaper"
     }
 
     REPO="${config_path}"
