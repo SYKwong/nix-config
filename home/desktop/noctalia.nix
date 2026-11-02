@@ -279,6 +279,7 @@ in
           kitty = {
             match = "kitty";
             play_sound = false;
+            save_history = false;
           };
           sunshine = {
             match = "sunshine";
