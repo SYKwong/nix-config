@@ -8,13 +8,20 @@ pkgs.writeShellApplication {
     efibootmgr
     git
     gnugrep
+    gnused
     nixos-install-tools
     openssh
     systemd
   ];
 
   text = ''
-    trap 'rm -f /tmp/secret.key' EXIT
+    cleanup_on_exit() {
+      rm -f /tmp/secret.key
+      if [ -n "''${REPO_DIR:-}" ] && [ -d "''${REPO_DIR}/.git" ]; then
+        git -C "$REPO_DIR" checkout flake.nix 2>/dev/null || true
+      fi
+    }
+    trap cleanup_on_exit EXIT
     export NIX_CONFIG="experimental-features = nix-command flakes"
 
     if [ "$#" -lt 2 ]; then
@@ -156,6 +163,21 @@ pkgs.writeShellApplication {
       done
     }
 
+    disable_private_inputs() {
+      if grep -q "# BEGIN_PRIVATE_WALLPAPERS" "$REPO_DIR/flake.nix"; then
+        echo "Temporarily commenting out private inputs for unauthenticated installation..."
+        sed -i '/# BEGIN_PRIVATE_WALLPAPERS/,/# END_PRIVATE_WALLPAPERS/ s/^[[:space:]]*/# &/' "$REPO_DIR/flake.nix"
+        git -C "$REPO_DIR" add "$REPO_DIR/flake.nix"
+      fi
+    }
+
+    restore_private_inputs() {
+      if [ -d "$REPO_DIR/.git" ]; then
+        echo "Restoring private inputs in repository..."
+        git -C "$REPO_DIR" checkout flake.nix
+      fi
+    }
+
     install_nixos() {
       echo "Starting NixOS installation..."
       nixos-install --no-root-password --flake "$REPO_DIR#''${host_name}"
@@ -178,7 +200,9 @@ pkgs.writeShellApplication {
     disko_partition
     generate_hardware_configuration
     cleanup_stale_boot_entries
+    disable_private_inputs
     install_nixos
+    restore_private_inputs
     copy_config_to_host
 
     echo "Installation finished! Rebooting..."

@@ -81,7 +81,7 @@ pkgs.writeShellApplication {
         --help | -h)
           echo "Usage: post-install [--auth] [--auth-only]"
           echo "  --auth, -a, auth           Run full post-install setup and authenticate services"
-          echo "  --auth-only, -A, auth-only Run only service authentication (Atuin, GitHub, GitLab, NordVPN, Wallpaper)"
+          echo "  --auth-only, -A, auth-only Run only service authentication (Atuin, GitHub, GitLab, NordVPN)"
           exit 0
           ;;
       esac
@@ -210,33 +210,6 @@ pkgs.writeShellApplication {
         echo "    2. On an authorized machine (e.g. fw16), run: cd secrets && agenix --rekey"
         echo "    3. Commit and push the re-encrypted .age files."
         echo "    4. On this machine, pull and rebuild (nrs) to activate secrets."
-      fi
-    }
-
-    clone_wallpaper_repo() {
-      local target_dir="''${HOME}/Wallpaper"
-
-      echo ""
-      echo "--- Wallpaper Repository ---"
-      if [ -d "$target_dir/.git" ]; then
-        echo "Wallpaper repository already exists at $target_dir. Skipping clone."
-        return 0
-      fi
-
-      echo "Cloning private wallpaper repository via SSH..."
-      if ! git clone "git@gitlab.com:kylekwong/private-wallpaper.git" "$target_dir"; then
-        echo "==> [NOTICE] Failed to clone private wallpaper repository."
-        echo "    Falling back to public wallpaper repository..."
-        rm -rf "$target_dir"
-        if ! git clone "https://gitlab.com/kylekwong/Wallpaper.git" "$target_dir"; then
-          echo "==> [WARN] Failed to clone public wallpaper repository."
-          echo "    You can clone it manually later:"
-          echo "    git clone https://gitlab.com/kylekwong/Wallpaper.git ~/Wallpaper"
-        else
-          echo "Public wallpaper repository successfully cloned to $target_dir."
-        fi
-      else
-        echo "Private wallpaper repository successfully cloned to $target_dir."
       fi
     }
 
@@ -369,7 +342,6 @@ pkgs.writeShellApplication {
       authenticate_github
       authenticate_gitlab
       authenticate_nordvpn
-      clone_wallpaper_repo
     }
 
     print_reminders() {
@@ -390,11 +362,13 @@ pkgs.writeShellApplication {
         echo "    - GitLab:    glab auth login --hostname gitlab.com --web --git-protocol ssh"
         echo "                 (or add key at https://gitlab.com/-/user_settings/ssh_keys)"
         echo "    - NordVPN:   nordvpn login"
-        echo "    - Wallpaper: git clone git@gitlab.com:kylekwong/private-wallpaper.git ~/Wallpaper (or public: https://gitlab.com/kylekwong/Wallpaper.git)"
         echo ""
       fi
       echo "Next steps:"
-      echo "  git lazy \"feat($HOST_IDENTIFIER): add host keys and hardware configuration\""
+      echo "  1. Rebuild system to fetch private wallpapers into Nix store:"
+      echo "     nrs"
+      echo "  2. Commit and push host onboarding changes:"
+      echo "     git lazy \"feat($HOST_IDENTIFIER): add host keys and hardware configuration\""
     }
 
     determine_host_identifier

@@ -465,6 +465,7 @@
         "nixvim": "nixvim",
         "stylix": "stylix",
         "treefmt-nix": "treefmt-nix",
+        "wallpapers": "wallpapers",
         "zen-browser": "zen-browser"
       }
     },
@@ -637,6 +638,22 @@
         "owner": "numtide",
         "repo": "treefmt-nix",
         "type": "github"
+      }
+    },
+    "wallpapers": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793430342,
+        "narHash": "sha256-LDxyRTI3KAUS6rggMHGxfEr6eIeSQ+P2TRIrkkCW1wc=",
+        "ref": "refs/heads/main",
+        "rev": "4b9b9be4774519f9e30ad0524d1318d75eec242d",
+        "revCount": 13,
+        "type": "git",
+        "url": "ssh://git@gitlab.com/kylekwong/private-wallpaper.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@gitlab.com/kylekwong/private-wallpaper.git"
       }
     },
     "zen-browser": {

@@ -199,6 +199,23 @@ EOF
   fi
 }
 
+substitute_wallpaper_repo() {
+  local flake_file="$SCRIPT_DIR/flake.nix"
+  if [ -f "$flake_file" ]; then
+    echo "==> Replacing private wallpaper repository with public repository in flake.nix..."
+    sed -i \
+      -e 's|git+ssh://git@gitlab.com/kylekwong/private-wallpaper.git|git+https://gitlab.com/kylekwong/Wallpaper.git|g' \
+      -e '/# BEGIN_PRIVATE_WALLPAPERS/d' \
+      -e '/# END_PRIVATE_WALLPAPERS/d' \
+      "$flake_file"
+
+    if command -v nix >/dev/null 2>&1; then
+      echo "==> Updating flake.lock for public wallpaper input..."
+      (cd "$SCRIPT_DIR" && nix flake lock --update-input wallpapers 2>/dev/null || true)
+    fi
+  fi
+}
+
 scaffold_host() {
   if [ "$keep_reference" = true ]; then
     echo "==> Preserving author's host directories under hosts/_reference/..."
@@ -476,6 +493,7 @@ configure_git_remote() {
 purge_secrets
 purge_network_shares
 sanitize_opencode
+substitute_wallpaper_repo
 scaffold_host
 configure_outputs
 configure_git_remote

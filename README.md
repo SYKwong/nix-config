@@ -104,3 +104,4 @@ The complete documentation is maintained in-tree under [`docs/`](./docs/) and de
 - Configuration files and scripts are licensed under [MIT-0](https://spdx.org/licenses/MIT-0.html) (no attribution required, but appreciated).
 - Repository icon: NixOS logo, licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) by the NixOS project.
 - `icons/protontricks.svg`: Wine icon from KDE Breeze Icons, licensed under [LGPL-3.0-or-later](https://invent.kde.org/frameworks/breeze-icons/-/blob/master/COPYING-ICONS).
+- `wallpaper/Exodus-by-dpcdpc11.png`: Artwork "Exodus" by dpcdpc11.

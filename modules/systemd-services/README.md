@@ -10,8 +10,7 @@ This directory contains standalone NixOS systemd background services and schedul
 modules/systemd-services/
 ├── default.nix                 # Imports active systemd service modules
 ├── flake-update-verifier.nix   # Overnight flake update MR build verification and auto-merge service
-├── README.md                   # Directory overview and unit index
-└── wallpaper-sync.nix          # Daily wallpaper repository synchronization user timer and service
+└── README.md                   # Directory overview and unit index
 ```
 
 ---
@@ -20,7 +19,6 @@ modules/systemd-services/
 
 | Unit | Scope | Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`wallpaper-sync`** | User (`systemd.user`) | Timer + Oneshot Service | Runs daily to execute `wallpaper-sync`, pulling remote updates and pushing local changes for `~/Wallpaper`. Enabled by default across workstation hosts (`custom.systemd-services.wallpaper-sync.enable`). |
 | **`flake-update-verifier`** | User (`systemd.user`) | Timer + Oneshot Service | Runs overnight (`03:00–07:00`) on workstations (`mini-pc-k8`) to rebase open dependency MRs onto `main`, build test all host closures, label failed MRs with `build-error` and post build error excerpts, and auto-merge verified updates via `glab` (`custom.systemd-services.flake-update-verifier.enable`). Also callable interactively via `nverify` (`flake-update-verifier --force`). |
 
 ---

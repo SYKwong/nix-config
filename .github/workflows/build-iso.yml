@@ -34,9 +34,26 @@ jobs:
             experimental-features = nix-command flakes
             warn-dirty = false
 
+      - name: Disable private inputs for CI build
+        run: |
+          in_block=0
+          while IFS= read -r line; do
+            case "$line" in
+              *"# BEGIN_PRIVATE_WALLPAPERS"*) in_block=1 ;;
+            esac
+            if [ "$in_block" -eq 1 ]; then
+              echo "# $line"
+            else
+              echo "$line"
+            fi
+            case "$line" in
+              *"# END_PRIVATE_WALLPAPERS"*) in_block=0 ;;
+            esac
+          done < flake.nix > flake.nix.tmp && mv flake.nix.tmp flake.nix
+
       - name: Build Installer ISO
         run: |
-          nix build .#nixosConfigurations.installer.config.system.build.isoImage --print-build-logs
+          nix build .#nixosConfigurations.installer.config.system.build.isoImage --no-write-lock-file --print-build-logs
 
       - name: Prepare ISO artifact and checksum
         id: prepare-artifact

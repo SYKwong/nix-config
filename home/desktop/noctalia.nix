@@ -1,4 +1,8 @@
-{ hostname, username, ... }:
+{
+  inputs,
+  hostname,
+  ...
+}:
 
 let
   host_config = {
@@ -58,7 +62,12 @@ let
   idle_lock_timeout = 300 * idle_scale;
   idle_screen_off_timeout = 330 * idle_scale;
 
-  wallpaper_directory = "/home/${username}/Wallpaper";
+  wallpaper_directory = if inputs ? wallpapers then "${inputs.wallpapers}" else "${../../wallpaper}";
+  default_wallpaper =
+    if inputs ? wallpapers then
+      "${wallpaper_directory}/FnpKlkMaYAAga0Z.jpg"
+    else
+      "${wallpaper_directory}/Exodus-by-dpcdpc11.png";
 in
 
 {
@@ -357,7 +366,7 @@ in
 
       wallpaper = {
         directory = wallpaper_directory;
-        default.path = "${wallpaper_directory}/FnpKlkMaYAAga0Z.jpg";
+        default.path = default_wallpaper;
       };
 
       weather = {

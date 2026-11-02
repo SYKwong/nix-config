@@ -60,6 +60,8 @@ GitLab CI jobs execute directly inside pristine, official OCI container images:
 
 In contrast to cloud VM runners that execute multi-step setup scripts on shared host environments, GitLab CI spins up fresh container instances for each job. Combined with GitLab's `FF_USE_FASTZIP` caching (`.cache/nix` keyed on `flake.lock` and `.cache/npm` keyed on `docs/package-lock.json`), builds remain completely reproducible, isolated, and fast.
 
+Private flake inputs (such as private wallpapers) enclosed within `# BEGIN_PRIVATE_WALLPAPERS` and `# END_PRIVATE_WALLPAPERS` block markers are temporarily commented out prior to running `nix flake check` and `build-iso.yml`. This mirrors `install-nixos` bootstrap behavior, allowing unauthenticated CI runners to validate formatting, NixOS system closures, and installer images without requiring ambient SSH keys or deploy tokens.
+
 ### C. Eliminating GitHub Actions Supply-Chain & Deprecation Churn
 
 Standard Nix continuous integration workflows on GitHub Actions typically rely on a deep chain of third-party composite actions (such as `actions/checkout`, `determinate-nix-action`, `cachix/install-nix-action`, or `magic-nix-cache`). While convenient, this model introduces distinct maintenance liabilities:

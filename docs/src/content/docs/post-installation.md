@@ -48,11 +48,7 @@ This interactive flow guides you through:
 2. **GitHub CLI (`gh`)**: Authenticates via web session and uploads your public SSH key to your GitHub account.
 3. **GitLab CLI (`glab`)**: Authenticates via web session and uploads your public SSH key to your GitLab account (enabling git SSH push/pull access immediately).
 4. **NordVPN**: Triggers interactive login to enable VPN connectivity.
-5. **Wallpapers**: Automatically clones the private wallpaper repository (`private-wallpaper`) via SSH, or falls back gracefully to the public wallpaper collection:
-   - **Public Wallpapers**: Available at [GitLab Wallpaper](https://gitlab.com/kylekwong/Wallpaper) (`git clone https://gitlab.com/kylekwong/Wallpaper.git ~/Wallpaper`).
-   - **Private Wallpapers**: Alternatively clone manually via `git clone git@gitlab.com:kylekwong/private-wallpaper.git ~/Wallpaper`.
-   - **Wallpaper Picker**: Place custom images into `~/Wallpaper/` and launch the picker with `SUPER + Space`.
-   - **Automated Daily Sync**: Automatically pulls remote updates and pushes local additions/deletions daily via a systemd user timer (`wallpaper-sync.timer`), or on demand with `wallpaper-sync`.
+5. **Wallpapers**: Bootstrapped with an in-tree bundled wallpaper (`wallpaper/Exodus-by-dpcdpc11.png`) on initial installation, and managed declaratively as a flake input (`inputs.wallpapers`). After GitLab authentication, running `nrs` automatically populates the full wallpaper repository into `/nix/store`.
 6. **Antigravity Cross-Machine Memory (`dev-notes`)**: Clone your private notes repository to enable cross-machine agent learning:
    ```bash
    git clone git@gitlab.com:kylekwong/dev-notes.git ~/Projects/dev-notes

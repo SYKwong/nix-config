@@ -62,5 +62,12 @@
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # BEGIN_PRIVATE_WALLPAPERS
+    wallpapers = {
+      url = "git+ssh://git@gitlab.com/kylekwong/private-wallpaper.git";
+      flake = false;
+    };
+    # END_PRIVATE_WALLPAPERS
   };
 }
