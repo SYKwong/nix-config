@@ -1,7 +1,7 @@
 -- Hyprland plugin configuration and loading
 
 local plugin_candidates = {
-	-- "/run/current-system/sw/lib/libscrolloverview.so",
+	"/run/current-system/sw/lib/libscrolloverview.so",
 }
 
 local loaded_plugin = false
@@ -23,7 +23,7 @@ if loaded_plugin and hl.plugin and hl.plugin.scrolloverview then
 				scale = 0.5,
 				workspace_gap = 20,
 				layout = "auto",
-				wallpaper = 2,
+				wallpaper = 0,
 				blur = true,
 				shadow = {
 					enabled = true,
