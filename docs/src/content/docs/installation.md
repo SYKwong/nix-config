@@ -22,7 +22,7 @@ The baseline installation workflow uses the repository's custom NixOS installer 
 
 Choose one of two methods to get the installer image:
 
-- **Download Pre-built (Recommended)**: Download the latest generated hybrid ISO directly from the rolling **[GitHub Release (`installer`)](https://github.com/SYKwong/nix-config/releases/tag/installer)**.
+- **Download Pre-built (Recommended)**: Download the latest generated hybrid ISO directly from the latest **[GitHub Release](https://github.com/SYKwong/nix-config/releases/latest)**.
 - **Or Build Locally**:
   ```bash
   # Build hybrid UEFI/BIOS ISO on any workstation running Nix (~60s):

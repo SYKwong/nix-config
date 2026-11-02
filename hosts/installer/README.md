@@ -18,7 +18,7 @@ This directory defines a lightweight, reproducible NixOS installer ISO image pre
 
 ### 1. Obtain the ISO Image
 
-- **Download Pre-built (GitHub Release)**: Download the latest generated ISO directly from the rolling **[GitHub Release (installer)](https://github.com/SYKwong/nix-config/releases/tag/installer)**.
+- **Download Pre-built (GitHub Release)**: Download the latest generated ISO directly from the latest **[GitHub Release](https://github.com/SYKwong/nix-config/releases/latest)**.
 - **Or Build Locally**:
   ```bash
   nix build .#nixosConfigurations.installer.config.system.build.isoImage

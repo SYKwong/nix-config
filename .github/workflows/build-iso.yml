@@ -80,10 +80,10 @@ jobs:
           retention-days: 30
           if-no-files-found: error
 
-      - name: Publish or Update GitHub Release
+      - name: Publish GitHub Release
         uses: softprops/action-gh-release@v3
         with:
-          tag_name: installer
+          tag_name: "installer-${{ steps.prepare-artifact.outputs.build_date }}-${{ steps.prepare-artifact.outputs.short_sha }}"
           name: "${{ steps.prepare-artifact.outputs.build_date }} (${{ steps.prepare-artifact.outputs.short_sha }}) · Installer ISO"
           draft: false
           prerelease: false

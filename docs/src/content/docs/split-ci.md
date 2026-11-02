@@ -162,7 +162,7 @@ To allow the automated installer ISO release workflow ([`.github/workflows/build
   softprops/*,
   withastro/*,
   ```
-- **Workflow Permissions**: Under **Workflow permissions**, select **Read and write permissions** (required for creating/updating releases, tagging `installer`, and uploading release binaries via `softprops/action-gh-release`) and check **Allow GitHub Actions to create and approve pull requests**.
+- **Workflow Permissions**: Under **Workflow permissions**, select **Read and write permissions** (required for publishing releases, creating versioned tags, and uploading release binaries via `softprops/action-gh-release`) and check **Allow GitHub Actions to create and approve pull requests**.
 - **Pages Source**: In **Settings** → **Pages** → **Build and deployment** → **Source**, select **GitHub Actions** (enables automatic OIDC token provisioning with `pages: write` and `id-token: write` for `actions/deploy-pages`).
 - **Fork Enablement**: If the downstream repository is a fork, navigate to the **Actions** tab and click **"I understand my workflows, go ahead and enable them"** (Actions are disabled by default on newly created forks).
 
