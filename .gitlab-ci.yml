@@ -158,7 +158,7 @@ update-flake-mr:
       nix flake update nixpkgs 2> update_summary.txt
 
       # 3. Check if nixpkgs changed; if not, short-circuit immediately
-      if git diff --exit-code flake.lock.orig >/dev/null; then
+      if ! grep -q "Updated input 'nixpkgs'" update_summary.txt; then
         echo "nixpkgs has not updated. Skipping full flake update and MR creation."
         exit 0
       fi
@@ -168,7 +168,7 @@ update-flake-mr:
 
       # 5. Restore private wallpapers input in flake.nix and preserve locked node in flake.lock
       git checkout flake.nix
-      nix-shell -p jq --run 'jq -s ".[0].nodes.wallpapers = .[1].nodes.wallpapers | .[0].nodes.root.inputs.wallpapers = \"wallpapers\" | .[0]" flake.lock flake.lock.orig > flake.lock.tmp && mv flake.lock.tmp flake.lock'
+      nix run nixpkgs#jq -- -s ".[0].nodes.wallpapers = .[1].nodes.wallpapers | .[0].nodes.root.inputs.wallpapers = \"wallpapers\" | .[0]" flake.lock flake.lock.orig > flake.lock.tmp && mv flake.lock.tmp flake.lock
       rm -f flake.lock.orig
 
       # 6. Create branch and commit
