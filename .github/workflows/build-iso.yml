@@ -85,8 +85,10 @@ jobs:
         with:
           tag_name: installer
           name: "${{ steps.prepare-artifact.outputs.build_date }} (${{ steps.prepare-artifact.outputs.short_sha }}) · Installer ISO"
+          draft: false
           prerelease: false
-          make_latest: false
+          make_latest: true
+          target_commitish: ${{ github.sha }}
           files: |
             dist/*.iso
             dist/*.sha256
