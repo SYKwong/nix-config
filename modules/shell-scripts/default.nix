@@ -27,6 +27,8 @@ let
     display-brightness = import ./display-brightness.nix common;
     hypr-virtual-monitor = import ./hypr-virtual-monitor.nix common;
     safe-python = import ./safe-python.nix common;
+    safe-npm = import ./safe-npm.nix common;
+    safe-npx = import ./safe-npx.nix common;
     update-wallpaper = import ./update-wallpaper.nix (common // { inherit rebuild; });
   };
 in

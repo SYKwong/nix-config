@@ -93,6 +93,8 @@ let
       "command(bash -n)"
       "command(hyprctl)"
       "command(noctalia)"
+      "command(safe-npm)"
+      "command(safe-npx)"
       "command(safe-python)"
 
       # Coreutils & CLI Inspection
@@ -480,6 +482,7 @@ let
                 json.dumps({
                     "decision": "allow",
                     "reason": "Approved command/pipeline from allowRules",
+                    "permissionOverrides": [f"command({cmd_line})"],
                 })
             )
 
@@ -540,7 +543,7 @@ in
 
       ## Command & File Operations
       - Command Execution & Pipelines: Pipelines and command substitutions composed exclusively of read-only inspection utilities (e.g. `git`, `grep`, `awk`, `sed`, `jq`, `head`, `tail`, `sort`, `uniq`, `wc`, `cat`, `cut`, `tr`, `find`, `fd`, `strings`, `which`, `nm`, `safe-python`) are permitted and auto-approved via the pipeline PreToolUse hook. Do not chain mutating commands with `&&`, `||`, `;`, or shell redirection in `run_command`.
-      - Python Execution & Testing: Always prioritize `safe-python` over raw `python3` or `python` for tests, evaluations, dry-runs, and scratch scripts. Raw `python3` requires interactive user approval and should only be used when kernel unsharing or read-only filesystem restrictions explicitly prevent a required test from running.
+      - Sandboxed Execution & Testing: Always prioritize sandboxed runners (`safe-python`, `safe-npm`, `safe-npx`) over un-sandboxed equivalents (`python3`, `npm`, `npx`) for tests, evaluations, dry-runs, builds, and package operations to protect against supply-chain attacks. Raw commands require interactive user approval.
       - File Creation and Modification: Always use `write_to_file` or `replace_file_content` to create or edit files in the workspace. Never use `cat << 'EOF' > ...` or shell redirection in `run_command`, as shell redirection triggers CLI permission prompts.
       - Nix Store Operations: Never attempt direct filesystem reads, searches, or traversals on `/nix/store` (these are hard-locked and will block execution). Always inspect configuration options, module definitions, and package metadata declaratively via `nix eval` (e.g., `nix eval .#nixosConfigurations.<host>.options.<option>` or `nix eval .#nixosConfigurations.<host>.config.<path>`). Only if declarative evaluation fails or raw source inspection is strictly unavoidable should you trigger a store read request, providing the exact path and rationale.
 
