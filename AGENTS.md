@@ -7,6 +7,7 @@
 - Portability & Modularity: Avoid hardcoded numeric UIDs/GIDs (prefer dynamic `username` and `users` group). Keep host-specific logic in `hosts/<name>/` and reusable features in `modules/<category>/`.
 - Hyprland Lua Conventions: Use standard `function table.name()` syntax instead of anonymous assignments (`table.name = function()`). Keybinding action helpers in `utils.lua` should return callback closures rather than raw command strings.
 - Desktop Shell: The environment uses Noctalia; legacy Waybar/sway-specific tools and derivations should be pruned when encountered.
+- Python Testing: Always prioritize `safe-python` over raw `python3` or `python` for tests, one-liners, and scratch scripts to run within the unprivileged read-only Bubblewrap sandbox.
 - Nix Store Access: Never attempt direct filesystem reads, searches, or traversals on `/nix/store` (these are hard-locked and will block execution). Always inspect configuration options, module definitions, and package metadata declaratively via `nix eval` (e.g., `nix eval .#nixosConfigurations.<host>.options.<option>` or `nix eval .#nixosConfigurations.<host>.config.<path>`). Only if declarative evaluation fails or raw source inspection is strictly unavoidable should you trigger a store read request, providing the exact path and rationale.
 
 ## Git & Workflow
