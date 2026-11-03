@@ -12,7 +12,7 @@
       "--git-ignore"
       "--icons=always"
       "--classify"
-      "--hyperlink"
+      "--hyperlink=auto"
     ];
   };
   home.shellAliases = {
