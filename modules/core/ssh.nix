@@ -1,8 +1,45 @@
-{ username, ... }:
+{
+  lib,
+  username,
+  hosts ? { },
+  ...
+}:
 
 let
   keys = import ../../secrets/keys.nix;
   otherMachines = [ ];
+
+  getHostAliases =
+    name: info:
+    let
+      hasKyleSuffix = lib.hasSuffix "-kyle" info.username;
+      alias = if hasKyleSuffix then lib.removeSuffix "-kyle" info.username else "";
+      autoAliases = lib.optional (alias != name && alias != "") alias;
+    in
+    lib.unique (autoAliases ++ (info.aliases or [ ]));
+
+  hostConfigs = lib.concatLines (
+    lib.mapAttrsToList (name: info: ''
+      Host ${
+        lib.concatStringsSep " " (
+          [
+            name
+            "${name}.local"
+          ]
+          ++ (getHostAliases name info)
+        )
+      }
+        User ${info.username}
+    '') hosts
+  );
+
+  knownHostEntries = lib.mapAttrs (name: key: {
+    publicKey = key;
+    extraHostNames = [
+      "${name}.local"
+    ]
+    ++ (lib.optionals (hosts ? ${name}) (getHostAliases name hosts.${name}));
+  }) keys.systems;
 in
 {
   services.openssh = {
@@ -17,26 +54,8 @@ in
     builtins.attrValues keys.users ++ otherMachines;
 
   programs.ssh = {
-    extraConfig = ''
-      Host mini-pc-k8 mini-pc-k8.local
-        User k8-kyle
+    extraConfig = hostConfigs;
 
-      Host framework16 framework16.local fw16
-        User fw16-kyle
-    '';
-
-    knownHosts = {
-      mini-pc-k8 = {
-        publicKey = keys.systems."mini-pc-k8";
-        extraHostNames = [ "mini-pc-k8.local" ];
-      };
-      fw16 = {
-        publicKey = keys.systems.fw16;
-        extraHostNames = [
-          "framework16"
-          "framework16.local"
-        ];
-      };
-    };
+    knownHosts = knownHostEntries;
   };
 }

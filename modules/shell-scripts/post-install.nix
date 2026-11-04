@@ -207,7 +207,7 @@ pkgs.writeShellApplication {
         echo "==> [NOTICE] Rekey skipped or failed (expected on a new machine that does not possess an authorized private key yet)."
         echo "    Next steps:"
         echo "    1. Commit and push the updated secrets/keys.nix."
-        echo "    2. On an authorized machine (e.g. fw16), run: cd secrets && agenix --rekey"
+        echo "    2. On an authorized machine (e.g. framework16), run: cd secrets && agenix --rekey"
         echo "    3. Commit and push the re-encrypted .age files."
         echo "    4. On this machine, pull and rebuild (nrs) to activate secrets."
       fi

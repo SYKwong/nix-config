@@ -49,6 +49,7 @@ in
       nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit inputs;
+          inherit hosts;
           inherit (info) username;
           hostname = name;
         };

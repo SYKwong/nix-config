@@ -53,7 +53,7 @@ agenix -e <secret-name>.age
 ### Create a New Secret
 1. Add the secret and allowed recipient keys to [`secrets.nix`](secrets.nix):
    ```nix
-   "my-secret.age".publicKeys = [ users.kyle systems.framework16 ];
+   "my-secret.age".publicKeys = [ keys.users.framework16 ];
    ```
 2. Create and edit the encrypted secret:
    ```bash
