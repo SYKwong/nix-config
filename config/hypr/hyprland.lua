@@ -36,6 +36,8 @@ local hosts = {
 			position = "0x0",
 			scale = "2",
 			bitdepth = 10,
+			cm = "srgb",
+			supports_hdr = -1,
 		},
 	},
 	desktop = {
