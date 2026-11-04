@@ -129,9 +129,9 @@ EOF
 
 purge_network_shares() {
   echo "==> Removing author's private NAS network shares..."
-  rm -f "$SCRIPT_DIR/modules/desktop/networkshare.nix" "$SCRIPT_DIR/modules/laptop/networkshare.nix"
+  rm -f "$SCRIPT_DIR/modules/profiles/desktop/networkshare.nix" "$SCRIPT_DIR/modules/profiles/laptop/networkshare.nix"
 
-  cat <<'EOF' >"$SCRIPT_DIR/modules/desktop/default.nix"
+  cat <<'EOF' >"$SCRIPT_DIR/modules/profiles/desktop/default.nix"
 {
   imports = [
     ./wireless-config.nix
@@ -139,7 +139,7 @@ purge_network_shares() {
 }
 EOF
 
-  cat <<'EOF' >"$SCRIPT_DIR/modules/laptop/default.nix"
+  cat <<'EOF' >"$SCRIPT_DIR/modules/profiles/laptop/default.nix"
 {
   imports = [
     ./sleep.nix
@@ -394,9 +394,9 @@ EOF
 
 configure_outputs() {
   echo "==> Updating outputs.nix with host '$host_name' (user: $user_name)..."
-  local extra_module="./modules/desktop"
+  local extra_module="./modules/profiles/desktop"
   if [ "$is_laptop" = true ]; then
-    extra_module="./modules/laptop"
+    extra_module="./modules/profiles/laptop"
   fi
 
   cat <<EOF >"$SCRIPT_DIR/outputs.nix"

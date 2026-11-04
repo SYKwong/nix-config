@@ -17,7 +17,7 @@ This section documents host-specific machine configurations within the fleet. Ea
 
 | Host | Role | Hardware Specs | Boot & Storage | Key Modules & Hardware Quirks |
 | :--- | :--- | :--- | :--- | :--- |
-| **`framework16`** | Primary Workstation Laptop | Framework Laptop 16 (AMD Ryzen 7840HS, 96GB RAM) | LUKS (TPM2 auto-unlock), Lanzaboote Secure Boot, Btrfs with 100GB hibernation swap (`/.swapvol`) | QMK keyboard backlight manager (`kb-light-manager`), laptop power management (`modules/laptop`), `nixos-hardware` integration |
+| **`framework16`** | Primary Workstation Laptop | Framework Laptop 16 (AMD Ryzen 7840HS, 96GB RAM) | LUKS (TPM2 auto-unlock), Lanzaboote Secure Boot, Btrfs with 100GB hibernation swap (`/.swapvol`) | QMK keyboard backlight manager (`kb-light-manager`), laptop form-factor profile (`modules/profiles/laptop`), `nixos-hardware` integration |
 | **`mini-pc-k8`** | HTPC / Living Room Workstation | GMKtec NucBox K8 Plus (AMD Ryzen 8845HS, 64GB RAM) | Unencrypted Btrfs, 8GB swap | Harmonia local binary cache (`services.harmonia.cache`), automated flake update verifier & cache warmer (`flake-update-verifier`), custom ALSA card profile (`k8-plus-analog.conf`), Intel Bluetooth de-authorization (`8087:0029`), Flatpak auto-discovery |
 
 ---
@@ -70,8 +70,8 @@ Every host is wired into the system build via the `hosts` attribute set in `outp
   username = "<user_name>";
 
   extraModules = [
-    # Host-specific NixOS system modules (e.g. laptop or desktop)
-    ./modules/laptop
+    # Form-factor system profile (e.g. laptop or desktop)
+    ./modules/profiles/laptop
 
     # Hardware tuning via nixos-hardware:
     # 1. Exact OEM device profile:

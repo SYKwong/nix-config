@@ -9,9 +9,8 @@ This directory contains modular, reusable **NixOS system-level** configurations.
 | Category | Description |
 | :--- | :--- |
 | **`core/`** | Baseline system configurations applied across all hosts (bootloader, networking, security policies, user accounts, system fonts, and core packages). |
+| **`profiles/`** | Form-factor system profiles (`desktop`, `laptop`) bundling device-type characteristics, power management, and filesystem mounts (see [`modules/profiles/README.md`](./profiles/README.md)). |
 | **`hyprland/`** | Hyprland Wayland compositor, UWSM session integration, and Ly display manager greeter. |
-| **`desktop/`** | Shared workstation capabilities and desktop services (e.g., network filesystem shares, desktop integration helpers). |
-| **`laptop/`** | Portable device power management, battery optimization profiles, and sleep/wake handling. |
 | **`hardware/`** | Vendor-specific hardware integrations, device firmware utilities, and on-demand chassis configurations (e.g. `framework.nix`). |
 | **`wireless/`** | Wireless networking (Wi-Fi), network management, and Bluetooth services. |
 | **`vpn/`** | Virtual Private Network (VPN) client services, daemons, and encrypted tunnels. |
@@ -50,8 +49,8 @@ System modules are integrated into machine closures via [`outputs.nix`](../outpu
   <hostname> = {
     username = "<user>";
     extraModules = [
-      ./modules/laptop    # Power management & battery optimizations
-      ./modules/desktop   # Workstation shared capabilities
+      ./modules/profiles/laptop     # Clamshell power management & dynamic CIFS
+      ./modules/profiles/desktop    # Workstation shared capabilities & static CIFS
     ];
   };
   ```

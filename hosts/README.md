@@ -63,8 +63,8 @@ Every host is declared in the `hosts` set in [`outputs.nix`](../outputs.nix):
   username = "<user_name>";
 
   extraModules = [
-    # Host-specific NixOS system modules (e.g. laptop or desktop)
-    ./modules/laptop
+    # Form-factor system profile (e.g. laptop or desktop)
+    ./modules/profiles/laptop
 
     # Hardware tuning via nixos-hardware:
     # 1. Exact OEM device profile (e.g. inputs.nixos-hardware.nixosModules.framework-16-7040-amd)

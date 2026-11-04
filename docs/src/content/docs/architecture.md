@@ -39,8 +39,7 @@ nix-config/
 │
 ├── modules/                    # Reusable NixOS system modules
 │   ├── core/                   # Baseline system configuration (boot, network, security, packages)
-│   ├── laptop/                 # Portable device power management and lid handling
-│   ├── desktop/                # Workstation capabilities and shared desktop services
+│   ├── profiles/               # Form-factor profiles (desktop, laptop)
 │   ├── hyprland/               # Hyprland compositor, UWSM session, Ly greeter
 │   ├── sunshine/               # Sunshine desktop streaming and automated tablet virtual display
 │   ├── shell-scripts/          # Custom CLI utilities packaged via writeShellApplication
@@ -87,7 +86,7 @@ hosts = {
       inputs.lanzaboote.nixosModules.lanzaboote
 
       ./modules/hardware/framework.nix
-      ./modules/laptop
+      ./modules/profiles/laptop
       ./modules/lanzaboote
     ];
   };
@@ -101,7 +100,7 @@ hosts = {
       inputs.nixos-hardware.nixosModules.common-gpu-amd
       inputs.nixos-hardware.nixosModules.common-pc-ssd
 
-      ./modules/desktop
+      ./modules/profiles/desktop
       ./modules/power-management/ppd.nix
     ];
   };

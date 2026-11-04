@@ -105,7 +105,7 @@ git push origin main
 ### What `adopt.sh` Automates
 
 1. **Purges Inaccessible Secrets**: Removes all `secrets/*.age` and empties `modules/secrets/default.nix` (`age.secrets = {};`), preventing Agenix evaluation errors.
-2. **Removes Private Network Shares**: Deletes personal SMB NAS modules (`networkshare.nix`) and unlinks them from `modules/desktop` and `modules/laptop`.
+2. **Removes Private Network Shares**: Deletes personal SMB NAS modules (`networkshare.nix`) and unlinks them from `modules/profiles/desktop` and `modules/profiles/laptop`.
 3. **Sanitizes AI Providers**: Removes personal Cloudflare Workers AI credentials from `home/cli/opencode.nix` while keeping local Ollama intact.
 4. **Substitutes Private Wallpapers**: Replaces the private wallpaper repository input in `flake.nix` with the public repository (`Wallpaper.git`) so the flake builds cleanly without requiring the author's private SSH credentials.
 5. **Scaffolds Target Host**: Removes existing host directories and generates `hosts/<your-hostname>/` containing `default.nix`, `disko.nix` (encrypted LUKS or unencrypted Btrfs), and a stub `hardware-configuration.nix`.

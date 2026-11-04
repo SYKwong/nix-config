@@ -12,7 +12,7 @@ let
         inputs.lanzaboote.nixosModules.lanzaboote
 
         ./modules/hardware/framework.nix
-        ./modules/laptop
+        ./modules/profiles/laptop
         ./modules/lanzaboote
       ];
     };
@@ -26,7 +26,7 @@ let
         inputs.nixos-hardware.nixosModules.common-gpu-amd
         inputs.nixos-hardware.nixosModules.common-pc-ssd
 
-        ./modules/desktop
+        ./modules/profiles/desktop
         ./modules/power-management/ppd.nix
       ];
     };
