@@ -144,6 +144,8 @@ let
       "command(lsusb)"
       "command(powerprofilesctl)"
       "command(rfkill)"
+      "command(systemctl --user is-active)"
+      "command(systemctl --user status)"
       "command(systemctl is-active)"
       "command(systemctl status)"
       "command(uname)"
@@ -177,6 +179,16 @@ let
   allowedCommands = extractCommands allowRules;
   deniedCommands = extractCommands denyRules;
 
+  devAllowedCommands = [
+    "clang-format"
+    "clang-tidy"
+    "just"
+    "meson"
+    "ninja"
+    "pkg-config"
+    "run-clang-tidy"
+  ];
+
   pipelineAllowHook =
     pkgs.writers.writePython3Bin "agy-pipeline-allow"
       {
@@ -200,6 +212,9 @@ let
         )
         DENIED_COMMANDS = json.loads(
             r"""${builtins.toJSON deniedCommands}"""
+        )
+        DEV_ALLOWED_COMMANDS = json.loads(
+            r"""${builtins.toJSON devAllowedCommands}"""
         )
 
 
@@ -309,6 +324,88 @@ let
             return subs
 
 
+        def extract_nix_develop_inner(cmd_str):
+            try:
+                lexer = shlex.shlex(cmd_str, posix=True, punctuation_chars="|;&><")
+                lexer.whitespace_split = False
+                lexer.commenters = ""
+                tokens = list(lexer)
+            except Exception:
+                return None
+
+            if len(tokens) >= 2 and tokens[0] == "nix" and tokens[1] == "develop":
+                for i, tok in enumerate(tokens):
+                    if tok in ("-c", "--command"):
+                        remaining = tokens[i + 1:]
+                        if not remaining:
+                            return None
+                        inner = " ".join(remaining)
+                        try:
+                            sub_lexer = shlex.shlex(
+                                inner, posix=True, punctuation_chars="|;&><"
+                            )
+                            sub_lexer.whitespace_split = False
+                            sub_lexer.commenters = ""
+                            sub_tokens = list(sub_lexer)
+                            if (
+                                len(sub_tokens) >= 3
+                                and sub_tokens[0] in ("bash", "sh")
+                                and sub_tokens[1] == "-c"
+                            ):
+                                return " ".join(sub_tokens[2:])
+                        except Exception:
+                            pass
+                        return inner
+            return None
+
+
+        def evaluate_dev_inner(inner_str):
+            try:
+                inner_lexer = shlex.shlex(
+                    inner_str, posix=True, punctuation_chars="|;&><"
+                )
+                inner_lexer.whitespace_split = False
+                inner_lexer.commenters = ""
+                inner_tokens = list(inner_lexer)
+            except Exception:
+                return "ask"
+
+            segments = []
+            cur = []
+            has_redirection = False
+            for tok in inner_tokens:
+                if tok in (">", ">>", "<"):
+                    has_redirection = True
+                if tok in (";", "&&", "||", "|"):
+                    if cur:
+                        segments.append(" ".join(cur).strip())
+                        cur = []
+                else:
+                    cur.append(tok)
+            if cur:
+                segments.append(" ".join(cur).strip())
+
+            for seg in segments:
+                cleaned = clean_segment(seg)
+                if any(matches_rule(cleaned, target) for target in DENIED_COMMANDS):
+                    return "deny"
+
+            if has_redirection or not segments:
+                return "ask"
+
+            for seg in segments:
+                cleaned = clean_segment(seg)
+                allowed = (
+                    any(matches_rule(cleaned, target) for target in ALLOWED_COMMANDS)
+                    or any(matches_rule(cleaned, target) for target in DEV_ALLOWED_COMMANDS)
+                    or bool(re.match(r"^(\./)?build[a-zA-Z0-9_-]*/[a-zA-Z0-9_-]+(\s|$)", cleaned))
+                )
+                if not allowed:
+                    return "ask"
+
+            return "allow"
+
+
         def evaluate_command(cmd_str):
             cmd_str = cmd_str.strip()
             if not cmd_str:
@@ -336,6 +433,7 @@ let
             try:
                 lexer = shlex.shlex(normalized_cmd, posix=True, punctuation_chars="|;&><")
                 lexer.whitespace_split = False
+                lexer.commenters = ""
                 tokens = list(lexer)
             except Exception:
                 return "ask"
@@ -373,10 +471,19 @@ let
             if has_non_pipe_operator or not segments:
                 return "ask"
 
-            if all(
-                any(matches_rule(clean_segment(seg), target) for target in ALLOWED_COMMANDS)
-                for seg in segments
-            ):
+            def evaluate_single_segment(seg):
+                cleaned = clean_segment(seg)
+                if any(matches_rule(cleaned, target) for target in ALLOWED_COMMANDS):
+                    return "allow"
+                inner = extract_nix_develop_inner(seg)
+                if inner is not None:
+                    return evaluate_dev_inner(inner)
+                return "ask"
+
+            decisions = [evaluate_single_segment(seg) for seg in segments]
+            if "deny" in decisions:
+                return "deny"
+            if all(d == "allow" for d in decisions):
                 return "allow"
 
             return "ask"

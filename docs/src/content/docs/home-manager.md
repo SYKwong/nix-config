@@ -95,6 +95,13 @@ Instead of continuous background daemons, synchronization is automated just-in-t
 #### Pre-Approved Git Workspaces
 To streamline multi-repo workflows without interactive permission prompts, `home/cli/antigravity.nix` automatically approves safe read and staging Git subcommands (e.g., `status`, `diff`, `log`, `branch`, `checkout`, `switch`, `fetch`, `add`, `rm`) scoped via `git -C <dir>` across trusted workspaces (`~/nix-config` and `~/Projects/<repo>`). Mutating operations (`commit`, `push`, `reset`, `restore`) remain strictly guarded.
 
+#### Pre-Approved Build Tools in Development Shells
+To avoid host toolchain pollution and ensure reproducible builds, native build tools are not installed globally on the host PATH. Instead, the Antigravity `pipelineAllowHook` automatically unwraps and approves `nix develop -c <cmd>` and `nix develop --command bash -c "<cmd>"` invocations when inner commands are approved development tools:
+- **Approved Dev Tools**: `just`, `ninja`, `meson`, `clang-format`, `clang-tidy`, `pkg-config`, `run-clang-tidy`, and local build artifacts matching `./build*/*`.
+- **Host Protection**: Running build tools directly on the host (outside `nix develop`) prompts for interactive confirmation.
+- **Dangerous Commands Guarded**: Any destructive command (`sudo`, `rm`, shell redirections, or unvetted utilities) returns a hook denial or prompts for permission, even when wrapped within `nix develop`.
+- **Desktop Shell Inspection**: User systemd queries (`systemctl --user status` and `systemctl --user is-active`) are pre-approved to facilitate inspecting user services like `noctalia`.
+
 ---
 
 ## Noctalia Idle Management
