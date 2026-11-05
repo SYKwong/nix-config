@@ -273,6 +273,13 @@ function utils.cycle_window(direction)
 	end
 end
 
+function utils.cycle_workspace(direction)
+	local target = direction == "prev" and "m-1" or "m+1"
+	return function()
+		hl.dispatch(hl.dsp.focus({ workspace = target }))
+	end
+end
+
 local function unfullscreen_if_fullscreened(window)
 	if window.fullscreen ~= 0 then
 		local mode = (window.fullscreen == 2) and "fullscreen" or "maximized"

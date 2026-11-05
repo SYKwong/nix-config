@@ -44,7 +44,7 @@ if loaded_plugin and hl.plugin and hl.plugin.scrolloverview then
 
 	-- Trackpad gesture
 	hl.gesture({
-		fingers = 3,
+		fingers = 4,
 		direction = "up",
 		action = function()
 			hl.dispatch(hl.plugin.scrolloverview.overview("toggle all"))
