@@ -9,10 +9,5 @@ in
     keys.users.framework16
     keys.systems.framework16
   ];
-  "harmonia-signing-key.age".publicKeys = [
-    keys.users.framework16
-    keys.users."mini-pc-k8"
-    keys.systems."mini-pc-k8"
-  ];
   "atuin-credentials.age".publicKeys = allKeys;
 }

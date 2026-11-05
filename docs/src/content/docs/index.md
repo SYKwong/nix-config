@@ -78,4 +78,4 @@ nix flake check
 | Host | Role | Hardware | Key Technologies |
 | :--- | :--- | :--- | :--- |
 | **[`framework16`](/hosts/)** | Primary Workstation Laptop | Framework Laptop 16 (AMD Ryzen 7840HS, 96GB RAM) | LUKS + TPM2, Lanzaboote Secure Boot, Btrfs + Swap Hibernation |
-| **[`mini-pc-k8`](/hosts/)** | HTPC / Living Room Desktop | GMKtec NucBox K8 Plus (AMD Ryzen 8845HS, 64GB RAM) | Harmonia binary cache, Btrfs, Custom ALSA profile |
+| **[`mini-pc-k8`](/hosts/)** | HTPC / Living Room Desktop | GMKtec NucBox K8 Plus (AMD Ryzen 8845HS, 64GB RAM) | Btrfs, Custom ALSA profile, Flake update verifier |

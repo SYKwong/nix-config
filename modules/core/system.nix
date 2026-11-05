@@ -13,14 +13,6 @@
         "flakes"
       ];
       warn-dirty = false;
-      extra-substituters = [
-        "http://mini-pc-k8.local:5000"
-      ];
-      extra-trusted-public-keys = [
-        "mini-pc-k8-1:4Tac3TqWj59aZkbxxJ+ux931MXNVnvWrU1xGAll40KE="
-      ];
-      connect-timeout = 2;
-      download-attempts = 2;
     };
     optimise.automatic = true;
   };

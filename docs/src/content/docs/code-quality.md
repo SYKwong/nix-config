@@ -94,7 +94,7 @@ Commit messages must strictly follow the **Conventional Commits** specification 
 ```
 
 #### Common Types:
-- `feat`: A new host, module, application, or functional feature (e.g. `feat(hosts/mini-pc-k8): add harmonia cache`).
+- `feat`: A new host, module, application, or functional feature (e.g. `feat(hosts/mini-pc-k8): add network share`).
 - `fix`: Bug fix or hardware quirk correction (e.g. `fix(audio): restrict ALSA card profile to physical jacks`).
 - `docs`: Documentation updates or wiki enhancements (e.g. `docs(k8): document UEFI shell flashing steps`).
 - `chore`: Maintenance, key rotations, or dependencies (e.g. `chore(secrets): rekey secrets for new host`).

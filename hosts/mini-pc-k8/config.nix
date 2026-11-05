@@ -1,11 +1,7 @@
-{ config, ... }:
+_:
 
 {
   custom.systemd-services.flake-update-verifier.enable = true;
-
-  age.secrets.harmonia-signing-key.file = ../../secrets/harmonia-signing-key.age;
-
-  networking.firewall.allowedTCPPorts = [ 5000 ];
 
   # Define custom ALSA Card Profile for GMKtec NucBox K8 Plus chassis without phantom internal speaker/mic
   environment.etc."alsa-card-profile/mixer/profile-sets/k8-plus-analog.conf".text = ''
@@ -21,12 +17,6 @@
   '';
 
   services = {
-    harmonia.cache = {
-      enable = true;
-      signKeyPaths = [ config.age.secrets.harmonia-signing-key.path ];
-      settings.priority = 30;
-    };
-
     # Permanently disable built-in Intel Bluetooth (8087:0029) at the USB stack
     udev.extraRules = ''
       ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="8087", ATTR{idProduct}=="0029", ATTR{authorized}="0"

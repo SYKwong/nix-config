@@ -12,13 +12,11 @@ pkgs.writeShellApplication {
   runtimeInputs = [
     pkgs.binutils
     pkgs.coreutils
-    pkgs.curl
     pkgs.gawk
     pkgs.git
     pkgs.gnugrep
     pkgs.nh
     pkgs.nix
-    pkgs.openssh
     pkgs.systemd
   ];
 
@@ -85,33 +83,6 @@ pkgs.writeShellApplication {
       log_success "Live switch succeeded."
     else
       log_warn "Live switch failed. Boot entry is saved and changes will apply on next reboot."
-    fi
-
-    if [ "$HOSTNAME" != "mini-pc-k8" ]; then
-      if curl --connect-timeout 1 -s -o /dev/null "http://mini-pc-k8.local:5000/nix-cache-info"; then
-        log_info "Syncing system closure to local cache (mini-pc-k8)..."
-        TARGET_USER="''${SUDO_USER:-${username}}"
-        TARGET_UID=$(id -u "$TARGET_USER")
-        TARGET_SOCK=""
-        if [ -n "''${SSH_AUTH_SOCK:-}" ] && [ -S "''${SSH_AUTH_SOCK:-}" ]; then
-          TARGET_SOCK="$SSH_AUTH_SOCK"
-        elif [ -S "/run/user/$TARGET_UID/gcr/ssh" ]; then
-          TARGET_SOCK="/run/user/$TARGET_UID/gcr/ssh"
-        elif [ -S "/run/user/$TARGET_UID/keyring/ssh" ]; then
-          TARGET_SOCK="/run/user/$TARGET_UID/keyring/ssh"
-        fi
-
-        SYNC_ENV=()
-        if [ -n "$TARGET_SOCK" ]; then
-          SYNC_ENV=(env "SSH_AUTH_SOCK=$TARGET_SOCK")
-        fi
-
-        if sudo -u "$TARGET_USER" -H "''${SYNC_ENV[@]}" nix copy --no-check-sigs --to ssh-ng://k8-kyle@mini-pc-k8.local /run/current-system; then
-          log_success "Local cache synced."
-        else
-          log_warn "Failed to sync to local cache."
-        fi
-      fi
     fi
 
     CONFIG_KERNEL=$(strings /nix/var/nix/profiles/system/kernel | grep -E '^[0-9]+\.[0-9]+' | head -n 1 | awk '{print $1}')

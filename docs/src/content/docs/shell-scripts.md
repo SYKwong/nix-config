@@ -31,8 +31,7 @@ The system rebuild engine standardizes configuration deployment across all hosts
 1. **Formatting**: Runs `nix fmt` automatically prior to building to keep the repository formatted.
 2. **Atuin Sync**: Bridges newly synced shell history into local Fish suggestions via `atuin-to-fish`.
 3. **Staging & Live Activation**: Creates a new bootloader entry via `nh os boot` and activates live system changes via `switch-to-configuration switch`.
-4. **Binary Cache Synchronization**: On remote hosts, synchronizes the newly built system closure back to `mini-pc-k8` over SSH if reachable.
-5. **Pending Kernel Reboot Check**: Compares the running kernel (`uname -r`) against the newly staged kernel in `/nix/var/nix/profiles/system/kernel`. If a kernel update is pending, prompts the user to reboot immediately with an automatic **10-second timeout** (`read -r -t 10`) to prevent blocking unattended or automated rebuilds.
+4. **Pending Kernel Reboot Check**: Compares the running kernel (`uname -r`) against the newly staged kernel in `/nix/var/nix/profiles/system/kernel`. If a kernel update is pending, prompts the user to reboot immediately with an automatic **10-second timeout** (`read -r -t 10`) to prevent blocking unattended or automated rebuilds.
 
 ---
 

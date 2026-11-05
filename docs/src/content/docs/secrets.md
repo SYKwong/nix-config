@@ -74,7 +74,6 @@ When adding a new machine, changing user keys, or rotating credentials:
 | `cloudflare-workers-ai-apikey.age` | `/run/agenix/cloudflare-workers-ai-apikey` | API key for Cloudflare Workers AI. |
 | `atuin-credentials.age` | `/run/agenix/atuin-credentials` | Atuin sync credentials for cross-machine shell history. |
 | `wireguard-fw16.age` | `/run/agenix/wireguard-fw16` | WireGuard private key (`framework16`). |
-| `harmonia-signing-key.age` | `/run/agenix/harmonia-signing-key` | Binary cache signing key (`mini-pc-k8`). |
 
 ---
 
