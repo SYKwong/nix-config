@@ -8,6 +8,13 @@ hl.window_rule({
 	opaque = true,
 })
 
+hl.window_rule({
+	name = "mpv-force-opaque",
+	match = { class = "^(mpv)$" },
+	force_rgbx = true,
+	opaque = true,
+})
+
 local function make_browser_tab_opaque(title_keyword, browser_class)
 	local target_browser_class <const> = browser_class or "zen-beta"
 

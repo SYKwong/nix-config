@@ -90,3 +90,16 @@ make_browser_tab_opaque("YouTube")
   make_browser_tab_opaque("Netflix")
   ```
 
+### Forced Opacity & Blur Elimination for MPV (`config/hypr/hyprland/windowrule.lua`)
+
+Hyprland executes dual-kawase blur passes across translucent or floating window boundaries by default. For video rendering in `mpv`, this introduces unnecessary compositor shader overhead and degrades video presentation. Following the same pattern as `fullscreen-force-opaque`, `config/hypr/hyprland/windowrule.lua` enforces solid opacity and drops the alpha channel across all `mpv` surfaces:
+
+```lua
+hl.window_rule({
+	name = "mpv-force-opaque",
+	match = { class = "^(mpv)$" },
+	force_rgbx = true,
+	opaque = true,
+})
+```
+

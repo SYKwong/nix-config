@@ -44,7 +44,7 @@ For applications that persist local JSON/INI configurations directly in mutable 
 ### 6. Category-Scoped Media Playlists
 Desktop media players are segmented by workload:
 - **`feishin`**: Navidrome / Subsonic music streaming client with out-of-store configuration.
-- **`mpv`**: General media player configured with `autocreate-playlist = "same"` (enqueuing neighboring tracks) and `vo = "gpu-next"` with `target-colorspace-hint-mode = "source"` for automated HDR handoff under Hyprland's `cm_auto_hdr`.
+- **`mpv`**: General media player configured with `autocreate-playlist = "same"` (enqueuing neighboring tracks) and `vo = "gpu-next"` with `target-colorspace-hint-mode = "source"` for automated HDR handoff under Hyprland's `cm_auto_hdr`. Compositor blur and transparency are eliminated via Hyprland window rules (`force_rgbx = true` and `opaque = true`).
 - **`jellyfin-desktop`**: TV and movie streaming from local Jellyfin media servers.
 
 ### 7. Shell History & Smart Suggestions (`atuin` + `atuin-to-fish`)
