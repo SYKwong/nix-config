@@ -80,6 +80,7 @@ let
       # Nix & Flake Management
       "command(nh search)"
       "command(nix build)"
+      "command(nix develop)"
       "command(nix eval)"
       "command(nix flake check)"
       "command(nix flake metadata)"
@@ -176,7 +177,7 @@ let
       if match != null then match else [ ]
     ) rules;
 
-  allowedCommands = extractCommands allowRules;
+  allowedCommands = builtins.filter (cmd: cmd != "nix develop") (extractCommands allowRules);
   deniedCommands = extractCommands denyRules;
 
   devAllowedCommands = [
@@ -185,6 +186,7 @@ let
     "just"
     "meson"
     "ninja"
+    "node"
     "pkg-config"
     "run-clang-tidy"
   ];
@@ -333,8 +335,9 @@ let
             except Exception:
                 return None
 
-            if len(tokens) >= 2 and tokens[0] == "nix" and tokens[1] == "develop":
-                for i, tok in enumerate(tokens):
+            if tokens and tokens[0] == "nix" and "develop" in tokens:
+                dev_idx = tokens.index("develop")
+                for i, tok in enumerate(tokens[dev_idx + 1:], start=dev_idx + 1):
                     if tok in ("-c", "--command"):
                         remaining = tokens[i + 1:]
                         if not remaining:
@@ -471,13 +474,28 @@ let
             if has_non_pipe_operator or not segments:
                 return "ask"
 
+            def is_nix_develop(cmd_str):
+                cleaned_cmd = clean_segment(cmd_str)
+                if cleaned_cmd == "nix develop" or cleaned_cmd.startswith("nix develop "):
+                    return True
+                try:
+                    lx = shlex.shlex(cmd_str, posix=True, punctuation_chars="|;&><")
+                    lx.whitespace_split = False
+                    lx.commenters = ""
+                    t = list(lx)
+                    return bool(t and t[0] == "nix" and "develop" in t)
+                except Exception:
+                    return False
+
             def evaluate_single_segment(seg):
                 cleaned = clean_segment(seg)
+                if is_nix_develop(seg):
+                    inner = extract_nix_develop_inner(seg)
+                    if inner is not None:
+                        return evaluate_dev_inner(inner)
+                    return "ask"
                 if any(matches_rule(cleaned, target) for target in ALLOWED_COMMANDS):
                     return "allow"
-                inner = extract_nix_develop_inner(seg)
-                if inner is not None:
-                    return evaluate_dev_inner(inner)
                 return "ask"
 
             decisions = [evaluate_single_segment(seg) for seg in segments]
