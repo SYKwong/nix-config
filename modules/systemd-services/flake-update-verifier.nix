@@ -82,17 +82,22 @@ let
 
       echo "Found open dependency MR !$mr_iid ($source_branch) at SHA $target_sha."
 
+      if [ "$(git rev-parse --is-shallow-repository 2>/dev/null)" = "true" ]; then
+        echo "Repository is shallow; unshallowing from origin..."
+        git fetch --unshallow origin 2>/dev/null || true
+      fi
+
       hosts=$(
         nix eval \
           --raw \
-          "git+file://$flake?rev=$target_sha#nixosConfigurations" \
+          "git+file://$flake?rev=$target_sha&shallow=1#nixosConfigurations" \
           --apply 'configs: builtins.concatStringsSep "\n" (builtins.filter (name: name != "installer") (builtins.attrNames configs))'
       )
 
       targets=()
       while IFS= read -r host; do
         [ -n "$host" ] || continue
-        targets+=("git+file://$flake?rev=$target_sha#nixosConfigurations.$host.config.system.build.toplevel")
+        targets+=("git+file://$flake?rev=$target_sha&shallow=1#nixosConfigurations.$host.config.system.build.toplevel")
       done <<< "$hosts"
 
       if [ "''${#targets[@]}" -eq 0 ]; then
