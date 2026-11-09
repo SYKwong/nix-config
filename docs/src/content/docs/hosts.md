@@ -18,7 +18,7 @@ This section documents host-specific machine configurations within the fleet. Ea
 | Host | Role | Hardware Specs | Boot & Storage | Key Modules & Hardware Quirks |
 | :--- | :--- | :--- | :--- | :--- |
 | **`framework16`** | Primary Workstation Laptop | Framework Laptop 16 (AMD Ryzen 7840HS, 96GB RAM) | LUKS (TPM2 auto-unlock), Lanzaboote Secure Boot, Btrfs with 100GB hibernation swap (`/.swapvol`) | QMK keyboard backlight manager (`kb-light-manager`), laptop form-factor profile (`modules/profiles/laptop`), `nixos-hardware` integration |
-| **`mini-pc-k8`** | HTPC / Living Room Workstation | GMKtec NucBox K8 Plus (AMD Ryzen 8845HS, 64GB RAM) | Unencrypted Btrfs, 8GB swap | Automated flake update verifier (`flake-update-verifier`), custom ALSA card profile (`k8-plus-analog.conf`), Intel Bluetooth de-authorization (`8087:0029`), Flatpak auto-discovery |
+| **`mini-pc-k8`** | HTPC / Living Room Workstation | GMKtec NucBox K8 Plus (AMD Ryzen 8845HS, 64GB RAM) | Unencrypted Btrfs, 8GB swap | Automated flake update verifier (`flake-update-verifier`), custom ALSA card profile (`k8-plus-analog.conf`), HDMI audio cutout mitigations (headroom, idle suspend disable, `power_save=0`), Intel Bluetooth de-authorization (`8087:0029`), Flatpak auto-discovery |
 
 ---
 
@@ -54,7 +54,7 @@ hosts/<hostname>/
    - Storage maintenance timers (`services.btrfs.autoScrub`).
 
 4. **`config.nix` (Optional)**:
-   A consolidated module for machine-specific option toggles, hardware workarounds, and host-specific secrets (`age.secrets`). For example, in `mini-pc-k8`, this file configures the Realtek audio workaround and disables conflicting onboard Bluetooth controllers.
+   A consolidated module for machine-specific option toggles, hardware workarounds, and host-specific secrets (`age.secrets`). For example, in `mini-pc-k8`, this file configures the Realtek chassis profile, mitigates HDMI audio cutouts via PipeWire/WirePlumber headroom and kernel power management, and disables conflicting onboard Bluetooth controllers.
 
 5. **`home/` (Optional)**:
    Host-specific user packages or environment settings. Automatically imported into the user's Home Manager environment by `modules/home-manager/`.
