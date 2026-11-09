@@ -147,10 +147,11 @@ update-flake-mr:
       fi
 
       # 3. Check existing open flake-update branches; short-circuit if nixpkgs has not advanced
-      EXISTING_BRANCHES=$(git ls-remote --heads origin 'refs/heads/flake-update-*' | awk '{print $2}')
-      if [ -n "$EXISTING_BRANCHES" ]; then
+      git ls-remote --heads origin 'refs/heads/flake-update-*' > remote_heads.txt
+      if [ -s remote_heads.txt ]; then
         NEW_NIXPKGS_REV=$(nix eval --impure --raw --expr 'let l = (builtins.fromJSON (builtins.readFile ./flake.lock)).nodes.nixpkgs.locked or {}; in l.rev or l.narHash or ""')
-        for REF in $EXISTING_BRANCHES; do
+        while read -r _ REF; do
+          [ -z "$REF" ] && continue
           REMOTE_BRANCH="${REF#refs/heads/}"
           echo "Checking existing flake update branch: $REMOTE_BRANCH"
           git fetch --depth 1 origin "$REF":refs/remotes/origin/"$REMOTE_BRANCH" >/dev/null 2>&1 || true
@@ -159,11 +160,13 @@ update-flake-mr:
             rm -f remote_flake.lock
             if [ -n "$NEW_NIXPKGS_REV" ] && [ "$NEW_NIXPKGS_REV" = "$REMOTE_NIXPKGS_REV" ]; then
               echo "Existing open branch '$REMOTE_BRANCH' already has nixpkgs revision $NEW_NIXPKGS_REV. Skipping full flake update and MR creation."
+              rm -f remote_heads.txt
               exit 0
             fi
           fi
-        done
+        done < remote_heads.txt
       fi
+      rm -f remote_heads.txt
 
       # 4. Temporarily comment private inputs so nix flake update does not fail on private SSH inputs
       cp flake.lock flake.lock.orig

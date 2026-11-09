@@ -18,6 +18,11 @@
 - Intent & Prompts: When an explicit setup flag is passed, proceed directly without redundant per-service confirmation prompts (`[Y/n]`), using non-interactive CLI flags where available (e.g., `glab auth login --web`).
 - No Redundant PATH Checks: Avoid defensive `command -v` checks in onboarding scripts for tools declaratively managed via NixOS / Home Manager.
 
+## GitLab CI & Scripting Conventions
+- Minimal Container Environment (`nixos/nix:latest`): The CI runner image contains only minimal core binaries (`sh`, `git`, `nix`). Common text-processing utilities like `awk` are not pre-installed on `PATH`.
+- POSIX Shell Redirection: Avoid piping command output into subshell loops (e.g. `cmd | while read ...; do exit 0; done`) when early termination is required, as `exit` within a pipeline subshell does not terminate the parent script. Use file redirection instead (`cmd > tmp.txt && while read -r line; do ... done < tmp.txt`).
+- Declarative JSON Evaluation: In `nixos/nix:latest`, parse JSON files via `nix eval --impure --raw --expr 'let l = (builtins.fromJSON (builtins.readFile ./file.json)); in ...'` rather than relying on external utilities like `jq` on `PATH`.
+
 ## Documentation & README Conventions
 - Lean READMEs: Keep root and module-level `README.md` files lean, concise, and focused strictly on immediate directory taxonomy, file maps, key option toggles, and daily quick-reference commands. Avoid duplicating multi-step guides, operational walkthroughs, reference tables, or setup tutorials in READMEs.
 - Heavy on Starlight Wiki: Centralize all comprehensive operational documentation, architectural deep-dives, hardware specifications, launch recipes, and multi-step tutorials in-tree under `docs/src/content/docs/` (deployed to `nix.kyle-kwong.com`). Every module README must conclude with a direct link to its corresponding Starlight wiki page.
