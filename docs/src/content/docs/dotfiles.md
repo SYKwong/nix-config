@@ -103,3 +103,32 @@ hl.window_rule({
 })
 ```
 
+### Unobtrusive Dolphin Dialogs & File Progress (`config/hypr/hyprland/windowrule.lua`)
+
+When running under a standalone Wayland compositor outside full KDE Plasma, KDE applications cannot delegate file operation progress to Plasma's `JobViewServer` DBus interface. As a result, Dolphin's archive extraction and file operations (e.g. `Extracting Files`, `Copying Files`, `Deleting Files`) spawn standalone progress dialogs under `org.kde.dolphin`, which Hyprland centers on the screen by default. Additionally, modal confirmation prompts (such as `Empty Trash`, `Delete Permanently`, and file properties) lack transient parent relationships and tile across the workspace by default.
+
+To prevent progress popups from obstructing the screen center and file manager view, while ensuring confirmation prompts float centered as expected, `config/hypr/hyprland/windowrule.lua` defines dedicated rules for Dolphin:
+
+```lua
+hl.window_rule({
+	name = "dolphin-progress-dialog",
+	match = {
+		class = "org.kde.dolphin",
+		title = "^(Extracting|Compressing|Copying|Moving|Deleting|Emptying|Cleaning).*",
+	},
+	float = true,
+	move = "(monitor_w-450) (monitor_h-210)",
+	no_initial_focus = true,
+})
+
+hl.window_rule({
+	name = "dolphin-confirmation-dialog",
+	match = {
+		class = "org.kde.dolphin",
+		title = "^(Empty Trash|Delete|Move to Trash|Delete Permanently|Confirm|Warning|Error|Confirmation|Properties|Preferences|Create New|Overwrite).*",
+	},
+	float = true,
+	center = true,
+})
+```
+

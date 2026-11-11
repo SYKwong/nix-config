@@ -88,6 +88,29 @@ apply_centered_float("zen-popups", { class = "zen-beta", initial_title = "^(Libr
 apply_centered_float("vpn", { class = "Nordvpn-gui" })
 apply_centered_float("hyprland-file-chooser", { class = "xdg-desktop-portal-gtk" })
 
+-- Dolphin file job progress dialogs (pinned to corner without stealing focus)
+hl.window_rule({
+	name = "dolphin-progress-dialog",
+	match = {
+		class = "org.kde.dolphin",
+		title = "^(Extracting|Compressing|Copying|Moving|Deleting|Emptying|Cleaning).*",
+	},
+	float = true,
+	move = "(monitor_w-450) (monitor_h-210)",
+	no_initial_focus = true,
+})
+
+-- Dolphin confirmation, warning, and modal action dialogs (e.g. Empty Trash, Delete Permanently)
+hl.window_rule({
+	name = "dolphin-confirmation-dialog",
+	match = {
+		class = "org.kde.dolphin",
+		title = "^(Empty Trash|Delete|Move to Trash|Delete Permanently|Confirm|Warning|Error|Confirmation|Properties|Preferences|Create New|Overwrite).*",
+	},
+	float = true,
+	center = true,
+})
+
 -- =============================================================================
 -- Workspace Routing
 -- =============================================================================
