@@ -125,3 +125,21 @@ To accommodate living-room HTPC and desktop workstation environments where aggre
 
 > [!NOTE]
 > Sleep and lid-close events are monitored directly via `systemd-logind` (`PrepareForSleep` delay inhibitors), ensuring the screen is locked before the system suspends regardless of idle status.
+
+---
+
+## Noctalia Navigation Keybind Overrides
+
+Noctalia includes built-in keyboard navigation shortcuts for panel surfaces (such as Settings and Control Center). By default, `keybinds.tab_next` is bound to `Tab` and `keybinds.tab_previous` is bound to `Shift+ISO_Left_Tab`, which cycle focus between the sidebar navigation and active content pane.
+
+### Unbinding Behavior & Unassigned F24 Chords
+Setting `keybinds.tab_next` or `keybinds.tab_previous` to an empty list (`[ ]`) in `programs.noctalia.settings` causes Noctalia's configuration parser to treat the key list as unset and fall back to its hardcoded defaults. Noctalia's chord parser also rejects empty or non-chord values like `""` or `"none"`.
+
+To effectively disable these default navigation shortcuts without triggering parsing errors or default fallbacks, `home/desktop/noctalia.nix` remaps them to unassigned function key chords:
+
+```nix
+keybinds = {
+  tab_next = [ "F24" ];
+  tab_previous = [ "Shift+F24" ];
+};
+```

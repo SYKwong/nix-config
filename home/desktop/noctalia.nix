@@ -219,6 +219,11 @@ in
         }
         // (current_host_config.idle_behaviors or { });
       };
+
+      keybinds = {
+        tab_next = [ "F24" ];
+        tab_previous = [ "Shift+F24" ];
+      };
       location.auto_locate = true;
 
       lockscreen = {

@@ -35,10 +35,11 @@ Custom desktop launchers and rules for hiding unwanted third-party app shortcuts
 ### 4. Host-Specific User Extensions
 All machines import this common [`home/`](./) directory directly via [`modules/home-manager/default.nix`](../modules/home-manager/default.nix). If a machine requires user packages or settings unique to that host, place them in `hosts/<hostname>/home/` (with a `default.nix`), which is automatically imported if it exists.
 
-### 5. Idle Management
+### 5. Idle Management & Shell Navigation
 Idle timeouts and power states are managed natively by Noctalia ([`home/desktop/noctalia.nix`](./desktop/noctalia.nix)) using the Wayland `ext_idle_notifier_v1` protocol, dynamically scaling between laptops (1x) and desktops/HTPCs (3x multiplier):
 - **Laptop Baseline (1x)**: 2.5 min screen dim (`brightnessctl -s set 5%`) → 5 min lock → 5.5 min screen off (DPMS) → 10 min suspend.
 - **Desktop Scaled (3x)**: 7.5 min screen dim → 15 min lock → 16.5 min screen off.
+- **Navigation Keybinds**: Built-in panel `Tab` / `Shift+Tab` shortcuts are mapped to unreachable `F24` / `Shift+F24` chords to disable default surface navigation overrides.
 
 ---
 
