@@ -11,7 +11,7 @@ This directory (`modules/shell-scripts/`) contains custom CLI tools and system m
 
 | Script | Entrypoint File | Builder | Description |
 | :--- | :--- | :--- | :--- |
-| **`rebuild`** (alias: **`nrs`**) | `modules/shell-scripts/rebuild.nix` | `writeShellApplication` | NixOS configuration rebuild engine that formats code, stages a boot entry via `nh os boot`, activates live via `switch-to-configuration`, and checks for pending kernel reboots (with a 10s auto-skip prompt). Run via alias `nrs`. |
+| **`rebuild`** (alias: **`nrs`**) | `modules/shell-scripts/rebuild.nix` | `writeShellApplication` | NixOS configuration rebuild engine that formats code, verifies fleet configurations evaluate cleanly (excluding installer), stages a boot entry via `nh os boot`, activates live via `switch-to-configuration`, and checks for pending kernel reboots (with a 10s auto-skip prompt). Run via alias `nrs`. |
 | **`hypr-virtual-monitor`** | `modules/shell-scripts/hypr-virtual-monitor.nix` | `writeShellApplication` | Dynamic headless virtual monitor controller and idle socket watchdog for Hyprland and Sunshine streaming (`start`, `stop`, `toggle`, `watchdog`). |
 | **`display-brightness`** | `modules/shell-scripts/display-brightness.nix` | `writeShellApplication` | Display brightness manager targeting focused internal display backlight with automatic fallback to `hyprsunset` software dimming for external monitors. |
 | **`update-wallpaper`** (alias: **`nwall`**) | `modules/shell-scripts/update-wallpaper.nix` | `writeShellApplication` | Automated wallpaper synchronization pipeline: pushes local wallpaper changes, updates `wallpapers` flake input, rebuilds system live (`nrs`), and submits auto-merging MR. |
@@ -30,8 +30,9 @@ The system rebuild engine standardizes configuration deployment across all hosts
 
 1. **Formatting**: Runs `nix fmt` automatically prior to building to keep the repository formatted.
 2. **Atuin Sync**: Bridges newly synced shell history into local Fish suggestions via `atuin-to-fish`.
-3. **Staging & Live Activation**: Creates a new bootloader entry via `nh os boot` and activates live system changes via `switch-to-configuration switch`.
-4. **Pending Kernel Reboot Check**: Compares the running kernel (`uname -r`) against the newly staged kernel in `/nix/var/nix/profiles/system/kernel`. If a kernel update is pending, prompts the user to reboot immediately with an automatic **10-second timeout** (`read -r -t 10`) to prevent blocking unattended or automated rebuilds.
+3. **Fleet Evaluation Gate**: Evaluates `system.build.toplevel.drvPath` across all physical fleet hosts (excluding `installer`) via `nix eval` to guarantee cross-host configuration integrity before staging changes.
+4. **Staging & Live Activation**: Creates a new bootloader entry via `nh os boot` and activates live system changes via `switch-to-configuration switch`.
+5. **Pending Kernel Reboot Check**: Compares the running kernel (`uname -r`) against the newly staged kernel in `/nix/var/nix/profiles/system/kernel`. If a kernel update is pending, prompts the user to reboot immediately with an automatic **10-second timeout** (`read -r -t 10`) to prevent blocking unattended or automated rebuilds.
 
 ---
 

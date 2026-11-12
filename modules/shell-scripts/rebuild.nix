@@ -62,6 +62,15 @@ pkgs.writeShellApplication {
         atuin-to-fish || log_warn "Atuin history sync skipped or failed."
       fi
 
+      log_info "Verifying fleet configurations evaluate cleanly (excluding installer)..."
+      if ! FLEET_EVAL=$(cd "$REPO" && nix eval --no-write-lock-file --raw .#nixosConfigurations \
+        --apply 'configs: let filtered = builtins.removeAttrs configs [ "installer" ]; in builtins.concatStringsSep "\n" (builtins.attrValues (builtins.mapAttrs (name: c: "    [OK] " + name + " (drv: " + (builtins.baseNameOf c.config.system.build.toplevel.drvPath) + ")") filtered))'); then
+        log_error "Fleet configuration evaluation failed. Aborting rebuild to prevent broken deployments."
+        exit 1
+      fi
+      printf "%s\n" "$FLEET_EVAL"
+      log_success "Fleet evaluation passed."
+
       exec sudo /run/current-system/sw/bin/rebuild "$@"
     fi
 
