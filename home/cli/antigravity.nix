@@ -655,7 +655,7 @@ in
     };
 
     settings = {
-      model = "Gemini 3.8 Flash (High)";
+      model = "Gemini 4 Hydrogen (Medium)";
       notifications = true;
       trustedWorkspaces = [
         "/home/${username}/nix-config"
