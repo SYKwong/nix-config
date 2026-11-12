@@ -62,6 +62,26 @@ let
     baseGitRules
     ++ gitDirRules
     ++ [
+      # GitHub Operations
+      "command(gh issue list)"
+      "command(gh issue status)"
+      "command(gh issue view)"
+      "command(gh pr checks)"
+      "command(gh pr diff)"
+      "command(gh pr list)"
+      "command(gh pr status)"
+      "command(gh pr view)"
+      "command(gh release list)"
+      "command(gh release view)"
+      "command(gh repo view)"
+      "command(gh run list)"
+      "command(gh run view)"
+      "command(gh run watch)"
+      "command(gh search code)"
+      "command(gh search issues)"
+      "command(gh search prs)"
+      "command(gh status)"
+
       # GitLab Operations
       "command(glab ci lint)"
       "command(glab ci list)"
