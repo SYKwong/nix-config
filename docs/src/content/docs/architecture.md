@@ -47,7 +47,7 @@ nix-config/
 │
 ├── home/                       # Pure user-space Home Manager modules
 │   ├── browsers/               # Web browsers (Zen Browser, Helium)
-│   ├── cli/                    # CLI tools (bat, btop, eza, fzf, git, yazi, zoxide, antigravity)
+│   ├── cli/                    # CLI tools (bat, btop, direnv, eza, fzf, git, yazi, zoxide, antigravity)
 │   ├── desktop/                # Noctalia desktop shell (bar, OSD, lockscreen, runner)
 │   ├── editors/                # NixVim (declarative Neovim) and Zed
 │   ├── media/                  # Desktop media clients (Feishin, Jellyfin, mpv)

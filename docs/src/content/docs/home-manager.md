@@ -12,7 +12,7 @@ This directory contains declarative user-space configurations managed by [Home M
 | Category | Path | Description |
 | :--- | :--- | :--- |
 | **`core/`** | `home/core/` | Baseline user environment (`xdg.userDirs`, default folder structures). |
-| **`cli/`** | `home/cli/` | Terminal utilities (`atuin`, `bat`, `btop`, `eza`, `fastfetch`, `fzf`, `git`, `yazi`, `zoxide`, `antigravity`). |
+| **`cli/`** | `home/cli/` | Terminal utilities (`atuin`, `bat`, `btop`, `direnv`, `eza`, `fastfetch`, `fzf`, `git`, `yazi`, `zoxide`, `antigravity`). |
 | **`desktop/`** | `home/desktop/` | Noctalia desktop shell (status bar, OSD, lockscreen, runner, idle management). |
 | **`browsers/`** | `home/browsers/` | Web browsers (Zen Browser, Helium). |
 | **`editors/`** | `home/editors/` | Text editors, primarily NixVim (declarative Neovim) and Zed. |
@@ -101,6 +101,12 @@ To avoid host toolchain pollution and ensure reproducible builds, native build t
 - **Host Protection**: Running build tools directly on the host (outside `nix develop`) prompts for interactive confirmation.
 - **Dangerous Commands Guarded**: Any destructive command (`sudo`, `rm`, shell redirections, or unvetted utilities) returns a hook denial or prompts for permission, even when wrapped within `nix develop`. Bare `nix develop` invocations without inner commands also prompt for confirmation.
 - **Desktop Shell Inspection**: User systemd queries (`systemctl --user status` and `systemctl --user is-active`) are pre-approved to facilitate inspecting user services like `noctalia`.
+
+### 10. Automatic Per-Directory Devshells (`direnv` + `nix-direnv`)
+Per-project and playground flake environments load automatically on `cd` via `home/cli/direnv.nix`:
+- **Fish Integration**: `programs.direnv.enableFishIntegration = true` hooks directory changes in Fish, loading `.envrc` environments into the active shell and unloading them when leaving the directory.
+- **Persistent Caching (`nix-direnv`)**: `programs.direnv.nix-direnv.enable = true` caches evaluated flake environments under `.direnv/` for instant subsequent loads and registers GC roots so `nix-collect-garbage` preserves project toolchains.
+- **Usage**: Add `use flake` (or `use flake ..#<shell>`) to a project's `.envrc` and trust it once with `direnv allow`.
 
 ---
 
