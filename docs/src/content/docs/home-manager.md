@@ -106,7 +106,8 @@ To avoid host toolchain pollution and ensure reproducible builds, native build t
 Per-project and playground flake environments load automatically on `cd` via `home/cli/direnv.nix`:
 - **Fish Integration**: `programs.direnv.enableFishIntegration = true` hooks directory changes in Fish, loading `.envrc` environments into the active shell and unloading them when leaving the directory.
 - **Persistent Caching (`nix-direnv`)**: `programs.direnv.nix-direnv.enable = true` caches evaluated flake environments under `.direnv/` for instant subsequent loads and registers GC roots so `nix-collect-garbage` preserves project toolchains.
-- **Usage**: Add `use flake` (or `use flake ..#<shell>`) to a project's `.envrc` and trust it once with `direnv allow`.
+- **Trusted Prefixes**: `config.whitelist.prefix` auto-trusts `.envrc` files under `~/Projects/playground` and `~/Templates` without requiring `direnv allow`, while untrusted directories elsewhere still prompt for approval.
+- **Usage**: Add `use flake` (or `use flake ..#<shell>`) to a project's `.envrc` and trust it once with `direnv allow` (when outside whitelisted prefixes).
 
 ---
 
