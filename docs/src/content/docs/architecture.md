@@ -65,7 +65,7 @@ nix-config/
 │   ├── keys.nix                # Public SSH keys (single source of truth)
 │   └── secrets.nix             # Encryption rules and recipient mappings
 │
-├── treefmt/                    # Multi-language formatter configuration (bash, lua, nix, toml)
+├── treefmt/                    # Multi-language formatter configuration (bash, c, lua, nix, toml)
 └── overlays/                   # Nixpkgs package overrides and custom derivations
 ```
 
