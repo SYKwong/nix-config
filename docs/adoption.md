@@ -167,7 +167,7 @@ Even after `adopt.sh` clears system-level secrets, one user-space module referen
 ## 6. Continuous Integration & The Split CI Architecture
 
 This repository uses a **split CI architecture** by design:
-- **GitLab CI ([`.gitlab-ci.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.gitlab-ci.yml))**: Serves as the primary, authoritative CI engine for the fleet. It runs system-level flake validations (`nix flake check`), tree formatting enforcement (`nix fmt`), documentation build verification, and automated `flake.lock` update bots with merge request creation.
+- **GitLab CI ([`.gitlab-ci.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.gitlab-ci.yml))**: Serves as the primary, authoritative CI engine for the fleet. It runs system-level flake validations (`nix flake check`), tree formatting enforcement (`nix fmt`), automated `flake.lock` update bots with merge request creation, and docs dispatch (`notify-docs`).
 - **External Docs Deployment (`SYKwong/nix-docs`)**: Documentation is built and deployed to GitHub Pages by the unified `SYKwong/nix-docs` repository (triggered via `notify-docs` in `.gitlab-ci.yml`).
 
 > [!NOTE]
@@ -219,11 +219,10 @@ GitLab needs write permissions to push branches and tags to your GitHub reposito
 4. Click **Mirror repository**.
 5. Click the refresh / sync icon under **Mirrored repositories** to trigger the initial push mirror to GitHub.
 
-#### Step 4: Configure GitHub Pages for Documentation
-1. On GitHub, navigate to your mirror repository settings: **Settings** → **Pages**.
-2. Under **Build and deployment** → **Source**, select **GitHub Actions**.
-3. In `docs/astro.config.mjs`, update the `site` URL to your GitHub Pages domain (e.g. `https://<username>.github.io` or your custom domain).
-4. Whenever changes to `docs/**` are merged to `main` on GitLab, `notify-docs` in `.gitlab-ci.yml` dispatches `SYKwong/nix-docs` to rebuild and deploy your wiki.
+#### Step 4: Configure Documentation Dispatch (`nix-docs`)
+1. Host your Astro Starlight site in a dedicated docs repository (like `SYKwong/nix-docs`) with GitHub Pages enabled (**Settings → Pages → Source: GitHub Actions**).
+2. Create a fine-grained GitHub PAT with **Contents: Read and write** on that docs repository and save it in GitLab **Settings → CI/CD → Variables** as `GITHUB_DOCS_TOKEN` (masked and protected).
+3. Update the `notify-docs` URL in `.gitlab-ci.yml` to your docs repository's `/dispatches` endpoint. Whenever changes to `docs/**` land on `main`, GitLab CI triggers an immediate Starlight rebuild and GitHub Pages deployment.
 
 #### Step 5: Enforce Read-Only Hygiene on GitHub
 To prevent split-brain states and merge conflicts:
@@ -237,33 +236,15 @@ To prevent split-brain states and merge conflicts:
 If you prefer not to rely on GitHub Actions or maintain accounts across two git forges, consider these alternatives:
 
 #### 1. Cloudflare Pages or Vercel (Recommended Edge Alternatives)
-Rather than maintaining a GitHub push mirror and running GitHub Actions for GitHub Pages, you can connect your primary **GitLab** (or GitHub) repository directly to **Cloudflare Pages** or **Vercel**:
-- **Benefits**: Unlimited edge bandwidth (Cloudflare), automated preview deployments on Merge Requests, zero GitHub Actions dependencies, and complete immunity to GitHub Actions outages.
-- **Build Configuration**:
-  - **Framework preset**: `Astro`
-  - **Root directory**: `docs`
+Rather than using GitHub Actions for your dedicated `nix-docs` Starlight repository, you can connect `nix-docs` directly to **Cloudflare Pages** or **Vercel**:
+- **Benefits**: Unlimited edge bandwidth (Cloudflare), automated preview deployments, zero GitHub Actions dependencies, and complete immunity to GitHub Actions outages.
+- **Build Configuration** (in `nix-docs`):
   - **Build command**: `npm run build`
   - **Output directory**: `dist`
   - **Environment variables**: `NODE_VERSION=22`
-- When connecting Cloudflare Pages or Vercel directly to GitLab, you can delete the `.github/` directory entirely and skip the fine-grained PAT push-mirror setup.
 
 #### 2. GitLab Only (GitLab CI + GitLab Pages)
-Delete the `.github/` directory and deploy your documentation via native **GitLab Pages** by adding a `pages` job to `.gitlab-ci.yml`:
-```yaml
-pages:
-  stage: stable
-  image: node:lts-slim
-  script:
-    - cd docs
-    - npm ci --ignore-scripts
-    - npm run build
-    - mv dist ../public
-  artifacts:
-    paths:
-      - public
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
-```
+If you prefer to host docs directly from GitLab without an external Starlight repo, add an Astro Starlight setup for `docs/` and deploy via native **GitLab Pages** with a `pages` job in `.gitlab-ci.yml`.
 
 #### 3. GitHub Only (GitHub Actions for Checks & Pages)
 - Delete `.gitlab-ci.yml`.
