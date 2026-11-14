@@ -178,7 +178,6 @@ flowchart LR
     dev["Local Development<br/>(git push)"] --> gitlab["GitLab Repository<br/>(Primary Source of Truth)"]
     subgraph gitlab_ci ["GitLab CI Pipeline"]
         gitlab --> test["verify-flake<br/>(nix fmt & flake check)"]
-        gitlab --> docs_check["verify-docs<br/>(astro build check)"]
         gitlab --> lock_bot["update-flake-mr<br/>(automated lock update)"]
         gitlab -- "docs/src/content/docs/** on main" --> dispatch["notify-docs<br/>(dispatch to SYKwong/nix-docs)"]
     end

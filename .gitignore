@@ -4,8 +4,3 @@ config/hypr/noctalia.lua
 __pycache__/
 *.pyc
 
-# Documentation site dependencies and build outputs
-docs/node_modules/
-docs/.astro/
-docs/dist/
-

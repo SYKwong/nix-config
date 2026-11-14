@@ -21,7 +21,6 @@ flowchart LR
 
     subgraph gitlab_ci ["GitLab CI/CD (Merge Gatekeeper)"]
         gitlab --> test["verify-flake<br/>(nixos/nix:latest container)"]
-        gitlab --> docs_check["verify-docs<br/>(node:lts-slim container)"]
         gitlab --> lock_bot["update-flake-mr<br/>(scheduled flake update bot)"]
         gitlab --> stable_tag["create-weekly-stable<br/>(tag rotation bot)"]
         gitlab --> notify_docs["notify-docs<br/>(repository_dispatch to nix-docs)"]
