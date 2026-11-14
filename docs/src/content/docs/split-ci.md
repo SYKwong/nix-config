@@ -99,6 +99,7 @@ Using pure `git push` options:
 - The pipeline authenticates using GitLab's short-lived, job-scoped `CI_JOB_TOKEN`.
 - The Merge Request is created with the exact `nix flake update` summary and assigned to the repository owner. Automatic rebasing onto `main`, full system closure build verification, failure reporting (`build-error` label and log comment), and automatic merge are handled safely by `flake-update-verifier` on the local desktop workstation (`mini-pc-k8`) during off-peak hours (or interactively via `nverify`), ensuring broken upstream `nixpkgs` revisions never touch `main`. Similarly, `update-wallpaper` (`nwall`) utilizes native push options (`-o merge_request.create`, `-o merge_request.auto_merge`) to submit auto-merging lockfile bumps that bypass CI execution (`when: never` rule in `.gitlab-ci.yml`) because they are verified locally via `nrs`.
 - Tag rotation (`create-weekly-stable`) tags the commit and purges tags older than 12 weeks using native git commands in an Alpine container.
+- Docs dispatch (`notify-docs`) triggers a `repository_dispatch` (`docs-updated`) on `SYKwong/nix-docs` when `docs/src/content/docs/**` changes on `main` (requires the masked `GITHUB_DOCS_TOKEN` CI/CD variable).
 
 ### E. Zero-Cost Edge CDN for Documentation
 
