@@ -22,7 +22,7 @@ Forking first ensures that [`post-install`](/post-installation/) can seamlessly 
 
 ## 2. GitHub Fork Configuration (Actions & Permissions)
 
-If your fork or mirror is hosted on GitHub, GitHub enforces strict security restrictions on newly created repositories and forks. To ensure that both the automated ISO builder ([`.github/workflows/build-iso.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/build-iso.yml)) and documentation publisher ([`.github/workflows/deploy-docs.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/deploy-docs.yml)) execute successfully, configure these settings in your GitHub repository:
+If your fork or mirror is hosted on GitHub, GitHub enforces strict security restrictions on newly created repositories and forks. To ensure that the automated ISO builder ([`.github/workflows/build-iso.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/build-iso.yml)) executes successfully, configure these settings in your GitHub repository (documentation deployment is handled separately by `SYKwong/nix-docs`):
 
 ### A. Enable Workflows on your Fork
 By default, GitHub disables Actions on forked repositories to prevent unintended runner usage:
@@ -64,7 +64,6 @@ To deploy the Starlight documentation site to GitHub Pages:
 | Workflow | File | Key Actions | Required Permissions | Function |
 | :--- | :--- | :--- | :--- | :--- |
 | **Build Installer ISO** | [`.github/workflows/build-iso.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/build-iso.yml) | `cachix/install-nix-action`, `actions/upload-artifact`, `softprops/action-gh-release` | `contents: write` | Builds live installer ISO via Nix, uploads monthly build artifact, and publishes rolling release assets |
-| **Deploy Documentation** | [`.github/workflows/deploy-docs.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/deploy-docs.yml) | `withastro/action`, `actions/deploy-pages` | `contents: read`, `pages: write`, `id-token: write` | Builds Astro Starlight site and deploys to GitHub Pages edge CDN using OIDC token authentication |
 
 ---
 
@@ -169,7 +168,7 @@ Even after `adopt.sh` clears system-level secrets, one user-space module referen
 
 This repository uses a **split CI architecture** by design:
 - **GitLab CI ([`.gitlab-ci.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.gitlab-ci.yml))**: Serves as the primary, authoritative CI engine for the fleet. It runs system-level flake validations (`nix flake check`), tree formatting enforcement (`nix fmt`), documentation build verification, and automated `flake.lock` update bots with merge request creation.
-- **GitHub Actions ([`.github/workflows/deploy-docs.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/deploy-docs.yml))**: Restricted strictly to building and deploying the documentation site to GitHub Pages. GitHub acts as a read-only push mirror.
+- **External Docs Deployment (`SYKwong/nix-docs`)**: Documentation is built and deployed to GitHub Pages by the unified `SYKwong/nix-docs` repository (triggered via `notify-docs` in `.gitlab-ci.yml`).
 
 > [!NOTE]
 > The primary motivation for this dual-forge design is **uninterrupted merge availability**: GitHub Actions frequently experiences outages and degraded runner queues that block PR merges when branch protections require CI checks to pass. Running core evaluations on GitLab CI ensures fleet merges are never blocked by GitHub downtime, while GitHub Actions is used strictly for non-critical wiki deployment. See [Split CI Architecture](/split-ci/) for the detailed breakdown.
@@ -181,11 +180,9 @@ flowchart LR
         gitlab --> test["verify-flake<br/>(nix fmt & flake check)"]
         gitlab --> docs_check["verify-docs<br/>(astro build check)"]
         gitlab --> lock_bot["update-flake-mr<br/>(automated lock update)"]
+        gitlab -- "docs/src/content/docs/** on main" --> dispatch["notify-docs<br/>(dispatch to SYKwong/nix-docs)"]
     end
-    gitlab -- "Automated Push Mirror (PAT)" --> github["GitHub Repository<br/>(Read-Only Mirror)"]
-    subgraph gh_actions ["GitHub Actions"]
-        github -- "Push to main" --> pages["deploy-docs.yml<br/>(Deploy to GitHub Pages)"]
-    end
+    dispatch -. "docs-updated" .-> nix_docs["SYKwong/nix-docs<br/>(Deploy to GitHub Pages)"]
 ```
 
 ### Reproducing the Split CI Setup (GitLab Primary + GitHub Read-Only Mirror)
@@ -227,7 +224,7 @@ GitLab needs write permissions to push branches and tags to your GitHub reposito
 1. On GitHub, navigate to your mirror repository settings: **Settings** → **Pages**.
 2. Under **Build and deployment** → **Source**, select **GitHub Actions**.
 3. In `docs/astro.config.mjs`, update the `site` URL to your GitHub Pages domain (e.g. `https://<username>.github.io` or your custom domain).
-4. Whenever changes are merged to `main` on GitLab, the push mirror syncs to GitHub, triggering `.github/workflows/deploy-docs.yml` to build and deploy your wiki.
+4. Whenever changes to `docs/src/content/docs/**` are merged to `main` on GitLab, `notify-docs` in `.gitlab-ci.yml` dispatches `SYKwong/nix-docs` to rebuild and deploy your wiki.
 
 #### Step 5: Enforce Read-Only Hygiene on GitHub
 To prevent split-brain states and merge conflicts:
@@ -272,7 +269,7 @@ pages:
 #### 3. GitHub Only (GitHub Actions for Checks & Pages)
 - Delete `.gitlab-ci.yml`.
 - Add a GitHub Actions workflow (e.g. `.github/workflows/check.yml`) utilizing `determinate-nix-action` to run `nix flake check` and `nix fmt --check` on pull requests.
-- Keep `.github/workflows/deploy-docs.yml` for GitHub Pages.
+- Add a docs deployment workflow if hosting docs in-tree instead of `SYKwong/nix-docs`.
 - *(Warning: PR merges may be blocked whenever GitHub Actions experiences platform downtime).*
 
 ---

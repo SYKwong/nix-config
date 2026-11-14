@@ -24,13 +24,13 @@ flowchart LR
         gitlab --> docs_check["verify-docs<br/>(node:lts-slim container)"]
         gitlab --> lock_bot["update-flake-mr<br/>(scheduled flake update bot)"]
         gitlab --> stable_tag["create-weekly-stable<br/>(tag rotation bot)"]
+        gitlab --> notify_docs["notify-docs<br/>(repository_dispatch to nix-docs)"]
     end
 
     gitlab -- "Unidirectional Push Mirror<br/>(Fine-Grained PAT)" --> github["GitHub Repository<br/><b>Read-Only Mirror</b>"]
 
-    subgraph github_actions ["GitHub Actions (Artifacts & Deployment)"]
-        github -- "Push to main (docs/**)" --> deploy["deploy-docs.yml<br/>(Astro Starlight Build)"]
-        deploy --> pages["GitHub Pages CDN<br/>(nix.kyle-kwong.com)"]
+    subgraph github_actions ["GitHub Actions (Artifacts & Unified Docs)"]
+        notify_docs -. "docs-updated" .-> nix_docs["SYKwong/nix-docs<br/>(Astro Starlight + GitHub Pages)"]
         github -- "Schedule / push / dispatch" --> build_iso["build-iso.yml<br/>(Custom Installer ISO)"]
     end
 ```
@@ -50,7 +50,7 @@ On GitHub, repository branch protections typically require CI status checks to p
 
 When GitHub Actions is down, pull requests are frozen in an unmergeable state. In contrast, GitLab CI offers significantly higher uptime and reliable job execution. By using GitLab CI as the authoritative gatekeeper for Merge Requests:
 - **Zero Merge Blockers**: Code can always be evaluated, validated, and merged into `main` without waiting on GitHub infrastructure.
-- **Fail-Safe Docs Deployment**: GitHub Actions is restricted solely to `.github/workflows/deploy-docs.yml`. If GitHub Actions goes down, it only temporarily delays static documentation deployment—core fleet evaluation, merges, and system rebuilds remain 100% operational. The documentation build simply catches up whenever GitHub recovers.
+- **Fail-Safe Docs Deployment**: Documentation builds are hosted separately in `SYKwong/nix-docs` (triggered by `notify-docs` in `.gitlab-ci.yml`). If GitHub Actions goes down, it only temporarily delays static documentation deployment—core fleet evaluation, merges, and system rebuilds remain 100% operational. The documentation build simply catches up whenever GitHub recovers.
 
 ### B. Containerized Determinism & Pure Nix Isolation
 
@@ -155,7 +155,7 @@ Mark the GitHub repository description as a read-only mirror pointing back to yo
 ```
 
 ### 4. GitHub Actions Repository Permissions
-To allow the automated installer ISO release workflow ([`.github/workflows/build-iso.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/build-iso.yml)) to compile and publish releases and the documentation workflow ([`.github/workflows/deploy-docs.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/deploy-docs.yml)) to deploy to Pages on the GitHub mirror or fork:
+To allow the automated installer ISO release workflow ([`.github/workflows/build-iso.yml`](https://gitlab.com/k8-kyle/nix-config/-/blob/main/.github/workflows/build-iso.yml)) to compile and publish releases on the GitHub mirror or fork:
 - **Actions Execution Policy**: In GitHub repository **Settings** → **Actions** → **General** → **Actions permissions**, select **"Allow select actions and reusable workflows"**, check **"Allow actions created by GitHub"**, and configure the explicit pattern allowlist:
   ```text
   cachix/*,
@@ -180,7 +180,7 @@ flowchart TD
     gitlab["GitLab Primary Repository"] --> cf["Cloudflare Pages<br/>(Direct Webhook / Edge Build)"]
     gitlab --> vercel["Vercel<br/>(Direct Webhook / Edge Build)"]
     gitlab --> pages["GitLab Pages<br/>(In-tree CI Runner Job)"]
-    gitlab --> gh_mirror["GitHub Mirror (PAT)"] --> gha["GitHub Actions<br/>(deploy-docs.yml)"] --> gh_pages["GitHub Pages"]
+    gitlab --> gh_mirror["GitHub Mirror (PAT)"] --> gha["SYKwong/nix-docs<br/>(GitHub Actions)"] --> gh_pages["GitHub Pages"]
 ```
 
 ### Modern Edge Platform Comparison
@@ -190,7 +190,7 @@ flowchart TD
 | **Cloudflare Pages** | GitLab or GitHub | Native Git Webhook | Unlimited bandwidth, 500 builds/mo (free) | Global Anycast edge, zero runner setup, connects directly to GitLab without needing a GitHub mirror |
 | **Vercel** | GitLab or GitHub | Native Git Webhook | 100 GB bandwidth (free hobby tier) | Instant preview deployments on MRs/PRs, zero-config Astro detection |
 | **GitLab Pages** | GitLab | `.gitlab-ci.yml` `pages` job | Bound to GitLab CI pipeline minutes | Fully self-contained within GitLab; requires no third-party accounts or external webhooks |
-| **GitHub Pages** | GitHub | GitHub Actions (`deploy-docs.yml`) | 100 GB/mo; subject to Action runner health | Native within GitHub; vulnerable to GitHub Actions runner outages and queue delays |
+| **GitHub Pages** | GitHub (`SYKwong/nix-docs`) | `repository_dispatch` + hourly cron | 100 GB/mo; subject to Action runner health | Unified site across repos; vulnerable to GitHub Actions runner outages and queue delays |
 
 ---
 
