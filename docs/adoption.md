@@ -179,7 +179,7 @@ flowchart LR
     subgraph gitlab_ci ["GitLab CI Pipeline"]
         gitlab --> test["verify-flake<br/>(nix fmt & flake check)"]
         gitlab --> lock_bot["update-flake-mr<br/>(automated lock update)"]
-        gitlab -- "docs/src/content/docs/** on main" --> dispatch["notify-docs<br/>(dispatch to SYKwong/nix-docs)"]
+        gitlab -- "docs/** on main" --> dispatch["notify-docs<br/>(dispatch to SYKwong/nix-docs)"]
     end
     dispatch -. "docs-updated" .-> nix_docs["SYKwong/nix-docs<br/>(Deploy to GitHub Pages)"]
 ```
@@ -223,7 +223,7 @@ GitLab needs write permissions to push branches and tags to your GitHub reposito
 1. On GitHub, navigate to your mirror repository settings: **Settings** → **Pages**.
 2. Under **Build and deployment** → **Source**, select **GitHub Actions**.
 3. In `docs/astro.config.mjs`, update the `site` URL to your GitHub Pages domain (e.g. `https://<username>.github.io` or your custom domain).
-4. Whenever changes to `docs/src/content/docs/**` are merged to `main` on GitLab, `notify-docs` in `.gitlab-ci.yml` dispatches `SYKwong/nix-docs` to rebuild and deploy your wiki.
+4. Whenever changes to `docs/**` are merged to `main` on GitLab, `notify-docs` in `.gitlab-ci.yml` dispatches `SYKwong/nix-docs` to rebuild and deploy your wiki.
 
 #### Step 5: Enforce Read-Only Hygiene on GitHub
 To prevent split-brain states and merge conflicts:
