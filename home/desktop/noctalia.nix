@@ -401,6 +401,8 @@ in
         tray = {
           drawer = true;
           detached_panel = true;
+          drawer_background_opacity = 1.0;
+          glyph_position = "before";
           pinned = [
             "Fcitx"
             "org.fcitx.Fcitx5"
