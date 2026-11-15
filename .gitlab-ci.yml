@@ -25,8 +25,10 @@ verify-flake:
       when: never
 
     # Skip automated update MRs (verified locally: flake-update-*, wallpaper-update-*, etc.)
+    # Keep as manual + allow_failure so GitLab still creates a non-blocking MR pipeline.
     - if: '$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ /^[a-z0-9-]+-update-/'
-      when: never
+      when: manual
+      allow_failure: true
 
     # Skip draft/WIP MRs
     - if: '$CI_MERGE_REQUEST_TITLE =~ /^(Draft:|WIP:|\[Draft\])/i'
