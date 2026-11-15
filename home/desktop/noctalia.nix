@@ -223,6 +223,8 @@ in
       keybinds = {
         tab_next = [ "F24" ];
         tab_previous = [ "Shift+F24" ];
+        category_next = [ "Ctrl+F24" ];
+        category_previous = [ "Ctrl+Shift+F24" ];
       };
       location.auto_locate = true;
 
