@@ -14,7 +14,6 @@
     };
 
     extraPackages = with pkgs; [
-      statix
       nixfmt
     ];
 
