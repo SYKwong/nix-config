@@ -164,13 +164,17 @@ in
               members = [
                 "network"
                 "bluetooth"
-                "volume"
+                "output_volume"
+                "input_volume"
                 "battery"
               ];
               opacity = 1.0;
               padding = 6.0;
             }
           ];
+
+          actions.middle = "none";
+          dead_zone.actions.right = "none";
         };
       };
 
@@ -346,6 +350,7 @@ in
           border_color = "primary";
           border_width = 2.0;
           control_center_placement = "floating";
+          open_near_click_control_center = true;
           session_placement = "floating";
           session_position = "center";
           transparency_mode = "glass";
@@ -385,7 +390,9 @@ in
       };
 
       widget = {
+        battery.display_mode = "graphic";
         clock = {
+          actions.right = "panel-toggle control-center";
           format = "{:%b %d %-I:%M%p}";
           anchor = true;
         };
