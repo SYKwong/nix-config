@@ -6,8 +6,10 @@
 }:
 
 let
-  networkShare = import ../../config/networkshare-config.nix { inherit username; };
-  inherit (networkShare) mountPath nasAddress shareName;
+  networkShare = import ../../config/networkshare-config.nix {
+    inherit config username;
+  };
+  inherit (networkShare) mountPath nasAddress;
 
   checkNas = pkgs.writeShellApplication {
     name = "check-nas-cifs";
@@ -43,26 +45,7 @@ let
   };
 in
 {
-  fileSystems.${mountPath} = {
-    fsType = "cifs";
-    device = "//${nasAddress}/${shareName}";
-
-    options = [
-      "credentials=${config.age.secrets.smb-credentials.path}"
-
-      "vers=3.0"
-      "noperm"
-      "_netdev"
-      "noauto"
-
-      "uid=${username}"
-      "gid=users"
-      "file_mode=0664"
-      "dir_mode=0775"
-
-      "x-systemd.mount-timeout=10s"
-    ];
-  };
+  fileSystems = networkShare.mkCifsFileSystem [ "noauto" ];
 
   systemd.services.check-nas-cifs = {
     description = "Check CIFS NAS reachability";

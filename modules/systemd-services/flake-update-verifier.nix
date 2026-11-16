@@ -22,8 +22,6 @@ let
     ];
 
     text = ''
-      set -euo pipefail
-
       force=false
       for arg in "$@"; do
         if [ "$arg" = "--force" ] || [ "$arg" = "-f" ]; then

@@ -10,35 +10,27 @@ let
 in
 {
   options.custom.sunshine = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
+    enable = lib.mkEnableOption "Sunshine game and desktop streaming server" // {
       default = true;
-      description = "Whether to enable Sunshine game and desktop streaming server.";
     };
 
-    autoStart = lib.mkOption {
-      type = lib.types.bool;
+    autoStart = lib.mkEnableOption "starting Sunshine automatically upon graphical session login" // {
       default = true;
-      description = "Whether to start Sunshine automatically upon graphical session login.";
     };
 
-    openFirewall = lib.mkOption {
-      type = lib.types.bool;
+    openFirewall = lib.mkEnableOption "opening required firewall ports for Sunshine streaming" // {
       default = true;
-      description = "Whether to automatically open required firewall ports for Sunshine streaming.";
     };
 
-    capSysAdmin = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Whether to grant CAP_SYS_ADMIN capabilities to the Sunshine binary for KMS/DRM capture.";
-    };
+    capSysAdmin =
+      lib.mkEnableOption "granting CAP_SYS_ADMIN capabilities to the Sunshine binary for KMS/DRM capture"
+      // {
+        default = true;
+      };
 
     tabletDisplay = {
-      enable = lib.mkOption {
-        type = lib.types.bool;
+      enable = lib.mkEnableOption "automated zero-touch Tablet Display application in Sunshine" // {
         default = true;
-        description = "Whether to configure an automated zero-touch Tablet Display application in Sunshine.";
       };
 
       scale = lib.mkOption {
@@ -58,9 +50,11 @@ in
   config = lib.mkIf cfg.enable {
     services.sunshine = {
       enable = true;
-      inherit (cfg) autoStart;
-      inherit (cfg) openFirewall;
-      inherit (cfg) capSysAdmin;
+      inherit (cfg)
+        autoStart
+        openFirewall
+        capSysAdmin
+        ;
 
       settings = {
         capture = "wlr";
@@ -73,32 +67,25 @@ in
         env = {
           PATH = "$(PATH)";
         };
-        apps = [
-          {
-            name = "Tablet Display";
-            image-path = "desktop.png";
-            prep-cmd = [
-              {
-                do = "/run/current-system/sw/bin/hypr-virtual-monitor start HEADLESS-1 ${cfg.tabletDisplay.scale}";
-                undo = "/run/current-system/sw/bin/hypr-virtual-monitor stop HEADLESS-1";
-              }
-            ];
-            exclude-global-prep-cmd = "false";
-            auto-detach = "true";
-          }
-          {
-            name = "Desktop";
-            image-path = "desktop.png";
-            prep-cmd = [
-              {
-                do = "/run/current-system/sw/bin/hypr-virtual-monitor start HEADLESS-1 ${cfg.tabletDisplay.scale}";
-                undo = "/run/current-system/sw/bin/hypr-virtual-monitor stop HEADLESS-1";
-              }
-            ];
-            exclude-global-prep-cmd = "false";
-            auto-detach = "true";
-          }
-        ];
+        apps =
+          let
+            mkVirtualDisplayApp = name: {
+              inherit name;
+              image-path = "desktop.png";
+              prep-cmd = [
+                {
+                  do = "/run/current-system/sw/bin/hypr-virtual-monitor start HEADLESS-1 ${cfg.tabletDisplay.scale}";
+                  undo = "/run/current-system/sw/bin/hypr-virtual-monitor stop HEADLESS-1";
+                }
+              ];
+              exclude-global-prep-cmd = "false";
+              auto-detach = "true";
+            };
+          in
+          map mkVirtualDisplayApp [
+            "Tablet Display"
+            "Desktop"
+          ];
       };
     };
 

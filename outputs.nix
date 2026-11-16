@@ -32,6 +32,29 @@ let
     };
   };
 
+  commonModules = [
+    inputs.disko.nixosModules.disko
+    inputs.home-manager.nixosModules.home-manager
+    inputs.stylix.nixosModules.stylix
+    inputs.agenix.nixosModules.default
+
+    ./modules/core
+
+    ./modules/ai
+    ./modules/gaming
+    ./modules/home-manager
+    ./modules/hyprland
+    ./modules/input-method
+    ./modules/secrets
+    ./modules/shell-scripts
+    ./modules/sunshine
+    ./modules/systemd-services
+    ./modules/vpn
+    ./modules/wireless
+
+    ./overlays
+  ];
+
 in
 {
   # Expose hosts for Bash
@@ -54,32 +77,12 @@ in
           hostname = name;
         };
 
-        modules = [
-          inputs.disko.nixosModules.disko
-          inputs.home-manager.nixosModules.home-manager
-          inputs.stylix.nixosModules.stylix
-          inputs.agenix.nixosModules.default
-
-          ./modules/core
-
-          ./modules/ai
-          ./modules/gaming
-          ./modules/home-manager
-          ./modules/hyprland
-          ./modules/input-method
-          ./modules/secrets
-          ./modules/shell-scripts
-          ./modules/sunshine
-          ./modules/systemd-services
-          ./modules/vpn
-          ./modules/wireless
-
-          ./overlays
-
-          ./hosts/${name}
-
-        ]
-        ++ info.extraModules;
+        modules =
+          commonModules
+          ++ [
+            ./hosts/${name}
+          ]
+          ++ info.extraModules;
       }
     ) hosts)
     // {
