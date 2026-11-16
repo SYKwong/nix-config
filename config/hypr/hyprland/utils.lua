@@ -361,19 +361,6 @@ function utils.custom_fullscreen()
 	end
 end
 
-function _G.spawn_floating_app(application_command)
-	local active_monitor = hl.get_active_monitor()
-	if active_monitor then
-		local window_width = math.floor(active_monitor.width * 0.7)
-		local window_height = math.floor(active_monitor.height * 0.7)
-		local uwsm_command = "uwsm app -- " .. application_command
-
-		hl.dispatch(
-			hl.dsp.exec_cmd(uwsm_command, { float = true, size = { window_width, window_height }, center = true })
-		)
-	end
-end
-
 function utils.scrolling_consume_expel(direction)
 	direction = direction or "next"
 

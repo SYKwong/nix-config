@@ -36,21 +36,24 @@ make_browser_tab_opaque("YouTube")
 -- =============================================================================
 local default_centered_float_size <const> = "(monitor_w*0.5) (monitor_h*0.5)"
 
-local function apply_centered_float(rule_name, match_criteria, extra_properties)
-	local rule_definition = {
-		name = rule_name,
-		match = match_criteria,
-		float = true,
-		center = true,
-		size = default_centered_float_size,
-		dim_around = true,
-	}
+local function register_window_rule(rule_definition, extra_properties)
 	if extra_properties then
 		for property_key, property_value in pairs(extra_properties) do
 			rule_definition[property_key] = property_value
 		end
 	end
 	hl.window_rule(rule_definition)
+end
+
+local function apply_centered_float(rule_name, match_criteria, extra_properties)
+	register_window_rule({
+		name = rule_name,
+		match = match_criteria,
+		float = true,
+		center = true,
+		size = default_centered_float_size,
+		dim_around = true,
+	}, extra_properties)
 end
 
 local function float_and_center(window_address)
@@ -115,17 +118,11 @@ hl.window_rule({
 -- Workspace Routing
 -- =============================================================================
 local function assign_workspace(rule_name, match_criteria, workspace_target, extra_properties)
-	local rule_definition = {
+	register_window_rule({
 		name = rule_name,
 		match = match_criteria,
 		workspace = workspace_target,
-	}
-	if extra_properties then
-		for property_key, property_value in pairs(extra_properties) do
-			rule_definition[property_key] = property_value
-		end
-	end
-	hl.window_rule(rule_definition)
+	}, extra_properties)
 end
 
 -- Workspace 1: Web browser

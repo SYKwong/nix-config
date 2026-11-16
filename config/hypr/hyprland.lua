@@ -55,16 +55,16 @@ local current_host = hosts[hostname] or {
 
 hl.monitor(current_host.monitor)
 
-local secondary_monitor_top_reserved_gap = 20
+local secondary_monitor_reserved_area <const> = {
+	top = 20,
+	bottom = 0,
+	left = 0,
+	right = 0,
+}
 
 hl.monitor({
 	output = "HEADLESS-1",
-	reserved_area = {
-		top = secondary_monitor_top_reserved_gap,
-		bottom = 0,
-		left = 0,
-		right = 0,
-	},
+	reserved_area = secondary_monitor_reserved_area,
 })
 
 for _, m in ipairs(hl.get_monitors()) do
@@ -75,12 +75,7 @@ for _, m in ipairs(hl.get_monitors()) do
 			mode = string.format("%dx%d@%dHz", m.width, m.height, rate),
 			position = "auto-right",
 			scale = tostring(m.scale),
-			reserved_area = {
-				top = secondary_monitor_top_reserved_gap,
-				bottom = 0,
-				left = 0,
-				right = 0,
-			},
+			reserved_area = secondary_monitor_reserved_area,
 		})
 	end
 end

@@ -14,7 +14,7 @@ Declarative multi-host **NixOS** and **Home Manager** configuration fleet managi
 | Host | Form Factor | Hardware | Highlights | Config |
 | :--- | :--- | :--- | :--- | :--- |
 | **`framework16`** | Workstation Laptop | Framework Laptop 16 (Ryzen 7840HS, 96GB RAM) | LUKS + TPM2, Lanzaboote Secure Boot, 100GB swap hibernation | [`hosts/framework16`](./hosts/framework16/) |
-| **`mini-pc-k8`** | Living Room HTPC | GMKtec NucBox K8 Plus (Ryzen 8845HS, 64GB RAM) | Btrfs, custom ALSA profile, Flatpak discovery | [`hosts/mini-pc-k8`](./hosts/mini-pc-k8/) |
+| **`mini-pc-k8`** | Living Room HTPC | GMKtec NucBox K8 Plus (Ryzen 8845HS, 64GB RAM) | Btrfs, custom ALSA profile, flake update verifier | [`hosts/mini-pc-k8`](./hosts/mini-pc-k8/) |
 
 ---
 

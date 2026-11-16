@@ -16,8 +16,6 @@ By using `config.lib.file.mkOutOfStoreSymlink` in [`home/misc/dotfile.nix`](../h
 
 ---
 
----
-
 ## Managed Configurations
 
 | Directory | Target Destination | Description |

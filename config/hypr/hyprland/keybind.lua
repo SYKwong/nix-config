@@ -151,7 +151,7 @@ hl.bind(
 )
 
 -- Minimize and Restore Windows
-hl.bind(mainMod .. " + M ", utils.minimize_window(), { description = "[Window] Minimize window to a stack" })
+hl.bind(mainMod .. " + M", utils.minimize_window(), { description = "[Window] Minimize window to a stack" })
 hl.bind(
 	mainMod .. " + SHIFT + M",
 	utils.restore_window(),
