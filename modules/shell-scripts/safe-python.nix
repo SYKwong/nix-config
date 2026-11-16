@@ -1,4 +1,8 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  bwrapMaskSecrets,
+  ...
+}:
 
 pkgs.writeShellApplication {
   name = "safe-python";
@@ -45,33 +49,7 @@ pkgs.writeShellApplication {
       fi
     done
 
-    for secret_dir in \
-      "$HOME/.ssh" \
-      "$HOME/.gnupg" \
-      "$HOME/.aws" \
-      "$HOME/.azure" \
-      "$HOME/.kube" \
-      "$HOME/.config/gh" \
-      "$HOME/.config/glab-cli" \
-      "$HOME/.config/sops" \
-      /run/agenix.d \
-      /run/secrets
-    do
-      if [ -d "$secret_dir" ] && [ ! -L "$secret_dir" ]; then
-        BWRAP_ARGS+=(--tmpfs "$secret_dir")
-      fi
-    done
-
-    for secret_file in \
-      "$HOME/.netrc" \
-      "$HOME/.git-credentials" \
-      "$HOME/.npmrc"
-    do
-      if [ -f "$secret_file" ]; then
-        BWRAP_ARGS+=(--ro-bind /dev/null "$secret_file")
-      fi
-    done
-
+    ${bwrapMaskSecrets}
     exec bwrap "''${BWRAP_ARGS[@]}" python3 "$@"
   '';
 }

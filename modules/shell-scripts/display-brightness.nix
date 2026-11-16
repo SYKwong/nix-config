@@ -10,8 +10,6 @@ pkgs.writeShellApplication {
   ];
 
   text = ''
-    set -euo pipefail
-
     STATE_FILE="''${XDG_RUNTIME_DIR:?XDG_RUNTIME_DIR is not set}/display_brightness"
 
     help() {

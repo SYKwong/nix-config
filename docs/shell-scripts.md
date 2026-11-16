@@ -12,13 +12,14 @@ This directory (`modules/shell-scripts/`) contains custom CLI tools and system m
 | Script | Entrypoint File | Builder | Description |
 | :--- | :--- | :--- | :--- |
 | **`rebuild`** (alias: **`nrs`**) | `modules/shell-scripts/rebuild.nix` | `writeShellApplication` | NixOS configuration rebuild engine that formats code, verifies fleet configurations evaluate cleanly (excluding installer), stages a boot entry via `nh os boot`, activates live via `switch-to-configuration`, and checks for pending kernel reboots (with a 10s auto-skip prompt). Run via alias `nrs`. |
+| **`post-install`** | `modules/shell-scripts/post-install.nix` | `writeShellApplication` | Post-installation onboarding engine for TPM2 auto-unlock enrollment, host/user SSH key generation, agenix secret rekeying, and forge authentication. |
 | **`hypr-virtual-monitor`** | `modules/shell-scripts/hypr-virtual-monitor.nix` | `writeShellApplication` | Dynamic headless virtual monitor controller and idle socket watchdog for Hyprland and Sunshine streaming (`start`, `stop`, `toggle`, `watchdog`). |
 | **`display-brightness`** | `modules/shell-scripts/display-brightness.nix` | `writeShellApplication` | Display brightness manager targeting focused internal display backlight with automatic fallback to `hyprsunset` software dimming for external monitors. |
 | **`update-wallpaper`** (alias: **`nwall`**) | `modules/shell-scripts/update-wallpaper.nix` | `writeShellApplication` | Automated wallpaper synchronization pipeline: pushes local wallpaper changes, updates `wallpapers` flake input, rebuilds system live (`nrs`), and submits auto-merging MR. |
 | **`safe-python`** | `modules/shell-scripts/safe-python.nix` | `writeShellApplication` | Kernel-sandboxed Python test runner using Bubblewrap (`bwrap`). Runs Python with an immutable read-only root (`--ro-bind / /`), memory tmpfs (`/tmp`), unshared network/PID namespaces, scrubbed environment (`--clearenv`), and masked user credentials. |
 | **`safe-npm`** | `modules/shell-scripts/safe-npm.nix` | `writeShellApplication` | Supply-chain protected NPM package manager using Bubblewrap. Confines writes to `$PWD`, scrubs environment secrets (`--clearenv`), and masks credentials (`~/.ssh`, `~/.gnupg`, etc.). |
 | **`safe-npx`** | `modules/shell-scripts/safe-npx.nix` | `writeShellApplication` | Supply-chain protected NPX tool executor using Bubblewrap. Confines tool execution and writes to `$PWD`, scrubs environment secrets, and masks user credentials. |
-| **`rofi-keybinds`** | `modules/shell-scripts/rofi-keybind.nix` | `writeShellApplication` | Dynamic cheat sheet parsed from `hyprctl binds` and displayed in an interactive Rofi dmenu (`SUPER + SHIFT + /` or `SUPER + F1`). |
+| **`rofi-keybinds`** | `modules/shell-scripts/rofi-keybinds.nix` | `writeShellApplication` | Dynamic cheat sheet parsed from `hyprctl binds` and displayed in an interactive Rofi dmenu (`SUPER + SHIFT + /` or `SUPER + F1`). |
 | **`kb-light-manager`** | `modules/shell-scripts/kb-light-manager.nix` | `writeShellApplication` | Framework laptop keyboard backlight toggle and brightness manager using `qmk_hid`. |
 | **`tui-wrap`** | `modules/shell-scripts/tui-wrap.nix` | `writeShellScriptBin` *(Exception)* | Helper to spawn arbitrary CLI and TUI tools (like Yazi or Btop) inside floating Foot terminal surfaces. Dynamically resolves user commands from runtime `PATH`. |
 
@@ -91,9 +92,8 @@ pkgs.writeShellApplication {
   ];
 
   text = ''
-    # ShellCheck is automatically run by writeShellApplication at build time.
-    set -euo pipefail
-
+    # writeShellApplication automatically prepends `set -euo pipefail`
+    # and runs ShellCheck at build time.
     echo "Hello, world!"
   '';
 }

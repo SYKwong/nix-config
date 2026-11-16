@@ -11,7 +11,7 @@ This directory contains custom CLI tools and helper scripts packaged as native N
 | **`rebuild`** (alias: **`nrs`**) | [`rebuild.nix`](./rebuild.nix) | `writeShellApplication` | NixOS configuration rebuild engine that formats code, verifies fleet configurations evaluate cleanly (excluding installer), creates a boot entry via `nh os boot`, activates live via `switch-to-configuration`, and checks for pending kernel reboots (with a 10s auto-skip prompt). Run via alias `nrs`. |
 | **`post-install`** | [`post-install.nix`](./post-install.nix) | `writeShellApplication` | Post-installation onboarding engine for TPM2 auto-unlock enrollment, host/user SSH key generation, agenix secret rekeying, and forge authentication. |
 | **`hypr-virtual-monitor`** | [`hypr-virtual-monitor.nix`](./hypr-virtual-monitor.nix) | `writeShellApplication` | Dynamic headless virtual monitor controller and idle socket watchdog for Hyprland and Sunshine streaming (`start`, `stop`, `toggle`, `watchdog`). |
-| **`rofi-keybinds`** | [`rofi-keybind.nix`](./rofi-keybind.nix) | `writeShellApplication` | Dynamic cheat sheet parsed from `hyprctl binds` and displayed in an interactive Rofi dmenu (`SUPER + SHIFT + /` or `SUPER + F1`). |
+| **`rofi-keybinds`** | [`rofi-keybinds.nix`](./rofi-keybinds.nix) | `writeShellApplication` | Dynamic cheat sheet parsed from `hyprctl binds` and displayed in an interactive Rofi dmenu (`SUPER + SHIFT + /` or `SUPER + F1`). |
 | **`kb-light-manager`** | [`kb-light-manager.nix`](./kb-light-manager.nix) | `writeShellApplication` | Framework laptop keyboard backlight toggle and brightness manager using `qmk_hid`. |
 | **`display-brightness`** | [`display-brightness.nix`](./display-brightness.nix) | `writeShellApplication` | Display brightness manager targeting focused internal display backlight with automatic fallback to `hyprsunset` software dimming for external monitors. |
 | **`update-wallpaper`** (alias: **`nwall`**) | [`update-wallpaper.nix`](./update-wallpaper.nix) | `writeShellApplication` | Automated wallpaper synchronization pipeline: auto-resolves wallpaper source repo (prioritizing `~/Projects/private-wallpaper`), pushes local changes, updates `wallpapers` flake input, rebuilds system live (`nrs`), and submits auto-merging MR. |
@@ -40,9 +40,8 @@ pkgs.writeShellApplication {
   ];
 
   text = ''
-    # Shellcheck is automatically run by writeShellApplication at build time.
-    set -euo pipefail
-
+    # writeShellApplication automatically prepends `set -euo pipefail`
+    # and runs ShellCheck at build time.
     echo "Hello, world!"
   '';
 }

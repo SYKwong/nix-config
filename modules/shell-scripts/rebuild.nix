@@ -3,6 +3,7 @@
   hostname,
   username,
   config_path,
+  logHelpers,
   ...
 }:
 
@@ -21,35 +22,7 @@ pkgs.writeShellApplication {
   ];
 
   text = ''
-    if [ -t 1 ]; then
-      BOLD="\033[1m"
-      GREEN="\033[1;32m"
-      BLUE="\033[1;34m"
-      YELLOW="\033[1;33m"
-      RED="\033[1;31m"
-      RESET="\033[0m"
-    else
-      BOLD=""
-      GREEN=""
-      BLUE=""
-      YELLOW=""
-      RED=""
-      RESET=""
-    fi
-
-    log_info() {
-      printf "%b==> [INFO]%b %s\n" "$BLUE" "$RESET" "$*"
-    }
-    log_success() {
-      printf "%b==> [OK]%b %s\n" "$GREEN" "$RESET" "$*"
-    }
-    log_warn() {
-      printf "%b==> [WARN]%b %s\n" "$YELLOW" "$RESET" "$*"
-    }
-    log_error() {
-      printf "%b==> [ERROR]%b %s\n" "$RED" "$RESET" "$*"
-    }
-
+    ${logHelpers}
     REPO="${config_path}"
     HOSTNAME="${hostname}"
 
@@ -57,10 +30,8 @@ pkgs.writeShellApplication {
       log_info "Running formatter..."
       (cd "$REPO" && nix fmt)
 
-      if command -v atuin-to-fish >/dev/null 2>&1; then
-        log_info "Syncing Atuin history into Fish suggestions..."
-        atuin-to-fish || log_warn "Atuin history sync skipped or failed."
-      fi
+      log_info "Syncing Atuin history into Fish suggestions..."
+      atuin-to-fish || log_warn "Atuin history sync skipped or failed."
 
       log_info "Verifying fleet configurations evaluate cleanly (excluding installer)..."
       if ! FLEET_EVAL=$(cd "$REPO" && nix eval --no-write-lock-file --raw .#nixosConfigurations \

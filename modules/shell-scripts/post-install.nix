@@ -9,9 +9,11 @@ pkgs.writeShellApplication {
   name = "post-install";
 
   runtimeInputs = with pkgs; [
+    atuin
     coreutils
     cryptsetup
     gawk
+    gh
     git
     glab
     gnugrep
@@ -282,11 +284,6 @@ pkgs.writeShellApplication {
     authenticate_nordvpn() {
       echo ""
       echo "--- NordVPN Authentication ---"
-      if ! command -v nordvpn >/dev/null 2>&1; then
-        echo "Notice: nordvpn command not found. Skipping NordVPN setup."
-        return 0
-      fi
-
       if nordvpn account 2>/dev/null | grep -qi "Email address"; then
         echo "NordVPN is already logged in."
       else
@@ -311,11 +308,6 @@ pkgs.writeShellApplication {
     authenticate_atuin() {
       echo ""
       echo "--- Atuin Shell History Sync ---"
-      if ! command -v atuin >/dev/null 2>&1; then
-        echo "Notice: atuin command not found. Skipping Atuin setup."
-        return 0
-      fi
-
       if atuin status 2>/dev/null | grep -qi "logged in"; then
         echo "Atuin is already logged in."
         return 0

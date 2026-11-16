@@ -2,6 +2,7 @@
   pkgs,
   username,
   config_path,
+  logHelpers,
   rebuild,
   ...
 }:
@@ -18,35 +19,7 @@ pkgs.writeShellApplication {
   ];
 
   text = ''
-    if [ -t 1 ]; then
-      BOLD="\033[1m"
-      GREEN="\033[1;32m"
-      BLUE="\033[1;34m"
-      YELLOW="\033[1;33m"
-      RED="\033[1;31m"
-      RESET="\033[0m"
-    else
-      BOLD=""
-      GREEN=""
-      BLUE=""
-      YELLOW=""
-      RED=""
-      RESET=""
-    fi
-
-    log_info() {
-      printf "%b==> [INFO]%b %s\n" "$BLUE" "$RESET" "$*"
-    }
-    log_success() {
-      printf "%b==> [OK]%b %s\n" "$GREEN" "$RESET" "$*"
-    }
-    log_warn() {
-      printf "%b==> [WARN]%b %s\n" "$YELLOW" "$RESET" "$*"
-    }
-    log_error() {
-      printf "%b==> [ERROR]%b %s\n" "$RED" "$RESET" "$*"
-    }
-
+    ${logHelpers}
     if [ "''${EUID}" -eq 0 ]; then
       log_error "Please run update-wallpaper as your regular user (not with sudo)."
       exit 1

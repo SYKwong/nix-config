@@ -4,7 +4,6 @@ pkgs.writeShellApplication {
   name = "rofi-keybinds";
 
   runtimeInputs = with pkgs; [
-    bash
     coreutils
     hyprland
     rofi
@@ -15,9 +14,6 @@ pkgs.writeShellApplication {
   ];
 
   text = ''
-    #!/usr/bin/env bash
-    set -euo pipefail
-
     raw_binds=$(hyprctl binds)
 
     list_items=$(gawk '

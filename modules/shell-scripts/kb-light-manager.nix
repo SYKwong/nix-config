@@ -11,8 +11,6 @@ pkgs.writeShellApplication {
   ];
 
   text = ''
-    set -euo pipefail
-
     help() {
       echo "Usage: kb-light-manager [OPTIONS] <action> <vid> <pid>"
       echo
