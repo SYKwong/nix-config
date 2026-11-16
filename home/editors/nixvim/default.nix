@@ -2,13 +2,11 @@
 
 let
   languageDir = ./language;
-  languageFiles = map (file: languageDir + "/${file}") (
-    builtins.attrNames (
-      lib.filterAttrs (name: type: type == "regular" && lib.hasSuffix ".nix" name) (
-        builtins.readDir languageDir
-      )
-    )
-  );
+  languageFiles = lib.pipe (builtins.readDir languageDir) [
+    (lib.filterAttrs (name: type: type == "regular" && lib.hasSuffix ".nix" name))
+    lib.attrNames
+    (map (file: languageDir + "/${file}"))
+  ];
 in
 {
   imports = [

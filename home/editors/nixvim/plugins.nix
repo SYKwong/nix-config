@@ -24,8 +24,6 @@
       settings.format_on_save.timeout_ms = 500;
     };
 
-    gitsigns.enable = true;
-
     lint.enable = true;
 
     lsp = {
@@ -39,106 +37,7 @@
       };
     };
 
-    neo-tree = {
-      enable = true;
-      settings = {
-        close_if_last_window = true;
-        enable_git_status = true;
-        filesystem = {
-          filtered_items = {
-            hide_dotfiles = false;
-            hide_gitignored = false;
-            never_show = [
-              ".astro"
-              ".git"
-              "dist"
-              "node_modules"
-            ];
-            visible = true;
-          };
-        };
-        window.width = 30;
-      };
-    };
-
-    nix.enable = true;
-
     nvim-autopairs.enable = true;
-
-    telescope = {
-      enable = true;
-      extensions.fzf-native.enable = true;
-      keymaps = {
-        "<leader><space>" = "find_files";
-        "<leader>fb" = "buffers";
-        "<leader>ff" = "find_files";
-        "<leader>fg" = "live_grep";
-        "<leader>fh" = "help_tags";
-      };
-      settings = {
-        defaults = {
-          layout_config = {
-            horizontal = {
-              preview_cutoff = 0;
-            };
-            preview_cutoff = 0;
-          };
-          file_ignore_patterns = [
-            "^%.astro/"
-            "[/\\]%.astro/"
-            "^%.git/"
-            "[/\\]%.git/"
-            "^%.git$"
-            "[/\\]%.git$"
-            "^dist/"
-            "[/\\]dist/"
-            "^node_modules/"
-            "[/\\]node_modules/"
-          ];
-        };
-        pickers = {
-          find_files = {
-            find_command = [
-              "fd"
-              "--type"
-              "f"
-              "--type"
-              "l"
-              "--color"
-              "never"
-              "--hidden"
-              "--exclude"
-              ".astro"
-              "--exclude"
-              ".git"
-              "--exclude"
-              "dist"
-              "--exclude"
-              "node_modules"
-            ];
-          };
-          live_grep = {
-            additional_args = [
-              "--hidden"
-              "--glob=!**/.astro/*"
-              "--glob=!**/.git/*"
-              "--glob=!**/dist/*"
-              "--glob=!**/node_modules/*"
-            ];
-          };
-        };
-      };
-    };
-
-    treesitter = {
-      enable = true;
-      settings = {
-        highlight.enable = true;
-        indent.enable = true;
-      };
-    };
-
-    treesitter-context.enable = true;
 
     treesitter-textobjects = {
       enable = true;

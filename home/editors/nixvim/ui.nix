@@ -1,3 +1,13 @@
+let
+  ignoredDirs = [
+    ".astro"
+    ".git"
+    "dist"
+    "node_modules"
+  ];
+
+  escapeLuaPattern = builtins.replaceStrings [ "." ] [ "%." ];
+in
 {
   programs.nixvim = {
     opts.termguicolors = true;
@@ -33,10 +43,19 @@
     plugins = {
       web-devicons.enable = true;
       lualine.enable = true;
-      treesitter.enable = true;
       dressing.enable = true;
       barbecue.enable = true;
+      gitsigns.enable = true;
+      treesitter-context.enable = true;
       which-key.enable = true;
+
+      treesitter = {
+        enable = true;
+        settings = {
+          highlight.enable = true;
+          indent.enable = true;
+        };
+      };
 
       indent-blankline = {
         enable = true;
@@ -81,6 +100,88 @@
       notify = {
         enable = true;
         settings.background_colour = "#000000";
+      };
+
+      neo-tree = {
+        enable = true;
+        settings = {
+          close_if_last_window = true;
+          enable_git_status = true;
+          filesystem = {
+            filtered_items = {
+              hide_dotfiles = false;
+              hide_gitignored = false;
+              never_show = ignoredDirs;
+              visible = true;
+            };
+          };
+          window.width = 30;
+        };
+      };
+
+      telescope = {
+        enable = true;
+        extensions.fzf-native.enable = true;
+        keymaps = {
+          "<leader><space>" = "find_files";
+          "<leader>fb" = "buffers";
+          "<leader>ff" = "find_files";
+          "<leader>fg" = "live_grep";
+          "<leader>fh" = "help_tags";
+        };
+        settings = {
+          defaults = {
+            layout_config = {
+              horizontal = {
+                preview_cutoff = 0;
+              };
+              preview_cutoff = 0;
+            };
+            file_ignore_patterns = builtins.concatMap (
+              dir:
+              let
+                escaped = escapeLuaPattern dir;
+              in
+              [
+                "^${escaped}/"
+                "[/\\]${escaped}/"
+              ]
+              ++ (
+                if dir == ".git" then
+                  [
+                    "^${escaped}$"
+                    "[/\\]${escaped}$"
+                  ]
+                else
+                  [ ]
+              )
+            ) ignoredDirs;
+          };
+          pickers = {
+            find_files = {
+              find_command = [
+                "fd"
+                "--type"
+                "f"
+                "--type"
+                "l"
+                "--color"
+                "never"
+                "--hidden"
+              ]
+              ++ builtins.concatMap (dir: [
+                "--exclude"
+                dir
+              ]) ignoredDirs;
+            };
+            live_grep = {
+              additional_args = [
+                "--hidden"
+              ]
+              ++ map (dir: "--glob=!**/${dir}/*") ignoredDirs;
+            };
+          };
+        };
       };
     };
   };

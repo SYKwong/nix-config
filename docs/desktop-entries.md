@@ -106,7 +106,7 @@ Under traditional FHS Linux distributions, KSycoca detects when `.desktop` files
 On NixOS, all paths in `/nix/store` and `/etc/profiles/` have their timestamps fixed to the Unix epoch + 1s (`1970-01-01 00:00:01 UTC`) for build reproducibility. Because directory `mtime` never changes, KSycoca's automatic cache validation check (`TimestampChecker::checkDirectoriesTimestamps`) never detects changes across NixOS or Home Manager profile switches. Additionally, Dolphin's persistent background daemon (`plasma-dolphin.service` / `dolphin --daemon`) holds existing cache files memory-mapped indefinitely.
 
 ### Automated Activation Hook
-[`home/misc/desktop-cache.nix`](./desktop-cache.nix) registers an automated Home Manager activation hook (`home.activation.pruneKsycoca`) executed after `writeBoundary`:
+`home/misc/desktop-cache.nix` registers an automated Home Manager activation hook (`home.activation.pruneKsycoca`) executed after `writeBoundary`:
 
 1. **Purges Stale Binary Caches**: Removes all `~/.cache/ksycoca6*` cache files whenever generations switch.
 2. **Reloads Dolphin Daemon**: Executes `systemctl --user try-restart plasma-dolphin.service`, ensuring running file manager daemon instances re-index available handlers immediately.

@@ -1,3 +1,23 @@
+let
+  mkKittyOpacityAutocmd = event: opacity: {
+    inherit event;
+    callback.__raw = ''
+      function()
+        if #vim.api.nvim_list_uis() == 0 then
+          return
+        end
+        local window_id = os.getenv("KITTY_WINDOW_ID")
+        if not window_id then
+          return
+        end
+        vim.fn.jobstart(
+          { "kitty", "@", "set-background-opacity", "-m", "id:" .. window_id, "${opacity}" },
+          { detach = true }
+        )
+      end
+    '';
+  };
+in
 {
   programs.nixvim.autoCmd = [
     # Dynamic Code-Boundary Underline Highlight Tracking
@@ -23,50 +43,16 @@
     }
 
     # Maximize Kitty Terminal Blur on Launch and Focus
-    {
-      event = [
-        "VimEnter"
-        "FocusGained"
-      ];
-      callback.__raw = ''
-        function()
-          if #vim.api.nvim_list_uis() == 0 then
-            return
-          end
-          local window_id = os.getenv("KITTY_WINDOW_ID")
-          if not window_id then
-            return
-          end
-          vim.fn.jobstart(
-            { "kitty", "@", "set-background-opacity", "-m", "id:" .. window_id, "0.95" },
-            { detach = true }
-          )
-        end
-      '';
-    }
+    (mkKittyOpacityAutocmd [
+      "VimEnter"
+      "FocusGained"
+    ] "0.95")
 
     # Restore Default Subtle Kitty Terminal Blur on Exit and Focus Lost
-    {
-      event = [
-        "VimLeave"
-        "FocusLost"
-      ];
-      callback.__raw = ''
-        function()
-          if #vim.api.nvim_list_uis() == 0 then
-            return
-          end
-          local window_id = os.getenv("KITTY_WINDOW_ID")
-          if not window_id then
-            return
-          end
-          vim.fn.jobstart(
-            { "kitty", "@", "set-background-opacity", "-m", "id:" .. window_id, "0.88" },
-            { detach = true }
-          )
-        end
-      '';
-    }
+    (mkKittyOpacityAutocmd [
+      "VimLeave"
+      "FocusLost"
+    ] "0.88")
 
     # 2 Space Tab Language
     {
