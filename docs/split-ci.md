@@ -54,10 +54,10 @@ When GitHub Actions is down, pull requests are frozen in an unmergeable state. I
 ### B. Containerized Determinism & Pure Nix Isolation
 
 GitLab CI jobs execute directly inside pristine, official OCI container images:
-- **`nixos/nix:latest`**: Runs `nix fmt` verification and `nix flake check` in an unadulterated Nix environment.
-- **`node:lts-slim`**: Verifies that Astro Starlight documentation builds cleanly without pulling extraneous build tools.
+- **`nixos/nix:latest`**: Runs `nix fmt` verification, `nix flake check`, and automated `flake.lock` update MRs in an unadulterated Nix environment.
+- **`alpine:latest` & `curlimages/curl:latest`**: Run lightweight weekly `stable-*` tag rotation and `notify-docs` webhook dispatches without pulling heavy VM toolchains.
 
-In contrast to cloud VM runners that execute multi-step setup scripts on shared host environments, GitLab CI spins up fresh container instances for each job. Combined with GitLab's `FF_USE_FASTZIP` caching (`.cache/nix` keyed on `flake.lock` and `.cache/npm` keyed on `docs/package-lock.json`), builds remain completely reproducible, isolated, and fast.
+In contrast to cloud VM runners that execute multi-step setup scripts on shared host environments, GitLab CI spins up fresh container instances for each job. Combined with GitLab's `FF_USE_FASTZIP` caching (`.cache/nix` keyed on `flake.lock`), builds remain completely reproducible, isolated, and fast.
 
 Private flake inputs (such as private wallpapers) enclosed within `# BEGIN_PRIVATE_WALLPAPERS` and `# END_PRIVATE_WALLPAPERS` block markers are temporarily commented out prior to running `nix flake check` and `build-iso.yml`. This mirrors `install-nixos` bootstrap behavior, allowing unauthenticated CI runners to validate formatting, NixOS system closures, and installer images without requiring ambient SSH keys or deploy tokens.
 
@@ -98,7 +98,7 @@ Using pure `git push` options:
 - The pipeline authenticates using GitLab's short-lived, job-scoped `CI_JOB_TOKEN`.
 - The Merge Request is created with the exact `nix flake update` summary and assigned to the repository owner. Automatic rebasing onto `main`, full system closure build verification, failure reporting (`build-error` label and log comment), and automatic merge are handled safely by `flake-update-verifier` on the local desktop workstation (`mini-pc-k8`) during off-peak hours (or interactively via `nverify`), ensuring broken upstream `nixpkgs` revisions never touch `main`. Similarly, `update-wallpaper` (`nwall`) utilizes native push options (`-o merge_request.create`, `-o merge_request.auto_merge`) to submit auto-merging lockfile bumps that bypass CI execution (`when: manual` + `allow_failure: true` rule in `.gitlab-ci.yml`) because they are verified locally via `nrs`.
 - Tag rotation (`create-weekly-stable`) tags the commit and purges tags older than 12 weeks using native git commands in an Alpine container.
-- Docs dispatch (`notify-docs`) triggers a `repository_dispatch` (`docs-updated`) on `SYKwong/nix-docs` when `docs/**` changes on `main` (requires the masked `GITHUB_DOCS_TOKEN` CI/CD variable).
+- Docs dispatch (`notify-docs`) triggers a `repository_dispatch` (`docs-updated`) on `SYKwong/nix-docs` when `docs/**` changes on `main` (requires the masked `GITHUB_DOCS_TOKEN` CI/CD variable). `SYKwong/nix-docs` also runs a scheduled fallback watcher that pulls the latest `docs/` from `nix-config` (`main`), commits any synced changes into its own repository, and deploys to GitHub Pages.
 
 ### E. Zero-Cost Edge CDN for Documentation
 
@@ -107,7 +107,7 @@ While GitLab excels at isolated container pipelines and native git bot workflows
 - Automated Let's Encrypt TLS certificate provisioning and renewal for custom apex/subdomains (`nix.kyle-kwong.com`).
 - Broad discoverability within the open-source ecosystem.
 
-Restricting GitHub Actions to [`.github/workflows/deploy-docs.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/deploy-docs.yml) and [`.github/workflows/build-iso.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/build-iso.yml) confines GitHub runner execution strictly to non-critical static site generation and automated installer ISO artifact releases.
+Restricting GitHub Actions in this repository to [`.github/workflows/build-iso.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/build-iso.yml) (and delegating Astro Starlight site builds to `SYKwong/nix-docs`) confines GitHub runner execution strictly to non-critical static site generation and automated installer ISO artifact releases.
 
 ### F. Blast Radius Containment & Defense-in-Depth
 
@@ -124,7 +124,7 @@ The split architecture strictly contains operational blast radiuses:
 | :--- | :--- | :--- |
 | **Outage Impact on Merges** | **Zero Impact**: Highly reliable runners; merges proceed normally | **Zero Impact**: Outages only delay wiki CDN updates or installer ISO releases; never blocks merges |
 | **Primary Responsibility** | `nix flake check`, `nix fmt`, lock updates, release tags | Building & publishing Astro Starlight wiki to Pages and releasing custom installer ISOs |
-| **Execution Model** | Native OCI containers (`nixos/nix`, `node:lts-slim`) | Shared Ubuntu VM runners (`ubuntu-latest`) |
+| **Execution Model** | Native OCI containers (`nixos/nix`, `alpine`, `curlimages/curl`) | Shared Ubuntu VM runners (`ubuntu-latest`) |
 | **Dependency Model** | Raw bash scripts inside container images | Composite actions (`actions/checkout`, `withastro/action`) |
 | **Action Churn** | None (no external marketplace actions) | Periodic Node runtime upgrades & action bumps |
 | **Automated MR / PR Creation** | Native Git Push Options via `CI_JOB_TOKEN` | Requires Personal Access Token or GitHub App |
@@ -154,16 +154,13 @@ Mark the GitHub repository description as a read-only mirror pointing back to yo
 ```
 
 ### 4. GitHub Actions Repository Permissions
-To allow the automated installer ISO release workflow ([`.github/workflows/build-iso.yml`](https://gitlab.com/k8-kyle/nix-config/-/blob/main/.github/workflows/build-iso.yml)) to compile and publish releases on the GitHub mirror or fork:
+To allow the automated installer ISO release workflow ([`.github/workflows/build-iso.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/build-iso.yml)) to compile and publish releases on the GitHub mirror or fork:
 - **Actions Execution Policy**: In GitHub repository **Settings** → **Actions** → **General** → **Actions permissions**, select **"Allow select actions and reusable workflows"**, check **"Allow actions created by GitHub"**, and configure the explicit pattern allowlist:
   ```text
   cachix/*,
-  pnpm/*,
   softprops/*,
-  withastro/*,
   ```
 - **Workflow Permissions**: Under **Workflow permissions**, select **Read and write permissions** (required for publishing releases, creating versioned tags, and uploading release binaries via `softprops/action-gh-release`) and check **Allow GitHub Actions to create and approve pull requests**.
-- **Pages Source**: In **Settings** → **Pages** → **Build and deployment** → **Source**, select **GitHub Actions** (enables automatic OIDC token provisioning with `pages: write` and `id-token: write` for `actions/deploy-pages`).
 - **Fork Enablement**: If the downstream repository is a fork, navigate to the **Actions** tab and click **"I understand my workflows, go ahead and enable them"** (Actions are disabled by default on newly created forks).
 
 ---
@@ -189,34 +186,32 @@ flowchart TD
 | **Cloudflare Pages** | GitLab or GitHub | Native Git Webhook | Unlimited bandwidth, 500 builds/mo (free) | Global Anycast edge, zero runner setup, connects directly to GitLab without needing a GitHub mirror |
 | **Vercel** | GitLab or GitHub | Native Git Webhook | 100 GB bandwidth (free hobby tier) | Instant preview deployments on MRs/PRs, zero-config Astro detection |
 | **GitLab Pages** | GitLab | `.gitlab-ci.yml` `pages` job | Bound to GitLab CI pipeline minutes | Fully self-contained within GitLab; requires no third-party accounts or external webhooks |
-| **GitHub Pages** | GitHub (`SYKwong/nix-docs`) | `repository_dispatch` + hourly cron | 100 GB/mo; subject to Action runner health | Unified site across repos; vulnerable to GitHub Actions runner outages and queue delays |
+| **GitHub Pages** | GitHub (`SYKwong/nix-docs`) | `repository_dispatch` + scheduled sync watcher | 100 GB/mo; subject to Action runner health | Pulls & commits `docs/` from `nix-config` (`main`); vulnerable to GitHub Actions runner outages |
 
 ---
 
 ### Recommended Setup: Cloudflare Pages
 
-Cloudflare Pages provides arguably the best alternative for adopters hosting their primary repository on GitLab who do not wish to maintain a GitHub push mirror just for static site hosting.
+Cloudflare Pages provides arguably the best alternative for adopters who host their `nix-docs` Starlight site on GitLab or GitHub and do not wish to rely on GitHub Actions runners for static site hosting.
 
-#### Build Configuration Settings:
+#### Build Configuration Settings (in `nix-docs`):
 - **Framework preset**: `Astro`
-- **Root directory**: `docs`
 - **Build command**: `npm run build`
 - **Build output directory**: `dist`
 - **Environment variables**:
   - `NODE_VERSION`: `22`
 
 > [!TIP]
-> Connecting Cloudflare Pages directly to your GitLab repository allows you to receive instant documentation builds and pull request preview URLs on GitLab without ever touching GitHub or generating personal access tokens.
+> Because `SYKwong/nix-docs` commits synced documentation directly into its repository tree, connecting Cloudflare Pages or Vercel to `nix-docs` works out of the box with zero custom multi-repo fetch scripts.
 
 ---
 
 ### Recommended Setup: Vercel
 
-Vercel provides native Astro support and instant preview URLs for both GitLab Merge Requests and GitHub Pull Requests.
+Vercel provides native Astro support and instant preview URLs for Pull Requests and Merge Requests.
 
-#### Build Configuration Settings:
+#### Build Configuration Settings (in `nix-docs`):
 - **Framework preset**: `Astro`
-- **Root Directory**: `docs`
 - **Build Command**: `npm run build`
 - **Output Directory**: `dist`
 - **Node.js Version**: `22.x` (configured under **Project Settings** &rarr; **General**)
@@ -228,15 +223,15 @@ Vercel provides native Astro support and instant preview URLs for both GitLab Me
 If you are adopting or forking this repository, choose the deployment and CI topology that best matches your workflow:
 
 1. **Split CI (GitLab Primary + GitHub Pages)**:
-   Keep the default architecture documented in this guide. Follow the token generation and push-mirroring instructions in [Adoption: Reproducing Split CI](/adoption/#5-continuous-integration--the-split-ci-architecture).
+   Keep the default architecture documented in this guide. Follow the token generation and push-mirroring instructions in [Adoption: Reproducing Split CI](/adoption/#6-continuous-integration--the-split-ci-architecture).
 
 2. **GitLab Primary + Cloudflare Pages / Vercel (Recommended Modern Alternative)**:
-   Connect your GitLab repository directly to Cloudflare Pages or Vercel with the build settings listed above. This eliminates the GitHub mirror, GitHub Actions workflows, and PAT maintenance while preserving GitLab CI's rock-solid merge gatekeeping.
+   Connect your documentation repository directly to Cloudflare Pages or Vercel with the build settings listed above. This eliminates GitHub Actions runner dependencies for docs while preserving GitLab CI's rock-solid merge gatekeeping.
 
 3. **Consolidate on GitLab (GitLab CI + GitLab Pages)**:
-   Delete `.github/` and add a `pages` job to `.gitlab-ci.yml` using `node:lts-slim` to build and serve the wiki directly through GitLab Pages.
+   Delete `.github/` and add a `pages` job to `.gitlab-ci.yml` to build and serve the wiki directly through GitLab Pages.
 
 4. **Consolidate on GitHub (GitHub Actions Only)**:
    Delete `.gitlab-ci.yml`, set up `determinate-nix-action` for pull request checks, and deploy to GitHub Pages. Be aware that GitHub Actions outages can block pull request merges under branch protection rules.
 
-See the [Adoption & Forking Guide](/adoption/#alternative-single-forge-workflows) for step-by-step instructions and sample configurations.
+See the [Adoption & Forking Guide](/adoption/#alternatives-edge-hosting--single-forge-workflows) for step-by-step instructions and sample configurations.

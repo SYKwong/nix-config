@@ -33,13 +33,11 @@ By default, GitHub disables Actions on forked repositories to prevent unintended
 The repository adheres to the principle of least privilege, restricting execution to official GitHub actions and an explicit third-party vendor allowlist:
 1. Navigate to **Settings** → **Actions** → **General**.
 2. Under **Actions permissions**, select **"Allow select actions and reusable workflows"**.
-3. Check **"Allow actions created by GitHub"** (permits official actions like `actions/checkout`, `actions/upload-artifact`, and `actions/deploy-pages`).
+3. Check **"Allow actions created by GitHub"** (permits official actions like `actions/checkout` and `actions/upload-artifact`).
 4. In the **"Allow specified actions and reusable workflows"** text box, enter the repository's exact pattern allowlist:
    ```text
    cachix/*,
-   pnpm/*,
    softprops/*,
-   withastro/*,
    ```
 5. Click **Save**.
 
@@ -52,12 +50,6 @@ The installer ISO workflow compiles the ISO and publishes it to your fork's GitH
 
 > [!WARNING]
 > If repository workflow permissions remain set to the default *Read repository contents permission*, `build-iso.yml` will compile the ISO but fail at the release upload step with `Resource not accessible by integration (HTTP 403)`.
-
-### D. Configure GitHub Pages Deployment Source
-To deploy the Starlight documentation site to GitHub Pages:
-1. Navigate to **Settings** → **Pages**.
-2. Under **Build and deployment** → **Source**, select **GitHub Actions** from the dropdown (do *not* select "Deploy from a branch").
-3. This automatically enables GitHub Pages OIDC deployment, granting the `pages: write` and `id-token: write` permissions required by `actions/deploy-pages`.
 
 ### Workflow Capabilities & Required Permissions Matrix
 
@@ -219,10 +211,10 @@ GitLab needs write permissions to push branches and tags to your GitHub reposito
 4. Click **Mirror repository**.
 5. Click the refresh / sync icon under **Mirrored repositories** to trigger the initial push mirror to GitHub.
 
-#### Step 4: Configure Documentation Dispatch (`nix-docs`)
+#### Step 4: Configure Documentation Dispatch & Sync (`nix-docs`)
 1. Host your Astro Starlight site in a dedicated docs repository (like `SYKwong/nix-docs`) with GitHub Pages enabled (**Settings → Pages → Source: GitHub Actions**).
 2. Create a fine-grained GitHub PAT with **Contents: Read and write** on that docs repository and save it in GitLab **Settings → CI/CD → Variables** as `GITHUB_DOCS_TOKEN` (masked and protected).
-3. Update the `notify-docs` URL in `.gitlab-ci.yml` to your docs repository's `/dispatches` endpoint. Whenever changes to `docs/**` land on `main`, GitLab CI triggers an immediate Starlight rebuild and GitHub Pages deployment.
+3. Update the `notify-docs` URL in `.gitlab-ci.yml` to your docs repository's `/dispatches` endpoint. Whenever changes to `docs/**` land on `main` (or on `nix-docs`'s scheduled fallback cron), `nix-docs` pulls the latest `docs/` from `nix-config`, commits any synced changes into its own tree, and deploys to GitHub Pages.
 
 #### Step 5: Enforce Read-Only Hygiene on GitHub
 To prevent split-brain states and merge conflicts:

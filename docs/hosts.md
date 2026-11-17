@@ -18,7 +18,7 @@ This section documents host-specific machine configurations within the fleet. Ea
 | Host | Role | Hardware Specs | Boot & Storage | Key Modules & Hardware Quirks |
 | :--- | :--- | :--- | :--- | :--- |
 | **`framework16`** | Primary Workstation Laptop | Framework Laptop 16 (AMD Ryzen 7840HS, 96GB RAM) | LUKS (TPM2 auto-unlock), Lanzaboote Secure Boot, Btrfs with 100GB hibernation swap (`/.swapvol`) | QMK keyboard backlight manager (`kb-light-manager`), laptop form-factor profile (`modules/profiles/laptop`), `nixos-hardware` integration |
-| **`mini-pc-k8`** | HTPC / Living Room Workstation | GMKtec NucBox K8 Plus (AMD Ryzen 8845HS, 64GB RAM) | Unencrypted Btrfs, 8GB swap | Automated flake update verifier (`flake-update-verifier`), custom ALSA card profile (`k8-plus-analog.conf`), HDMI audio cutout mitigations (headroom, idle suspend disable, `power_save=0`), Intel Bluetooth de-authorization (`8087:0029`), Flatpak auto-discovery |
+| **`mini-pc-k8`** | HTPC / Living Room Workstation | GMKtec NucBox K8 Plus (AMD Ryzen 8845HS, 64GB RAM) | Unencrypted Btrfs, 8GB swap | Automated flake update verifier (`flake-update-verifier`), custom ALSA card profile (`k8-plus-analog.conf`), HDMI audio cutout mitigations (headroom, idle suspend disable, `power_save=0`), Intel Bluetooth de-authorization (`8087:0029`) |
 
 ---
 

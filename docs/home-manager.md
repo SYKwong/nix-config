@@ -148,5 +148,7 @@ To effectively disable these default navigation shortcuts without triggering par
 keybinds = {
   tab_next = [ "F24" ];
   tab_previous = [ "Shift+F24" ];
+  category_next = [ "Ctrl+F24" ];
+  category_previous = [ "Ctrl+Shift+F24" ];
 };
 ```

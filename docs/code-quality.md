@@ -16,11 +16,11 @@ nix fmt
 ```
 
 ### Supported Languages & Formatters (`treefmt/`):
-- **Nix**: Formatted using `nixfmt-rfc-style`.
+- **Nix**: Linted and formatted using `deadnix`, `statix`, and `nixfmt`.
 - **Bash / Shell scripts**: Linted and formatted via `shellcheck` and `shfmt`.
 - **C / C++**: Formatted using `clang-format`.
 - **Lua**: Formatted using `stylua`.
-- **TOML**: Formatted using `taplo`.
+- **TOML**: Formatted using `toml-sort`.
 
 > [!NOTE]
 > Auto-generated `hardware-configuration.nix` files are exempt from manual edits. Formatters and linters automatically skip or ignore auto-generated hardware configurations.
