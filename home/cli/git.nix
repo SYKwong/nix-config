@@ -6,6 +6,18 @@
   programs = {
     git = {
       enable = true;
+      includes = [
+        # BEGIN_AUTHOR_GIT_INCLUDES
+        {
+          condition = "hasconfig:remote.*.url:*github.com*";
+          contents.user.email = "47125306+SYKwong@users.noreply.github.com";
+        }
+        {
+          condition = "hasconfig:remote.*.url:*gitlab.com*";
+          contents.user.email = "10809935-kylekwong@users.noreply.gitlab.com";
+        }
+        # END_AUTHOR_GIT_INCLUDES
+      ];
       settings = {
         user = {
           name = "${username}";

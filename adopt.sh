@@ -199,6 +199,14 @@ EOF
   fi
 }
 
+sanitize_git() {
+  local git_file="$SCRIPT_DIR/home/cli/git.nix"
+  if [ -f "$git_file" ]; then
+    echo "==> Removing author's forge-specific Git email includes from home/cli/git.nix..."
+    sed -i '/# BEGIN_AUTHOR_GIT_INCLUDES/,/# END_AUTHOR_GIT_INCLUDES/d' "$git_file"
+  fi
+}
+
 substitute_wallpaper_repo() {
   local flake_file="$SCRIPT_DIR/flake.nix"
   if [ -f "$flake_file" ]; then
@@ -514,6 +522,7 @@ configure_git_remote() {
 purge_secrets
 purge_network_shares
 sanitize_opencode
+sanitize_git
 substitute_wallpaper_repo
 scaffold_host
 configure_outputs
