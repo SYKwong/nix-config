@@ -6,11 +6,11 @@ hero:
   tagline: Declarative multi-host NixOS and Home Manager configuration fleet managing workstations, laptops, and gaming consoles.
   actions:
     - text: System Installation
-      link: /installation/
+      link: /nix-config/installation/
       icon: right-arrow
       variant: primary
     - text: Flake Architecture
-      link: /architecture/
+      link: /nix-config/architecture/
       icon: document
       variant: secondary
     - text: View on GitLab
