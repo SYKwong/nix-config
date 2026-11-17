@@ -54,4 +54,4 @@ Use the matched filename **without `.desktop`** (e.g. `org.kde.ark.desktop` → 
 
 For architectural details on the two-tier XDG shadowing priority, KSycoca `1970-01-01` timestamp invalidation, and custom icon theming, refer to the online guide:
 
-📖 **[Managing Desktop Entries Documentation](https://nix.kyle-kwong.com/desktop-entries/)**
+📖 **[Managing Desktop Entries Documentation](https://nix.kyle-kwong.com/nix-config/desktop-entries/)**

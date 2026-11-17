@@ -17,12 +17,12 @@ This directory contains modular, reusable **NixOS system-level** configurations.
 | **`hardware/`** | `modules/hardware/` | Vendor-specific hardware integrations and firmware utilities (e.g. `framework.nix`). |
 | **`wireless/`** | `modules/wireless/` | Wireless networking (Wi-Fi), network management, and Bluetooth stack. |
 | **`vpn/`** | `modules/vpn/` | Virtual Private Network (VPN) client services, WireGuard tunnels, and encrypted routing. |
-| **`gaming/`** | `modules/gaming/` | Steam, Gamescope, and graphics/system performance optimizations (see [Gaming & Gamescope](/gaming/)). |
-| **`sunshine/`** | `modules/sunshine/` | Low-latency Sunshine desktop and game streaming server with zero-touch tablet display automation (see [Sunshine Streaming](/sunshine/)). |
+| **`gaming/`** | `modules/gaming/` | Steam, Gamescope, and graphics/system performance optimizations (see [Gaming & Gamescope](/nix-config/gaming/)). |
+| **`sunshine/`** | `modules/sunshine/` | Low-latency Sunshine desktop and game streaming server with zero-touch tablet display automation (see [Sunshine Streaming](/nix-config/sunshine/)). |
 | **`ai/`** | `modules/ai/` | Hardware-accelerated compute runtimes (ROCm/CUDA), local AI engines, and inference services. |
 | **`secrets/`** | `modules/secrets/` | System secret management, decryption, and credential provisioning via agenix. |
 | **`input-method/`** | `modules/input-method/` | Input method engines (Fcitx5), internationalization, and character input mappings. |
-| **`shell-scripts/`** | `modules/shell-scripts/` | Custom CLI utilities packaged via `writeShellApplication` (see [Custom Shell Scripts](/shell-scripts/)). |
+| **`shell-scripts/`** | `modules/shell-scripts/` | Custom CLI utilities packaged via `writeShellApplication` (see [Custom Shell Scripts](/nix-config/shell-scripts/)). |
 | **`systemd-services/`** | `modules/systemd-services/` | Standalone background services and scheduled timers not tied to specific domain modules (e.g. overnight flake update verification). |
 | **`home-manager/`** | `modules/home-manager/` | System-level Home Manager integration module binding user configurations and automatic per-host home extensions. |
 | **`lanzaboote/`** | `modules/lanzaboote/` | UEFI Secure Boot integration and cryptographic bootloader signing. |
@@ -45,4 +45,4 @@ This directory contains modular, reusable **NixOS system-level** configurations.
    - Host-specific overrides or hardware bindings belong in `hosts/<hostname>/`.
 
 3. **Packaging Scripts Standard:**
-   - Custom CLI utilities are standardly packaged with `pkgs.writeShellApplication` and declared `runtimeInputs` (see [Custom Shell Scripts](/shell-scripts/) for conventions).
+   - Custom CLI utilities are standardly packaged with `pkgs.writeShellApplication` and declared `runtimeInputs` (see [Custom Shell Scripts](/nix-config/shell-scripts/) for conventions).

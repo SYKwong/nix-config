@@ -8,7 +8,7 @@ This guide covers bootstrapping a new machine using the automated installation s
 ---
 
 > [!NOTE]
-> Planning to adopt or fork this configuration for your own hardware? Follow the [Adoption & Forking Guide](/adoption/) first.
+> Planning to adopt or fork this configuration for your own hardware? Follow the [Adoption & Forking Guide](/nix-config/adoption/) first.
 
 ## 1. Baseline: Custom Fleet Installer ISO
 
@@ -190,4 +190,4 @@ Create `./hosts/<host_name>/default.nix`:
 
 ## Next Steps
 
-After the installer completes and the system reboots into your new NixOS installation, proceed directly to the [Post-Installation Setup](/post-installation/) guide to enroll TPM2 auto-unlock, register SSH keys, and configure agenix secrets.
+After the installer completes and the system reboots into your new NixOS installation, proceed directly to the [Post-Installation Setup](/nix-config/post-installation/) guide to enroll TPM2 auto-unlock, register SSH keys, and configure agenix secrets.

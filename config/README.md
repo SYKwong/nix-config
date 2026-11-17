@@ -61,4 +61,4 @@ Because files are symlinked out-of-store directly to the working repository, edi
 
 For full details on live reloading, out-of-store symlink mechanics, and application-specific settings, refer to the online guide:
 
-📖 **[Out-of-Store Dotfiles Documentation](https://nix.kyle-kwong.com/dotfiles/)**
+📖 **[Out-of-Store Dotfiles Documentation](https://nix.kyle-kwong.com/nix-config/dotfiles/)**

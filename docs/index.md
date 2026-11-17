@@ -23,10 +23,10 @@ hero:
 
 | Section | Description | Key Pages |
 | :--- | :--- | :--- |
-| **Getting Started** | Setting up new machines from scratch | [System Installation](/installation/) • [Adoption & Forking](/adoption/) • [Post-Installation](/post-installation/) • [BIOS & Firmware](/bios-update/) |
-| **Architecture** | Flake organization and machine topologies | [Flake Architecture](/architecture/) • [Split CI Architecture](/split-ci/) • [Hosts Inventory](/hosts/) • [Home Manager](/home-manager/) • [Dotfiles](/dotfiles/) |
-| **Modules** | Reusable system capabilities and integrations | [System Modules](/modules/) • [Sunshine Streaming](/sunshine/) • [Gaming & Gamescope](/gaming/) • [Flatpak](/flatpak/) • [Shell Scripts](/shell-scripts/) • [Overlays](/overlays/) |
-| **Operations** | Day-to-day maintenance and security | [Secrets (agenix)](/secrets/) • [Desktop Entries](/desktop-entries/) • [Code Quality](/code-quality/) |
+| **Getting Started** | Setting up new machines from scratch | [System Installation](/nix-config/installation/) • [Adoption & Forking](/nix-config/adoption/) • [Post-Installation](/nix-config/post-installation/) • [BIOS & Firmware](/nix-config/bios-update/) |
+| **Architecture** | Flake organization and machine topologies | [Flake Architecture](/nix-config/architecture/) • [Split CI Architecture](/nix-config/split-ci/) • [Hosts Inventory](/nix-config/hosts/) • [Home Manager](/nix-config/home-manager/) • [Dotfiles](/nix-config/dotfiles/) |
+| **Modules** | Reusable system capabilities and integrations | [System Modules](/nix-config/modules/) • [Sunshine Streaming](/nix-config/sunshine/) • [Gaming & Gamescope](/nix-config/gaming/) • [Flatpak](/nix-config/flatpak/) • [Shell Scripts](/nix-config/shell-scripts/) • [Overlays](/nix-config/overlays/) |
+| **Operations** | Day-to-day maintenance and security | [Secrets (agenix)](/nix-config/secrets/) • [Desktop Entries](/nix-config/desktop-entries/) • [Code Quality](/nix-config/code-quality/) |
 
 ---
 
@@ -77,5 +77,5 @@ nix flake check
 
 | Host | Role | Hardware | Key Technologies |
 | :--- | :--- | :--- | :--- |
-| **[`framework16`](/hosts/)** | Primary Workstation Laptop | Framework Laptop 16 (AMD Ryzen 7840HS, 96GB RAM) | LUKS + TPM2, Lanzaboote Secure Boot, Btrfs + Swap Hibernation |
-| **[`mini-pc-k8`](/hosts/)** | HTPC / Living Room Desktop | GMKtec NucBox K8 Plus (AMD Ryzen 8845HS, 64GB RAM) | Btrfs, Custom ALSA profile, Flake update verifier |
+| **[`framework16`](/nix-config/hosts/)** | Primary Workstation Laptop | Framework Laptop 16 (AMD Ryzen 7840HS, 96GB RAM) | LUKS + TPM2, Lanzaboote Secure Boot, Btrfs + Swap Hibernation |
+| **[`mini-pc-k8`](/nix-config/hosts/)** | HTPC / Living Room Desktop | GMKtec NucBox K8 Plus (AMD Ryzen 8845HS, 64GB RAM) | Btrfs, Custom ALSA profile, Flake update verifier |

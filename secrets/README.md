@@ -93,4 +93,4 @@ ATUIN_KEY="word1 word2 word3 ... word24"
 
 For recipient key distribution details, step-by-step account onboarding, and recovery procedures, refer to the online guide:
 
-📖 **[Secret Management with Agenix Documentation](https://nix.kyle-kwong.com/secrets/)**
+📖 **[Secret Management with Agenix Documentation](https://nix.kyle-kwong.com/nix-config/secrets/)**

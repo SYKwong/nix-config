@@ -64,4 +64,4 @@ Idle timeouts and power states are managed natively by Noctalia ([`home/desktop/
 
 For full details on desktop entries, declarative application state merging, category-scoped playlists, and Atuin shell history sync, refer to the online guide:
 
-📖 **[Home Manager User Configuration](https://nix.kyle-kwong.com/home-manager/)**
+📖 **[Home Manager User Configuration](https://nix.kyle-kwong.com/nix-config/home-manager/)**

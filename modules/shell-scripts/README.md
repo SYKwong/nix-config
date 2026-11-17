@@ -67,4 +67,4 @@ pkgs.writeShellApplication {
 
 For full details on authoring shell scripts, runtime environment wrapping, and existing utilities, refer to the online guide:
 
-📖 **[Custom Shell Scripts Documentation](https://nix.kyle-kwong.com/shell-scripts/)**
+📖 **[Custom Shell Scripts Documentation](https://nix.kyle-kwong.com/nix-config/shell-scripts/)**

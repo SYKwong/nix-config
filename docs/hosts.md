@@ -9,7 +9,7 @@ This section documents host-specific machine configurations within the fleet. Ea
 > Shared modules—including Sunshine streaming with zero-touch tablet display, Hyprland, gaming, and shell scripts—are enabled by default across all fleet machines via `outputs.nix`. The table below highlights host-specific roles, hardware specifications, and quirks.
 
 > [!TIP]
-> **Adopting This Configuration**: External users should consult the [Adoption & Forking Guide](/adoption/) and run `./adopt.sh <hostname> <username>` to purge personal configurations and automatically scaffold a new host directory tailored to their hardware. There is no reason to keep the author's `framework16` or `mini-pc-k8` directories unless using them as a reference template.
+> **Adopting This Configuration**: External users should consult the [Adoption & Forking Guide](/nix-config/adoption/) and run `./adopt.sh <hostname> <username>` to purge personal configurations and automatically scaffold a new host directory tailored to their hardware. There is no reason to keep the author's `framework16` or `mini-pc-k8` directories unless using them as a reference template.
 
 ---
 

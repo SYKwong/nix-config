@@ -30,10 +30,10 @@ This directory contains declarative user-space configurations managed by [Home M
 Modules in `home/` operate strictly within user space. Packages are declared via `home.packages` (or program-specific `programs.<name>.enable` options), and user-level background daemons are managed via Home Manager's own `services.*` options or user systemd units (`systemd.user.services`). System-wide configuration (such as hardware drivers, kernel parameters, and root-level system services) belongs in `modules/`.
 
 ### 2. Live Out-of-Store Dotfiles
-Fast-iterating configuration files (Hyprland Lua scripts, Kitty, and Foot configurations) are not baked into the read-only Nix store. Instead, they reside in `config/` and are symlinked directly via `config.lib.file.mkOutOfStoreSymlink` in `home/misc/dotfile.nix`. See the [Out-of-Store Dotfiles](/dotfiles/) guide for details.
+Fast-iterating configuration files (Hyprland Lua scripts, Kitty, and Foot configurations) are not baked into the read-only Nix store. Instead, they reside in `config/` and are symlinked directly via `config.lib.file.mkOutOfStoreSymlink` in `home/misc/dotfile.nix`. See the [Out-of-Store Dotfiles](/nix-config/dotfiles/) guide for details.
 
 ### 3. Desktop Entries & Application Hiding
-Custom `.desktop` launchers and hiding rules for unwanted third-party app shortcuts are managed in `home/misc/`. See the [Managing Desktop Entries](/desktop-entries/) guide.
+Custom `.desktop` launchers and hiding rules for unwanted third-party app shortcuts are managed in `home/misc/`. See the [Managing Desktop Entries](/nix-config/desktop-entries/) guide.
 
 ### 4. Host-Specific User Extensions
 Common configurations are shared by all machines. If a machine requires unique user packages or settings, place them in `hosts/<hostname>/home/default.nix`, which is automatically discovered and imported.
@@ -50,7 +50,7 @@ Desktop media players are segmented by workload:
 ### 7. Shell History & Smart Suggestions (`atuin` + `atuin-to-fish`)
 Shell history is synchronized across devices headlessly via Atuin (`home/cli/atuin.nix`):
 - **Headless Sync**: Atuin operates purely as a background synchronization engine without intercepting terminal keybindings (`Ctrl+R` and Up-arrow remain native to FZF and Fish).
-- **Declarative Authentication**: Atuin automatically authenticates across the fleet using credentials stored in `secrets/atuin-credentials.age` via `atuin-auto-login` (integrated into systemd user services, `rebuild`, and `atuin-to-fish`), eliminating interactive login prompts. See [Atuin Shell History Sync Setup](/secrets/#4-atuin-shell-history-sync-setup-atuin-credentialsage) for instructions on registering or obtaining your 24-word encryption key.
+- **Declarative Authentication**: Atuin automatically authenticates across the fleet using credentials stored in `secrets/atuin-credentials.age` via `atuin-auto-login` (integrated into systemd user services, `rebuild`, and `atuin-to-fish`), eliminating interactive login prompts. See [Atuin Shell History Sync Setup](/nix-config/secrets/#4-atuin-shell-history-sync-setup-atuin-credentialsage) for instructions on registering or obtaining your 24-word encryption key.
 - **Autosuggestion Bridging**: Fish's inline ghost-text autosuggestions query local Fish history. To keep suggestions populated with synced commands across machines, `atuin-to-fish` runs automatically at the start of `rebuild` (`nrs`), extracting newly synced commands from Atuin and merging them into Fish history.
 - **Live Prompt Sync**: `fish/conf.d/history-merge.fish` merges newly written commands on prompt, ensuring open sessions immediately reflect incoming suggestions.
 

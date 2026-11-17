@@ -62,4 +62,4 @@ To run a game inside Gamescope, open the game's **Properties → General → Lau
 
 For full architectural deep-dives, latency benchmarks, and the complete Wayland vs Gamescope comparison matrix, refer to the online guide:
 
-📖 **[Gaming & Gamescope Documentation](https://nix.kyle-kwong.com/gaming/)**
+📖 **[Gaming & Gamescope Documentation](https://nix.kyle-kwong.com/nix-config/gaming/)**

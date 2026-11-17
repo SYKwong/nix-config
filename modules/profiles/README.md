@@ -34,4 +34,4 @@ modules/profiles/
 
 For fleet architecture and host profile composition, refer to the online guide:
 
-📖 **[System Profiles Documentation](https://nix.kyle-kwong.com/hosts/)**
+📖 **[System Profiles Documentation](https://nix.kyle-kwong.com/nix-config/hosts/)**

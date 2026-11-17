@@ -13,7 +13,7 @@ The existing host profiles (`framework16`, `mini-pc-k8`) reference persistent ha
 
 Before cloning or bootstrapping, **fork this repository to your own GitLab or GitHub account**.
 
-Forking first ensures that [`post-install`](/post-installation/) can seamlessly complete post-installation onboarding:
+Forking first ensures that [`post-install`](/nix-config/post-installation/) can seamlessly complete post-installation onboarding:
 1. **Dynamic SSH Remote:** Automatically rebinds your git remote origin from HTTPS to SSH (`git@<forge>:<your-username>/nix-config.git`).
 2. **Key Enrollment:** Authenticates with your personal GitHub or GitLab account (`gh` / `glab`) and uploads your new machine's user SSH public key.
 3. **Automated Push:** Commits and pushes your machine's probed hardware configuration (`hosts/<hostname>/hardware-configuration.nix`) and host public keys directly back to your own repository without permission errors.
@@ -117,10 +117,10 @@ Browse the `nixos-hardware` repository. Directory paths map directly to flake mo
 - Directory `lenovo/thinkpad/t14/amd/gen3/` → `inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen3`
 - Directory `dell/xps/15-9500/` → `inputs.nixos-hardware.nixosModules.dell-xps-15-9500`
 
-Add the module attribute directly to `extraModules` in [`outputs.nix`](/architecture/#flake-architecture--repository-layout).
+Add the module attribute directly to `extraModules` in [`outputs.nix`](/nix-config/architecture/#flake-architecture--repository-layout).
 
 ### What to Include If There Is No Device Profile
-If your machine is a custom desktop, a mini PC (such as the GMKtec NucBox K8 Plus in this fleet), or an unlisted laptop, compose the appropriate generic component modules under `extraModules` in [`outputs.nix`](/architecture/#flake-architecture--repository-layout):
+If your machine is a custom desktop, a mini PC (such as the GMKtec NucBox K8 Plus in this fleet), or an unlisted laptop, compose the appropriate generic component modules under `extraModules` in [`outputs.nix`](/nix-config/architecture/#flake-architecture--repository-layout):
 
 - **Processor (CPU)**:
   - AMD:
@@ -152,7 +152,7 @@ Even after `adopt.sh` clears system-level secrets, one user-space module referen
 
 | Module | Runtime Secret Path | Impact & Recommended Action |
 | :--- | :--- | :--- |
-| [`home/cli/atuin.nix`](/home-manager/#cli-and-terminal-utilities) | `/run/agenix/atuin-credentials` | `atuin-auto-login` is skipped cleanly. Authenticate manually via `atuin login` or create your own secret with `agenix -e atuin-credentials.age`. |
+| [`home/cli/atuin.nix`](/nix-config/home-manager/#cli-and-terminal-utilities) | `/run/agenix/atuin-credentials` | `atuin-auto-login` is skipped cleanly. Authenticate manually via `atuin login` or create your own secret with `agenix -e atuin-credentials.age`. |
 
 ---
 
@@ -163,7 +163,7 @@ This repository uses a **split CI architecture** by design:
 - **External Docs Deployment (`SYKwong/nix-docs`)**: Documentation is built and deployed to GitHub Pages by the unified `SYKwong/nix-docs` repository (triggered via `notify-docs` in `.gitlab-ci.yml`).
 
 > [!NOTE]
-> The primary motivation for this dual-forge design is **uninterrupted merge availability**: GitHub Actions frequently experiences outages and degraded runner queues that block PR merges when branch protections require CI checks to pass. Running core evaluations on GitLab CI ensures fleet merges are never blocked by GitHub downtime, while GitHub Actions is used strictly for non-critical wiki deployment. See [Split CI Architecture](/split-ci/) for the detailed breakdown.
+> The primary motivation for this dual-forge design is **uninterrupted merge availability**: GitHub Actions frequently experiences outages and degraded runner queues that block PR merges when branch protections require CI checks to pass. Running core evaluations on GitLab CI ensures fleet merges are never blocked by GitHub downtime, while GitHub Actions is used strictly for non-critical wiki deployment. See [Split CI Architecture](/nix-config/split-ci/) for the detailed breakdown.
 
 ```mermaid
 flowchart LR
@@ -250,4 +250,4 @@ If you prefer to host docs directly from GitLab without an external Starlight re
 
 Once your adopted configuration is committed and pushed to your fork:
 1. Boot into the NixOS Live USB.
-2. Proceed to the [System Installation Guide](/installation/) to prepare disk partitions and run `install-nixos`.
+2. Proceed to the [System Installation Guide](/nix-config/installation/) to prepare disk partitions and run `install-nixos`.

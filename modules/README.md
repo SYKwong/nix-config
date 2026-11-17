@@ -61,4 +61,4 @@ System modules are integrated into machine closures via [`outputs.nix`](../outpu
 
 For system architecture diagrams, module organization, and cross-host configuration, refer to the online guide:
 
-📖 **[NixOS System Modules Documentation](https://nix.kyle-kwong.com/modules/)**
+📖 **[NixOS System Modules Documentation](https://nix.kyle-kwong.com/nix-config/modules/)**

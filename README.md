@@ -40,7 +40,7 @@ git commit -m "feat: adopt configuration for <your-hostname>"
 git push origin main
 ```
 
-> 📖 **Full Guide:** [**Adoption & Forking Guide**](https://nix.kyle-kwong.com/adoption/)
+> 📖 **Full Guide:** [**Adoption & Forking Guide**](https://nix.kyle-kwong.com/nix-config/adoption/)
 
 ---
 
@@ -64,7 +64,7 @@ After installation and rebooting into your new system, complete automated onboar
 post-install
 ```
 
-> 📖 **Full Guides:** [**System Installation Guide**](https://nix.kyle-kwong.com/installation/) • [**Post-Installation Setup**](https://nix.kyle-kwong.com/post-installation/)
+> 📖 **Full Guides:** [**System Installation Guide**](https://nix.kyle-kwong.com/nix-config/installation/) • [**Post-Installation Setup**](https://nix.kyle-kwong.com/nix-config/post-installation/)
 
 ---
 
@@ -92,10 +92,10 @@ The complete documentation is maintained in-tree under [`docs/`](./docs/) and de
 
 | Category | Key Pages |
 | :--- | :--- |
-| **Getting Started** | [System Installation](https://nix.kyle-kwong.com/installation/) • [Adoption & Forking](https://nix.kyle-kwong.com/adoption/) • [Post-Installation Setup](https://nix.kyle-kwong.com/post-installation/) • [BIOS & Firmware Updates](https://nix.kyle-kwong.com/bios-update/) |
-| **Architecture & Fleet** | [Flake Architecture](https://nix.kyle-kwong.com/architecture/) • [Split CI Architecture](https://nix.kyle-kwong.com/split-ci/) • [Host Configurations](https://nix.kyle-kwong.com/hosts/) • [Home Manager](https://nix.kyle-kwong.com/home-manager/) • [Out-of-Store Dotfiles](https://nix.kyle-kwong.com/dotfiles/) |
-| **Modules & Features** | [System Modules](https://nix.kyle-kwong.com/modules/) • [Gaming & Gamescope](https://nix.kyle-kwong.com/gaming/) • [Sunshine Streaming & Tablet Display](https://nix.kyle-kwong.com/sunshine/) • [Declarative Flatpak](https://nix.kyle-kwong.com/flatpak/) • [Custom Shell Scripts](https://nix.kyle-kwong.com/shell-scripts/) • [Nixpkgs Overlays](https://nix.kyle-kwong.com/overlays/) |
-| **Guides & Operations** | [Secrets Management (Agenix)](https://nix.kyle-kwong.com/secrets/) • [Managing Desktop Entries](https://nix.kyle-kwong.com/desktop-entries/) • [Code Quality & Evaluation](https://nix.kyle-kwong.com/code-quality/) |
+| **Getting Started** | [System Installation](https://nix.kyle-kwong.com/nix-config/installation/) • [Adoption & Forking](https://nix.kyle-kwong.com/nix-config/adoption/) • [Post-Installation Setup](https://nix.kyle-kwong.com/nix-config/post-installation/) • [BIOS & Firmware Updates](https://nix.kyle-kwong.com/nix-config/bios-update/) |
+| **Architecture & Fleet** | [Flake Architecture](https://nix.kyle-kwong.com/nix-config/architecture/) • [Split CI Architecture](https://nix.kyle-kwong.com/nix-config/split-ci/) • [Host Configurations](https://nix.kyle-kwong.com/nix-config/hosts/) • [Home Manager](https://nix.kyle-kwong.com/nix-config/home-manager/) • [Out-of-Store Dotfiles](https://nix.kyle-kwong.com/nix-config/dotfiles/) |
+| **Modules & Features** | [System Modules](https://nix.kyle-kwong.com/nix-config/modules/) • [Gaming & Gamescope](https://nix.kyle-kwong.com/nix-config/gaming/) • [Sunshine Streaming & Tablet Display](https://nix.kyle-kwong.com/nix-config/sunshine/) • [Declarative Flatpak](https://nix.kyle-kwong.com/nix-config/flatpak/) • [Custom Shell Scripts](https://nix.kyle-kwong.com/nix-config/shell-scripts/) • [Nixpkgs Overlays](https://nix.kyle-kwong.com/nix-config/overlays/) |
+| **Guides & Operations** | [Secrets Management (Agenix)](https://nix.kyle-kwong.com/nix-config/secrets/) • [Managing Desktop Entries](https://nix.kyle-kwong.com/nix-config/desktop-entries/) • [Code Quality & Evaluation](https://nix.kyle-kwong.com/nix-config/code-quality/) |
 
 ---
 

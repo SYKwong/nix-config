@@ -96,4 +96,4 @@ For sub-millisecond latency (<0.5ms) without Wi-Fi jitter:
 
 For full architectural diagrams, watchdog socket polling details, and Moonlight client configuration, refer to the online guide:
 
-📖 **[Sunshine Streaming & Tablet Display Documentation](https://nix.kyle-kwong.com/sunshine/)**
+📖 **[Sunshine Streaming & Tablet Display Documentation](https://nix.kyle-kwong.com/nix-config/sunshine/)**

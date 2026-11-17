@@ -223,7 +223,7 @@ Vercel provides native Astro support and instant preview URLs for Pull Requests 
 If you are adopting or forking this repository, choose the deployment and CI topology that best matches your workflow:
 
 1. **Split CI (GitLab Primary + GitHub Pages)**:
-   Keep the default architecture documented in this guide. Follow the token generation and push-mirroring instructions in [Adoption: Reproducing Split CI](/adoption/#6-continuous-integration--the-split-ci-architecture).
+   Keep the default architecture documented in this guide. Follow the token generation and push-mirroring instructions in [Adoption: Reproducing Split CI](/nix-config/adoption/#6-continuous-integration--the-split-ci-architecture).
 
 2. **GitLab Primary + Cloudflare Pages / Vercel (Recommended Modern Alternative)**:
    Connect your documentation repository directly to Cloudflare Pages or Vercel with the build settings listed above. This eliminates GitHub Actions runner dependencies for docs while preserving GitLab CI's rock-solid merge gatekeeping.
@@ -234,4 +234,4 @@ If you are adopting or forking this repository, choose the deployment and CI top
 4. **Consolidate on GitHub (GitHub Actions Only)**:
    Delete `.gitlab-ci.yml`, set up `determinate-nix-action` for pull request checks, and deploy to GitHub Pages. Be aware that GitHub Actions outages can block pull request merges under branch protection rules.
 
-See the [Adoption & Forking Guide](/adoption/#alternatives-edge-hosting--single-forge-workflows) for step-by-step instructions and sample configurations.
+See the [Adoption & Forking Guide](/nix-config/adoption/#alternatives-edge-hosting--single-forge-workflows) for step-by-step instructions and sample configurations.

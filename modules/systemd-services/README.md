@@ -27,4 +27,4 @@ modules/systemd-services/
 
 For full details on modular NixOS system configuration, refer to the online guide:
 
-📖 **[NixOS System Modules Documentation](https://nix.kyle-kwong.com/modules/)**
+📖 **[NixOS System Modules Documentation](https://nix.kyle-kwong.com/nix-config/modules/)**

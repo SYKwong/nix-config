@@ -44,7 +44,7 @@ post-install --auth-only
 *(Or run `post-install --auth` during initial setup).*
 
 This interactive flow guides you through:
-1. **Atuin Shell History Sync**: Shell history credentials (`secrets/atuin-credentials.age`) are managed declaratively via Agenix, authenticating the host automatically upon rebuild without interactive prompts. See the [Atuin Secret Setup](/secrets/#4-atuin-shell-history-sync-setup-atuin-credentialsage) guide for instructions on registering or obtaining your 24-word encryption key.
+1. **Atuin Shell History Sync**: Shell history credentials (`secrets/atuin-credentials.age`) are managed declaratively via Agenix, authenticating the host automatically upon rebuild without interactive prompts. See the [Atuin Secret Setup](/nix-config/secrets/#4-atuin-shell-history-sync-setup-atuin-credentialsage) guide for instructions on registering or obtaining your 24-word encryption key.
 2. **GitHub CLI (`gh`)**: Authenticates via web session and uploads your public SSH key to your GitHub account.
 3. **GitLab CLI (`glab`)**: Authenticates via web session and uploads your public SSH key to your GitLab account (enabling git SSH push/pull access immediately).
 4. **NordVPN**: Triggers interactive login to enable VPN connectivity.
@@ -53,7 +53,7 @@ This interactive flow guides you through:
    ```bash
    git clone git@gitlab.com:kylekwong/dev-notes.git ~/Projects/dev-notes
    ```
-   Antigravity CLI automatically pulls updates at session start and pushes learned notes on session completion. See the [Antigravity Agent Memory Guide](/home-manager/#9-antigravity-agent-memory--just-in-time-sync-homecliantigravitynix) for details.
+   Antigravity CLI automatically pulls updates at session start and pushes learned notes on session completion. See the [Antigravity Agent Memory Guide](/nix-config/home-manager/#9-antigravity-agent-memory--just-in-time-sync-homecliantigravitynix) for details.
 
 ## Fleet Rekeying & Secret Propagation
 

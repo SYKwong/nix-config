@@ -59,4 +59,4 @@ sudo install-nixos "<host_name>" "<user_password>" ["<luks_password>"]
 
 For full provisioning instructions, declarative Disko schemes, and remote deployment recipes, refer to the online guide:
 
-📖 **[System Installation Guide](https://nix.kyle-kwong.com/installation/)**
+📖 **[System Installation Guide](https://nix.kyle-kwong.com/nix-config/installation/)**

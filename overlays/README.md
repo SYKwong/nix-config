@@ -69,4 +69,4 @@ Mount stable channels onto `pkgs.stable` so any module can consume them cleanly:
 
 For full details on existing fleet overlays and package overrides, refer to the online guide:
 
-📖 **[Nixpkgs Overlays Documentation](https://nix.kyle-kwong.com/overlays/)**
+📖 **[Nixpkgs Overlays Documentation](https://nix.kyle-kwong.com/nix-config/overlays/)**

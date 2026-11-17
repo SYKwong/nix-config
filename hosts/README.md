@@ -3,7 +3,7 @@
 This directory contains host-specific configurations for individual physical machines. Each subdirectory corresponds to a `hostname` declared in [`outputs.nix`](../outputs.nix).
 
 > [!NOTE]
-> **Adopting This Configuration**: External users should consult the [Adoption & Forking Guide](https://nix.kyle-kwong.com/adoption/) and use [`adopt.sh`](../adopt.sh) (`./adopt.sh <hostname> <username>`) to automatically purge personal configurations and scaffold a new host profile in this directory. There is no reason to keep `framework16` or `mini-pc-k8` unless using them as reference templates.
+> **Adopting This Configuration**: External users should consult the [Adoption & Forking Guide](https://nix.kyle-kwong.com/nix-config/adoption/) and use [`adopt.sh`](../adopt.sh) (`./adopt.sh <hostname> <username>`) to automatically purge personal configurations and scaffold a new host profile in this directory. There is no reason to keep `framework16` or `mini-pc-k8` unless using them as reference templates.
 
 ---
 
@@ -86,5 +86,5 @@ Every host is declared in the `hosts` set in [`outputs.nix`](../outputs.nix):
 
 For hardware specifications, Disko partition layouts, and host adoption instructions, refer to the online guide:
 
-📖 **[Host Configurations Documentation](https://nix.kyle-kwong.com/hosts/)**  
-📖 **[Adding a New Machine Guide](https://nix.kyle-kwong.com/installation/#adding-a-new-machine)**
+📖 **[Host Configurations Documentation](https://nix.kyle-kwong.com/nix-config/hosts/)**  
+📖 **[Adding a New Machine Guide](https://nix.kyle-kwong.com/nix-config/installation/#adding-a-new-machine)**
