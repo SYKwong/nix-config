@@ -41,6 +41,7 @@ let
     "ls-remote"
     "ls-tree"
     "merge-base"
+    "rebase"
     "remote"
     "rev-parse"
     "rm"

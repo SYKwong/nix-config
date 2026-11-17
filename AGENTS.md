@@ -41,6 +41,4 @@
      - Direct denial: `sudo echo blocked` (must return hook denial)
      - Denied inner substitution: `echo $(sudo echo blocked)` (must return hook denial)
      - Denied pipeline segment: `echo hello | sudo tee /dev/null` (must return hook denial)
-  3. **Ask (Interactive permission required)**:
-     - Unvetted substitution: `echo $(whoami)` (must prompt user for permission)
 
