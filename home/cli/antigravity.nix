@@ -3,6 +3,7 @@
 let
   projectRepos = [
     "dev-notes"
+    "nix-docs"
     "nixos-hardware"
     "noctalia"
   ];
