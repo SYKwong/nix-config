@@ -7,7 +7,7 @@ This document details the architectural and operational motivations behind the *
 
 The single biggest driving factor behind this design is **reliability and merge availability**: GitHub Actions experiences frequent service degradations and outages. When branch protections require GitHub Action checks to pass before merging, any GitHub Actions incident brings development to a grinding halt—blocking emergency system fixes, host configurations, and routine maintenance.
 
-By decoupling **system evaluation, fleet maintenance, and merge gatekeeping** onto GitLab CI, merges are never blocked by GitHub downtime. GitHub Actions is relegated strictly to the non-critical role of building and deploying the static documentation to GitHub Pages.
+By decoupling **system evaluation, fleet maintenance, and merge gatekeeping** onto GitLab CI, merges are never blocked by GitHub downtime. GitHub Actions is relegated strictly to non-critical installer ISO builds and triggering/running the `SYKwong/nix-docs` deployment to Cloudflare.
 
 ---
 
@@ -29,7 +29,7 @@ flowchart LR
     gitlab -- "Unidirectional Push Mirror<br/>(Fine-Grained PAT)" --> github["GitHub Repository<br/><b>Read-Only Mirror</b>"]
 
     subgraph github_actions ["GitHub Actions (Artifacts & Unified Docs)"]
-        notify_docs -. "docs-updated" .-> nix_docs["SYKwong/nix-docs<br/>(Astro Starlight + GitHub Pages)"]
+        notify_docs -. "docs-updated" .-> nix_docs["SYKwong/nix-docs<br/>(Astro Starlight + Cloudflare)"]
         github -- "Schedule / push / dispatch" --> build_iso["build-iso.yml<br/>(Custom Installer ISO)"]
     end
 ```
@@ -98,14 +98,14 @@ Using pure `git push` options:
 - The pipeline authenticates using GitLab's short-lived, job-scoped `CI_JOB_TOKEN`.
 - The Merge Request is created with the exact `nix flake update` summary and assigned to the repository owner. Automatic rebasing onto `main`, full system closure build verification, failure reporting (`build-error` label and log comment), and automatic merge are handled safely by `flake-update-verifier` on the local desktop workstation (`mini-pc-k8`) during off-peak hours (or interactively via `nverify`), ensuring broken upstream `nixpkgs` revisions never touch `main`. Similarly, `update-wallpaper` (`nwall`) utilizes native push options (`-o merge_request.create`, `-o merge_request.auto_merge`) to submit auto-merging lockfile bumps that bypass CI execution (`when: manual` + `allow_failure: true` rule in `.gitlab-ci.yml`) because they are verified locally via `nrs`.
 - Tag rotation (`create-weekly-stable`) tags the commit and purges tags older than 12 weeks using native git commands in an Alpine container.
-- Docs dispatch (`notify-docs`) triggers a `repository_dispatch` (`docs-updated`) on `SYKwong/nix-docs` when `docs/**` changes on `main` (requires the masked `GITHUB_DOCS_TOKEN` CI/CD variable). `SYKwong/nix-docs` also runs a scheduled fallback watcher that pulls the latest `docs/` from `nix-config` (`main`), commits any synced changes into its own repository, and deploys to GitHub Pages.
+- Docs dispatch (`notify-docs`) triggers a `repository_dispatch` (`docs-updated`) on `SYKwong/nix-docs` when `docs/**` changes on `main` (requires the masked `GITHUB_DOCS_TOKEN` CI/CD variable). `SYKwong/nix-docs` also runs a scheduled fallback watcher that pulls the latest `docs/` from `nix-config` (`main`), commits any synced changes into its own repository, and deploys to Cloudflare (`cloudflare/wrangler-action`).
 
-### E. Zero-Cost Edge CDN for Documentation
+### E. Multi-Repo Aggregation & Global Edge CDN (`nix-docs` + Cloudflare)
 
-While GitLab excels at isolated container pipelines and native git bot workflows, GitHub Pages provides an outstanding, zero-maintenance global edge CDN:
-- Globally distributed edge caching with fast response times.
-- Automated Let's Encrypt TLS certificate provisioning and renewal for custom apex/subdomains (`nix.kyle-kwong.com`).
-- Broad discoverability within the open-source ecosystem.
+Delegating documentation aggregation and Starlight builds to GitHub Actions on `SYKwong/nix-docs`—while serving the built site on Cloudflare Workers Static Assets (`cloudflare/wrangler-action`)—plays to each platform's strengths:
+- **Unlimited Free Runner Minutes**: Because `SYKwong/nix-docs` is a public repository, GitHub Actions provides unlimited free runner minutes for hourly sync checks, `npm ci`, and `astro build`, preserving GitLab Free CI/CD minutes strictly for `nix-config` flake validation and update bots.
+- **Cross-Forge Multi-Repo Aggregation**: Native Cloudflare Git integration can only watch pushes on a single repository. Running the sync in GitHub Actions allows `nix-docs` to pull Markdown from both GitLab (`kylekwong/nix-config`) and GitHub (`SYKwong/flake-templates`), commit synced changes into `nix-docs`, and deploy the unified `dist/` artifact.
+- **Cloudflare Edge Delivery**: Cloudflare Workers Static Assets serves `nix.kyle-kwong.com` over a global Anycast edge network with unlimited static bandwidth, automated TLS, and custom `404-page` routing without GitHub Pages' 100 GB/month bandwidth cap.
 
 Restricting GitHub Actions in this repository to [`.github/workflows/build-iso.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/build-iso.yml) (and delegating Astro Starlight site builds to `SYKwong/nix-docs`) confines GitHub runner execution strictly to non-critical static site generation and automated installer ISO artifact releases.
 
@@ -165,32 +165,30 @@ To allow the automated installer ISO release workflow ([`.github/workflows/build
 
 ---
 
-## 5. Alternatives to GitHub Actions for Wiki Hosting
+## 5. Wiki Hosting Platforms
 
-While this repository uses GitHub Actions to deploy static documentation to GitHub Pages, future users and adopters should strongly consider **Cloudflare Pages** as a modern edge hosting alternative.
-
-Cloudflare Pages connects natively to either **GitLab** or **GitHub**, completely bypassing the need for GitHub Actions runners and eliminating documentation deployment failures caused by GitHub Actions outages.
+This repository's unified wiki (`SYKwong/nix-docs`) deploys to **Cloudflare** (Workers / Pages), providing global Anycast edge caching and unlimited static bandwidth. Adopters can also connect `nix-docs` directly to **Cloudflare Pages** via native Git integration (eliminating GitHub Actions for docs builds), or host on **GitLab Pages** / **GitHub Pages**.
 
 ```mermaid
 flowchart TD
     gitlab["GitLab Primary Repository"] --> cf["Cloudflare Pages<br/>(Direct Webhook / Edge Build)"]
     gitlab --> pages["GitLab Pages<br/>(In-tree CI Runner Job)"]
-    gitlab --> gh_mirror["GitHub Mirror (PAT)"] --> gha["SYKwong/nix-docs<br/>(GitHub Actions)"] --> gh_pages["GitHub Pages"]
+    gitlab --> gh_mirror["GitHub Mirror (PAT)"] --> gha["SYKwong/nix-docs<br/>(GitHub Actions)"] --> cf_workers["Cloudflare Workers / Pages"]
 ```
 
-### Modern Edge Platform Comparison
+### Platform Comparison
 
 | Platform | Git Source | Build Trigger | Bandwidth / Limits | Key Benefits |
 | :--- | :--- | :--- | :--- | :--- |
-| **Cloudflare Pages** | GitLab or GitHub | Native Git Webhook | Unlimited bandwidth, 500 builds/mo (free) | Global Anycast edge, zero runner setup, connects directly to GitLab without needing a GitHub mirror |
+| **Cloudflare (Workers / Pages)** | GitLab or GitHub (`SYKwong/nix-docs`) | `repository_dispatch` + scheduled sync watcher (or native Git webhook) | Unlimited static bandwidth | Global Anycast edge, zero GitHub Pages bandwidth caps, works out-of-the-box with `nix-docs` |
 | **GitLab Pages** | GitLab | `.gitlab-ci.yml` `pages` job | Bound to GitLab CI pipeline minutes | Fully self-contained within GitLab; requires no third-party accounts or external webhooks |
-| **GitHub Pages** | GitHub (`SYKwong/nix-docs`) | `repository_dispatch` + scheduled sync watcher | 100 GB/mo; subject to Action runner health | Pulls & commits `docs/` from `nix-config` (`main`); vulnerable to GitHub Actions runner outages |
+| **GitHub Pages** | GitHub | GitHub Actions (`actions/deploy-pages`) | 100 GB/mo; subject to Action runner health | Native GitHub hosting without external cloud accounts |
 
 ---
 
-### Recommended Setup: Cloudflare Pages
+### Recommended Setup: Native Cloudflare Pages (Zero GitHub Actions)
 
-Cloudflare Pages provides arguably the best alternative for adopters who host their `nix-docs` Starlight site on GitLab or GitHub and do not wish to rely on GitHub Actions runners for static site hosting.
+For adopters who want to connect their `nix-docs` Starlight repository directly to Cloudflare Pages without using GitHub Actions runners for static site builds:
 
 #### Build Configuration Settings (in `nix-docs`):
 - **Framework preset**: `Astro`
@@ -208,7 +206,7 @@ Cloudflare Pages provides arguably the best alternative for adopters who host th
 
 If you are adopting or forking this repository, choose the deployment and CI topology that best matches your workflow:
 
-1. **Split CI (GitLab Primary + GitHub Pages)**:
+1. **Split CI (GitLab Primary + `nix-docs` on Cloudflare)**:
    Keep the default architecture documented in this guide. Follow the token generation and push-mirroring instructions in [Adoption: Reproducing Split CI](/nix-config/adoption/#6-continuous-integration--the-split-ci-architecture).
 
 2. **GitLab Primary + Cloudflare Pages (Recommended Modern Alternative)**:

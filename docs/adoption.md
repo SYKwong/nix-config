@@ -160,7 +160,7 @@ Even after `adopt.sh` clears system-level secrets, one user-space module referen
 
 This repository uses a **split CI architecture** by design:
 - **GitLab CI ([`.gitlab-ci.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.gitlab-ci.yml))**: Serves as the primary, authoritative CI engine for the fleet. It runs system-level flake validations (`nix flake check`), tree formatting enforcement (`nix fmt`), automated `flake.lock` update bots with merge request creation, and docs dispatch (`notify-docs`).
-- **External Docs Deployment (`SYKwong/nix-docs`)**: Documentation is built and deployed to GitHub Pages by the unified `SYKwong/nix-docs` repository (triggered via `notify-docs` in `.gitlab-ci.yml`).
+- **External Docs Deployment (`SYKwong/nix-docs`)**: Documentation is built and deployed to Cloudflare (Workers / Pages) by the unified `SYKwong/nix-docs` repository (triggered via `notify-docs` in `.gitlab-ci.yml`).
 
 > [!NOTE]
 > The primary motivation for this dual-forge design is **uninterrupted merge availability**: GitHub Actions frequently experiences outages and degraded runner queues that block PR merges when branch protections require CI checks to pass. Running core evaluations on GitLab CI ensures fleet merges are never blocked by GitHub downtime, while GitHub Actions is used strictly for non-critical wiki deployment. See [Split CI Architecture](/nix-config/split-ci/) for the detailed breakdown.
@@ -173,12 +173,12 @@ flowchart LR
         gitlab --> lock_bot["update-flake-mr<br/>(automated lock update)"]
         gitlab -- "docs/** on main" --> dispatch["notify-docs<br/>(dispatch to SYKwong/nix-docs)"]
     end
-    dispatch -. "docs-updated" .-> nix_docs["SYKwong/nix-docs<br/>(Deploy to GitHub Pages)"]
+    dispatch -. "docs-updated" .-> nix_docs["SYKwong/nix-docs<br/>(Deploy to Cloudflare)"]
 ```
 
 ### Reproducing the Split CI Setup (GitLab Primary + GitHub Read-Only Mirror)
 
-If you want to maintain this setup—keeping the reliability of GitLab CI for system checks while leveraging GitHub Pages for free static wiki hosting—follow these steps:
+If you want to maintain this setup—keeping the reliability of GitLab CI for system checks while leveraging Cloudflare + `nix-docs` for static wiki hosting—follow these steps:
 
 #### Step 1: Create Repositories on Both Forges
 1. Create your main private or public repository on **GitLab** (e.g. `gitlab.com/<username>/nix-config`).
@@ -212,9 +212,9 @@ GitLab needs write permissions to push branches and tags to your GitHub reposito
 5. Click the refresh / sync icon under **Mirrored repositories** to trigger the initial push mirror to GitHub.
 
 #### Step 4: Configure Documentation Dispatch & Sync (`nix-docs`)
-1. Host your Astro Starlight site in a dedicated docs repository (like `SYKwong/nix-docs`) with GitHub Pages enabled (**Settings → Pages → Source: GitHub Actions**).
+1. Host your Astro Starlight site in a dedicated docs repository (like `SYKwong/nix-docs`) connected to Cloudflare (`CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets for `cloudflare/wrangler-action`, or native Cloudflare Pages Git integration).
 2. Create a fine-grained GitHub PAT with **Contents: Read and write** on that docs repository and save it in GitLab **Settings → CI/CD → Variables** as `GITHUB_DOCS_TOKEN` (masked and protected).
-3. Update the `notify-docs` URL in `.gitlab-ci.yml` to your docs repository's `/dispatches` endpoint. Whenever changes to `docs/**` land on `main` (or on `nix-docs`'s scheduled fallback cron), `nix-docs` pulls the latest `docs/` from `nix-config`, commits any synced changes into its own tree, and deploys to GitHub Pages.
+3. Update the `notify-docs` URL in `.gitlab-ci.yml` to your docs repository's `/dispatches` endpoint. Whenever changes to `docs/**` land on `main` (or on `nix-docs`'s scheduled fallback cron), `nix-docs` pulls the latest `docs/` from `nix-config`, commits any synced changes into its own tree, and deploys to Cloudflare.
 
 #### Step 5: Enforce Read-Only Hygiene on GitHub
 To prevent split-brain states and merge conflicts:

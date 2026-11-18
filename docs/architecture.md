@@ -60,7 +60,7 @@ nix-config/
 │   ├── kitty/                  # Terminal configuration and session templates
 │   └── starship/               # Cross-shell prompt themes
 │
-├── docs/                       # Starlight documentation website (hosted on GitHub Pages)
+├── docs/                       # Documentation Markdown (synced to SYKwong/nix-docs & Cloudflare)
 ├── secrets/                    # Agenix encrypted secret vaults
 │   ├── keys.nix                # Public SSH keys (single source of truth)
 │   └── secrets.nix             # Encryption rules and recipient mappings
