@@ -115,18 +115,18 @@ Per-project and playground flake environments load automatically on `cd` via `ho
 
 Idle timeouts and power states are managed natively by Noctalia (`home/desktop/noctalia.nix`) using the Wayland `ext_idle_notifier_v1` protocol, consolidating idle handling without requiring external daemons like `hypridle`.
 
-### Desktop Scaling Multiplier (`idle_scale`)
-To accommodate living-room HTPC and desktop workstation environments where aggressive power saving is disruptive, `home/desktop/noctalia.nix` dynamically adjusts idle intervals based on host type:
-- **Laptops (`framework16`):** Uses baseline timeouts (`idle_scale = 1`).
-- **Desktops / HTPCs (`mini-pc-k8`):** Applies a 3x multiplier (`idle_scale = 3`) when `is_desktop = true`.
+### Desktop vs. Laptop Idle Profiles
+To accommodate living-room HTPC and desktop workstation environments where aggressive power saving is disruptive, `home/desktop/noctalia.nix` adjusts idle behaviors based on host type (`is_desktop`):
+- **Laptops (`framework16`):** Enables backlight dim (150s), screen lock (300s), DPMS screen-off (330s), keyboard backlight off (330s), and `suspend-then-hibernate` (600s).
+- **Desktops / HTPCs (`mini-pc-k8`):** Omits backlight dim and DPMS screen-off, and extends the screen lock timeout to 15 minutes (`900` seconds).
 
 ### Timeline & Behaviors
 
-| Laptop (1x) | Desktop (3x) | Target / Action | Behavior Name | Description |
+| Laptop | Desktop | Target / Action | Behavior Name | Description |
 | :--- | :--- | :--- | :--- | :--- |
-| **2.5 min** (150s) | **7.5 min** (450s) | Backlight Dim | `dim` | Reduces screen brightness to 5% (`brightnessctl -s set 5%`); automatically restored on user input (`brightnessctl -r`). |
+| **2.5 min** (150s) | *Omitted* | Backlight Dim | `dim` | Reduces laptop backlight brightness to 5% (`brightnessctl -s set 5%`); omitted on desktops/HTPCs. |
 | **5 min** (300s) | **15 min** (900s) | Screen Lock | `lock` | Triggers Noctalia's built-in session lock. |
-| **5.5 min** (330s) | **16.5 min** (990s) | Screen Off | `screen-off` | Powers down displays via Wayland DPMS; wakes automatically on input. |
+| **5.5 min** (330s) | *Omitted* | Screen Off | `screen-off` | Powers down displays via Wayland DPMS on laptops; omitted on desktops/HTPCs to prevent TV standby. |
 | **5.5 min** (330s) | *N/A* | Keyboard Light *(Framework 16)* | `kb-backlight` | Turns off keyboard backlight (`kb-light-manager off 32ac 0012`); restores on activity. |
 | **10 min** (600s) | *N/A* | Suspend *(Framework 16)* | `suspend-then-hibernate` | Executes `systemctl suspend-then-hibernate`. |
 

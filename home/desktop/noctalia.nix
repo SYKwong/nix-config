@@ -1,5 +1,6 @@
 {
   inputs,
+  lib,
   hostname,
   ...
 }:
@@ -57,10 +58,7 @@ let
   lockscreen_clock_cx = lockscreen_margin + (lockscreen_clock_width / 2);
   lockscreen_clock_cy = lockscreen_margin + (lockscreen_clock_height / 2);
 
-  idle_scale = if (current_host_config.is_desktop or false) then 3 else 1;
-  idle_dim_timeout = 150 * idle_scale;
-  idle_lock_timeout = 300 * idle_scale;
-  idle_screen_off_timeout = 330 * idle_scale;
+  idle_lock_timeout = if (current_host_config.is_desktop or false) then 900 else 300;
 
   wallpaper_directory = if inputs ? wallpapers then "${inputs.wallpapers}" else "${../../wallpaper}";
   default_wallpaper =
@@ -202,23 +200,24 @@ in
         ];
         pre_action_fade_seconds = 0;
         behavior = {
-          dim = {
-            action = "command";
-            command = "brightnessctl -s set 5%";
-            resume_command = "brightnessctl -r";
-            timeout = idle_dim_timeout;
-          };
-
           lock = {
             action = "lock";
             enabled = true;
             timeout = idle_lock_timeout;
           };
+        }
+        // lib.optionalAttrs (!(current_host_config.is_desktop or false)) {
+          dim = {
+            action = "command";
+            command = "brightnessctl -s set 5%";
+            resume_command = "brightnessctl -r";
+            timeout = 150;
+          };
 
           screen-off = {
             action = "screen_off";
             enabled = true;
-            timeout = idle_screen_off_timeout;
+            timeout = 330;
           };
         }
         // (current_host_config.idle_behaviors or { });
