@@ -134,7 +134,7 @@ let
 
       echo "All host configurations built successfully! Merging MR !$mr_iid into main..."
       glab mr update "$mr_iid" --unlabel build-error --yes >/dev/null 2>&1 || true
-      glab mr merge "$mr_iid" --squash --yes --remove-source-branch
+      glab mr merge "$mr_iid" --auto-merge=false --squash --yes --remove-source-branch
       echo "Successfully merged verified MR !$mr_iid into main."
 
       rm -f "$stamp_file"
