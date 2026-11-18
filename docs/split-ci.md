@@ -167,14 +167,13 @@ To allow the automated installer ISO release workflow ([`.github/workflows/build
 
 ## 5. Alternatives to GitHub Actions for Wiki Hosting
 
-While this repository uses GitHub Actions to deploy static documentation to GitHub Pages, future users and adopters should strongly consider modern edge hosting alternatives—particularly **Cloudflare Pages** and **Vercel**.
+While this repository uses GitHub Actions to deploy static documentation to GitHub Pages, future users and adopters should strongly consider **Cloudflare Pages** as a modern edge hosting alternative.
 
-These platforms connect natively to either **GitLab** or **GitHub**, completely bypassing the need for GitHub Actions runners and eliminating documentation deployment failures caused by GitHub Actions outages.
+Cloudflare Pages connects natively to either **GitLab** or **GitHub**, completely bypassing the need for GitHub Actions runners and eliminating documentation deployment failures caused by GitHub Actions outages.
 
 ```mermaid
 flowchart TD
     gitlab["GitLab Primary Repository"] --> cf["Cloudflare Pages<br/>(Direct Webhook / Edge Build)"]
-    gitlab --> vercel["Vercel<br/>(Direct Webhook / Edge Build)"]
     gitlab --> pages["GitLab Pages<br/>(In-tree CI Runner Job)"]
     gitlab --> gh_mirror["GitHub Mirror (PAT)"] --> gha["SYKwong/nix-docs<br/>(GitHub Actions)"] --> gh_pages["GitHub Pages"]
 ```
@@ -184,7 +183,6 @@ flowchart TD
 | Platform | Git Source | Build Trigger | Bandwidth / Limits | Key Benefits |
 | :--- | :--- | :--- | :--- | :--- |
 | **Cloudflare Pages** | GitLab or GitHub | Native Git Webhook | Unlimited bandwidth, 500 builds/mo (free) | Global Anycast edge, zero runner setup, connects directly to GitLab without needing a GitHub mirror |
-| **Vercel** | GitLab or GitHub | Native Git Webhook | 100 GB bandwidth (free hobby tier) | Instant preview deployments on MRs/PRs, zero-config Astro detection |
 | **GitLab Pages** | GitLab | `.gitlab-ci.yml` `pages` job | Bound to GitLab CI pipeline minutes | Fully self-contained within GitLab; requires no third-party accounts or external webhooks |
 | **GitHub Pages** | GitHub (`SYKwong/nix-docs`) | `repository_dispatch` + scheduled sync watcher | 100 GB/mo; subject to Action runner health | Pulls & commits `docs/` from `nix-config` (`main`); vulnerable to GitHub Actions runner outages |
 
@@ -202,19 +200,7 @@ Cloudflare Pages provides arguably the best alternative for adopters who host th
   - `NODE_VERSION`: `22`
 
 > [!TIP]
-> Because `SYKwong/nix-docs` commits synced documentation directly into its repository tree, connecting Cloudflare Pages or Vercel to `nix-docs` works out of the box with zero custom multi-repo fetch scripts.
-
----
-
-### Recommended Setup: Vercel
-
-Vercel provides native Astro support and instant preview URLs for Pull Requests and Merge Requests.
-
-#### Build Configuration Settings (in `nix-docs`):
-- **Framework preset**: `Astro`
-- **Build Command**: `npm run build`
-- **Output Directory**: `dist`
-- **Node.js Version**: `22.x` (configured under **Project Settings** &rarr; **General**)
+> Because `SYKwong/nix-docs` commits synced documentation directly into its repository tree, connecting Cloudflare Pages to `nix-docs` works out of the box with zero custom multi-repo fetch scripts.
 
 ---
 
@@ -225,8 +211,8 @@ If you are adopting or forking this repository, choose the deployment and CI top
 1. **Split CI (GitLab Primary + GitHub Pages)**:
    Keep the default architecture documented in this guide. Follow the token generation and push-mirroring instructions in [Adoption: Reproducing Split CI](/nix-config/adoption/#6-continuous-integration--the-split-ci-architecture).
 
-2. **GitLab Primary + Cloudflare Pages / Vercel (Recommended Modern Alternative)**:
-   Connect your documentation repository directly to Cloudflare Pages or Vercel with the build settings listed above. This eliminates GitHub Actions runner dependencies for docs while preserving GitLab CI's rock-solid merge gatekeeping.
+2. **GitLab Primary + Cloudflare Pages (Recommended Modern Alternative)**:
+   Connect your documentation repository directly to Cloudflare Pages with the build settings listed above. This eliminates GitHub Actions runner dependencies for docs while preserving GitLab CI's rock-solid merge gatekeeping.
 
 3. **Consolidate on GitLab (GitLab CI + GitLab Pages)**:
    Delete `.github/` and add a `pages` job to `.gitlab-ci.yml` to build and serve the wiki directly through GitLab Pages.

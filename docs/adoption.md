@@ -227,8 +227,8 @@ To prevent split-brain states and merge conflicts:
 
 If you prefer not to rely on GitHub Actions or maintain accounts across two git forges, consider these alternatives:
 
-#### 1. Cloudflare Pages or Vercel (Recommended Edge Alternatives)
-Rather than using GitHub Actions for your dedicated `nix-docs` Starlight repository, you can connect `nix-docs` directly to **Cloudflare Pages** or **Vercel**:
+#### 1. Cloudflare Pages (Recommended Edge Alternative)
+Rather than using GitHub Actions for your dedicated `nix-docs` Starlight repository, you can connect `nix-docs` directly to **Cloudflare Pages**:
 - **Benefits**: Unlimited edge bandwidth (Cloudflare), automated preview deployments, zero GitHub Actions dependencies, and complete immunity to GitHub Actions outages.
 - **Build Configuration** (in `nix-docs`):
   - **Build command**: `npm run build`
