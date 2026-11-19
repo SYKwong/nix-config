@@ -30,6 +30,7 @@ Configuration is declared in [`default.nix`](./default.nix) and imported across 
 ## Why Gamescope Is Opted-In Per Game
 
 Games run directly under Hyprland by default to leverage direct scanout for lowest possible latency. Gamescope is not set as the default desktop launcher because:
+
 - **Display Geometry Mismatches**: Desktops and laptops run varied aspect ratios (16:10 2560x1600 on Framework 16 vs 16:9 external displays) that break with hardcoded resolutions.
 - **Third-Party Launchers**: Multi-window pre-launchers (EA App, Ubisoft Connect, Paradox) often fail to render or gain focus inside nested Gamescope containers.
 - **Cursor Trapping**: Gamescope confines cursor navigation, complicating multi-monitor workflows.
@@ -40,15 +41,16 @@ Games run directly under Hyprland by default to leverage direct scanout for lowe
 
 To run a game inside Gamescope, open the game's **Properties → General → Launch Options** in Steam:
 
-| Use Case | Launch Option Command |
-| :--- | :--- |
-| **Standard Fullscreen** | `gamescope -W 1920 -H 1080 -f -r 144 -- %command%` |
-| **AMD FSR Upscaling** | `gamescope -w 1280 -h 720 -W 1920 -H 1080 -F fsr -f -- %command%` |
-| **Integer Scaling (Retro)** | `gamescope -w 640 -h 480 -W 1920 -H 1080 -S integer -f -- %command%` |
-| **60 FPS Frame Limiting** | `gamescope -W 1920 -H 1080 -r 60 --limiter-spatial -f -- %command%` |
-| **HDR Output** | `gamescope --hdr-enabled --hdr-debug-force-output -W 2560 -H 1440 -f -- %command%` |
+| Use Case                    | Launch Option Command                                                              |
+| :-------------------------- | :--------------------------------------------------------------------------------- |
+| **Standard Fullscreen**     | `gamescope -W 1920 -H 1080 -f -r 144 -- %command%`                                 |
+| **AMD FSR Upscaling**       | `gamescope -w 1280 -h 720 -W 1920 -H 1080 -F fsr -f -- %command%`                  |
+| **Integer Scaling (Retro)** | `gamescope -w 640 -h 480 -W 1920 -H 1080 -S integer -f -- %command%`               |
+| **60 FPS Frame Limiting**   | `gamescope -W 1920 -H 1080 -r 60 --limiter-spatial -f -- %command%`                |
+| **HDR Output**              | `gamescope --hdr-enabled --hdr-debug-force-output -W 2560 -H 1440 -f -- %command%` |
 
 ### Key CLI Flags Reference:
+
 - `-w`, `-h`: Internal render resolution (what the game sees).
 - `-W`, `-H`: Output display resolution (target window/monitor size).
 - `-r`: Display refresh rate in Hz (e.g. `60`, `120`, `144`).

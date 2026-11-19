@@ -35,6 +35,7 @@ Then add `./my-package.nix` to `imports` in [`overlays/default.nix`](./default.n
 ## Common Patterns
 
 ### 1. Patching an Upstream Package
+
 ```nix
 {
   nixpkgs.overlays = [
@@ -48,7 +49,9 @@ Then add `./my-package.nix` to `imports` in [`overlays/default.nix`](./default.n
 ```
 
 ### 2. Exposing Pinned Channels (`pkgs.stable`)
+
 Mount stable channels onto `pkgs.stable` so any module can consume them cleanly:
+
 ```nix
 { inputs, ... }:
 {

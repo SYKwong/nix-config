@@ -1,8 +1,9 @@
 # Repository Guidelines
 
 ## NixOS & Repository Conventions
+
 - Dependencies: `flake.lock` is managed strictly by CI; do not update or modify locks locally unless `flake.nix` was modified.
-- Formatting: Format code with `nix fmt`. It currently supports bash/sh, lua, nix, and toml.
+- Formatting: Format code with `nix fmt`. It currently supports bash/sh, c/c++, lua, markdown, nix, and toml.
 - Hardware files: Never edit auto-generated `hardware-configuration.nix` files.
 - Portability & Modularity: Avoid hardcoded numeric UIDs/GIDs (prefer dynamic `username` and `users` group). Keep host-specific logic in `hosts/<name>/` and reusable features in `modules/<category>/`.
 - Hyprland Lua Conventions: Use standard `function table.name()` syntax instead of anonymous assignments (`table.name = function()`). Keybinding action helpers in `utils.lua` should return callback closures rather than raw command strings.
@@ -11,24 +12,29 @@
 - Nix Store Access: Never attempt direct filesystem reads, searches, or traversals on `/nix/store` (these are hard-locked and will block execution). Always inspect configuration options, module definitions, and package metadata declaratively via `nix eval` (e.g., `nix eval .#nixosConfigurations.<host>.options.<option>` or `nix eval .#nixosConfigurations.<host>.config.<path>`). Only if declarative evaluation fails or raw source inspection is strictly unavoidable should you trigger a store read request, providing the exact path and rationale.
 
 ## Git & Workflow
+
 - Branching: If currently on `main`, automatically create and switch to a new branch for the task without asking for permission. If on another branch, ask the user whether to branch from the current branch or from `main`.
 
 ## Provisioning & Installation Scripts (install-nixos, post-install)
+
 - Hands-off by Default: Host onboarding and setup scripts must run unattended/non-interactively by default. Interactive setup steps (e.g. service logins) must be opt-in behind flags (e.g. `--auth`).
 - Intent & Prompts: When an explicit setup flag is passed, proceed directly without redundant per-service confirmation prompts (`[Y/n]`), using non-interactive CLI flags where available (e.g., `glab auth login --web`).
 - No Redundant PATH Checks: Avoid defensive `command -v` checks in onboarding scripts for tools declaratively managed via NixOS / Home Manager.
 
 ## GitLab CI & Scripting Conventions
+
 - Minimal Container Environment (`nixos/nix:latest`): The CI runner image contains only minimal core binaries (`sh`, `git`, `nix`). Common text-processing utilities like `awk` are not pre-installed on `PATH`.
 - POSIX Shell Redirection: Avoid piping command output into subshell loops (e.g. `cmd | while read ...; do exit 0; done`) when early termination is required, as `exit` within a pipeline subshell does not terminate the parent script. Use file redirection instead (`cmd > tmp.txt && while read -r line; do ... done < tmp.txt`).
 - Declarative JSON Evaluation: In `nixos/nix:latest`, parse JSON files via `nix eval --impure --raw --expr 'let l = (builtins.fromJSON (builtins.readFile ./file.json)); in ...'` rather than relying on external utilities like `jq` on `PATH`.
 
 ## Documentation & README Conventions
+
 - Lean READMEs: Keep root and module-level `README.md` files lean, concise, and focused strictly on immediate directory taxonomy, file maps, key option toggles, and daily quick-reference commands. Avoid duplicating multi-step guides, operational walkthroughs, reference tables, or setup tutorials in READMEs.
 - Heavy on Starlight Wiki: Centralize all comprehensive operational documentation, architectural deep-dives, hardware specifications, launch recipes, and multi-step tutorials in-tree under `docs/` (deployed to `nix.kyle-kwong.com`). Every module README must conclude with a direct link to its corresponding Starlight wiki page.
 - Synchronization: When adding or updating features, keep documentation in `docs/` synchronized with the implementation.
 
 ## Antigravity CLI Verification (`home/cli/antigravity.nix`)
+
 - Mandatory Test Suite: Whenever `home/cli/antigravity.nix` is modified, execute the verification suite before marking a task ready for merge:
   1. **Pass (Auto-approved / 0 prompts)**:
      - Nested substitution: `echo $(basename $(dirname $(which git)))`
@@ -41,4 +47,3 @@
      - Direct denial: `sudo echo blocked` (must return hook denial)
      - Denied inner substitution: `echo $(sudo echo blocked)` (must return hook denial)
      - Denied pipeline segment: `echo hello | sudo tee /dev/null` (must return hook denial)
-

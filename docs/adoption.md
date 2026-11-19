@@ -14,6 +14,7 @@ The existing host profiles (`framework16`, `mini-pc-k8`) reference persistent ha
 Before cloning or bootstrapping, **fork this repository to your own GitLab or GitHub account**.
 
 Forking first ensures that [`post-install`](/nix-config/post-installation/) can seamlessly complete post-installation onboarding:
+
 1. **Dynamic SSH Remote:** Automatically rebinds your git remote origin from HTTPS to SSH (`git@<forge>:<your-username>/nix-config.git`).
 2. **Key Enrollment:** Authenticates with your personal GitHub or GitLab account (`gh` / `glab`) and uploads your new machine's user SSH public key.
 3. **Automated Push:** Commits and pushes your machine's probed hardware configuration (`hosts/<hostname>/hardware-configuration.nix`) and host public keys directly back to your own repository without permission errors.
@@ -25,12 +26,16 @@ Forking first ensures that [`post-install`](/nix-config/post-installation/) can 
 If your fork or mirror is hosted on GitHub, GitHub enforces strict security restrictions on newly created repositories and forks. To ensure that the automated ISO builder ([`.github/workflows/build-iso.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/build-iso.yml)) executes successfully, configure these settings in your GitHub repository (documentation deployment is handled separately by `SYKwong/nix-docs`):
 
 ### A. Enable Workflows on your Fork
+
 By default, GitHub disables Actions on forked repositories to prevent unintended runner usage:
+
 1. Navigate to the **Actions** tab in your fork (`https://github.com/<your-username>/nix-config/actions`).
 2. Click the green button: **"I understand my workflows, go ahead and enable them"**.
 
 ### B. Action Execution Policy (Allowed Actions)
+
 The repository adheres to the principle of least privilege, restricting execution to official GitHub actions and an explicit third-party vendor allowlist:
+
 1. Navigate to **Settings** → **Actions** → **General**.
 2. Under **Actions permissions**, select **"Allow select actions and reusable workflows"**.
 3. Check **"Allow actions created by GitHub"** (permits official actions like `actions/checkout` and `actions/upload-artifact`).
@@ -42,20 +47,22 @@ The repository adheres to the principle of least privilege, restricting executio
 5. Click **Save**.
 
 ### C. Grant Workflow Write Permissions
+
 The installer ISO workflow compiles the ISO and publishes it to your fork's GitHub Releases, which requires write access to repository contents, while future bot automations require pull request permissions:
+
 1. In **Settings** → **Actions** → **General**, scroll down to **Workflow permissions**.
 2. Select **Read and write permissions**.
 3. Check **Allow GitHub Actions to create and approve pull requests**.
 4. Click **Save**.
 
 > [!WARNING]
-> If repository workflow permissions remain set to the default *Read repository contents permission*, `build-iso.yml` will compile the ISO but fail at the release upload step with `Resource not accessible by integration (HTTP 403)`.
+> If repository workflow permissions remain set to the default _Read repository contents permission_, `build-iso.yml` will compile the ISO but fail at the release upload step with `Resource not accessible by integration (HTTP 403)`.
 
 ### Workflow Capabilities & Required Permissions Matrix
 
-| Workflow | File | Key Actions | Required Permissions | Function |
-| :--- | :--- | :--- | :--- | :--- |
-| **Build Installer ISO** | [`.github/workflows/build-iso.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/build-iso.yml) | `cachix/install-nix-action`, `actions/upload-artifact`, `softprops/action-gh-release` | `contents: write` | Builds live installer ISO via Nix, uploads monthly build artifact, and publishes rolling release assets |
+| Workflow                | File                                                                                                                     | Key Actions                                                                           | Required Permissions | Function                                                                                                |
+| :---------------------- | :----------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------ | :------------------- | :------------------------------------------------------------------------------------------------------ |
+| **Build Installer ISO** | [`.github/workflows/build-iso.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.github/workflows/build-iso.yml) | `cachix/install-nix-action`, `actions/upload-artifact`, `softprops/action-gh-release` | `contents: write`    | Builds live installer ISO via Nix, uploads monthly build artifact, and publishes rolling release assets |
 
 ---
 
@@ -82,15 +89,15 @@ git push origin main
 
 ### Script CLI Options
 
-| Flag | Description |
-| :--- | :--- |
-| `<hostname>` | **Required**. Target machine hostname (e.g. `workstation`, `thinkpad`). |
-| `<username>` | **Required**. Primary user account name (e.g. `alice`). |
-| `--laptop` | Enables portable device modules (power management, sleep hooks). |
-| `--desktop` | Enables desktop workstation modules (*default*). |
-| `--luks` | Configures LUKS disk encryption with TPM2 auto-unlock in `disko.nix`. |
-| `--disk <path>` | Pre-configures persistent drive device path in `disko.nix`. |
-| `--remote <url>` | Sets the git remote `origin` to your fork repository URL. |
+| Flag               | Description                                                                  |
+| :----------------- | :--------------------------------------------------------------------------- |
+| `<hostname>`       | **Required**. Target machine hostname (e.g. `workstation`, `thinkpad`).      |
+| `<username>`       | **Required**. Primary user account name (e.g. `alice`).                      |
+| `--laptop`         | Enables portable device modules (power management, sleep hooks).             |
+| `--desktop`        | Enables desktop workstation modules (_default_).                             |
+| `--luks`           | Configures LUKS disk encryption with TPM2 auto-unlock in `disko.nix`.        |
+| `--disk <path>`    | Pre-configures persistent drive device path in `disko.nix`.                  |
+| `--remote <url>`   | Sets the git remote `origin` to your fork repository URL.                    |
 | `--keep-reference` | Preserves the author's host configs under `hosts/_reference/` for reference. |
 
 ### What `adopt.sh` Automates
@@ -112,7 +119,9 @@ git push origin main
 Hardware configurations benefit from vendor-tested kernel parameters, microcode updates, and power profiles provided by [NixOS/nixos-hardware](https://github.com/NixOS/nixos-hardware).
 
 ### Finding an OEM Device Profile
+
 Browse the `nixos-hardware` repository. Directory paths map directly to flake module attributes by replacing slashes `/` with hyphens `-`:
+
 - Directory `framework/16-7040-amd/` → `inputs.nixos-hardware.nixosModules.framework-16-7040-amd`
 - Directory `lenovo/thinkpad/t14/amd/gen3/` → `inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen3`
 - Directory `dell/xps/15-9500/` → `inputs.nixos-hardware.nixosModules.dell-xps-15-9500`
@@ -120,6 +129,7 @@ Browse the `nixos-hardware` repository. Directory paths map directly to flake mo
 Add the module attribute directly to `extraModules` in [`outputs.nix`](/nix-config/architecture/#flake-architecture--repository-layout).
 
 ### What to Include If There Is No Device Profile
+
 If your machine is a custom desktop, a mini PC (such as the GMKtec NucBox K8 Plus in this fleet), or an unlisted laptop, compose the appropriate generic component modules under `extraModules` in [`outputs.nix`](/nix-config/architecture/#flake-architecture--repository-layout):
 
 - **Processor (CPU)**:
@@ -142,6 +152,7 @@ If your machine is a custom desktop, a mini PC (such as the GMKtec NucBox K8 Plu
   - Laptop with NVMe / SATA SSD: `inputs.nixos-hardware.nixosModules.common-pc-laptop-ssd`
 
 ### Operating Without `nixos-hardware`
+
 Configuring `nixos-hardware` modules is optional. Even if omitted, `install-nixos` automatically probes your system hardware and generates a fully bootable kernel and driver configuration in `hosts/<your-hostname>/hardware-configuration.nix`.
 
 ---
@@ -150,8 +161,8 @@ Configuring `nixos-hardware` modules is optional. Even if omitted, `install-nixo
 
 Even after `adopt.sh` clears system-level secrets, one user-space module references a runtime secret file:
 
-| Module | Runtime Secret Path | Impact & Recommended Action |
-| :--- | :--- | :--- |
+| Module                                                                       | Runtime Secret Path             | Impact & Recommended Action                                                                                                                      |
+| :--------------------------------------------------------------------------- | :------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------- |
 | [`home/cli/atuin.nix`](/nix-config/home-manager/#cli-and-terminal-utilities) | `/run/agenix/atuin-credentials` | `atuin-auto-login` is skipped cleanly. Authenticate manually via `atuin login` or create your own secret with `agenix -e atuin-credentials.age`. |
 
 ---
@@ -159,6 +170,7 @@ Even after `adopt.sh` clears system-level secrets, one user-space module referen
 ## 6. Continuous Integration & The Split CI Architecture
 
 This repository uses a **split CI architecture** by design:
+
 - **GitLab CI ([`.gitlab-ci.yml`](https://gitlab.com/kylekwong/nix-config/-/blob/main/.gitlab-ci.yml))**: Serves as the primary, authoritative CI engine for the fleet. It runs system-level flake validations (`nix flake check`), tree formatting enforcement (`nix fmt`), automated `flake.lock` update bots with merge request creation, and docs dispatch (`notify-docs`).
 - **External Docs Deployment (`SYKwong/nix-docs`)**: Documentation is built and deployed to Cloudflare (Workers / Pages) by the unified `SYKwong/nix-docs` repository (triggered via `notify-docs` in `.gitlab-ci.yml`).
 
@@ -181,11 +193,14 @@ flowchart LR
 If you want to maintain this setup—keeping the reliability of GitLab CI for system checks while leveraging Cloudflare + `nix-docs` for static wiki hosting—follow these steps:
 
 #### Step 1: Create Repositories on Both Forges
+
 1. Create your main private or public repository on **GitLab** (e.g. `gitlab.com/<username>/nix-config`).
 2. Create an empty repository with the same name on **GitHub** (e.g. `github.com/<username>/nix-config`). Do not initialize it with a README or license.
 
 #### Step 2: Generate a GitHub Fine-Grained Personal Access Token (PAT)
+
 GitLab needs write permissions to push branches and tags to your GitHub repository. Using a **fine-grained personal access token** is recommended for long-lived credentials because it follows the principle of least privilege, restricting access solely to the mirror repository:
+
 1. On GitHub, navigate to **Settings** → **Developer Settings** → **Personal Access Tokens** → **Fine-grained tokens**.
 2. Click **Generate new token**.
 3. **Token name**: `GitLab Mirror Push`.
@@ -193,13 +208,14 @@ GitLab needs write permissions to push branches and tags to your GitHub reposito
 5. **Repository access**: Select **Only select repositories**, then choose your `nix-config` repository.
 6. **Permissions**: Expand **Repository permissions** and set:
    - **Contents**: Select **Read and write** (permits GitLab to push commits, branches, and tags).
-   - *(Note: **Metadata** (read-only) is automatically selected by GitHub).*
+   - _(Note: **Metadata** (read-only) is automatically selected by GitHub)._
 7. Click **Generate token** and copy the resulting `github_pat_...` string.
 
 > [!TIP]
 > Fine-grained tokens are significantly safer than classic tokens because they cannot access any of your other GitHub repositories or account settings if ever compromised.
 
 #### Step 3: Configure Push Mirroring on GitLab
+
 1. On GitLab, open your repository and go to **Settings** → **Repository**.
 2. Expand the **Mirroring repositories** section.
 3. Configure the mirror:
@@ -212,12 +228,15 @@ GitLab needs write permissions to push branches and tags to your GitHub reposito
 5. Click the refresh / sync icon under **Mirrored repositories** to trigger the initial push mirror to GitHub.
 
 #### Step 4: Configure Documentation Dispatch & Sync (`nix-docs`)
+
 1. Host your Astro Starlight site in a dedicated docs repository (like `SYKwong/nix-docs`) connected to Cloudflare (`CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets for `cloudflare/wrangler-action`, or native Cloudflare Pages Git integration).
 2. Create a fine-grained GitHub PAT with **Contents: Read and write** on that docs repository and save it in GitLab **Settings → CI/CD → Variables** as `GITHUB_DOCS_TOKEN` (masked and protected).
 3. Update the `notify-docs` URL in `.gitlab-ci.yml` to your docs repository's `/dispatches` endpoint. Whenever changes to `docs/**` land on `main` (or on `nix-docs`'s scheduled fallback cron), `nix-docs` pulls the latest `docs/` from `nix-config`, commits any synced changes into its own tree, and deploys to Cloudflare.
 
 #### Step 5: Enforce Read-Only Hygiene on GitHub
+
 To prevent split-brain states and merge conflicts:
+
 - Add a short note to your GitHub repository description: `[Read-Only Mirror] Primary development on GitLab: https://gitlab.com/<username>/nix-config`.
 - Only push locally to your GitLab remote (`git remote set-url origin git@gitlab.com:<username>/nix-config.git`). GitLab will automatically mirror all commits and tags to GitHub.
 
@@ -228,7 +247,9 @@ To prevent split-brain states and merge conflicts:
 If you prefer not to rely on GitHub Actions or maintain accounts across two git forges, consider these alternatives:
 
 #### 1. Cloudflare Pages (Recommended Edge Alternative)
+
 Rather than using GitHub Actions for your dedicated `nix-docs` Starlight repository, you can connect `nix-docs` directly to **Cloudflare Pages**:
+
 - **Benefits**: Unlimited edge bandwidth (Cloudflare), automated preview deployments, zero GitHub Actions dependencies, and complete immunity to GitHub Actions outages.
 - **Build Configuration** (in `nix-docs`):
   - **Build command**: `npm run build`
@@ -236,18 +257,21 @@ Rather than using GitHub Actions for your dedicated `nix-docs` Starlight reposit
   - **Environment variables**: `NODE_VERSION=22`
 
 #### 2. GitLab Only (GitLab CI + GitLab Pages)
+
 If you prefer to host docs directly from GitLab without an external Starlight repo, add an Astro Starlight setup for `docs/` and deploy via native **GitLab Pages** with a `pages` job in `.gitlab-ci.yml`.
 
 #### 3. GitHub Only (GitHub Actions for Checks & Pages)
+
 - Delete `.gitlab-ci.yml`.
 - Add a GitHub Actions workflow (e.g. `.github/workflows/check.yml`) utilizing `determinate-nix-action` to run `nix flake check` and `nix fmt --check` on pull requests.
 - Add a docs deployment workflow if hosting docs in-tree instead of `SYKwong/nix-docs`.
-- *(Warning: PR merges may be blocked whenever GitHub Actions experiences platform downtime).*
+- _(Warning: PR merges may be blocked whenever GitHub Actions experiences platform downtime)._
 
 ---
 
 ## 7. Next Steps: Installing the System
 
 Once your adopted configuration is committed and pushed to your fork:
+
 1. Boot into the NixOS Live USB.
 2. Proceed to the [System Installation Guide](/nix-config/installation/) to prepare disk partitions and run `install-nixos`.

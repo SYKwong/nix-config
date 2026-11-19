@@ -20,6 +20,7 @@ This guide explains how to manage custom desktop application launchers and how t
 Different applications deploy `.desktop` files into different XDG system and user paths. To account for this, hiding is implemented in two tiers:
 
 ### Tier 1: `appsToHide` (Standard / Home Manager)
+
 For standard NixOS system packages and Home Manager applications whose `.desktop` files live in `/run/current-system/sw/share/applications/` or the user profile.
 
 Adding an entry name to `appsToHide` generates a shadow entry with `OnlyShowIn = "X-None;"` via Home Manager's `xdg.desktopEntries` to hide it from desktop application launchers (like Noctalia):
@@ -35,6 +36,7 @@ appsToHide = [
 ```
 
 ### Tier 2: `annoyingApps` (Forced User-Level Override)
+
 Some external runtimes (such as Waydroid or Steam) write `.desktop` files directly into `~/.local/share/applications/`. Because files in `~/.local/share/applications/` have higher XDG precedence than `/run/current-system`, standard Home Manager shadowing cannot override them.
 
 For these stubborn entries, add the identifier (without `.desktop`) to `annoyingApps`. It uses Home Manager's `home.file` with `force = true` to overwrite `~/.local/share/applications/<name>.desktop` with `NoDisplay=true` and `Hidden=true`:
@@ -54,6 +56,7 @@ annoyingApps = [
 Desktop entries often use Reverse-DNS names that differ from their binary name or friendly title (e.g., Amberol is `io.bassi.Amberol.desktop`, Ark is `org.kde.ark.desktop`).
 
 ### Method 1: Search by Filename
+
 Search across the system profile, Home Manager profile, and local directories simultaneously:
 
 ```bash
@@ -64,6 +67,7 @@ find /run/current-system/sw/share/applications \
 ```
 
 Or query specific directories:
+
 1. **System packages (`environment.systemPackages`)**:
    ```bash
    ls /run/current-system/sw/share/applications | grep -i <app-name>
@@ -78,6 +82,7 @@ Or query specific directories:
    ```
 
 ### Method 2: Search by Launcher Display Title
+
 If you only know the friendly name displayed in your launcher (e.g. "Amberol" or "Archive Manager"), search for the `Name=` field inside all `.desktop` files:
 
 ```bash
@@ -88,7 +93,9 @@ grep -rn -i "^Name=<Display Name>" \
 ```
 
 ### Applying the Entry Name
+
 Take the matched filename **excluding `.desktop`**:
+
 - `/etc/profiles/per-user/$USER/share/applications/io.bassi.Amberol.desktop` → `"io.bassi.Amberol"`
 - `/run/current-system/sw/share/applications/org.kde.ark.desktop` → `"org.kde.ark"`
 
@@ -101,11 +108,13 @@ Add that exact string to `appsToHide` in `home/misc/hide-desktop-entry.nix`, or 
 KDE applications (such as Dolphin) do not scan raw `.desktop` files on every file click. Instead, they query **KSycoca** (KDE System Configuration Cache, version 6), which maintains pre-indexed binary files under `~/.cache/ksycoca6_<locale>_<hash>=` for rapid $O(1)$ MIME handler and service menu lookup.
 
 ### The NixOS Timestamp Invalidation Trap
-Under traditional FHS Linux distributions, KSycoca detects when `.desktop` files are added or modified by checking directory modification times (`mtime`) on `/usr/share/applications/`. 
+
+Under traditional FHS Linux distributions, KSycoca detects when `.desktop` files are added or modified by checking directory modification times (`mtime`) on `/usr/share/applications/`.
 
 On NixOS, all paths in `/nix/store` and `/etc/profiles/` have their timestamps fixed to the Unix epoch + 1s (`1970-01-01 00:00:01 UTC`) for build reproducibility. Because directory `mtime` never changes, KSycoca's automatic cache validation check (`TimestampChecker::checkDirectoriesTimestamps`) never detects changes across NixOS or Home Manager profile switches. Additionally, Dolphin's persistent background daemon (`plasma-dolphin.service` / `dolphin --daemon`) holds existing cache files memory-mapped indefinitely.
 
 ### Automated Activation Hook
+
 `home/misc/desktop-cache.nix` registers an automated Home Manager activation hook (`home.activation.pruneKsycoca`) executed after `writeBoundary`:
 
 1. **Purges Stale Binary Caches**: Removes all `~/.cache/ksycoca6*` cache files whenever generations switch.
@@ -117,7 +126,8 @@ On NixOS, all paths in `/nix/store` and `/etc/profiles/` have their timestamps f
 ## Application Icons
 
 Custom application icons are centralized under the top-level `icons/` directory:
+
 - `icons/Line.png`: Launcher icon for the LINE Chrome web app desktop shortcut (`home/misc/add-desktop-entry.nix`).
 - `icons/protontricks.svg`: Scalable SVG icon for Protontricks (`modules/gaming/default.nix`), automatically resized into standard hicolor icon themes (16×16 to 256×256) during package build.
 
-*Note: `icons/protontricks.svg` uses the Wine icon from the KDE Breeze Icons theme, licensed under [LGPL-3.0-or-later](https://invent.kde.org/frameworks/breeze-icons/-/blob/master/COPYING-ICONS) by the KDE Community.*
+_Note: `icons/protontricks.svg` uses the Wine icon from the KDE Breeze Icons theme, licensed under [LGPL-3.0-or-later](https://invent.kde.org/frameworks/breeze-icons/-/blob/master/COPYING-ICONS) by the KDE Community._

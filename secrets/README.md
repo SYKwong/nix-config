@@ -21,12 +21,12 @@ secrets/
 
 ## Active Fleet Secrets
 
-| Secret File | Decrypted Path | Purpose |
-| :--- | :--- | :--- |
-| `atuin-credentials.age` | `/run/agenix/atuin-credentials` | Atuin cross-machine shell history sync credentials & 24-word key |
-| `cloudflare-workers-ai-apikey.age` | `/run/agenix/cloudflare-workers-ai-apikey` | Cloudflare Workers AI API token for CLI utilities |
-| `smb-credentials.age` | `/run/agenix/smb-credentials` | Network share credentials for local NAS storage |
-| `wireguard-fw16.age` | `/run/agenix/wireguard-fw16` | WireGuard VPN client private key (`framework16`) |
+| Secret File                        | Decrypted Path                             | Purpose                                                          |
+| :--------------------------------- | :----------------------------------------- | :--------------------------------------------------------------- |
+| `atuin-credentials.age`            | `/run/agenix/atuin-credentials`            | Atuin cross-machine shell history sync credentials & 24-word key |
+| `cloudflare-workers-ai-apikey.age` | `/run/agenix/cloudflare-workers-ai-apikey` | Cloudflare Workers AI API token for CLI utilities                |
+| `smb-credentials.age`              | `/run/agenix/smb-credentials`              | Network share credentials for local NAS storage                  |
+| `wireguard-fw16.age`               | `/run/agenix/wireguard-fw16`               | WireGuard VPN client private key (`framework16`)                 |
 
 ---
 
@@ -34,8 +34,8 @@ secrets/
 
 Public keys are defined in [`keys.nix`](keys.nix) as the single source of truth across the repository:
 
-* **User Keys (`keys.users`)**: Individual human user keys (`~/.ssh/id_ed25519.pub`). Used to decrypt and edit secrets locally without root privileges, and imported into [`modules/core/ssh.nix`](../modules/core/ssh.nix) for fleet SSH access.
-* **System Keys (`keys.systems`)**: Host machine keys (`/etc/ssh/ssh_host_ed25519_key.pub`). Used by systemd / root to autonomously decrypt system secrets at boot time.
+- **User Keys (`keys.users`)**: Individual human user keys (`~/.ssh/id_ed25519.pub`). Used to decrypt and edit secrets locally without root privileges, and imported into [`modules/core/ssh.nix`](../modules/core/ssh.nix) for fleet SSH access.
+- **System Keys (`keys.systems`)**: Host machine keys (`/etc/ssh/ssh_host_ed25519_key.pub`). Used by systemd / root to autonomously decrypt system secrets at boot time.
 
 Secrets in [`secrets.nix`](secrets.nix) are encrypted to **both** user and system keys so you can edit them comfortably as an unprivileged user while NixOS decrypts them at boot.
 
@@ -44,12 +44,14 @@ Secrets in [`secrets.nix`](secrets.nix) are encrypted to **both** user and syste
 ## Common Workflows
 
 ### Edit an Existing Secret
+
 ```bash
 cd secrets
 agenix -e <secret-name>.age
 ```
 
 ### Create a New Secret
+
 1. Add the secret and allowed recipient keys to [`secrets.nix`](secrets.nix):
    ```nix
    "my-secret.age".publicKeys = [ keys.users.framework16 ];
@@ -66,6 +68,7 @@ agenix -e <secret-name>.age
    At runtime, NixOS decrypts the secret to `/run/agenix/my-secret` (accessible via `config.age.secrets.my-secret.path`).
 
 ### Rekey Secrets (Adding or Rotating Keys)
+
 1. Run `post-install` on the new machine to generate host keys and insert them into [`keys.nix`](keys.nix) (or add them manually).
 2. Ensure the host or user key is in the recipient list in [`secrets.nix`](secrets.nix) (hosts in `keys.systems` are included automatically in `allKeys`).
 3. Re-encrypt all secrets on an authorized machine with access to an existing private key:
@@ -85,7 +88,8 @@ ATUIN_USERNAME="<your-username>"
 ATUIN_PASSWORD="<your-password>"
 ATUIN_KEY="word1 word2 word3 ... word24"
 ```
-*(Retrieve your 24-word key on an existing machine using `atuin key`, or create an account with `atuin register`).*
+
+_(Retrieve your 24-word key on an existing machine using `atuin key`, or create an account with `atuin register`)._
 
 ---
 

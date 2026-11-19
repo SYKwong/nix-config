@@ -108,7 +108,9 @@ hosts = {
 ```
 
 ### Automatic Module Injection
+
 For every host defined in `hosts`, `outputs.nix` automatically injects:
+
 1. **Core System Modules**: Disko, Stylix, Agenix, and `./modules/core`.
 2. **Common Ecosystem Modules**: Gaming, Home Manager, Hyprland, Input Method, Secrets, Shell Scripts, Sunshine, VPN, and Wireless.
 3. **Home Manager**: Binds Home Manager to the host's specified `username`, imports `./home` (unified user applications and dotfiles), and auto-imports `./hosts/<hostname>/home/` if present.

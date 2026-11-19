@@ -47,11 +47,13 @@ custom.sunshine.tabletDisplay.idleTimeout = 900;
 ## Quick Setup & Management
 
 ### 1. Web Management Interface (Pairing)
-- **URL**: [`https://localhost:47990`](https://localhost:47990) *(accept the self-signed TLS certificate warning)*.
+
+- **URL**: [`https://localhost:47990`](https://localhost:47990) _(accept the self-signed TLS certificate warning)_.
 - **First Launch**: Create administrative username and password.
 - **Client Pairing**: Tap your PC in Moonlight on your client device to generate a 4-digit PIN, then enter it in the Sunshine Web UI under the **PIN** tab.
 
 ### 2. Service Debugging & Inspection
+
 Sunshine runs as a systemd user service attached to `graphical-session.target`:
 
 ```bash
@@ -85,6 +87,7 @@ hypr-virtual-monitor stop HEADLESS-1
 ## USB Tethering (Zero-Latency Offline Mode)
 
 For sub-millisecond latency (<0.5ms) without Wi-Fi jitter:
+
 1. Connect client tablet directly to the PC via a USB-C cable.
 2. Enable **USB Tethering** on the client device.
 3. Moonlight connects via the PC's USB IP or hostname (`<hostname>.local`).

@@ -17,8 +17,8 @@ modules/systemd-services/
 
 ## Units
 
-| Unit | Scope | Type | Description |
-| :--- | :--- | :--- | :--- |
+| Unit                        | Scope                 | Type                    | Description                                                                                                                                                                                                                                                                                                                                                                                 |
+| :-------------------------- | :-------------------- | :---------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **`flake-update-verifier`** | User (`systemd.user`) | Timer + Oneshot Service | Runs overnight (`03:00–07:00`) on workstations (`mini-pc-k8`) to rebase open dependency MRs onto `main`, build test all host closures, label failed MRs with `build-error` and post build error excerpts, and auto-merge verified updates via `glab` (`custom.systemd-services.flake-update-verifier.enable`). Also callable interactively via `nverify` (`flake-update-verifier --force`). |
 
 ---

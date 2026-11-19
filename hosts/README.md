@@ -9,11 +9,11 @@ This directory contains host-specific configurations for individual physical mac
 
 ## Active Hosts
 
-| Host | Description | Architecture / Hardware | Files |
-| :--- | :--- | :--- | :--- |
+| Host              | Description                | Architecture / Hardware                                                                        | Files                                                                                                                                                                                                  |
+| :---------------- | :------------------------- | :--------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **`framework16`** | Primary workstation laptop | Framework Laptop 16 (AMD Ryzen 7840HS, 96GB RAM), LUKS TPM2 encryption, Lanzaboote Secure Boot | [`default.nix`](./framework16/default.nix), [`disko.nix`](./framework16/disko.nix), [`hardware-configuration.nix`](./framework16/hardware-configuration.nix), [`config.nix`](./framework16/config.nix) |
-| **`mini-pc-k8`** | HTPC / Living room desktop | GMKtec NucBox K8 Plus (AMD Ryzen 8845HS, 64GB RAM), Btrfs, unencrypted | [`default.nix`](./mini-pc-k8/default.nix), [`disko.nix`](./mini-pc-k8/disko.nix), [`hardware-configuration.nix`](./mini-pc-k8/hardware-configuration.nix), [`config.nix`](./mini-pc-k8/config.nix) |
-| **`installer`** | Custom Live ISO | Generic x86_64 installer (`installer.local`), mDNS, pre-baked SSH keys, Disko | [`default.nix`](./installer/default.nix), [`README.md`](./installer/README.md) |
+| **`mini-pc-k8`**  | HTPC / Living room desktop | GMKtec NucBox K8 Plus (AMD Ryzen 8845HS, 64GB RAM), Btrfs, unencrypted                         | [`default.nix`](./mini-pc-k8/default.nix), [`disko.nix`](./mini-pc-k8/disko.nix), [`hardware-configuration.nix`](./mini-pc-k8/hardware-configuration.nix), [`config.nix`](./mini-pc-k8/config.nix)     |
+| **`installer`**   | Custom Live ISO            | Generic x86_64 installer (`installer.local`), mDNS, pre-baked SSH keys, Disko                  | [`default.nix`](./installer/default.nix), [`README.md`](./installer/README.md)                                                                                                                         |
 
 ---
 
@@ -41,10 +41,10 @@ hosts/<hostname>/
 
 3. **`disko.nix`** ([framework16](./framework16/disko.nix), [mini-pc-k8](./mini-pc-k8/disko.nix)):
    Defines the complete block storage lifecycle:
-   * Partition tables (GPT, ESP `/boot`).
-   * Disk encryption (LUKS containers and optional TPM2 auto-unlock via `crypttabExtraOpts`).
-   * Filesystem formatting and subvolumes (Btrfs root, home, nix, swap).
-   * Storage maintenance timers (`services.btrfs.autoScrub`).
+   - Partition tables (GPT, ESP `/boot`).
+   - Disk encryption (LUKS containers and optional TPM2 auto-unlock via `crypttabExtraOpts`).
+   - Filesystem formatting and subvolumes (Btrfs root, home, nix, swap).
+   - Storage maintenance timers (`services.btrfs.autoScrub`).
 
 4. **`config.nix` (Optional)** ([framework16](./framework16/config.nix), [mini-pc-k8](./mini-pc-k8/config.nix)):
    A consolidated module for any machine-specific option toggles (e.g. `custom.ai`, `custom.vpn.wireguard`) and host-specific secrets (`age.secrets`). Avoid creating micro-files for individual feature toggles.
@@ -76,9 +76,10 @@ Every host is declared in the `hosts` set in [`outputs.nix`](../outputs.nix):
 ---
 
 ## Conventions & Rules
-* **No hardcoded paths or IDs**: Use dynamic `username` and the standard `users` group. Avoid hardcoded `/home/<username>` paths; reference `specialArgs.username` or config variables.
-* **Keep it host-specific**: Generic or reusable capabilities belong in [`modules/`](../modules) or [`home/`](../home).
-* **Per-host user configuration**: All baseline user configurations are imported directly from [`home/`](../home); host-specific user additions belong in `hosts/<hostname>/home/` (automatically imported if present).
+
+- **No hardcoded paths or IDs**: Use dynamic `username` and the standard `users` group. Avoid hardcoded `/home/<username>` paths; reference `specialArgs.username` or config variables.
+- **Keep it host-specific**: Generic or reusable capabilities belong in [`modules/`](../modules) or [`home/`](../home).
+- **Per-host user configuration**: All baseline user configurations are imported directly from [`home/`](../home); host-specific user additions belong in `hosts/<hostname>/home/` (automatically imported if present).
 
 ---
 

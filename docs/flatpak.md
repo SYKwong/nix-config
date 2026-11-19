@@ -60,6 +60,7 @@ in
 ## 3. Enable the Module in `outputs.nix`
 
 ### For a Specific Host Only (Recommended)
+
 Add `./modules/flatpak` to the host's `extraModules`:
 
 ```nix
@@ -74,6 +75,7 @@ Add `./modules/flatpak` to the host's `extraModules`:
 ```
 
 ### Or Globally for All Hosts
+
 Add `./modules/flatpak` to the root `modules` list in `outputs.nix`:
 
 ```nix
@@ -128,6 +130,7 @@ Host-specific packages merge with common packages automatically.
 ## 6. Finding Application IDs
 
 Flatpak packages are identified by their reverse-DNS App ID:
+
 1. **Flathub Web:** Search [Flathub](https://flathub.org). The App ID appears at the bottom of the page and in the URL (e.g. `https://flathub.org/apps/com.spotify.Client` → `com.spotify.Client`).
 2. **CLI Search (when Flatpak is active):**
    ```bash

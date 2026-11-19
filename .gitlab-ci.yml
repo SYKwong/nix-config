@@ -35,10 +35,11 @@ verify-flake:
       when: manual
       allow_failure: true
 
-    # Skip if changes are made in treefmt/
+    # Skip if changes are made in treefmt/ (manual + allow_failure so GitLab creates a non-blocking MR pipeline)
     - changes:
         - "treefmt/*"
-      when: never
+      when: manual
+      allow_failure: true
 
     # Run only when nix files changed
     - changes:

@@ -6,43 +6,44 @@ This directory contains modular, reusable **NixOS system-level** configurations.
 
 ## Directory Taxonomy
 
-| Category | Description |
-| :--- | :--- |
-| **`core/`** | Baseline system configurations applied across all hosts (bootloader, networking, security policies, user accounts, system fonts, and core packages). |
-| **`profiles/`** | Form-factor system profiles (`desktop`, `laptop`) bundling device-type characteristics, power management, and filesystem mounts (see [`modules/profiles/README.md`](./profiles/README.md)). |
-| **`hyprland/`** | Hyprland Wayland compositor, UWSM session integration, and Ly display manager greeter. |
-| **`hardware/`** | Vendor-specific hardware integrations, device firmware utilities, and on-demand chassis configurations (e.g. `framework.nix`). |
-| **`wireless/`** | Wireless networking (Wi-Fi), network management, and Bluetooth services. |
-| **`vpn/`** | Virtual Private Network (VPN) client services, daemons, and encrypted tunnels. |
-| **`gaming/`** | Gaming platforms, compatibility runtimes, and graphics/system performance optimizations (see [`modules/gaming/README.md`](./gaming/README.md)). |
-| **`ai/`** | Hardware-accelerated compute runtimes, local AI engines, and inference services. |
-| **`sunshine/`** | Low-latency Sunshine desktop and game streaming host for Moonlight clients (see [`modules/sunshine/README.md`](./sunshine/README.md)). |
-| **`secrets/`** | System secret management, decryption, and credential provisioning. |
-| **`input-method/`** | Input method engines (IME), internationalization, and character input mappings. |
-| **`shell-scripts/`** | Custom CLI utilities packaged via `writeShellApplication` (see [`modules/shell-scripts/README.md`](./shell-scripts/README.md)). |
-| **`systemd-services/`** | Standalone background services and scheduled timers not tied to specific domain modules (see [`modules/systemd-services/README.md`](./systemd-services/README.md)). |
-| **`home-manager/`** | System-level Home Manager integration module binding user configurations and automatic per-host home extensions. |
-| **`lanzaboote/`** | UEFI Secure Boot integration and cryptographic bootloader signing. |
-| **`power-management/`** | Power management daemons and system power profile switching. |
-| **`config/`** | Shared, host-reusable system configurations intended to be imported on demand. |
+| Category                | Description                                                                                                                                                                                 |
+| :---------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **`core/`**             | Baseline system configurations applied across all hosts (bootloader, networking, security policies, user accounts, system fonts, and core packages).                                        |
+| **`profiles/`**         | Form-factor system profiles (`desktop`, `laptop`) bundling device-type characteristics, power management, and filesystem mounts (see [`modules/profiles/README.md`](./profiles/README.md)). |
+| **`hyprland/`**         | Hyprland Wayland compositor, UWSM session integration, and Ly display manager greeter.                                                                                                      |
+| **`hardware/`**         | Vendor-specific hardware integrations, device firmware utilities, and on-demand chassis configurations (e.g. `framework.nix`).                                                              |
+| **`wireless/`**         | Wireless networking (Wi-Fi), network management, and Bluetooth services.                                                                                                                    |
+| **`vpn/`**              | Virtual Private Network (VPN) client services, daemons, and encrypted tunnels.                                                                                                              |
+| **`gaming/`**           | Gaming platforms, compatibility runtimes, and graphics/system performance optimizations (see [`modules/gaming/README.md`](./gaming/README.md)).                                             |
+| **`ai/`**               | Hardware-accelerated compute runtimes, local AI engines, and inference services.                                                                                                            |
+| **`sunshine/`**         | Low-latency Sunshine desktop and game streaming host for Moonlight clients (see [`modules/sunshine/README.md`](./sunshine/README.md)).                                                      |
+| **`secrets/`**          | System secret management, decryption, and credential provisioning.                                                                                                                          |
+| **`input-method/`**     | Input method engines (IME), internationalization, and character input mappings.                                                                                                             |
+| **`shell-scripts/`**    | Custom CLI utilities packaged via `writeShellApplication` (see [`modules/shell-scripts/README.md`](./shell-scripts/README.md)).                                                             |
+| **`systemd-services/`** | Standalone background services and scheduled timers not tied to specific domain modules (see [`modules/systemd-services/README.md`](./systemd-services/README.md)).                         |
+| **`home-manager/`**     | System-level Home Manager integration module binding user configurations and automatic per-host home extensions.                                                                            |
+| **`lanzaboote/`**       | UEFI Secure Boot integration and cryptographic bootloader signing.                                                                                                                          |
+| **`power-management/`** | Power management daemons and system power profile switching.                                                                                                                                |
+| **`config/`**           | Shared, host-reusable system configurations intended to be imported on demand.                                                                                                              |
 
 ---
 
 ## Guidelines for Authoring System Modules
 
 1. **System vs. Home Manager Scope**:
-   * If a tool requires root privileges, kernel modules, systemd system services, PAM, or udev rules, place it here in `modules/`.
-   * If a tool is a user application, shell alias, terminal emulator, or editor, place it in [`home/`](../home).
+   - If a tool requires root privileges, kernel modules, systemd system services, PAM, or udev rules, place it here in `modules/`.
+   - If a tool is a user application, shell alias, terminal emulator, or editor, place it in [`home/`](../home).
 2. **Reusability**:
-   * Modules in this directory should be host-agnostic. Host-specific overrides or hardware bindings belong in [`hosts/<hostname>/`](../hosts).
+   - Modules in this directory should be host-agnostic. Host-specific overrides or hardware bindings belong in [`hosts/<hostname>/`](../hosts).
 3. **Packaging Scripts**:
-   * Custom CLI utilities are standardly packaged with `pkgs.writeShellApplication` and declared `runtimeInputs` (see [`modules/shell-scripts/README.md`](./shell-scripts/README.md) for conventions and exceptions).
+   - Custom CLI utilities are standardly packaged with `pkgs.writeShellApplication` and declared `runtimeInputs` (see [`modules/shell-scripts/README.md`](./shell-scripts/README.md) for conventions and exceptions).
 
 ---
 
 ## Wiring Modules into Hosts
 
 System modules are integrated into machine closures via [`outputs.nix`](../outputs.nix):
+
 - **Fleet-Wide Modules**: Imported across all systems via `commonModules` in `outputs.nix` (e.g. `core/`, `hyprland/`, `gaming/`, `sunshine/`, `shell-scripts/`).
 - **Host-Specific Modules**: Appended to a host's `extraModules` list in `outputs.nix`:
   ```nix

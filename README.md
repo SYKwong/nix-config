@@ -11,16 +11,17 @@ Declarative multi-host **NixOS** and **Home Manager** configuration fleet managi
 
 ## Active Fleet
 
-| Host | Form Factor | Hardware | Highlights | Config |
-| :--- | :--- | :--- | :--- | :--- |
-| **`framework16`** | Workstation Laptop | Framework Laptop 16 (Ryzen 7840HS, 96GB RAM) | LUKS + TPM2, Lanzaboote Secure Boot, 100GB swap hibernation | [`hosts/framework16`](./hosts/framework16/) |
-| **`mini-pc-k8`** | Living Room HTPC | GMKtec NucBox K8 Plus (Ryzen 8845HS, 64GB RAM) | Btrfs, custom ALSA profile, flake update verifier | [`hosts/mini-pc-k8`](./hosts/mini-pc-k8/) |
+| Host              | Form Factor        | Hardware                                       | Highlights                                                  | Config                                      |
+| :---------------- | :----------------- | :--------------------------------------------- | :---------------------------------------------------------- | :------------------------------------------ |
+| **`framework16`** | Workstation Laptop | Framework Laptop 16 (Ryzen 7840HS, 96GB RAM)   | LUKS + TPM2, Lanzaboote Secure Boot, 100GB swap hibernation | [`hosts/framework16`](./hosts/framework16/) |
+| **`mini-pc-k8`**  | Living Room HTPC   | GMKtec NucBox K8 Plus (Ryzen 8845HS, 64GB RAM) | Btrfs, custom ALSA profile, flake update verifier           | [`hosts/mini-pc-k8`](./hosts/mini-pc-k8/)   |
 
 ---
 
 ## Quick Start
 
 ### 1. Adopting for Your Own Hardware
+
 Before installing, **fork this repository** to your own GitLab or GitHub account, then sanitize personal credentials and scaffold your target machine profile using the automated adoption script:
 
 ```bash
@@ -45,6 +46,7 @@ git push origin main
 ---
 
 ### 2. Bootstrapping a New Machine
+
 Boot into a **NixOS Live USB** environment with active networking:
 
 ```bash
@@ -90,12 +92,12 @@ git lazy "<commit message>"
 
 The complete documentation is maintained in-tree under [`docs/`](./docs/) and deployed to [**nix.kyle-kwong.com**](https://nix.kyle-kwong.com):
 
-| Category | Key Pages |
-| :--- | :--- |
-| **Getting Started** | [System Installation](https://nix.kyle-kwong.com/nix-config/installation/) • [Adoption & Forking](https://nix.kyle-kwong.com/nix-config/adoption/) • [Post-Installation Setup](https://nix.kyle-kwong.com/nix-config/post-installation/) • [BIOS & Firmware Updates](https://nix.kyle-kwong.com/nix-config/bios-update/) |
-| **Architecture & Fleet** | [Flake Architecture](https://nix.kyle-kwong.com/nix-config/architecture/) • [Split CI Architecture](https://nix.kyle-kwong.com/nix-config/split-ci/) • [Host Configurations](https://nix.kyle-kwong.com/nix-config/hosts/) • [Home Manager](https://nix.kyle-kwong.com/nix-config/home-manager/) • [Out-of-Store Dotfiles](https://nix.kyle-kwong.com/nix-config/dotfiles/) |
-| **Modules & Features** | [System Modules](https://nix.kyle-kwong.com/nix-config/modules/) • [Gaming & Gamescope](https://nix.kyle-kwong.com/nix-config/gaming/) • [Sunshine Streaming & Tablet Display](https://nix.kyle-kwong.com/nix-config/sunshine/) • [Declarative Flatpak](https://nix.kyle-kwong.com/nix-config/flatpak/) • [Custom Shell Scripts](https://nix.kyle-kwong.com/nix-config/shell-scripts/) • [Nixpkgs Overlays](https://nix.kyle-kwong.com/nix-config/overlays/) |
-| **Guides & Operations** | [Secrets Management (Agenix)](https://nix.kyle-kwong.com/nix-config/secrets/) • [Managing Desktop Entries](https://nix.kyle-kwong.com/nix-config/desktop-entries/) • [Code Quality & Evaluation](https://nix.kyle-kwong.com/nix-config/code-quality/) |
+| Category                 | Key Pages                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| :----------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Getting Started**      | [System Installation](https://nix.kyle-kwong.com/nix-config/installation/) • [Adoption & Forking](https://nix.kyle-kwong.com/nix-config/adoption/) • [Post-Installation Setup](https://nix.kyle-kwong.com/nix-config/post-installation/) • [BIOS & Firmware Updates](https://nix.kyle-kwong.com/nix-config/bios-update/)                                                                                                                                     |
+| **Architecture & Fleet** | [Flake Architecture](https://nix.kyle-kwong.com/nix-config/architecture/) • [Split CI Architecture](https://nix.kyle-kwong.com/nix-config/split-ci/) • [Host Configurations](https://nix.kyle-kwong.com/nix-config/hosts/) • [Home Manager](https://nix.kyle-kwong.com/nix-config/home-manager/) • [Out-of-Store Dotfiles](https://nix.kyle-kwong.com/nix-config/dotfiles/)                                                                                  |
+| **Modules & Features**   | [System Modules](https://nix.kyle-kwong.com/nix-config/modules/) • [Gaming & Gamescope](https://nix.kyle-kwong.com/nix-config/gaming/) • [Sunshine Streaming & Tablet Display](https://nix.kyle-kwong.com/nix-config/sunshine/) • [Declarative Flatpak](https://nix.kyle-kwong.com/nix-config/flatpak/) • [Custom Shell Scripts](https://nix.kyle-kwong.com/nix-config/shell-scripts/) • [Nixpkgs Overlays](https://nix.kyle-kwong.com/nix-config/overlays/) |
+| **Guides & Operations**  | [Secrets Management (Agenix)](https://nix.kyle-kwong.com/nix-config/secrets/) • [Managing Desktop Entries](https://nix.kyle-kwong.com/nix-config/desktop-entries/) • [Code Quality & Evaluation](https://nix.kyle-kwong.com/nix-config/code-quality/)                                                                                                                                                                                                        |
 
 ---
 

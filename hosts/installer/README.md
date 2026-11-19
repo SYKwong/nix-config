@@ -26,6 +26,7 @@ This directory defines a lightweight, reproducible NixOS installer ISO image pre
   The generated hybrid UEFI/BIOS ISO will be located at `result/iso/nixos-minimal-*.iso`.
 
 ### 2. Flash to USB Drive
+
 ```bash
 # Identify target USB block device (e.g. /dev/sdX)
 lsblk
@@ -35,6 +36,7 @@ sudo dd if=result/iso/*.iso of=/dev/sdX bs=4M status=progress conv=fsync
 ```
 
 ### 3. Connect & Install Remotely
+
 Boot the target machine from the USB drive. Once booted, SSH into it from your workstation and run `install-nixos` headlessly:
 
 ```bash

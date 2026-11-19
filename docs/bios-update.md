@@ -12,10 +12,12 @@ This guide covers firmware update procedures across supported machines, includin
 Firmware updates modify cryptographic PCR measurements (specifically PCR 7 for Secure Boot state and firmware certificates). As a result, **TPM2 auto-unlock will fail on the first boot after flashing a new BIOS**.
 
 ### Pre-Update Checklist:
+
 > [!IMPORTANT]
 > **Ensure you know your disk encryption passphrase** before initiating any BIOS update. You will be prompted to manually enter your LUKS passphrase on the first boot following the update.
 
 ### Post-Update Re-enrollment Steps:
+
 1. Boot the machine after flashing firmware and manually enter your LUKS passphrase when prompted.
 2. Open a terminal and clear the stale TPM2 enrollment token:
    ```bash
@@ -37,13 +39,17 @@ Firmware management on supported machines (such as the Framework Laptop 16) is h
 > Ensure the laptop is plugged into AC power and the battery has at least 30% charge before initiating a firmware update.
 
 ### 1. Refresh Remote Metadata
+
 Fetch the latest device metadata and firmware signatures from LVFS remotes:
+
 ```bash
 fwupdmgr refresh
 ```
 
 ### 2. Check for Available Updates
+
 Inspect connected hardware and verify available firmware upgrades:
+
 ```bash
 # View all detected update-capable devices and current firmware versions
 fwupdmgr get-devices
@@ -53,16 +59,21 @@ fwupdmgr get-updates
 ```
 
 ### 3. Apply Firmware Updates
+
 Download and schedule the UEFI capsule updates:
+
 ```bash
 fwupdmgr update
 ```
 
 ### 4. Reboot and Finalize
+
 Reboot the system to execute the firmware flash during boot:
+
 ```bash
 systemctl reboot
 ```
+
 During POST, the UEFI capsule flashing engine will apply updates to the system BIOS, retimers, and expansion cards.
 
 > [!IMPORTANT]
@@ -79,6 +90,7 @@ Official BIOS and firmware archives for the GMKtec NucBox K8 Plus are hosted on 
 > The UEFI Shell firmware driver only supports **FAT32** filesystems. Multi-boot tools like Ventoy store ISOs and files on an **exFAT** partition by default, which the UEFI Shell cannot read (`map -r` will not recognize the storage partition). Flashing files must reside on a FAT32 filesystem.
 
 ### Flashing Procedure (Using Internal `/boot` Partition)
+
 Because the NixOS EFI System Partition (`/boot`) is already formatted as FAT32, you can flash directly from the internal SSD without needing an external USB drive:
 
 1. Extract the downloaded firmware archive and copy the folder directly to `/boot`:

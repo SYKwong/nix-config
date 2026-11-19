@@ -23,9 +23,9 @@ NixOS gaming configurations are declared in [`modules/gaming/default.nix`](https
 
 [Gamescope](https://github.com/ValveSoftware/gamescope) is Valve's Wayland micro-compositor. It isolates games inside their own virtual display server, intercepting their input and rendering before outputting a composited Wayland surface to Hyprland.
 
-* **Role**: On-demand, nested client window inside Hyprland.
-* **Mechanism**: Invoked per-game through Steam launch options.
-* **Behavior**: Games run directly under Hyprland by default (leveraging Hyprland's direct scanout for zero latency). Gamescope is opted into only when a game requires resolution sandboxing, upscaling, or display virtualization.
+- **Role**: On-demand, nested client window inside Hyprland.
+- **Mechanism**: Invoked per-game through Steam launch options.
+- **Behavior**: Games run directly under Hyprland by default (leveraging Hyprland's direct scanout for zero latency). Gamescope is opted into only when a game requires resolution sandboxing, upscaling, or display virtualization.
 
 ---
 
@@ -45,32 +45,43 @@ Gamescope is intentionally **not** enabled as the default launcher for desktop/l
 To run a specific game inside Gamescope on a desktop or laptop, right-click the game in Steam, open **Properties → General → Launch Options**, and use one of the recipes below:
 
 ### 1. Standard Windowed Fullscreen
+
 Renders the game at 1080p and displays it borderless fullscreen at your monitor's refresh rate:
+
 ```bash
 gamescope -W 1920 -H 1080 -f -r 144 -- %command%
 ```
 
 ### 2. AMD FSR Upscaling (Performance Boost)
+
 Renders the game internally at 720p and upscales to 1080p using AMD FidelityFX Super Resolution (FSR):
+
 ```bash
 gamescope -w 1280 -h 720 -W 1920 -H 1080 -F fsr -f -- %command%
 ```
-*(Adjust sharpness in-game or via `--fsr-sharpness <0-20>`, default is 2).*
+
+_(Adjust sharpness in-game or via `--fsr-sharpness <0-20>`, default is 2)._
 
 ### 3. Pixel-Perfect Integer Scaling (Retro & Pixel Art)
+
 Forces integer scaling without blur or bilinear filtering for low-resolution or retro titles:
+
 ```bash
 gamescope -w 640 -h 480 -W 1920 -H 1080 -S integer -f -- %command%
 ```
 
 ### 4. Frame Rate Limiting & Latency Tuning
+
 Caps rendering rate at 60 FPS with low-latency presentation:
+
 ```bash
 gamescope -W 1920 -H 1080 -r 60 --limiter-spatial -f -- %command%
 ```
 
 ### 5. High Dynamic Range (HDR)
+
 Enables HDR mastering and wide color gamut output on supported OLED/HDR monitors:
+
 ```bash
 gamescope --hdr-enabled --hdr-debug-force-output -W 2560 -H 1440 -f -- %command%
 ```
@@ -79,29 +90,29 @@ gamescope --hdr-enabled --hdr-debug-force-output -W 2560 -H 1440 -f -- %command%
 
 ## Gamescope Command-Line Reference
 
-| Flag | Argument | Description |
-| :--- | :--- | :--- |
-| **`-w`, `-h`** | `<width>`, `<height>` | Internal game render resolution (what the game sees). |
-| **`-W`, `-H`** | `<width>`, `<height>` | Output window/display resolution (target display size). |
-| **`-r`** | `<hz>` | Target display refresh rate (e.g. `60`, `120`, `144`). |
-| **`-f`** | *None* | Fullscreen mode. |
-| **`-b`** | *None* | Borderless windowed mode. |
-| **`-F`** | `fsr`, `nis`, `linear`, `nearest` | Upscaling filter algorithm. |
-| **`-S`** | `integer`, `fit`, `fill`, `stretch` | Scaling mode for aspect ratio handling. |
-| **`--force-grab-cursor`** | *None* | Confine cursor to Gamescope window. |
-| **`--cursor <path>`** | `<file>` | Custom cursor path. |
-| **`--hdr-enabled`** | *None* | Enable HDR metadata and compositing. |
+| Flag                      | Argument                            | Description                                             |
+| :------------------------ | :---------------------------------- | :------------------------------------------------------ |
+| **`-w`, `-h`**            | `<width>`, `<height>`               | Internal game render resolution (what the game sees).   |
+| **`-W`, `-H`**            | `<width>`, `<height>`               | Output window/display resolution (target display size). |
+| **`-r`**                  | `<hz>`                              | Target display refresh rate (e.g. `60`, `120`, `144`).  |
+| **`-f`**                  | _None_                              | Fullscreen mode.                                        |
+| **`-b`**                  | _None_                              | Borderless windowed mode.                               |
+| **`-F`**                  | `fsr`, `nis`, `linear`, `nearest`   | Upscaling filter algorithm.                             |
+| **`-S`**                  | `integer`, `fit`, `fill`, `stretch` | Scaling mode for aspect ratio handling.                 |
+| **`--force-grab-cursor`** | _None_                              | Confine cursor to Gamescope window.                     |
+| **`--cursor <path>`**     | `<file>`                            | Custom cursor path.                                     |
+| **`--hdr-enabled`**       | _None_                              | Enable HDR metadata and compositing.                    |
 
 ---
 
 ## Native Wayland vs. Gamescope Comparison
 
-| Feature | Direct Hyprland (Default) | Native Wayland (`PROTON_ENABLE_WAYLAND=1`) | Gamescope (`gamescope --`) |
-| :--- | :--- | :--- | :--- |
-| **Driver** | XWayland / Native Wayland | Wine `winewayland.drv` | Gamescope internal Xwayland / Wayland |
-| **Steam Overlay** | Functional | Broken | Functional |
-| **Steam Input / Menus** | Functional | Inconsistent | Functional |
-| **FSR / Integer Upscaling** | Game-dependent | Game-dependent | Built-in hardware scaling |
-| **Latency** | Direct Scanout (Lowest) | Native (Lowest) | Minimal (~1 frame overhead) |
-| **Multi-window Launchers** | Functional | Functional | Prone to focus/rendering bugs |
-| **Best For** | Modern Steam titles | Benchmark latency / testing | Retro games, broken resolution pickers, FSR |
+| Feature                     | Direct Hyprland (Default) | Native Wayland (`PROTON_ENABLE_WAYLAND=1`) | Gamescope (`gamescope --`)                  |
+| :-------------------------- | :------------------------ | :----------------------------------------- | :------------------------------------------ |
+| **Driver**                  | XWayland / Native Wayland | Wine `winewayland.drv`                     | Gamescope internal Xwayland / Wayland       |
+| **Steam Overlay**           | Functional                | Broken                                     | Functional                                  |
+| **Steam Input / Menus**     | Functional                | Inconsistent                               | Functional                                  |
+| **FSR / Integer Upscaling** | Game-dependent            | Game-dependent                             | Built-in hardware scaling                   |
+| **Latency**                 | Direct Scanout (Lowest)   | Native (Lowest)                            | Minimal (~1 frame overhead)                 |
+| **Multi-window Launchers**  | Functional                | Functional                                 | Prone to focus/rendering bugs               |
+| **Best For**                | Modern Steam titles       | Benchmark latency / testing                | Retro games, broken resolution pickers, FSR |

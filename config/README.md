@@ -11,6 +11,7 @@ Standard NixOS / Home Manager configurations bake dotfiles directly into `/nix/s
 By using `config.lib.file.mkOutOfStoreSymlink` in [`home/misc/dotfile.nix`](../home/misc/dotfile.nix), these files point directly back to this repository directory (`./config/...`).
 
 ### Advantages:
+
 1. **Instant Feedback:** You can edit a keybinding or color scheme and reload the application immediately (e.g. `hyprctl reload` or Kitty `Ctrl + Shift + F5`) without rebuilding NixOS.
 2. **Version Controlled:** All dotfiles remain tracked by git inside this repository.
 
@@ -18,16 +19,16 @@ By using `config.lib.file.mkOutOfStoreSymlink` in [`home/misc/dotfile.nix`](../h
 
 ## Managed Configurations
 
-| Directory | Target Destination | Description |
-| :--- | :--- | :--- |
-| **`hypr/`** | `~/.config/hypr` | Hyprland compositor configuration written in pure Lua (keybinds, window rules, layer rules, animations, layout utilities). |
-| **`kitty/`** | `~/.config/kitty` | Kitty terminal emulator configuration, color schemes, and declarative session blueprints (e.g. `two-pane.session`, `three-pane.session`). |
-| **`foot/`** | `~/.config/foot` | Minimal Foot terminal configuration used for floating TUI wrappers (`tui-wrap`). |
-| **`starship/`** | `~/.config/starship.toml` | Starship cross-shell prompt theme and format settings. |
-| **`kde/dolphin/`** | `~/.config/dolphinrc`, `kservicemenurc`, `dolphinstaterc` (template) | KDE Dolphin file manager preferences and context menus. (`dolphinstaterc` template is seeded to `~/.local/state/` via `post-install`). |
-| **`qimgv/`** | `~/.config/qimgv/qimgv.conf` | Fast image viewer settings. |
-| **`glow/`** | `~/.config/glow` | CLI Markdown viewer theme and pager settings. |
-| **`feishin/`** | `~/.config/feishin/config.json` | Feishin desktop music player preferences and lyrics sources. |
+| Directory          | Target Destination                                                   | Description                                                                                                                               |
+| :----------------- | :------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
+| **`hypr/`**        | `~/.config/hypr`                                                     | Hyprland compositor configuration written in pure Lua (keybinds, window rules, layer rules, animations, layout utilities).                |
+| **`kitty/`**       | `~/.config/kitty`                                                    | Kitty terminal emulator configuration, color schemes, and declarative session blueprints (e.g. `two-pane.session`, `three-pane.session`). |
+| **`foot/`**        | `~/.config/foot`                                                     | Minimal Foot terminal configuration used for floating TUI wrappers (`tui-wrap`).                                                          |
+| **`starship/`**    | `~/.config/starship.toml`                                            | Starship cross-shell prompt theme and format settings.                                                                                    |
+| **`kde/dolphin/`** | `~/.config/dolphinrc`, `kservicemenurc`, `dolphinstaterc` (template) | KDE Dolphin file manager preferences and context menus. (`dolphinstaterc` template is seeded to `~/.local/state/` via `post-install`).    |
+| **`qimgv/`**       | `~/.config/qimgv/qimgv.conf`                                         | Fast image viewer settings.                                                                                                               |
+| **`glow/`**        | `~/.config/glow`                                                     | CLI Markdown viewer theme and pager settings.                                                                                             |
+| **`feishin/`**     | `~/.config/feishin/config.json`                                      | Feishin desktop music player preferences and lyrics sources.                                                                              |
 
 ---
 
@@ -35,17 +36,18 @@ By using `config.lib.file.mkOutOfStoreSymlink` in [`home/misc/dotfile.nix`](../h
 
 Because files are symlinked out-of-store directly to the working repository, edits take effect immediately upon reloading the client:
 
-| Application | Config Path | Live Reload Method |
-| :--- | :--- | :--- |
-| **Hyprland** | `config/hypr/` | `hyprctl reload` |
-| **Kitty** | `config/kitty/` | `Ctrl + Shift + F5` |
-| **Starship** | `config/starship/` | Instant (reflected on next terminal prompt) |
-| **Dolphin / KDE** | `config/kde/` | Close and restart application |
-| **Feishin / Qimgv / Glow** | `config/<app>/` | Close and restart application |
+| Application                | Config Path        | Live Reload Method                          |
+| :------------------------- | :----------------- | :------------------------------------------ |
+| **Hyprland**               | `config/hypr/`     | `hyprctl reload`                            |
+| **Kitty**                  | `config/kitty/`    | `Ctrl + Shift + F5`                         |
+| **Starship**               | `config/starship/` | Instant (reflected on next terminal prompt) |
+| **Dolphin / KDE**          | `config/kde/`      | Close and restart application               |
+| **Feishin / Qimgv / Glow** | `config/<app>/`    | Close and restart application               |
 
 ---
 
 ## Adding a New Out-of-Store Dotfile
+
 1. Create the configuration file or folder in `./config/<app>/`.
 2. Register the mapping in [`home/misc/dotfile.nix`](../home/misc/dotfile.nix) under the `files` attribute set:
    ```nix

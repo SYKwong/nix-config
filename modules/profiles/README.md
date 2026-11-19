@@ -6,10 +6,10 @@ This directory contains form-factor system profiles (`desktop`, `laptop`). Profi
 
 ## Profile Taxonomy
 
-| Profile | Target Form Factor | Characteristics & Included Modules |
-| :--- | :--- | :--- |
-| **[`desktop/`](./desktop)** | Fixed workstations & HTPCs (`mini-pc-k8`) | Persistent wired/wireless networking, static CIFS NAS automounts (`fileSystems.<mount>`), power-profiles-daemon. |
-| **[`laptop/`](./laptop)** | Portable clamshell notebooks (`framework16`) | Lid switch handling, dynamic NAS reachability daemon (`check-nas-cifs`), power-profiles-daemon, `suspend-then-hibernate`. |
+| Profile                     | Target Form Factor                           | Characteristics & Included Modules                                                                                        |
+| :-------------------------- | :------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------ |
+| **[`desktop/`](./desktop)** | Fixed workstations & HTPCs (`mini-pc-k8`)    | Persistent wired/wireless networking, static CIFS NAS automounts (`fileSystems.<mount>`), power-profiles-daemon.          |
+| **[`laptop/`](./laptop)**   | Portable clamshell notebooks (`framework16`) | Lid switch handling, dynamic NAS reachability daemon (`check-nas-cifs`), power-profiles-daemon, `suspend-then-hibernate`. |
 
 ---
 

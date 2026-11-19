@@ -9,25 +9,25 @@ This directory contains modular, reusable **NixOS system-level** configurations.
 
 ## Module Taxonomy
 
-| Category | Path | Description |
-| :--- | :--- | :--- |
-| **`core/`** | `modules/core/` | Baseline system configuration applied across all hosts (bootloader, networking, security policies, user accounts, system fonts, and core packages). |
-| **`profiles/`** | `modules/profiles/` | Form-factor system profiles (`desktop`, `laptop`) bundling device-type characteristics, power management, and filesystem mounts. |
-| **`hyprland/`** | `modules/hyprland/` | Hyprland Wayland compositor, UWSM session integration, and Ly display manager greeter. |
-| **`hardware/`** | `modules/hardware/` | Vendor-specific hardware integrations and firmware utilities (e.g. `framework.nix`). |
-| **`wireless/`** | `modules/wireless/` | Wireless networking (Wi-Fi), network management, and Bluetooth stack. |
-| **`vpn/`** | `modules/vpn/` | Virtual Private Network (VPN) client services, WireGuard tunnels, and encrypted routing. |
-| **`gaming/`** | `modules/gaming/` | Steam, Gamescope, and graphics/system performance optimizations (see [Gaming & Gamescope](/nix-config/gaming/)). |
-| **`sunshine/`** | `modules/sunshine/` | Low-latency Sunshine desktop and game streaming server with zero-touch tablet display automation (see [Sunshine Streaming](/nix-config/sunshine/)). |
-| **`ai/`** | `modules/ai/` | Hardware-accelerated compute runtimes (ROCm/CUDA), local AI engines, and inference services. |
-| **`secrets/`** | `modules/secrets/` | System secret management, decryption, and credential provisioning via agenix. |
-| **`input-method/`** | `modules/input-method/` | Input method engines (Fcitx5), internationalization, and character input mappings. |
-| **`shell-scripts/`** | `modules/shell-scripts/` | Custom CLI utilities packaged via `writeShellApplication` (see [Custom Shell Scripts](/nix-config/shell-scripts/)). |
-| **`systemd-services/`** | `modules/systemd-services/` | Standalone background services and scheduled timers not tied to specific domain modules (e.g. overnight flake update verification). |
-| **`home-manager/`** | `modules/home-manager/` | System-level Home Manager integration module binding user configurations and automatic per-host home extensions. |
-| **`lanzaboote/`** | `modules/lanzaboote/` | UEFI Secure Boot integration and cryptographic bootloader signing. |
-| **`power-management/`** | `modules/power-management/` | Power management daemons and system power profile switching. |
-| **`config/`** | `modules/config/` | Shared, host-reusable system configurations intended to be imported on demand. |
+| Category                | Path                        | Description                                                                                                                                         |
+| :---------------------- | :-------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`core/`**             | `modules/core/`             | Baseline system configuration applied across all hosts (bootloader, networking, security policies, user accounts, system fonts, and core packages). |
+| **`profiles/`**         | `modules/profiles/`         | Form-factor system profiles (`desktop`, `laptop`) bundling device-type characteristics, power management, and filesystem mounts.                    |
+| **`hyprland/`**         | `modules/hyprland/`         | Hyprland Wayland compositor, UWSM session integration, and Ly display manager greeter.                                                              |
+| **`hardware/`**         | `modules/hardware/`         | Vendor-specific hardware integrations and firmware utilities (e.g. `framework.nix`).                                                                |
+| **`wireless/`**         | `modules/wireless/`         | Wireless networking (Wi-Fi), network management, and Bluetooth stack.                                                                               |
+| **`vpn/`**              | `modules/vpn/`              | Virtual Private Network (VPN) client services, WireGuard tunnels, and encrypted routing.                                                            |
+| **`gaming/`**           | `modules/gaming/`           | Steam, Gamescope, and graphics/system performance optimizations (see [Gaming & Gamescope](/nix-config/gaming/)).                                    |
+| **`sunshine/`**         | `modules/sunshine/`         | Low-latency Sunshine desktop and game streaming server with zero-touch tablet display automation (see [Sunshine Streaming](/nix-config/sunshine/)). |
+| **`ai/`**               | `modules/ai/`               | Hardware-accelerated compute runtimes (ROCm/CUDA), local AI engines, and inference services.                                                        |
+| **`secrets/`**          | `modules/secrets/`          | System secret management, decryption, and credential provisioning via agenix.                                                                       |
+| **`input-method/`**     | `modules/input-method/`     | Input method engines (Fcitx5), internationalization, and character input mappings.                                                                  |
+| **`shell-scripts/`**    | `modules/shell-scripts/`    | Custom CLI utilities packaged via `writeShellApplication` (see [Custom Shell Scripts](/nix-config/shell-scripts/)).                                 |
+| **`systemd-services/`** | `modules/systemd-services/` | Standalone background services and scheduled timers not tied to specific domain modules (e.g. overnight flake update verification).                 |
+| **`home-manager/`**     | `modules/home-manager/`     | System-level Home Manager integration module binding user configurations and automatic per-host home extensions.                                    |
+| **`lanzaboote/`**       | `modules/lanzaboote/`       | UEFI Secure Boot integration and cryptographic bootloader signing.                                                                                  |
+| **`power-management/`** | `modules/power-management/` | Power management daemons and system power profile switching.                                                                                        |
+| **`config/`**           | `modules/config/`           | Shared, host-reusable system configurations intended to be imported on demand.                                                                      |
 
 > [!IMPORTANT]
 > **`modules/config/` Usage**: This directory contains optional shared configs. Do **not** import `modules/config/` wholesale; import individual files into a host's `extraModules` as needed.

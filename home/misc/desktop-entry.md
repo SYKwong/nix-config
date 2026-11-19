@@ -6,12 +6,12 @@ Quick reference for declaring custom `.desktop` launchers and hiding unwanted ap
 
 ## Directory Taxonomy
 
-| File | Description |
-| :--- | :--- |
-| [`add-desktop-entry.nix`](./add-desktop-entry.nix) | Declares custom `.desktop` entries (e.g. LINE web app wrapper, NordVPN XWayland override). |
+| File                                                 | Description                                                                                                      |
+| :--------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------- |
+| [`add-desktop-entry.nix`](./add-desktop-entry.nix)   | Declares custom `.desktop` entries (e.g. LINE web app wrapper, NordVPN XWayland override).                       |
 | [`hide-desktop-entry.nix`](./hide-desktop-entry.nix) | Hides unwanted desktop entries via standard shadowing (`appsToHide`) or forced local overrides (`annoyingApps`). |
-| [`desktop-cache.nix`](./desktop-cache.nix) | Activation hook (`pruneKsycoca`) that purges `~/.cache/ksycoca6*` and restarts `plasma-dolphin.service`. |
-| [`dotfile.nix`](./dotfile.nix) | Out-of-store `~/.config/` symlink declarations (`mkOutOfStoreSymlink`). |
+| [`desktop-cache.nix`](./desktop-cache.nix)           | Activation hook (`pruneKsycoca`) that purges `~/.cache/ksycoca6*` and restarts `plasma-dolphin.service`.         |
+| [`dotfile.nix`](./dotfile.nix)                       | Out-of-store `~/.config/` symlink declarations (`mkOutOfStoreSymlink`).                                          |
 
 ---
 

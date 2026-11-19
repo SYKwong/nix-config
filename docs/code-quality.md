@@ -16,10 +16,12 @@ nix fmt
 ```
 
 ### Supported Languages & Formatters (`treefmt/`):
+
 - **Nix**: Linted and formatted using `deadnix`, `statix`, and `nixfmt`.
 - **Bash / Shell scripts**: Linted and formatted via `shellcheck` and `shfmt`.
 - **C / C++**: Formatted using `clang-format`.
 - **Lua**: Formatted using `stylua`.
+- **Markdown**: Formatted using `prettier` (`*.md`).
 - **TOML**: Formatted using `toml-sort`.
 
 > [!NOTE]
@@ -42,6 +44,7 @@ This verifies the integrity of all NixOS system closures, Home Manager configura
 ## 3. Git Workflow & Conventional Commits
 
 ### Commit Workflow
+
 The repository provides a streamlined git alias, `git lazy`, which formats code, stages changes, creates a commit, and pushes to upstream:
 
 ```bash
@@ -49,6 +52,7 @@ git lazy "<commit message>"
 ```
 
 #### Under the Hood
+
 The alias executes an inline shell function designed to balance automated code formatting with safety across heterogeneous Git repositories:
 
 ```bash
@@ -81,13 +85,14 @@ f() {
 
 #### Behavior Across Repository Types
 
-| Repository Type | Formatting Behavior | Outcome |
-| :--- | :--- | :--- |
+| Repository Type                          | Formatting Behavior                        | Outcome                                              |
+| :--------------------------------------- | :----------------------------------------- | :--------------------------------------------------- |
 | **Flakes with a configured `formatter`** | Runs `nix fmt` from root, displays summary | Formats and commits if clean; aborts on syntax error |
-| **Flakes without a `formatter`** | Catches missing attribute error | Silently skips formatting without errors and commits |
-| **Non-Flake Repositories** | Bypasses `nix fmt` step entirely | Immediately stages, commits, and pushes |
+| **Flakes without a `formatter`**         | Catches missing attribute error            | Silently skips formatting without errors and commits |
+| **Non-Flake Repositories**               | Bypasses `nix fmt` step entirely           | Immediately stages, commits, and pushes              |
 
 ### Commit Message Conventions
+
 Commit messages must strictly follow the **Conventional Commits** specification with a single-line format:
 
 ```text
@@ -95,6 +100,7 @@ Commit messages must strictly follow the **Conventional Commits** specification 
 ```
 
 #### Common Types:
+
 - `feat`: A new host, module, application, or functional feature (e.g. `feat(hosts/mini-pc-k8): add network share`).
 - `fix`: Bug fix or hardware quirk correction (e.g. `fix(audio): restrict ALSA card profile to physical jacks`).
 - `docs`: Documentation updates or wiki enhancements (e.g. `docs(k8): document UEFI shell flashing steps`).

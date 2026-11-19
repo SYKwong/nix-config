@@ -43,6 +43,7 @@ flowchart TD
 ```
 
 ### 1. Connection Lifecycle
+
 1. **Initiate Stream from Tablet**:
    - Open Moonlight on the tablet and tap **Tablet Display**.
    - Sunshine executes the `prep-cmd` hook: `/run/current-system/sw/bin/hypr-virtual-monitor start HEADLESS-1 <scale>`.
@@ -60,6 +61,7 @@ flowchart TD
    - If the stream remains paused or disconnected continuously for **15 minutes** (`custom.sunshine.tabletDisplay.idleTimeout = 900`), the watchdog automatically evacuates windows to workspace 1, destroys `HEADLESS-1`, and restarts Sunshine to drop stale sessions. Zero background polling occurs when not streaming.
 
 ### 4. Manual Virtual Monitor CLI (`hypr-virtual-monitor`)
+
 While Moonlight connections automatically provision and tear down `HEADLESS-1` via hooks, you can also control virtual displays manually:
 
 ```bash
