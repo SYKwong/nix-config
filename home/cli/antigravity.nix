@@ -662,7 +662,7 @@ in
     };
 
     settings = {
-      model = "Gemini 4 Hydrogen (Medium)";
+      model = "Gemini 4 Neon (Medium)";
       notifications = true;
       trustedWorkspaces = [
         "/home/${username}/nix-config"
