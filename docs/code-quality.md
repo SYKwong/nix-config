@@ -12,7 +12,7 @@ This guide outlines code formatting, linting, evaluation, and git conventions en
 The repository uses [`treefmt-nix`](https://github.com/numtide/treefmt-nix) to provide unified, multi-language formatting and linting under a single command:
 
 ```bash
-nix fmt
+just format
 ```
 
 ### Supported Languages & Formatters (`treefmt/`):
@@ -20,6 +20,7 @@ nix fmt
 - **Nix**: Linted and formatted using `deadnix`, `statix`, and `nixfmt`.
 - **Bash / Shell scripts**: Linted and formatted via `shellcheck` and `shfmt`.
 - **C / C++**: Formatted using `clang-format`.
+- **Just**: Formatted using `just --fmt`.
 - **Lua**: Formatted using `stylua`.
 - **Markdown**: Formatted using `prettier` (`*.md`).
 - **TOML**: Formatted using `toml-sort`.
@@ -31,13 +32,13 @@ nix fmt
 
 ## 2. Flake Evaluation
 
-Verify that all flake outputs evaluate cleanly without errors:
+Verify formatting and that all flake outputs evaluate cleanly without errors:
 
 ```bash
-nix flake check
+just check
 ```
 
-This verifies the integrity of all NixOS system closures, Home Manager configurations, and checks defined in the flake.
+This runs `nix fmt -- --fail-on-change` and `nix flake check --no-build`, verifying formatting as well as the integrity of all NixOS system closures, Home Manager configurations, and flake outputs.
 
 ---
 

@@ -73,14 +73,17 @@ post-install
 ## Daily Driver Cheatsheet
 
 ```bash
-# Rebuild and activate live system generation
+# List all repository tasks (switch, boot, format, check, eval, build-iso, wallpaper, rekey, verify)
+just
+
+# Rebuild and activate live system generation (or `just switch`)
 nrs
 
-# Format and lint code (Nix, Bash, Lua, TOML via treefmt)
-nix fmt
+# Format and lint code (Nix, Bash, C/C++, Just, Lua, Markdown, TOML via treefmt)
+just format
 
-# Flake evaluation check
-nix flake check
+# Formatting and flake evaluation check
+just check
 
 # Stage, commit with Conventional Commits, and push
 git lazy "<commit message>"

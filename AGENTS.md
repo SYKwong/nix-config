@@ -3,7 +3,7 @@
 ## NixOS & Repository Conventions
 
 - Dependencies: `flake.lock` is managed strictly by CI; do not update or modify locks locally unless `flake.nix` was modified.
-- Formatting: Format code with `nix fmt`. It currently supports bash/sh, c/c++, lua, markdown, nix, and toml.
+- Formatting: Format code with `just format` (wraps `nix fmt`). It currently supports bash/sh, c/c++, just, lua, markdown, nix, and toml.
 - Hardware files: Never edit auto-generated `hardware-configuration.nix` files.
 - Portability & Modularity: Avoid hardcoded numeric UIDs/GIDs (prefer dynamic `username` and `users` group). Keep host-specific logic in `hosts/<name>/` and reusable features in `modules/<category>/`.
 - Hyprland Lua Conventions: Use standard `function table.name()` syntax instead of anonymous assignments (`table.name = function()`). Keybinding action helpers in `utils.lua` should return callback closures rather than raw command strings.

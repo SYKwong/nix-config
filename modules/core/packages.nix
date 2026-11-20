@@ -8,6 +8,7 @@
       ffmpeg
       glow
       jq
+      just
       kitty
       libnotify
       nodejs
