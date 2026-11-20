@@ -72,12 +72,11 @@ When adding a new machine, changing user keys, or rotating credentials:
 
 ## 3. Managed Fleet Secrets
 
-| Secret File                        | Decrypted Path                             | Description                                             |
-| :--------------------------------- | :----------------------------------------- | :------------------------------------------------------ |
-| `smb-credentials.age`              | `/run/agenix/smb-credentials`              | Network share credentials for local NAS storage.        |
-| `cloudflare-workers-ai-apikey.age` | `/run/agenix/cloudflare-workers-ai-apikey` | API key for Cloudflare Workers AI.                      |
-| `atuin-credentials.age`            | `/run/agenix/atuin-credentials`            | Atuin sync credentials for cross-machine shell history. |
-| `wireguard-fw16.age`               | `/run/agenix/wireguard-fw16`               | WireGuard private key (`framework16`).                  |
+| Secret File             | Decrypted Path                  | Description                                             |
+| :---------------------- | :------------------------------ | :------------------------------------------------------ |
+| `smb-credentials.age`   | `/run/agenix/smb-credentials`   | Network share credentials for local NAS storage.        |
+| `atuin-credentials.age` | `/run/agenix/atuin-credentials` | Atuin sync credentials for cross-machine shell history. |
+| `wireguard-fw16.age`    | `/run/agenix/wireguard-fw16`    | WireGuard private key (`framework16`).                  |
 
 ---
 

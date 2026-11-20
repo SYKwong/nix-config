@@ -21,12 +21,11 @@ secrets/
 
 ## Active Fleet Secrets
 
-| Secret File                        | Decrypted Path                             | Purpose                                                          |
-| :--------------------------------- | :----------------------------------------- | :--------------------------------------------------------------- |
-| `atuin-credentials.age`            | `/run/agenix/atuin-credentials`            | Atuin cross-machine shell history sync credentials & 24-word key |
-| `cloudflare-workers-ai-apikey.age` | `/run/agenix/cloudflare-workers-ai-apikey` | Cloudflare Workers AI API token for CLI utilities                |
-| `smb-credentials.age`              | `/run/agenix/smb-credentials`              | Network share credentials for local NAS storage                  |
-| `wireguard-fw16.age`               | `/run/agenix/wireguard-fw16`               | WireGuard VPN client private key (`framework16`)                 |
+| Secret File             | Decrypted Path                  | Purpose                                                          |
+| :---------------------- | :------------------------------ | :--------------------------------------------------------------- |
+| `atuin-credentials.age` | `/run/agenix/atuin-credentials` | Atuin cross-machine shell history sync credentials & 24-word key |
+| `smb-credentials.age`   | `/run/agenix/smb-credentials`   | Network share credentials for local NAS storage                  |
+| `wireguard-fw16.age`    | `/run/agenix/wireguard-fw16`    | WireGuard VPN client private key (`framework16`)                 |
 
 ---
 

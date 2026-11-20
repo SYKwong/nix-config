@@ -148,57 +148,6 @@ EOF
 EOF
 }
 
-sanitize_opencode() {
-  local opencode_file="$SCRIPT_DIR/home/cli/opencode.nix"
-  if [ -f "$opencode_file" ]; then
-    echo "==> Sanitizing OpenCode config (removing Cloudflare Workers AI provider)..."
-    cat <<'EOF' >"$opencode_file"
-{
-  stylix.targets.opencode.enable = true;
-
-  programs.opencode = {
-    enable = true;
-    settings = {
-      "permission" = {
-        "read" = "allow";
-        "list" = "allow";
-        "glob" = "allow";
-        "grep" = "allow";
-        "edit" = "allow";
-        "write" = "allow";
-        "bash" = {
-          "*" = "ask";
-          "git status *" = "allow";
-          "git diff *" = "allow";
-          "docker *" = "ask";
-          "curl *" = "ask";
-          "wget *" = "ask";
-          "ssh *" = "deny";
-          "sudo *" = "deny";
-          "rm *" = "ask";
-          "git commit *" = "deny";
-          "git push *" = "deny";
-          "git reset --hard *" = "deny";
-          "git clean *" = "deny";
-        };
-      };
-      provider = {
-        ollama = {
-          npm = "@ai-sdk/openai-compatible";
-          name = "Ollama (local)";
-          options.baseURL = "http://localhost:11434/v1";
-          models = {
-            "qwen3-coder:30b".name = "Qwen3 Coder 30B";
-          };
-        };
-      };
-    };
-  };
-}
-EOF
-  fi
-}
-
 sanitize_git() {
   local git_file="$SCRIPT_DIR/home/cli/git.nix"
   if [ -f "$git_file" ]; then
@@ -521,7 +470,6 @@ configure_git_remote() {
 
 purge_secrets
 purge_network_shares
-sanitize_opencode
 sanitize_git
 substitute_wallpaper_repo
 scaffold_host
