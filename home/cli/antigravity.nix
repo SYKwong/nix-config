@@ -3,6 +3,7 @@
 let
   projectRepos = [
     "dev-notes"
+    "flake-templates"
     "nix-docs"
     "nixos-hardware"
     "noctalia"
@@ -13,10 +14,6 @@ let
     "/home/${username}/nix-config/"
     "~/nix-config"
     "~/nix-config/"
-    "/home/${username}/Templates/flake-templates"
-    "/home/${username}/Templates/flake-templates/"
-    "~/Templates/flake-templates"
-    "~/Templates/flake-templates/"
   ]
   ++ builtins.concatMap (repo: [
     "/home/${username}/Projects/${repo}"
@@ -180,7 +177,6 @@ let
 
       # Workspace Filesystem
       "write_file(/home/${username}/Projects)"
-      "write_file(/home/${username}/Templates/flake-templates)"
       "write_file(/home/${username}/nix-config)"
     ];
 
@@ -666,7 +662,6 @@ in
       notifications = true;
       trustedWorkspaces = [
         "/home/${username}/nix-config"
-        "/home/${username}/Templates/flake-templates"
       ]
       ++ map (repo: "/home/${username}/Projects/${repo}") projectRepos;
     };
