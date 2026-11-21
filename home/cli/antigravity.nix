@@ -61,9 +61,31 @@ let
     dir: map (subcmd: "command(git -C ${dir} ${subcmd})") gitSubcommands
   ) trustedDirectories;
 
+  justSubcommands = [
+    "--list"
+    "check"
+    "format"
+  ];
+
+  baseJustRules = map (subcmd: "command(just ${subcmd})") justSubcommands;
+
+  justDirRules = builtins.concatMap (
+    dir:
+    let
+      cleanDir = builtins.replaceStrings [ "//" ] [ "/" ] "${dir}/";
+      justfilePath = "${cleanDir}justfile";
+    in
+    builtins.concatMap (subcmd: [
+      "command(env -C ${dir} just ${subcmd})"
+      "command(just -d ${dir} -f ${justfilePath} ${subcmd})"
+    ]) justSubcommands
+  ) trustedDirectories;
+
   allowRules =
     baseGitRules
     ++ gitDirRules
+    ++ baseJustRules
+    ++ justDirRules
     ++ [
       # GitHub Operations
       "command(gh issue list)"
@@ -186,9 +208,10 @@ let
     "command(rm -rf /)"
     "command(rm -rf /*)"
     "command(sudo)"
-    "write_file(.git/)"
     "write_file(/home/${username}/.ssh)"
-  ];
+    "write_file(/home/${username}/nix-config/.git)"
+  ]
+  ++ map (repo: "write_file(/home/${username}/Projects/${repo}/.git)") projectRepos;
 
   extractCommands =
     rules:

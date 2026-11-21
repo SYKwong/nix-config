@@ -43,6 +43,7 @@
      - Quoted substitution: `echo "Kernel: $(uname -s)" | tr '[:lower:]' '[:upper:]'`
      - Multi-substitution: `echo "$(uname -s) has uptime $(uptime | awk '{print $3}')"`
      - Standard pipeline: `git log -n 5 --oneline | head -n 2`
+     - Safe `just` commands: `just --list`, `env -C ~/nix-config just format`, `just -d ~/nix-config -f ~/nix-config/justfile --list`
   2. **Fail (Auto-denied via denyRules)**:
      - Direct denial: `sudo echo blocked` (must return hook denial)
      - Denied inner substitution: `echo $(sudo echo blocked)` (must return hook denial)
