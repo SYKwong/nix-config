@@ -7,9 +7,10 @@ author = "local"
 [[panel]]
 id = "panel"
 entry = "panel.luau"
-width = 340
-height = "content"
-max_height = 420
+width = 525
+height = 520
+placement = "floating"
+open_near_click = true
 
 [[setting]]
 key = "repos"

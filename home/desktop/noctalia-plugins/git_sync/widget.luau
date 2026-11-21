@@ -1,3 +1,5 @@
+local MAX_PREVIEW_COMMITS = 3
+
 local isChecking = false
 local checkGeneration = 0
 
@@ -8,6 +10,17 @@ local function trim(text)
 	return (string.gsub(text, "^%s*(.-)%s*$", "%1"))
 end
 
+local function parseCommitSubjects(stdout)
+	local subjects = {}
+	for line in string.gmatch(stdout or "", "([^\r\n]+)") do
+		local cleaned = trim(line)
+		if cleaned ~= "" then
+			table.insert(subjects, cleaned)
+		end
+	end
+	return subjects
+end
+
 local function readSettings()
 	local rawRepos = noctalia.getConfig("repos")
 	local repos = {}
@@ -16,6 +29,7 @@ local function readSettings()
 			if type(name) == "string" and type(rawPath) == "string" and rawPath ~= "" then
 				table.insert(repos, {
 					name = name,
+					displayPath = rawPath,
 					path = noctalia.expandPath(rawPath),
 				})
 			end
@@ -39,21 +53,27 @@ local function applyPollInterval()
 	noctalia.setUpdateInterval(settings.intervalMs)
 end
 
-local function applyResults(outOfSync)
-	table.sort(outOfSync, function(a, b)
+local function applyResults(allRepos)
+	table.sort(allRepos, function(a, b)
+		if a.outOfSync ~= b.outOfSync then
+			return a.outOfSync
+		end
 		return a.name < b.name
 	end)
 
-	noctalia.state.set("out_of_sync", outOfSync)
+	local outOfSyncNames = {}
+	for _, repo in ipairs(allRepos) do
+		if repo.outOfSync then
+			table.insert(outOfSyncNames, repo.name)
+		end
+	end
+
+	noctalia.state.set("repos", allRepos)
 	noctalia.state.set("checking", false)
 
-	if #outOfSync > 0 then
-		local names = {}
-		for _, repo in ipairs(outOfSync) do
-			table.insert(names, repo.name)
-		end
-		barWidget.setText(tostring(#outOfSync))
-		barWidget.setTooltip("Out of sync: " .. table.concat(names, ", "))
+	if #outOfSyncNames > 0 then
+		barWidget.setText(tostring(#outOfSyncNames))
+		barWidget.setTooltip("Out of sync: " .. table.concat(outOfSyncNames, ", "))
 		barWidget.setVisible(true)
 	else
 		barWidget.setText("")
@@ -79,16 +99,17 @@ local function checkAllRepos()
 	noctalia.state.set("checking", true)
 
 	local remaining = #settings.repos
-	local outOfSync = {}
+	local results = {}
 
-	local function finishOne()
+	local function finishRepo(entry)
 		if currentGen ~= checkGeneration then
 			return
 		end
+		table.insert(results, entry)
 		remaining = remaining - 1
 		if remaining <= 0 then
 			isChecking = false
-			applyResults(outOfSync)
+			applyResults(results)
 		end
 	end
 
@@ -98,13 +119,31 @@ local function checkAllRepos()
 				return
 			end
 			if localResult.exitCode ~= 0 then
-				finishOne()
+				finishRepo({
+					name = repo.name,
+					displayPath = repo.displayPath,
+					path = repo.path,
+					outOfSync = false,
+					behindCount = 0,
+					commits = {},
+					localHash = "",
+					remoteHash = "",
+				})
 				return
 			end
 
 			local localHash = trim(localResult.stdout)
 			if localHash == "" then
-				finishOne()
+				finishRepo({
+					name = repo.name,
+					displayPath = repo.displayPath,
+					path = repo.path,
+					outOfSync = false,
+					behindCount = 0,
+					commits = {},
+					localHash = "",
+					remoteHash = "",
+				})
 				return
 			end
 
@@ -114,18 +153,81 @@ local function checkAllRepos()
 					if currentGen ~= checkGeneration then
 						return
 					end
-					if remoteResult.exitCode == 0 then
-						local remoteHash = string.match(remoteResult.stdout or "", "^(%x+)")
-						if remoteHash and remoteHash ~= "" and remoteHash ~= localHash then
-							table.insert(outOfSync, {
+
+					local remoteHash = remoteResult.exitCode == 0
+							and string.match(remoteResult.stdout or "", "^(%x+)")
+						or nil
+
+					if not remoteHash or remoteHash == "" or remoteHash == localHash then
+						finishRepo({
+							name = repo.name,
+							displayPath = repo.displayPath,
+							path = repo.path,
+							outOfSync = false,
+							behindCount = 0,
+							commits = {},
+							localHash = string.sub(localHash, 1, 7),
+							remoteHash = string.sub(remoteHash or localHash, 1, 7),
+						})
+						return
+					end
+
+					noctalia.runAsync({
+						"git",
+						"-C",
+						repo.path,
+						"-c",
+						"core.hooksPath=/dev/null",
+						"-c",
+						"core.fsmonitor=false",
+						"fetch",
+						"--no-tags",
+						settings.remote,
+						settings.branch,
+					}, function(fetchResult)
+						if currentGen ~= checkGeneration then
+							return
+						end
+						if fetchResult.exitCode ~= 0 then
+							finishRepo({
 								name = repo.name,
+								displayPath = repo.displayPath,
 								path = repo.path,
+								outOfSync = true,
+								behindCount = 0,
+								commits = {},
 								localHash = string.sub(localHash, 1, 7),
 								remoteHash = string.sub(remoteHash, 1, 7),
 							})
+							return
 						end
-					end
-					finishOne()
+
+						noctalia.runAsync(
+							{ "git", "-C", repo.path, "log", "--format=%s", settings.branch .. "..FETCH_HEAD" },
+							function(logResult)
+								if currentGen ~= checkGeneration then
+									return
+								end
+								local allSubjects = logResult.exitCode == 0 and parseCommitSubjects(logResult.stdout)
+									or {}
+								local preview = {}
+								for i = 1, math.min(#allSubjects, MAX_PREVIEW_COMMITS) do
+									table.insert(preview, allSubjects[i])
+								end
+
+								finishRepo({
+									name = repo.name,
+									displayPath = repo.displayPath,
+									path = repo.path,
+									outOfSync = true,
+									behindCount = #allSubjects,
+									commits = preview,
+									localHash = string.sub(localHash, 1, 7),
+									remoteHash = string.sub(remoteHash, 1, 7),
+								})
+							end
+						)
+					end)
 				end
 			)
 		end)
