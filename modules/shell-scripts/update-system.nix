@@ -40,10 +40,12 @@ pkgs.writeShellApplication {
         git add -N -- "''${INTENT_TO_ADD_FILES[@]}" || true
       fi
 
-      echo ""
-      printf "%bPress any key to exit...%b" "$BOLD" "$RESET"
-      read -n 1 -s -r || true
-      echo ""
+      if [ "$exit_code" -ne 0 ]; then
+        echo ""
+        printf "%bPress any key to exit...%b" "$BOLD" "$RESET"
+        read -n 1 -s -r || true
+        echo ""
+      fi
       exit "$exit_code"
     }
     trap cleanup EXIT
