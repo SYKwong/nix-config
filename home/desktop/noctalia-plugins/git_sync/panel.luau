@@ -33,22 +33,11 @@ local function renderPanel()
 	local branch = noctalia.getConfig("branch") or "main"
 
 	local children = {
-		ui.row({ align = "center", justify = "space_between", gap = 8 }, {
-			ui.label({
-				text = "Out of Sync",
-				fontSize = 15,
-				fontWeight = "bold",
-				color = "primary",
-				flexGrow = 1,
-			}),
-			ui.button({
-				glyph = "refresh",
-				variant = "ghost",
-				controlSize = "sm",
-				enabled = not checking,
-				tooltip = "Re-check all repositories",
-				onClick = "onRefreshClicked",
-			}),
+		ui.label({
+			text = "Out of Sync",
+			fontSize = 15,
+			fontWeight = "bold",
+			color = "primary",
 		}),
 		ui.separator({}),
 	}
@@ -194,8 +183,4 @@ end
 
 function onClose()
 	isOpen = false
-end
-
-function onRefreshClicked()
-	triggerRefresh()
 end

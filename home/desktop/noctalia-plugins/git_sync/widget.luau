@@ -155,10 +155,6 @@ function onClick()
 	noctalia.togglePanel("local/git_sync:panel")
 end
 
-function onRightClick()
-	checkAllRepos()
-end
-
 function onIpc(event)
 	if event == "refresh" then
 		checkAllRepos()
