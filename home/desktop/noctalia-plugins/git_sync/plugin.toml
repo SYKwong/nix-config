@@ -33,10 +33,24 @@ label_key = "settings.remote.label"
 default = "origin"
 
 [[setting]]
+key = "remotes"
+type = "string_map"
+label_key = "settings.remotes.label"
+description_key = "settings.remotes.description"
+default = {}
+
+[[setting]]
 key = "branch"
 type = "string"
 label_key = "settings.branch.label"
 default = "main"
+
+[[setting]]
+key = "branches"
+type = "string_map"
+label_key = "settings.branches.label"
+description_key = "settings.branches.description"
+default = {}
 
 [[setting]]
 key = "interval_seconds"

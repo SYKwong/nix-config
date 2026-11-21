@@ -36,7 +36,7 @@ end
 
 local renderPanel
 
-local function runRepoUpdate(repo, updateCommands, remote, branch, closeOnCustom)
+local function runRepoUpdate(repo, updateCommands, closeOnCustom)
 	if busyRepos[repo.name] then
 		return
 	end
@@ -72,6 +72,9 @@ local function runRepoUpdate(repo, updateCommands, remote, branch, closeOnCustom
 		renderPanel()
 	end
 
+	local repoRemote = repo.remote or "origin"
+	local repoBranch = repo.branch or "main"
+
 	noctalia.runAsync({ "git", "-C", repo.path, "rev-parse", "--abbrev-ref", "HEAD" }, function(headResult)
 		if headResult.exitCode ~= 0 then
 			finishUpdate(headResult)
@@ -80,7 +83,7 @@ local function runRepoUpdate(repo, updateCommands, remote, branch, closeOnCustom
 
 		local currentBranch = trim(headResult.stdout)
 		local gitArgs
-		if currentBranch == branch then
+		if currentBranch == repoBranch then
 			gitArgs = {
 				"git",
 				"-C",
@@ -91,8 +94,8 @@ local function runRepoUpdate(repo, updateCommands, remote, branch, closeOnCustom
 				"core.fsmonitor=false",
 				"pull",
 				"--ff-only",
-				remote,
-				branch,
+				repoRemote,
+				repoBranch,
 			}
 		else
 			gitArgs = {
@@ -104,8 +107,8 @@ local function runRepoUpdate(repo, updateCommands, remote, branch, closeOnCustom
 				"-c",
 				"core.fsmonitor=false",
 				"fetch",
-				remote,
-				branch .. ":" .. branch,
+				repoRemote,
+				repoBranch .. ":" .. repoBranch,
 			}
 		end
 
@@ -121,8 +124,6 @@ renderPanel = function()
 	local allRepos = noctalia.state.get("repos") or {}
 	local checking = noctalia.state.get("checking") == true
 	local updateCommands = noctalia.getConfig("update_commands") or {}
-	local remote = noctalia.getConfig("remote") or "origin"
-	local branch = noctalia.getConfig("branch") or "main"
 
 	local outOfSyncRepos = {}
 	for _, repo in ipairs(allRepos) do
@@ -158,7 +159,7 @@ renderPanel = function()
 						if hasCustom then
 							launchedCustom = true
 						end
-						runRepoUpdate(repo, updateCommands, remote, branch, false)
+						runRepoUpdate(repo, updateCommands, false)
 					end
 					if launchedCustom then
 						panel.close()
@@ -195,7 +196,7 @@ renderPanel = function()
 					controlSize = "sm",
 					enabled = not isBusy,
 					onClick = function()
-						runRepoUpdate(repo, updateCommands, remote, branch, true)
+						runRepoUpdate(repo, updateCommands, true)
 					end,
 				})
 			else
@@ -224,7 +225,7 @@ renderPanel = function()
 							}),
 						}),
 						ui.label({
-							text = repo.displayPath .. " • " .. remote .. "/" .. branch,
+							text = repo.displayPath .. " • " .. (repo.remote or "origin") .. "/" .. (repo.branch or "main"),
 							fontSize = 12,
 							color = "on_surface_variant",
 							textAlign = "start",

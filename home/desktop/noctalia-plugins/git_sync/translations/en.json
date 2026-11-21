@@ -3,9 +3,13 @@
   "settings.repos.description": "Map of repository names to local directory paths",
   "settings.update_commands.label": "Custom update commands",
   "settings.update_commands.description": "Optional per-repo shell command run instead of git pull --ff-only",
-  "settings.remote.label": "Git remote",
-  "settings.remote.description": "Remote name to check against",
-  "settings.branch.label": "Git branch",
-  "settings.branch.description": "Branch name to compare against remote",
+  "settings.remote.label": "Default git remote",
+  "settings.remote.description": "Default remote name when not overridden per repo",
+  "settings.remotes.label": "Per-repo git remotes",
+  "settings.remotes.description": "Optional per-repo remote overrides (repo name -> remote)",
+  "settings.branch.label": "Default git branch",
+  "settings.branch.description": "Default branch name when not overridden per repo",
+  "settings.branches.label": "Per-repo git branches",
+  "settings.branches.description": "Optional per-repo branch overrides (repo name -> branch)",
   "settings.interval_seconds.label": "Check interval (seconds)"
 }

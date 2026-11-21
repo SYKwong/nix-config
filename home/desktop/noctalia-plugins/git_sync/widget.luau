@@ -23,14 +23,23 @@ end
 
 local function readSettings()
 	local rawRepos = noctalia.getConfig("repos")
+	local rawRemotes = noctalia.getConfig("remotes")
+	local rawBranches = noctalia.getConfig("branches")
+	local defaultRemote = noctalia.getConfig("remote") or "origin"
+	local defaultBranch = noctalia.getConfig("branch") or "main"
+
 	local repos = {}
 	if type(rawRepos) == "table" then
 		for name, rawPath in pairs(rawRepos) do
 			if type(name) == "string" and type(rawPath) == "string" and rawPath ~= "" then
+				local repoRemote = type(rawRemotes) == "table" and rawRemotes[name] or ""
+				local repoBranch = type(rawBranches) == "table" and rawBranches[name] or ""
 				table.insert(repos, {
 					name = name,
 					displayPath = rawPath,
 					path = noctalia.expandPath(rawPath),
+					remote = repoRemote ~= "" and repoRemote or defaultRemote,
+					branch = repoBranch ~= "" and repoBranch or defaultBranch,
 				})
 			end
 		end
@@ -42,8 +51,6 @@ local function readSettings()
 	local intervalSeconds = tonumber(noctalia.getConfig("interval_seconds")) or 3600
 	return {
 		repos = repos,
-		remote = noctalia.getConfig("remote") or "origin",
-		branch = noctalia.getConfig("branch") or "main",
 		intervalMs = math.max(intervalSeconds, 60) * 1000,
 	}
 end
@@ -114,7 +121,7 @@ local function checkAllRepos()
 	end
 
 	for _, repo in ipairs(settings.repos) do
-		noctalia.runAsync({ "git", "-C", repo.path, "rev-parse", settings.branch }, function(localResult)
+		noctalia.runAsync({ "git", "-C", repo.path, "rev-parse", repo.branch }, function(localResult)
 			if currentGen ~= checkGeneration then
 				return
 			end
@@ -123,6 +130,8 @@ local function checkAllRepos()
 					name = repo.name,
 					displayPath = repo.displayPath,
 					path = repo.path,
+					remote = repo.remote,
+					branch = repo.branch,
 					outOfSync = false,
 					behindCount = 0,
 					commits = {},
@@ -138,6 +147,8 @@ local function checkAllRepos()
 					name = repo.name,
 					displayPath = repo.displayPath,
 					path = repo.path,
+					remote = repo.remote,
+					branch = repo.branch,
 					outOfSync = false,
 					behindCount = 0,
 					commits = {},
@@ -148,7 +159,7 @@ local function checkAllRepos()
 			end
 
 			noctalia.runAsync(
-				{ "git", "-C", repo.path, "ls-remote", settings.remote, "-h", "refs/heads/" .. settings.branch },
+				{ "git", "-C", repo.path, "ls-remote", repo.remote, "-h", "refs/heads/" .. repo.branch },
 				function(remoteResult)
 					if currentGen ~= checkGeneration then
 						return
@@ -163,6 +174,8 @@ local function checkAllRepos()
 							name = repo.name,
 							displayPath = repo.displayPath,
 							path = repo.path,
+							remote = repo.remote,
+							branch = repo.branch,
 							outOfSync = false,
 							behindCount = 0,
 							commits = {},
@@ -182,8 +195,8 @@ local function checkAllRepos()
 						"core.fsmonitor=false",
 						"fetch",
 						"--no-tags",
-						settings.remote,
-						settings.branch,
+						repo.remote,
+						repo.branch,
 					}, function(fetchResult)
 						if currentGen ~= checkGeneration then
 							return
@@ -193,6 +206,8 @@ local function checkAllRepos()
 								name = repo.name,
 								displayPath = repo.displayPath,
 								path = repo.path,
+								remote = repo.remote,
+								branch = repo.branch,
 								outOfSync = true,
 								behindCount = 0,
 								commits = {},
@@ -203,7 +218,7 @@ local function checkAllRepos()
 						end
 
 						noctalia.runAsync(
-							{ "git", "-C", repo.path, "log", "--format=%s", settings.branch .. "..FETCH_HEAD" },
+							{ "git", "-C", repo.path, "log", "--format=%s", repo.branch .. "..FETCH_HEAD" },
 							function(logResult)
 								if currentGen ~= checkGeneration then
 									return
@@ -219,6 +234,8 @@ local function checkAllRepos()
 									name = repo.name,
 									displayPath = repo.displayPath,
 									path = repo.path,
+									remote = repo.remote,
+									branch = repo.branch,
 									outOfSync = true,
 									behindCount = #allSubjects,
 									commits = preview,
