@@ -61,6 +61,9 @@ pkgs.writeShellApplication {
     log_info "Activating configuration live..."
     if /nix/var/nix/profiles/system/bin/switch-to-configuration switch; then
       log_success "Live switch succeeded."
+      USER_UID=$(id -u "${username}")
+      sudo -u "${username}" XDG_RUNTIME_DIR="/run/user/$USER_UID" \
+        "/etc/profiles/per-user/${username}/bin/noctalia" msg plugin local/git_sync:git_sync all refresh >/dev/null 2>&1 || true
     else
       log_warn "Live switch failed. Boot entry is saved and changes will apply on next reboot."
     fi

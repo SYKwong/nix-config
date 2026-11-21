@@ -1,0 +1,11 @@
+{
+  "settings.repos.label": "Repositories",
+  "settings.repos.description": "Map of repository names to local directory paths",
+  "settings.update_commands.label": "Custom update commands",
+  "settings.update_commands.description": "Optional per-repo shell command run instead of git pull --ff-only",
+  "settings.remote.label": "Git remote",
+  "settings.remote.description": "Remote name to check against",
+  "settings.branch.label": "Git branch",
+  "settings.branch.description": "Branch name to compare against remote",
+  "settings.interval_seconds.label": "Check interval (seconds)"
+}

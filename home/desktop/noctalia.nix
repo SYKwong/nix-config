@@ -69,6 +69,11 @@ let
 in
 
 {
+  xdg.dataFile."noctalia/plugins/git_sync" = {
+    source = ./noctalia-plugins/git_sync;
+    recursive = true;
+  };
+
   programs.noctalia = {
     enable = true;
     systemd.enable = true;
@@ -147,6 +152,7 @@ in
               members = [
                 "tray"
                 "clipboard"
+                "git_sync"
                 "notifications"
               ];
               opacity = 1.0;
@@ -312,6 +318,18 @@ in
         };
       };
 
+      plugins.enabled = [ "local/git_sync" ];
+      plugin_settings."local/git_sync" = {
+        repos = {
+          nix-config = "~/nix-config";
+          nix-docs = "~/Projects/nix-docs";
+          flake-templates = "~/Projects/flake-templates";
+        };
+        update_commands = {
+          nix-config = "uwsm app -- tui-wrap update-system";
+        };
+      };
+
       shell = {
         animation.enabled = false;
         button_borders = true;
@@ -404,6 +422,9 @@ in
         network = {
           show_label = false;
           vpn_status = "both";
+        };
+        git_sync = {
+          type = "local/git_sync:git_sync";
         };
         notifications.hide_when_no_unread = true;
         tray = {

@@ -1,0 +1,50 @@
+id = "local/git_sync"
+name = "Git Sync"
+version = "1.0.0"
+plugin_api = 42
+author = "local"
+
+[[panel]]
+id = "panel"
+entry = "panel.luau"
+width = 340
+height = "content"
+max_height = 420
+
+[[setting]]
+key = "repos"
+type = "string_map"
+label_key = "settings.repos.label"
+description_key = "settings.repos.description"
+default = {}
+
+[[setting]]
+key = "update_commands"
+type = "string_map"
+label_key = "settings.update_commands.label"
+description_key = "settings.update_commands.description"
+default = {}
+
+[[setting]]
+key = "remote"
+type = "string"
+label_key = "settings.remote.label"
+default = "origin"
+
+[[setting]]
+key = "branch"
+type = "string"
+label_key = "settings.branch.label"
+default = "main"
+
+[[setting]]
+key = "interval_seconds"
+type = "int"
+label_key = "settings.interval_seconds.label"
+default = 3600
+min = 60
+max = 86400
+
+[[widget]]
+id = "git_sync"
+entry = "widget.luau"

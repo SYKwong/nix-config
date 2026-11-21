@@ -176,3 +176,14 @@ keybinds = {
   category_previous = [ "Ctrl+Shift+F24" ];
 };
 ```
+
+---
+
+## Noctalia Multi-Repo Sync Indicator
+
+A declarative local Noctalia Luau plugin (`local/git_sync`, authored in `home/desktop/noctalia-plugins/git_sync/` and installed to `~/.local/share/noctalia/plugins/git_sync/` via `xdg.dataFile`) monitors configured Git repositories for remote `main` updates:
+
+- **Configurable Settings**: Exposes `repos` (`string_map`, empty by default), `update_commands` (`string_map`, optional per-repo update commands), `remote`, `branch`, and `interval_seconds` under **Settings → Plugins → Git Sync** and `plugin_settings."local/git_sync"` in `home/desktop/noctalia.nix`.
+- **Polling**: Runs `git rev-parse <branch>` and `git ls-remote <remote> -h refs/heads/<branch>` asynchronously (`noctalia.runAsync`) for every configured repository on the configured interval (`3600s` default) with zero `.git` writes.
+- **Bar Placement & Dropdown Panel**: Positioned between `clipboard` and `notifications` inside `group:utilities`. Stays hidden when all repositories are synced, displays a `refresh` glyph and out-of-sync count when behind, and opens a dropdown panel (`local/git_sync:panel`) on left-click listing each out-of-sync repository with an **Update** button (running its custom action such as `uwsm app -- tui-wrap update-system` for `nix-config`, or `git pull --ff-only` directly for other repos). Right-clicking the bar widget triggers an immediate re-check.
+- **IPC Refresh**: `rebuild` sends `noctalia msg plugin local/git_sync:git_sync all refresh` after a successful live switch so `nix-config` clears immediately.
