@@ -128,7 +128,7 @@ let
     safe-python = import ./safe-python.nix common;
     safe-npm = import ./safe-npm.nix common;
     safe-npx = import ./safe-npx.nix common;
-    update-system = import ./update-system.nix (common // { inherit rebuild; });
+    update-system = import ./update-system.nix common;
     update-wallpaper = import ./update-wallpaper.nix (common // { inherit rebuild; });
   };
 in

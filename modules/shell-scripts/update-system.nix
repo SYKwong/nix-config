@@ -1,8 +1,8 @@
 {
   pkgs,
+  username,
   config_path,
   logHelpers,
-  rebuild,
   ...
 }:
 
@@ -12,7 +12,6 @@ pkgs.writeShellApplication {
   runtimeInputs = [
     pkgs.coreutils
     pkgs.git
-    rebuild
   ];
 
   text = ''
@@ -71,10 +70,19 @@ pkgs.writeShellApplication {
       git switch main
     fi
 
+    BEFORE_HASH=$(git rev-parse main)
+
     log_info "Fast-forwarding local main from origin..."
     git -c core.hooksPath=/dev/null -c core.fsmonitor=false pull --ff-only origin main
 
+    AFTER_HASH=$(git rev-parse main)
+    if [ "$BEFORE_HASH" = "$AFTER_HASH" ]; then
+      log_info "Already up to date ($AFTER_HASH); skipping rebuild."
+      "/etc/profiles/per-user/${username}/bin/noctalia" msg plugin local/git_sync:git_sync all refresh >/dev/null 2>&1 || true
+      exit 0
+    fi
+
     log_info "Running NixOS rebuild..."
-    rebuild
+    sudo /run/current-system/sw/bin/rebuild
   '';
 }
