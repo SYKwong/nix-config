@@ -681,8 +681,10 @@ in
     };
 
     settings = {
+      agentMode = "";
       model = "Gemini 4 Neon (Medium)";
       notifications = true;
+      toolPermission = "request-review";
       trustedWorkspaces = [
         "/home/${username}/nix-config"
       ]

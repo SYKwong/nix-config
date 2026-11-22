@@ -108,6 +108,10 @@ Instead of continuous background daemons, synchronization is automated just-in-t
 - **`Stop`**: Automatically checks for unstaged notes changes upon conversation completion, commits them, and pushes to remote.
 - **Offline Resilient**: Uses SSH guards (`BatchMode=yes`, `ConnectTimeout=3`). If working offline (or before `dev-notes` is cloned), the hooks safely bypass in milliseconds without blocking prompt execution.
 
+#### Execution Mode & Permission Policy
+
+Since Antigravity CLI v1.5.7+ defaults `agentMode` to `"auto"` (which auto-approves workspace edits, reads outside the workspace, and auto-evaluates commands outside the terminal sandbox), `home/cli/antigravity.nix` explicitly pins `agentMode = ""` (`default` mode) and `toolPermission = "request-review"`. This ensures only commands and workspace paths explicitly permitted by `allowRules` and `pipelineAllowHook` run without prompting, while everything else requires interactive approval.
+
 #### Pre-Approved Git Workspaces
 
 To streamline multi-repo workflows without interactive permission prompts, `home/cli/antigravity.nix` automatically approves safe read and staging Git subcommands (e.g., `status`, `diff`, `log`, `branch`, `checkout`, `switch`, `fetch`, `rebase`, `add`, `rm`) scoped via `git -C <dir>` across trusted workspaces (`~/nix-config` and `~/Projects/<repo>`). Mutating operations (`commit`, `push`, `reset`, `restore`) remain strictly guarded.
