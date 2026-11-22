@@ -1,8 +1,7 @@
 -- Hyprland plugin configuration and loading
 
 local plugin_candidates = {
-	-- Temporarily disabled: crashes Hyprland v0.57.2 (SIGSEGV in renderDecorationTexture)
-	-- "/run/current-system/sw/lib/libscrolloverview.so",
+	"/run/current-system/sw/lib/libscrolloverview.so",
 }
 
 local loaded_plugin = false
