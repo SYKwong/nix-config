@@ -19,7 +19,6 @@ This directory contains modular, reusable **NixOS system-level** configurations.
 | **`vpn/`**              | `modules/vpn/`              | Virtual Private Network (VPN) client services, WireGuard tunnels, and encrypted routing.                                                            |
 | **`gaming/`**           | `modules/gaming/`           | Steam, Gamescope, and graphics/system performance optimizations (see [Gaming & Gamescope](/nix-config/gaming/)).                                    |
 | **`sunshine/`**         | `modules/sunshine/`         | Low-latency Sunshine desktop and game streaming server with zero-touch tablet display automation (see [Sunshine Streaming](/nix-config/sunshine/)). |
-| **`ai/`**               | `modules/ai/`               | Hardware-accelerated compute runtimes (ROCm/CUDA), local AI engines, and inference services.                                                        |
 | **`secrets/`**          | `modules/secrets/`          | System secret management, decryption, and credential provisioning via agenix.                                                                       |
 | **`input-method/`**     | `modules/input-method/`     | Input method engines (Fcitx5), internationalization, and character input mappings.                                                                  |
 | **`shell-scripts/`**    | `modules/shell-scripts/`    | Custom CLI utilities packaged via `writeShellApplication` (see [Custom Shell Scripts](/nix-config/shell-scripts/)).                                 |

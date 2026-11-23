@@ -40,7 +40,6 @@ let
 
     ./modules/core
 
-    ./modules/ai
     ./modules/gaming
     ./modules/home-manager
     ./modules/hyprland

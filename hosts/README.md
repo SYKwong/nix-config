@@ -47,7 +47,7 @@ hosts/<hostname>/
    - Storage maintenance timers (`services.btrfs.autoScrub`).
 
 4. **`config.nix` (Optional)** ([framework16](./framework16/config.nix), [mini-pc-k8](./mini-pc-k8/config.nix)):
-   A consolidated module for any machine-specific option toggles (e.g. `custom.ai`, `custom.vpn.wireguard`) and host-specific secrets (`age.secrets`). Avoid creating micro-files for individual feature toggles.
+   A consolidated module for any machine-specific option toggles (e.g. `custom.vpn.wireguard`, `custom.systemd-services`) and host-specific secrets (`age.secrets`). Avoid creating micro-files for individual feature toggles.
 
 5. **`home/` (Optional)**:
    Host-specific user packages or environment settings. Automatically imported into the user's Home Manager environment by `modules/home-manager/` if a `hosts/<hostname>/home/` directory exists.

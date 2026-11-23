@@ -1,11 +1,6 @@
 { config, ... }:
 
 {
-  custom.ai = {
-    enable = true;
-    iGPUOnly = true;
-  };
-
   custom.vpn.wireguard.enable = true;
 
   age.secrets.wireguard-fw16.file = ../../secrets/wireguard-fw16.age;

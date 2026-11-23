@@ -43,7 +43,7 @@ nix-config/
 │   ├── hyprland/               # Hyprland compositor, UWSM session, Ly greeter
 │   ├── sunshine/               # Sunshine desktop streaming and automated tablet virtual display
 │   ├── shell-scripts/          # Custom CLI utilities packaged via writeShellApplication
-│   └── ...                     # AI, gaming, power management, VPN, wireless, secrets
+│   └── ...                     # Gaming, power management, VPN, wireless, secrets
 │
 ├── home/                       # Pure user-space Home Manager modules
 │   ├── browsers/               # Web browsers (Zen Browser, Helium)
