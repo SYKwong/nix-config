@@ -67,7 +67,7 @@ git lazy "<commit message>"
 ### Code Quality & Validation
 
 ```bash
-# Format and lint code (Nix, Bash, C/C++, Lua, TOML via treefmt)
+# Format and lint code (Nix, Bash, C/C++, Just, Lua, Markdown, TOML via treefmt)
 nix fmt
 
 # Flake evaluation check

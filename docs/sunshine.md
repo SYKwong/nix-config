@@ -13,8 +13,8 @@ Provides a self-hosted [Sunshine](https://github.com/LizardByte/Sunshine) game a
 - **Direct Wayland Capture (`capture = wlr`)**: Configured to use `wlr-screencopy-unstable-v1` DMA-BUF capture directly with Hyprland. Bypasses XDG Desktop Portal screencast prompts, preventing interactive `hyprland-share-picker` dialogs from appearing upon systemd user service startup.
 - **Default-Enabled Across Fleet**: Registered in common system modules (`outputs.nix`) and enabled by default (`custom.sunshine.enable = true`).
 - **Autostart Control**: Runs automatically upon graphical login (`custom.sunshine.autoStart = true`). Can be toggled to `false` per-host if on-demand startup is preferred.
-- **Firewall Integration**: Automatically provisions open TCP (`47984, 47989, 47990, 48010`) and UDP (`47998-48000, 48002, 48010`) ports.
-- **Input Emulation & Permissions**: Configures `uinput` rules, grants `video` and `input` permissions, and assigns `cap_sys_admin+p` capabilities to the Sunshine binary.
+- **Firewall Integration**: Automatically provisions open TCP (`47984, 47989, 47990, 48010`) and UDP (`47998-48000, 48002, 48010`) ports (`custom.sunshine.openFirewall = true`).
+- **Input Emulation & Permissions**: Configures `uinput` rules, grants `video` and `input` permissions, and assigns `cap_sys_admin+p` capabilities to the Sunshine binary (`custom.sunshine.capSysAdmin = true`).
 - **Opt-Out Toggle**: Can be disabled per-host in `hosts/<hostname>/config.nix`:
   ```nix
   custom.sunshine.enable = false;
@@ -45,9 +45,9 @@ flowchart TD
 ### 1. Connection Lifecycle
 
 1. **Initiate Stream from Tablet**:
-   - Open Moonlight on the tablet and tap **Tablet Display**.
-   - Sunshine executes the `prep-cmd` hook: `/run/current-system/sw/bin/hypr-virtual-monitor start HEADLESS-1 <scale>`.
-   - The script dynamically reads Moonlight's negotiated resolution and refresh rate (`SUNSHINE_CLIENT_WIDTH`, `SUNSHINE_CLIENT_HEIGHT`, `SUNSHINE_CLIENT_FPS`) and creates a virtual headless monitor (`HEADLESS-1`) in Hyprland with exact 1:1 pixel dimensions and 120Hz refresh rate.
+   - Open Moonlight on the tablet and tap **Tablet Display** (or **Desktop**, which shares the same virtual display hooks).
+   - Sunshine executes the `prep-cmd` hook: `/run/current-system/sw/bin/hypr-virtual-monitor start HEADLESS-1 <scale>` (using `custom.sunshine.tabletDisplay.scale`, default `"1.6"`).
+   - The script dynamically reads Moonlight's negotiated resolution and refresh rate (`SUNSHINE_CLIENT_WIDTH`, `SUNSHINE_CLIENT_HEIGHT`, `SUNSHINE_CLIENT_FPS`, defaulting to `120` Hz) and creates a virtual headless monitor (`HEADLESS-1`) in Hyprland with the configured scale factor.
    - Windows and workspaces placed on `HEADLESS-1` stream directly to the tablet screen.
 
 2. **Graceful Teardown**:
@@ -60,7 +60,7 @@ flowchart TD
    - The watchdog periodically polls active Sunshine streaming sockets (`:47989`, `:48010`) using `ss`.
    - If the stream remains paused or disconnected continuously for **15 minutes** (`custom.sunshine.tabletDisplay.idleTimeout = 900`), the watchdog automatically evacuates windows to workspace 1, destroys `HEADLESS-1`, and restarts Sunshine to drop stale sessions. Zero background polling occurs when not streaming.
 
-### 4. Manual Virtual Monitor CLI (`hypr-virtual-monitor`)
+### 2. Manual Virtual Monitor CLI (`hypr-virtual-monitor`)
 
 While Moonlight connections automatically provision and tear down `HEADLESS-1` via hooks, you can also control virtual displays manually:
 

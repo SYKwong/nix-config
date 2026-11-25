@@ -9,7 +9,7 @@ This directory defines a lightweight, reproducible NixOS installer ISO image pre
 - **mDNS Hostname Resolution**: Advertises itself as `installer.local` via Avahi. No need to scan for IP addresses on your router or type `ip a` on the target machine.
 - **Pre-baked SSH Keys**: Workstation public keys from [`secrets/keys.nix`](../../secrets/keys.nix) are embedded directly into `root` and `nixos` user accounts, enabling instant passwordless SSH.
 - **Pre-embedded Repository & Installer**: The full `nix-config` repository snapshot is pre-provisioned at `~/nix-config` as an initialized, writable Git repository, and `install-nixos` is pre-baked into `$PATH`.
-- **Embedded Tooling**: Pre-bundles `install-nixos`, Disko, Git, Neovim, Tmux, 7-Zip, Parted, and cURL.
+- **Embedded Tooling**: Pre-bundles `install-nixos`, Git, Neovim, Tmux, 7-Zip, Parted, and cURL (Disko is fetched on demand via `nix run`).
 - **Generic & Hardware-Agnostic**: Minimal CLI environment without desktop overhead or hardware-specific display quirks.
 
 ---

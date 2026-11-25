@@ -30,6 +30,7 @@ graph TD
 nix-config/
 ├── flake.nix                   # Flake input definitions and lockfile reference
 ├── outputs.nix                 # Centralized host definitions and module pipeline
+├── justfile                    # Task runner recipes (just format, just check)
 ├── adopt.sh                    # Automated adoption and profile scaffolding
 │
 ├── hosts/                      # Host-specific hardware and partition definitions
@@ -47,25 +48,28 @@ nix-config/
 │
 ├── home/                       # Pure user-space Home Manager modules
 │   ├── browsers/               # Web browsers (Zen Browser, Helium)
-│   ├── cli/                    # CLI tools (bat, btop, direnv, eza, fzf, git, yazi, zoxide, antigravity)
+│   ├── cli/                    # CLI tools (atuin, bat, btop, direnv, eza, fastfetch, fzf, git, yazi, yt-dlp, zoxide, antigravity)
+│   ├── core/                   # Baseline user session and XDG defaults
 │   ├── desktop/                # Noctalia desktop shell (bar, OSD, lockscreen, runner)
 │   ├── editors/                # NixVim (declarative Neovim) and Zed
 │   ├── media/                  # Desktop media clients (Feishin, Jellyfin, mpv)
 │   ├── shell/                  # Fish shell, interactive prompts, and aliases
 │   ├── social/                 # Messaging clients (Vesktop)
+│   ├── theme/                  # Stylix targets and GTK/Qt theming
 │   └── misc/dotfile.nix        # Out-of-store symlink engine for ~/.config/
 │
-├── config/                     # Raw, fast-iterating dotfiles (Lua, Conf, TOML)
+├── config/                     # Raw, fast-iterating dotfiles (Lua, Conf, TOML, INI, JSON, YAML)
 │   ├── hypr/                   # Hyprland Lua scripts and keybindings
-│   ├── kitty/                  # Terminal configuration and session templates
-│   └── starship/               # Cross-shell prompt themes
+│   ├── kitty/                  # Terminal configuration, focus watcher, and session templates
+│   ├── starship/               # Cross-shell prompt themes
+│   └── ...                     # Feishin, Foot, Glow, KDE/Dolphin, and qimgv configs
 │
 ├── docs/                       # Documentation Markdown (synced to SYKwong/nix-docs & Cloudflare)
 ├── secrets/                    # Agenix encrypted secret vaults
 │   ├── keys.nix                # Public SSH keys (single source of truth)
 │   └── secrets.nix             # Encryption rules and recipient mappings
 │
-├── treefmt/                    # Multi-language formatter configuration (bash, c, lua, nix, toml)
+├── treefmt/                    # Multi-language formatter configuration (bash, c, just, lua, markdown, nix, toml)
 └── overlays/                   # Nixpkgs package overrides and custom derivations
 ```
 
@@ -112,7 +116,7 @@ hosts = {
 For every host defined in `hosts`, `outputs.nix` automatically injects:
 
 1. **Core System Modules**: Disko, Stylix, Agenix, and `./modules/core`.
-2. **Common Ecosystem Modules**: Gaming, Home Manager, Hyprland, Input Method, Secrets, Shell Scripts, Sunshine, VPN, and Wireless.
+2. **Common Ecosystem Modules**: Gaming, Home Manager, Hyprland, Input Method, Secrets, Shell Scripts, Sunshine, Systemd Services, VPN, and Wireless.
 3. **Home Manager**: Binds Home Manager to the host's specified `username`, imports `./home` (unified user applications and dotfiles), and auto-imports `./hosts/<hostname>/home/` if present.
 4. **Overlays**: Injects top-level package overlays from `./overlays`.
 5. **Host Specifics**: Imports `./hosts/<hostname>` alongside any host-specific `extraModules`.

@@ -127,15 +127,15 @@ The split architecture strictly contains operational blast radiuses:
 
 ## 3. Comparison Matrix: GitLab CI vs. GitHub Actions
 
-| Evaluation Vector              | GitLab CI (Fleet Validation & Merges)                             | GitHub Actions (Docs & Artifact Releases)                                                           |
-| :----------------------------- | :---------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------- |
-| **Outage Impact on Merges**    | **Zero Impact**: Highly reliable runners; merges proceed normally | **Zero Impact**: Outages only delay wiki CDN updates or installer ISO releases; never blocks merges |
-| **Primary Responsibility**     | `nix flake check`, `nix fmt`, lock updates, release tags          | Building & publishing Astro Starlight wiki to Pages and releasing custom installer ISOs             |
-| **Execution Model**            | Native OCI containers (`nixos/nix`, `alpine`, `curlimages/curl`)  | Shared Ubuntu VM runners (`ubuntu-latest`)                                                          |
-| **Dependency Model**           | Raw bash scripts inside container images                          | Composite actions (`actions/checkout`, `withastro/action`)                                          |
-| **Action Churn**               | None (no external marketplace actions)                            | Periodic Node runtime upgrades & action bumps                                                       |
-| **Automated MR / PR Creation** | Native Git Push Options via `CI_JOB_TOKEN`                        | Requires Personal Access Token or GitHub App                                                        |
-| **State / Authority**          | Canonical source of truth (read/write)                            | Downstream mirror (strictly read-only)                                                              |
+| Evaluation Vector              | GitLab CI (Fleet Validation & Merges)                             | GitHub Actions (Docs & Artifact Releases)                                                                                        |
+| :----------------------------- | :---------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------- |
+| **Outage Impact on Merges**    | **Zero Impact**: Highly reliable runners; merges proceed normally | **Zero Impact**: Outages only delay wiki CDN updates or installer ISO releases; never blocks merges                              |
+| **Primary Responsibility**     | `nix flake check`, `nix fmt`, lock updates, release tags          | Building & publishing Astro Starlight wiki to Cloudflare (`SYKwong/nix-docs`) and releasing custom installer ISOs                |
+| **Execution Model**            | Native OCI containers (`nixos/nix`, `alpine`, `curlimages/curl`)  | Shared Ubuntu VM runners (`ubuntu-latest`)                                                                                       |
+| **Dependency Model**           | Raw bash scripts inside container images                          | Composite actions (`actions/checkout`, `cachix/install-nix-action`, `softprops/action-gh-release`, `cloudflare/wrangler-action`) |
+| **Action Churn**               | None (no external marketplace actions)                            | Periodic Node runtime upgrades & action bumps                                                                                    |
+| **Automated MR / PR Creation** | Native Git Push Options via `CI_JOB_TOKEN`                        | Requires Personal Access Token or GitHub App                                                                                     |
+| **State / Authority**          | Canonical source of truth (read/write)                            | Downstream mirror (strictly read-only)                                                                                           |
 
 ---
 

@@ -1,6 +1,6 @@
 # Application Configurations (`config/`)
 
-This directory contains raw, non-Nix configuration files (written in Lua, Conf, TOML, and INI). All files are symlinked directly to `~/.config/` out-of-store via [`home/misc/dotfile.nix`](../home/misc/dotfile.nix).
+This directory contains raw, non-Nix configuration files (Lua, Conf, TOML, INI, JSON, YAML, Python, and Kitty `.session` files). Most files are symlinked directly to `~/.config/` out-of-store via [`home/misc/dotfile.nix`](../home/misc/dotfile.nix), while mutable templates like `dolphinstaterc` are seeded by `post-install`.
 
 ---
 
@@ -36,13 +36,14 @@ By using `config.lib.file.mkOutOfStoreSymlink` in [`home/misc/dotfile.nix`](../h
 
 Because files are symlinked out-of-store directly to the working repository, edits take effect immediately upon reloading the client:
 
-| Application                | Config Path        | Live Reload Method                          |
-| :------------------------- | :----------------- | :------------------------------------------ |
-| **Hyprland**               | `config/hypr/`     | `hyprctl reload`                            |
-| **Kitty**                  | `config/kitty/`    | `Ctrl + Shift + F5`                         |
-| **Starship**               | `config/starship/` | Instant (reflected on next terminal prompt) |
-| **Dolphin / KDE**          | `config/kde/`      | Close and restart application               |
-| **Feishin / Qimgv / Glow** | `config/<app>/`    | Close and restart application               |
+| Application                | Config Path           | Live Reload Method                          |
+| :------------------------- | :-------------------- | :------------------------------------------ |
+| **Hyprland**               | `config/hypr/`        | `hyprctl reload`                            |
+| **Kitty**                  | `config/kitty/`       | `Ctrl + Shift + F5`                         |
+| **Foot**                   | `config/foot/`        | Close and relaunch `tui-wrap` / Foot        |
+| **Starship**               | `config/starship/`    | Instant (reflected on next terminal prompt) |
+| **Dolphin / KDE**          | `config/kde/dolphin/` | Close and restart application               |
+| **Feishin / Qimgv / Glow** | `config/<app>/`       | Close and restart application               |
 
 ---
 

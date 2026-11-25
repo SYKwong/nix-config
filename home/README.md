@@ -6,18 +6,18 @@ This directory contains pure **Home Manager** user-space configurations. Everyth
 
 ## Directory Taxonomy
 
-| Category        | Description                                                                                                                    |
-| :-------------- | :----------------------------------------------------------------------------------------------------------------------------- |
-| **`core/`**     | Baseline user environment configuration (`xdg.userDirs`, default folder structures).                                           |
-| **`cli/`**      | Terminal utilities and CLI tools (`bat`, `btop`, `direnv`, `eza`, `fastfetch`, `fzf`, `git`, `yazi`, `zoxide`, `antigravity`). |
-| **`desktop/`**  | Noctalia desktop shell (status bar, OSD, lockscreen, runner, idle management).                                                 |
-| **`browsers/`** | Web browsers (Zen Browser, Helium).                                                                                            |
-| **`editors/`**  | Text editors, primarily NixVim (declarative Neovim configuration) and Zed.                                                     |
-| **`media/`**    | Media players and desktop streaming clients (`feishin`, `mpv`, `jellyfin-desktop`).                                            |
-| **`shell/`**    | Fish shell configuration, interactive prompts, completions, and shell aliases/functions (`alias.nix`).                         |
-| **`social/`**   | Messaging and social clients (`vesktop`).                                                                                      |
-| **`theme/`**    | GTK theme settings and Stylix user-level overrides.                                                                            |
-| **`misc/`**     | System glue: out-of-store dotfile symlinking (`dotfile.nix`), and custom/hidden `.desktop` entries.                            |
+| Category        | Description                                                                                                                                       |
+| :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **`core/`**     | Baseline user environment configuration (`xdg.userDirs`, default folder structures).                                                              |
+| **`cli/`**      | Terminal utilities and CLI tools (`atuin`, `bat`, `btop`, `direnv`, `eza`, `fastfetch`, `fzf`, `git`, `yazi`, `yt-dlp`, `zoxide`, `antigravity`). |
+| **`desktop/`**  | Noctalia desktop shell (status bar, OSD, lockscreen, runner, idle management).                                                                    |
+| **`browsers/`** | Web browsers (Zen Browser, Helium).                                                                                                               |
+| **`editors/`**  | Text editors, primarily NixVim (declarative Neovim configuration) and Zed.                                                                        |
+| **`media/`**    | Media players and desktop streaming clients (`feishin`, `mpv`, `jellyfin-desktop`).                                                               |
+| **`shell/`**    | Fish shell configuration, interactive prompts, completions (`fish.nix`), and shell aliases (`alias.nix`).                                         |
+| **`social/`**   | Messaging and social clients (`vesktop`).                                                                                                         |
+| **`theme/`**    | GTK theme settings and Stylix user-level overrides.                                                                                               |
+| **`misc/`**     | System glue: out-of-store dotfile symlinking (`dotfile.nix`), and custom/hidden `.desktop` entries.                                               |
 
 ---
 
@@ -43,9 +43,9 @@ All machines import this common [`home/`](./) directory directly via [`modules/h
 
 Idle timeouts and power states are managed natively by Noctalia ([`home/desktop/noctalia.nix`](./desktop/noctalia.nix)) using the Wayland `ext_idle_notifier_v1` protocol, tailored for laptops vs. desktops/HTPCs:
 
-- **Laptop (`framework16`)**: 2.5 min screen dim (`brightnessctl -s set 5%`) → 5 min lock → 5.5 min screen off (DPMS) → 10 min suspend.
+- **Laptop (`framework16`)**: 2.5 min screen dim (`brightnessctl -s set 5%`) → 5 min lock → 5.5 min screen off (DPMS) & keyboard backlight off (`kb-backlight`) → 10 min suspend (`suspend-then-hibernate`).
 - **Desktop (`mini-pc-k8`)**: 15 min lock (backlight dim and DPMS screen-off omitted on desktops/TVs).
-- **Navigation Keybinds**: Built-in panel `Tab` / `Shift+Tab` shortcuts are mapped to unreachable `F24` / `Shift+F24` chords to disable default surface navigation overrides.
+- **Navigation Keybinds**: Built-in panel `Tab` / `Shift+Tab` (`tab_next` / `tab_previous`) and category (`category_next` / `category_previous`) shortcuts are mapped to unreachable `F24` / `Shift+F24` / `Ctrl+F24` / `Ctrl+Shift+F24` chords to disable default surface navigation overrides.
 
 ---
 
@@ -53,12 +53,13 @@ Idle timeouts and power states are managed natively by Noctalia ([`home/desktop/
 
 ### 1. Adding a New CLI Utility or App
 
-- Declare standalone programs in [`home/cli/default.nix`](./cli/default.nix) via `programs.<name>.enable = true;` or append to `home.packages = with pkgs; [ <name> ];`.
+- Create a dedicated module in `home/cli/<tool>.nix` and import it from [`home/cli/default.nix`](./cli/default.nix).
 - For GUI or desktop apps, check the appropriate category (`browsers/`, `editors/`, `media/`, `social/`).
 
-### 2. Modifying Shell Aliases & Environment
+### 2. Modifying Shell Aliases & Functions
 
-- Interactive shell aliases and functions are declared in [`home/shell/alias.nix`](./shell/alias.nix) (e.g. `nrs`, `git lazy`).
+- Interactive shell aliases (`home.shellAliases`, e.g. `nrs`) are declared in [`home/shell/alias.nix`](./shell/alias.nix).
+- Fish functions live in [`home/shell/fish.nix`](./shell/fish.nix); Git aliases (e.g. `git lazy`) live in [`home/cli/git.nix`](./cli/git.nix).
 
 ### 3. Applying Changes
 

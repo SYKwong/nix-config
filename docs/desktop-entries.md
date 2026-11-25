@@ -9,7 +9,7 @@ This guide explains how to manage custom desktop application launchers and how t
 
 ## Architecture & Configuration Files
 
-- **`add-desktop-entry.nix`**: Declares custom `.desktop` entries (such as web application wrappers like LINE).
+- **`add-desktop-entry.nix`**: Declares custom `.desktop` entries (such as the LINE web application wrapper and the `nordvpn-gui` XWayland override).
 - **`hide-desktop-entry.nix`**: Provides a two-tier mechanism to suppress unwanted application icons.
 - **`desktop-cache.nix`**: Purges stale KDE Sycoca binary caches (`~/.cache/ksycoca6*`) and reloads the Dolphin background daemon on Home Manager activation.
 
@@ -39,13 +39,11 @@ appsToHide = [
 
 Some external runtimes (such as Waydroid or Steam) write `.desktop` files directly into `~/.local/share/applications/`. Because files in `~/.local/share/applications/` have higher XDG precedence than `/run/current-system`, standard Home Manager shadowing cannot override them.
 
-For these stubborn entries, add the identifier (without `.desktop`) to `annoyingApps`. It uses Home Manager's `home.file` with `force = true` to overwrite `~/.local/share/applications/<name>.desktop` with `NoDisplay=true` and `Hidden=true`:
+For these stubborn entries, add the identifier (without `.desktop`) to `annoyingApps` (currently empty by default). It uses Home Manager's `home.file` with `force = true` to overwrite `~/.local/share/applications/<name>.desktop` with `NoDisplay=true` and `Hidden=true`:
 
 ```nix
 annoyingApps = [
-  "rofi"
-  "rofi-theme-selector"
-  "waydroid.com.android.vending"
+  # e.g. "steam-game-shortcut"
 ];
 ```
 

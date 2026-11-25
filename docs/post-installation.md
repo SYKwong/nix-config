@@ -30,8 +30,9 @@ post-install
 
 - **Converts Git Remote:** Converts `origin` from HTTPS to SSH (e.g. `git@gitlab.com:<your-username>/nix-config.git` or GitHub equivalent based on your clone URL).
 - **Enrolls TPM2:** Automatically runs `systemd-cryptenroll` against PCR 7 (`--tpm2-device=auto --tpm2-pcrs=7`) if a LUKS container and TPM2 device are detected (automatically skipped on unencrypted storage).
+- **Seeds Dolphin State:** Copies `config/kde/dolphin/dolphinstaterc` to `~/.local/state/dolphinstaterc` if absent.
 - **Generates SSH Keys:** Creates ed25519 keys for both the host (`/etc/ssh/ssh_host_ed25519_key`) and the user (`~/.ssh/id_ed25519`) if they do not exist.
-- **Registers Public Keys:** Injects the newly generated public keys directly into `secrets/keys.nix` under the current hostname.
+- **Registers Public Keys & Attempts Rekey:** Injects the newly generated public keys into `secrets/keys.nix` under the current hostname and attempts `agenix --rekey` (printing fallback rekey instructions if this host is not yet authorized).
 
 ---
 
@@ -47,16 +48,19 @@ _(Or run `post-install --auth` during initial setup)._
 
 This interactive flow guides you through:
 
-1. **Atuin Shell History Sync**: Shell history credentials (`secrets/atuin-credentials.age`) are managed declaratively via Agenix, authenticating the host automatically upon rebuild without interactive prompts. See the [Atuin Secret Setup](/nix-config/secrets/#4-atuin-shell-history-sync-setup-atuin-credentialsage) guide for instructions on registering or obtaining your 24-word encryption key.
+1. **Atuin Shell History Sync**: Verifies declarative authentication via Agenix (`secrets/atuin-credentials.age`) or guides you through logging in. See the [Atuin Secret Setup](/nix-config/secrets/#4-atuin-shell-history-sync-setup-atuin-credentialsage) guide for instructions on registering or obtaining your 24-word encryption key.
 2. **GitHub CLI (`gh`)**: Authenticates via web session and uploads your public SSH key to your GitHub account.
 3. **GitLab CLI (`glab`)**: Authenticates via web session and uploads your public SSH key to your GitLab account (enabling git SSH push/pull access immediately).
-4. **NordVPN**: Triggers interactive login to enable VPN connectivity.
-5. **Wallpapers**: Bootstrapped with an in-tree bundled wallpaper (`wallpaper/Exodus-by-dpcdpc11.png`) on initial installation, and managed declaratively as a flake input (`inputs.wallpapers`). After GitLab authentication, running `nrs` automatically populates the full wallpaper repository into `/nix/store`.
-6. **Antigravity Cross-Machine Memory (`dev-notes`)**: Clone your private notes repository to enable cross-machine agent learning:
-   ```bash
-   git clone git@gitlab.com:kylekwong/dev-notes.git ~/Projects/dev-notes
-   ```
-   Antigravity CLI automatically pulls updates at session start and pushes learned notes on session completion. See the [Antigravity Agent Memory Guide](/nix-config/home-manager/#9-antigravity-agent-memory--just-in-time-sync-homecliantigravitynix) for details.
+4. **NordVPN**: Triggers interactive login and configures `lan-discovery on` and `tray off`.
+
+### Additional Manual Post-Onboarding Steps
+
+- **Wallpapers**: Bootstrapped with an in-tree bundled wallpaper (`wallpaper/Exodus-by-dpcdpc11.png`) on initial installation, and managed declaratively as a flake input (`inputs.wallpapers`). After GitLab authentication, running `nrs` automatically populates the full wallpaper repository into `/nix/store`.
+- **Antigravity Cross-Machine Memory (`dev-notes`)**: Clone your private notes repository to enable cross-machine agent learning:
+  ```bash
+  git clone git@gitlab.com:kylekwong/dev-notes.git ~/Projects/dev-notes
+  ```
+  Antigravity CLI automatically pulls updates at session start and pushes learned notes on session completion. See the [Antigravity Agent Memory Guide](/nix-config/home-manager/#9-antigravity-agent-memory--just-in-time-sync-homecliantigravitynix) for details.
 
 ## Fleet Rekeying & Secret Propagation
 

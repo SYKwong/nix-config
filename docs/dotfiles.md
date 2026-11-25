@@ -3,7 +3,7 @@ title: Out-of-Store Dotfiles
 description: Fast-iterating dotfile workflow with live out-of-store symlinks into ~/.config/ without rebuilds.
 ---
 
-This directory contains raw, non-Nix configuration files (written in Lua, Conf, TOML, and INI). All files are symlinked directly to `~/.config/` out-of-store via `home/misc/dotfile.nix`.
+The `config/` directory contains raw, non-Nix configuration files (Lua, Conf, TOML, INI, JSON, YAML, Python, and Kitty `.session` files). Most files are symlinked directly to `~/.config/` out-of-store via `home/misc/dotfile.nix`, while mutable templates like `dolphinstaterc` are seeded to `~/.local/state/` by `post-install`.
 
 ---
 

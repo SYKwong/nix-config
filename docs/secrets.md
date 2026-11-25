@@ -3,10 +3,10 @@ title: Secret Management with Agenix
 description: Managing encrypted system credentials, tokens, and cryptographic keys using agenix.
 ---
 
-This directory (`secrets/`) manages encrypted system credentials, tokens, and cryptographic keys using [agenix](https://github.com/ryantm/agenix).
+The `secrets/` directory manages encrypted system credentials, tokens, and cryptographic keys using [agenix](https://github.com/ryantm/agenix).
 
 > [!IMPORTANT]
-> **Adopting This Repository**: All `.age` files in this directory are encrypted with the author's private keys and are inaccessible to external users. Running `./adopt.sh <hostname> <username>` automatically purges these secrets and resets `secrets/keys.nix` and `secrets/secrets.nix`.
+> **Adopting This Repository**: All `.age` files in `secrets/` are encrypted with the author's private keys and are inaccessible to external users. Running `./adopt.sh <hostname> <username>` automatically purges these secrets and resets `secrets/keys.nix` and `secrets/secrets.nix`.
 >
 > Note that `home/cli/atuin.nix` expects `/run/agenix/atuin-credentials` for auto-login (which skips cleanly if absent; authenticate manually with `atuin login`).
 
@@ -40,9 +40,12 @@ agenix -e <secret-name>.age
 
 ### Create a New Secret
 
-1. Declare the secret and its allowed recipient keys in `secrets/secrets.nix`:
+1. Declare the secret and its allowed recipient keys (both user and system keys, or `allKeys`) in `secrets/secrets.nix`:
    ```nix
-   "my-secret.age".publicKeys = [ keys.users.framework16 ];
+   "my-secret.age".publicKeys = [
+     keys.users.framework16
+     keys.systems.framework16
+   ];
    ```
 2. Create and edit the encrypted secret file:
    ```bash

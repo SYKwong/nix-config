@@ -28,7 +28,7 @@ Create an overlay file (e.g. `overlays/my-package.nix`):
 }
 ```
 
-Then add `./my-package.nix` to `imports` in [`overlays/default.nix`](./default.nix).
+Then add `./my-package.nix` to `imports` in [`overlays/default.nix`](./default.nix) (currently empty; no active overrides).
 
 ---
 
@@ -70,6 +70,6 @@ Mount stable channels onto `pkgs.stable` so any module can consume them cleanly:
 
 ## Documentation
 
-For full details on existing fleet overlays and package overrides, refer to the online guide:
+For overlay authoring patterns, upstream patching examples, and pinned channel recipes, refer to the online guide:
 
 📖 **[Nixpkgs Overlays Documentation](https://nix.kyle-kwong.com/nix-config/overlays/)**

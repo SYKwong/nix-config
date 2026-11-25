@@ -3,24 +3,24 @@ title: Home Manager User Configuration
 description: Declarative user-space environment, Noctalia desktop shell, live dotfiles, and application suites.
 ---
 
-This directory contains declarative user-space configurations managed by [Home Manager](https://github.com/nix-community/home-manager). Everything defined here operates strictly within the user environment (`programs.*`, `home.*`, `xdg.*`) and is imported across all hosts via `modules/home-manager/default.nix`.
+The `home/` directory contains declarative user-space configurations managed by [Home Manager](https://github.com/nix-community/home-manager). Everything defined here operates strictly within the user environment (`programs.*`, `home.*`, `xdg.*`) and is imported across all hosts via `modules/home-manager/default.nix`.
 
 ---
 
 ## Directory Taxonomy
 
-| Category        | Path             | Description                                                                                                               |
-| :-------------- | :--------------- | :------------------------------------------------------------------------------------------------------------------------ |
-| **`core/`**     | `home/core/`     | Baseline user environment (`xdg.userDirs`, default folder structures).                                                    |
-| **`cli/`**      | `home/cli/`      | Terminal utilities (`atuin`, `bat`, `btop`, `direnv`, `eza`, `fastfetch`, `fzf`, `git`, `yazi`, `zoxide`, `antigravity`). |
-| **`desktop/`**  | `home/desktop/`  | Noctalia desktop shell (status bar, OSD, lockscreen, runner, idle management).                                            |
-| **`browsers/`** | `home/browsers/` | Web browsers (Zen Browser, Helium).                                                                                       |
-| **`editors/`**  | `home/editors/`  | Text editors, primarily NixVim (declarative Neovim) and Zed.                                                              |
-| **`media/`**    | `home/media/`    | Media players and desktop streaming (`feishin`, `mpv`, `jellyfin-desktop`).                                               |
-| **`shell/`**    | `home/shell/`    | Fish shell configuration, interactive prompts, completions, and aliases (`alias.nix`).                                    |
-| **`social/`**   | `home/social/`   | Messaging and social clients (`vesktop`).                                                                                 |
-| **`theme/`**    | `home/theme/`    | GTK theme settings and Stylix user-level overrides.                                                                       |
-| **`misc/`**     | `home/misc/`     | System glue: out-of-store dotfile symlinking (`dotfile.nix`), and custom/hidden desktop entries.                          |
+| Category        | Path             | Description                                                                                                                         |
+| :-------------- | :--------------- | :---------------------------------------------------------------------------------------------------------------------------------- |
+| **`core/`**     | `home/core/`     | Baseline user environment (`xdg.userDirs`, default folder structures).                                                              |
+| **`cli/`**      | `home/cli/`      | Terminal utilities (`atuin`, `bat`, `btop`, `direnv`, `eza`, `fastfetch`, `fzf`, `git`, `yazi`, `yt-dlp`, `zoxide`, `antigravity`). |
+| **`desktop/`**  | `home/desktop/`  | Noctalia desktop shell (status bar, OSD, lockscreen, runner, idle management).                                                      |
+| **`browsers/`** | `home/browsers/` | Web browsers (Zen Browser, Helium).                                                                                                 |
+| **`editors/`**  | `home/editors/`  | Text editors, primarily NixVim (declarative Neovim) and Zed.                                                                        |
+| **`media/`**    | `home/media/`    | Media players and desktop streaming (`feishin`, `mpv`, `jellyfin-desktop`).                                                         |
+| **`shell/`**    | `home/shell/`    | Fish shell configuration, interactive prompts, completions, and aliases (`alias.nix`).                                              |
+| **`social/`**   | `home/social/`   | Messaging and social clients (`vesktop`).                                                                                           |
+| **`theme/`**    | `home/theme/`    | GTK theme settings and Stylix user-level overrides.                                                                                 |
+| **`misc/`**     | `home/misc/`     | System glue: out-of-store dotfile symlinking (`dotfile.nix`), and custom/hidden desktop entries.                                    |
 
 ---
 
@@ -121,7 +121,7 @@ To streamline multi-repo workflows without interactive permission prompts, `home
 To avoid host toolchain pollution and ensure reproducible builds, native build tools are not installed globally on the host PATH. Instead, `command(nix develop)` is registered in `allowRules` so the CLI engine approves devshell launches, while the Antigravity `pipelineAllowHook` automatically unwraps and validates `nix develop -c <cmd>` and `nix develop --command bash -c "<cmd>"` invocations against approved development tools:
 
 - **Approved Dev Tools**: `just`, `ninja`, `meson`, `node`, `clang-format`, `clang-tidy`, `pkg-config`, `run-clang-tidy`, and local build artifacts matching `./build*/*`.
-- **Host Protection**: Running build tools directly on the host (outside `nix develop`) prompts for interactive confirmation.
+- **Host Protection**: Running build tools directly on the host (outside `nix develop`) prompts for interactive confirmation, except for explicitly pre-approved safe `just` recipes (`just --list`, `just check`, `just format`, plus `env -C` / `just -d ... -f ...` variants).
 - **Dangerous Commands Guarded**: Any destructive command (`sudo`, `rm`, shell redirections, or unvetted utilities) returns a hook denial or prompts for permission, even when wrapped within `nix develop`. Bare `nix develop` invocations without inner commands also prompt for confirmation.
 - **Desktop Shell Inspection**: User systemd queries (`systemctl --user status` and `systemctl --user is-active`) are pre-approved to facilitate inspecting user services like `noctalia`.
 

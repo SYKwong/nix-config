@@ -51,9 +51,12 @@ agenix -e <secret-name>.age
 
 ### Create a New Secret
 
-1. Add the secret and allowed recipient keys to [`secrets.nix`](secrets.nix):
+1. Add the secret and allowed recipient keys (both user and system keys, or `allKeys`) to [`secrets.nix`](secrets.nix):
    ```nix
-   "my-secret.age".publicKeys = [ keys.users.framework16 ];
+   "my-secret.age".publicKeys = [
+     keys.users.framework16
+     keys.systems.framework16
+   ];
    ```
 2. Create and edit the encrypted secret:
    ```bash
@@ -94,6 +97,6 @@ _(Retrieve your 24-word key on an existing machine using `atuin key`, or create 
 
 ## Documentation
 
-For recipient key distribution details, step-by-step account onboarding, and recovery procedures, refer to the online guide:
+For the active fleet secrets table, key architecture (`keys.users` vs `keys.systems`), creation/rekey walkthroughs, and Atuin setup, refer to the online guide:
 
 📖 **[Secret Management with Agenix Documentation](https://nix.kyle-kwong.com/nix-config/secrets/)**

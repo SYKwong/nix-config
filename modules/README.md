@@ -23,7 +23,7 @@ This directory contains modular, reusable **NixOS system-level** configurations.
 | **`home-manager/`**     | System-level Home Manager integration module binding user configurations and automatic per-host home extensions.                                                                            |
 | **`lanzaboote/`**       | UEFI Secure Boot integration and cryptographic bootloader signing.                                                                                                                          |
 | **`power-management/`** | Power management daemons and system power profile switching.                                                                                                                                |
-| **`config/`**           | Shared, host-reusable system configurations intended to be imported on demand.                                                                                                              |
+| **`config/`**           | Shared, host-reusable system configurations intended to be imported on demand (see [`modules/config/README.md`](./config/README.md)).                                                       |
 
 ---
 
@@ -49,8 +49,9 @@ System modules are integrated into machine closures via [`outputs.nix`](../outpu
   <hostname> = {
     username = "<user>";
     extraModules = [
+      # Choose the form-factor profile matching the host (mutually exclusive):
       ./modules/profiles/laptop     # Clamshell power management & dynamic CIFS
-      ./modules/profiles/desktop    # Workstation shared capabilities & static CIFS
+      # ./modules/profiles/desktop  # Workstation networking & static CIFS
     ];
   };
   ```

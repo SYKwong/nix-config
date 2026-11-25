@@ -35,8 +35,17 @@ custom.sunshine.enable = true;
 # Autostart Sunshine upon graphical session login (default: true)
 custom.sunshine.autoStart = true;
 
+# Open required Sunshine firewall ports (default: true)
+custom.sunshine.openFirewall = true;
+
+# Grant cap_sys_admin for KMS/DRM capture (default: true)
+custom.sunshine.capSysAdmin = true;
+
 # Automated tablet virtual secondary display (default: true)
 custom.sunshine.tabletDisplay.enable = true;
+
+# Display scale factor for HEADLESS-1 (default: "1.6")
+custom.sunshine.tabletDisplay.scale = "1.6";
 
 # Idle watchdog timeout in seconds before auto-teardown (default: 900)
 custom.sunshine.tabletDisplay.idleTimeout = 900;
@@ -97,6 +106,6 @@ For sub-millisecond latency (<0.5ms) without Wi-Fi jitter:
 
 ## Documentation
 
-For full architectural diagrams, watchdog socket polling details, and Moonlight client configuration, refer to the online guide:
+For architectural diagrams, watchdog socket polling details, USB tethering setup, and initial pairing instructions, refer to the online guide:
 
 📖 **[Sunshine Streaming & Tablet Display Documentation](https://nix.kyle-kwong.com/nix-config/sunshine/)**

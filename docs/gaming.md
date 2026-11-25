@@ -16,6 +16,7 @@ NixOS gaming configurations are declared in [`modules/gaming/default.nix`](https
 3. **Gamescope**: System-wide micro-compositor enabled with Wayland WSI (`programs.gamescope.enableWsi = true`).
 4. **GameMode**: Feral Interactive GameMode daemon configured to optimize system performance on demand during active gameplay.
 5. **Game Devices Udev Rules**: Controller and joystick udev rules (`game-devices-udev-rules`) providing non-root access to DualSense, Xbox, Switch, and handheld controllers.
+6. **Management GUI (`protonup-qt`)**: Bundled in `environment.systemPackages` for installing and managing custom Proton and Wine compatibility tools.
 
 ---
 

@@ -6,10 +6,10 @@ This directory contains form-factor system profiles (`desktop`, `laptop`). Profi
 
 ## Profile Taxonomy
 
-| Profile                     | Target Form Factor                           | Characteristics & Included Modules                                                                                        |
-| :-------------------------- | :------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------ |
-| **[`desktop/`](./desktop)** | Fixed workstations & HTPCs (`mini-pc-k8`)    | Persistent wired/wireless networking, static CIFS NAS automounts (`fileSystems.<mount>`), power-profiles-daemon.          |
-| **[`laptop/`](./laptop)**   | Portable clamshell notebooks (`framework16`) | Lid switch handling, dynamic NAS reachability daemon (`check-nas-cifs`), power-profiles-daemon, `suspend-then-hibernate`. |
+| Profile                     | Target Form Factor                           | Characteristics & Included Modules                                                                 |
+| :-------------------------- | :------------------------------------------- | :------------------------------------------------------------------------------------------------- |
+| **[`desktop/`](./desktop)** | Fixed workstations & HTPCs (`mini-pc-k8`)    | Disables Wi-Fi, powers on Bluetooth at boot, static CIFS NAS automounts (`fileSystems.<mount>`).   |
+| **[`laptop/`](./laptop)**   | Portable clamshell notebooks (`framework16`) | Lid switch handling, dynamic NAS reachability daemon (`check-nas-cifs`), `suspend-then-hibernate`. |
 
 ---
 
@@ -20,7 +20,7 @@ modules/profiles/
 ├── desktop/
 │   ├── default.nix             # Desktop profile entrypoint
 │   ├── networkshare.nix        # Static CIFS NAS automounts
-│   └── wireless-config.nix     # Workstation wireless defaults
+│   └── wireless-config.nix     # Disables Wi-Fi and powers on Bluetooth at boot
 ├── laptop/
 │   ├── default.nix             # Laptop profile entrypoint
 │   ├── networkshare.nix        # Dynamic CIFS reachability daemon (check-nas-cifs)

@@ -17,7 +17,7 @@ The baseline installation workflow uses the repository's custom NixOS installer 
 - **Zero-Config mDNS (`installer.local`)**: Automatically advertises on the local network via Avahi. SSH into the target machine immediately without looking up IP addresses or connecting a display.
 - **Pre-baked SSH Public Keys**: Authorizes workstation keys from [`secrets/keys.nix`](https://gitlab.com/kylekwong/nix-config/-/blob/main/secrets/keys.nix) into `root` and `nixos` accounts for instant passwordless SSH login.
 - **Pre-embedded Repository**: The full `nix-config` repository snapshot is pre-provisioned at `~/nix-config` as an initialized, writable Git repository, eliminating manual cloning.
-- **Bundled Provisioning Tooling**: Pre-installs Disko, Git, Neovim, Tmux, 7-Zip, Parted, and cURL.
+- **Bundled Provisioning Tooling**: Pre-installs `install-nixos`, Git, Neovim, Tmux, 7-Zip, Parted, and cURL (Disko is fetched on demand via `nix run`).
 
 ### Step 1: Obtain and Flash the ISO
 
@@ -114,7 +114,7 @@ sudo nix run .#install-nixos -- "<host_name>" "<user_password>" ["<luks_password
 | Parameter           |    Required     | Description                                                                                               |
 | :------------------ | :-------------: | :-------------------------------------------------------------------------------------------------------- |
 | `<host_name>`       |     **Yes**     | Target host defined in `outputs.nix` and `hosts/<host_name>/` (e.g. `framework16`, `mini-pc-k8`).         |
-| `<user_password>`   |     **Yes**     | Initial login password for the primary user account.                                                      |
+| `<user_password>`   |     **Yes**     | Initial login password for both `root` and the primary user account.                                      |
 | `[<luks_password>]` | **Conditional** | Passphrase for the LUKS encrypted container (required for hosts with disk encryption like `framework16`). |
 
 Once the installation finishes, the script automatically triggers a system reboot.
@@ -134,10 +134,10 @@ Target drives are strictly referenced using persistent `/dev/disk/by-id/...` pat
 
 Each host declares its partition scheme in `hosts/<host_name>/disko.nix`. Disko creates standard Btrfs subvolumes:
 
-- `/@root` → `/`
-- `/@home` → `/home`
-- `/@nix` → `/nix`
-- `/@swap` → `/.swapvol` (`framework16`) or `/.swap` (`mini-pc-k8`)
+- `/root` → `/`
+- `/home` → `/home`
+- `/nix` → `/nix`
+- `/swap` → `/.swapvol` (`framework16`) or `/.swap` (`mini-pc-k8`)
 
 > [!TIP]
 > **Hibernation Swap Sizing**: For hosts configured with hibernation support (such as `framework16`), size the swap partition or swapfile to **RAM capacity + 2 to 4GB** (e.g. 96GB RAM → 100GB swap) in `disko.nix` to ensure sufficient capacity for system memory images.

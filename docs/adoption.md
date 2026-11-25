@@ -126,11 +126,11 @@ Browse the `nixos-hardware` repository. Directory paths map directly to flake mo
 - Directory `lenovo/thinkpad/t14/amd/gen3/` → `inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t14-amd-gen3`
 - Directory `dell/xps/15-9500/` → `inputs.nixos-hardware.nixosModules.dell-xps-15-9500`
 
-Add the module attribute directly to `extraModules` in [`outputs.nix`](/nix-config/architecture/#flake-architecture--repository-layout).
+Add the module attribute directly to `extraModules` in [`outputs.nix`](/nix-config/architecture/#centralized-outputsnix).
 
 ### What to Include If There Is No Device Profile
 
-If your machine is a custom desktop, a mini PC (such as the GMKtec NucBox K8 Plus in this fleet), or an unlisted laptop, compose the appropriate generic component modules under `extraModules` in [`outputs.nix`](/nix-config/architecture/#flake-architecture--repository-layout):
+If your machine is a custom desktop, a mini PC (such as the GMKtec NucBox K8 Plus in this fleet), or an unlisted laptop, compose the appropriate generic component modules under `extraModules` in [`outputs.nix`](/nix-config/architecture/#centralized-outputsnix):
 
 - **Processor (CPU)**:
   - AMD:
@@ -161,9 +161,9 @@ Configuring `nixos-hardware` modules is optional. Even if omitted, `install-nixo
 
 Even after `adopt.sh` clears system-level secrets, one user-space module references a runtime secret file:
 
-| Module                                                                       | Runtime Secret Path             | Impact & Recommended Action                                                                                                                      |
-| :--------------------------------------------------------------------------- | :------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`home/cli/atuin.nix`](/nix-config/home-manager/#cli-and-terminal-utilities) | `/run/agenix/atuin-credentials` | `atuin-auto-login` is skipped cleanly. Authenticate manually via `atuin login` or create your own secret with `agenix -e atuin-credentials.age`. |
+| Module                                                                                                    | Runtime Secret Path             | Impact & Recommended Action                                                                                                                      |
+| :-------------------------------------------------------------------------------------------------------- | :------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`home/cli/atuin.nix`](/nix-config/home-manager/#7-shell-history--smart-suggestions-atuin--atuin-to-fish) | `/run/agenix/atuin-credentials` | `atuin-auto-login` is skipped cleanly. Authenticate manually via `atuin login` or create your own secret with `agenix -e atuin-credentials.age`. |
 
 ---
 
@@ -175,7 +175,7 @@ This repository uses a **split CI architecture** by design:
 - **External Docs Deployment (`SYKwong/nix-docs`)**: Documentation is built and deployed to Cloudflare (Workers / Pages) by the unified `SYKwong/nix-docs` repository (triggered via `notify-docs` in `.gitlab-ci.yml`).
 
 > [!NOTE]
-> The primary motivation for this dual-forge design is **uninterrupted merge availability**: GitHub Actions frequently experiences outages and degraded runner queues that block PR merges when branch protections require CI checks to pass. Running core evaluations on GitLab CI ensures fleet merges are never blocked by GitHub downtime, while GitHub Actions is used strictly for non-critical wiki deployment. See [Split CI Architecture](/nix-config/split-ci/) for the detailed breakdown.
+> The primary motivation for this dual-forge design is **uninterrupted merge availability**: GitHub Actions frequently experiences outages and degraded runner queues that block PR merges when branch protections require CI checks to pass. Running core evaluations on GitLab CI ensures fleet merges are never blocked by GitHub downtime, while GitHub Actions is used strictly for non-critical installer ISO builds and wiki deployment. See [Split CI Architecture](/nix-config/split-ci/) for the detailed breakdown.
 
 ```mermaid
 flowchart LR
@@ -263,7 +263,7 @@ If you prefer to host docs directly from GitLab without an external Starlight re
 #### 3. GitHub Only (GitHub Actions for Checks & Pages)
 
 - Delete `.gitlab-ci.yml`.
-- Add a GitHub Actions workflow (e.g. `.github/workflows/check.yml`) utilizing `determinate-nix-action` to run `nix flake check` and `nix fmt --check` on pull requests.
+- Add a GitHub Actions workflow (e.g. `.github/workflows/check.yml`) utilizing `determinate-nix-action` to run `nix flake check` and `nix fmt -- --fail-on-change` on pull requests.
 - Add a docs deployment workflow if hosting docs in-tree instead of `SYKwong/nix-docs`.
 - _(Warning: PR merges may be blocked whenever GitHub Actions experiences platform downtime)._
 

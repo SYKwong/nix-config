@@ -23,9 +23,11 @@ Quick reference for declaring custom `.desktop` launchers and hiding unwanted ap
    appsToHide = [ "btop" "mpv" "qimgv" "foot" ];
    ```
 2. **`annoyingApps` (Stubborn user-level entries in `~/.local/share/applications/`)**:
-   Overwrites `~/.local/share/applications/<name>.desktop` with `NoDisplay=true` and `Hidden=true` via `home.file` (`force = true`):
+   Overwrites `~/.local/share/applications/<name>.desktop` with `NoDisplay=true` and `Hidden=true` via `home.file` (`force = true`) (currently empty by default):
    ```nix
-   annoyingApps = [ "rofi" "waydroid.com.android.vending" ];
+   annoyingApps = [
+     # e.g. "steam-game-shortcut"
+   ];
    ```
 
 ---

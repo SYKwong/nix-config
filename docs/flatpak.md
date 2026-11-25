@@ -76,14 +76,14 @@ Add `./modules/flatpak` to the host's `extraModules`:
 
 ### Or Globally for All Hosts
 
-Add `./modules/flatpak` to the root `modules` list in `outputs.nix`:
+Add `./modules/flatpak` to `commonModules` in `outputs.nix`:
 
 ```nix
-modules = [
+commonModules = [
   # ...
   ./modules/core
   ./modules/flatpak    # <-- Enables Flatpak across all machines
-]
+];
 ```
 
 ---

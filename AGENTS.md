@@ -29,7 +29,7 @@
 
 ## Documentation & README Conventions
 
-- Lean READMEs: Keep root and module-level `README.md` files lean, concise, and focused strictly on immediate directory taxonomy, file maps, key option toggles, and daily quick-reference commands. Avoid duplicating multi-step guides, operational walkthroughs, reference tables, or setup tutorials in READMEs.
+- Lean READMEs & Developer References: Keep root `README.md` lean and focused on overview and quick navigation. Module-level `README.md` files should focus on immediate directory taxonomy, file maps, key option toggles, and daily quick-reference commands, and may intentionally retain concise developer-reference sections (authoring patterns, quick-reference tables, and local setup commands) — do not strip existing developer-reference sections when auditing READMEs.
 - Heavy on Starlight Wiki: Centralize all comprehensive operational documentation, architectural deep-dives, hardware specifications, launch recipes, and multi-step tutorials in-tree under `docs/` (deployed to `nix.kyle-kwong.com`). Every module README must conclude with a direct link to its corresponding Starlight wiki page.
 - Synchronization: When adding or updating features, keep documentation in `docs/` synchronized with the implementation.
 
