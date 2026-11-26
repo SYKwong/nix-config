@@ -82,11 +82,9 @@ verify-flake:
       done < flake.nix > flake.nix.tmp && mv flake.nix.tmp flake.nix
     - nix flake check --no-write-lock-file
 
-update-flake-mr:
+.update-flake-base:
   stage: maintenance
   image: nixos/nix:latest
-  rules:
-    - if: $RUN_FLAKE_UPDATE == "true"
   cache:
     key:
       files:
@@ -101,38 +99,40 @@ update-flake-mr:
     - git remote set-url origin "https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
   script:
     - |
-      # 1. Update nixpkgs first as the gating check
-      nix flake update nixpkgs 2> update_summary.txt
+      : > update_summary.txt
 
-      # 2. Check if nixpkgs changed; if not, short-circuit immediately
-      if ! grep -q "Updated input 'nixpkgs'" update_summary.txt; then
-        echo "nixpkgs has not updated. Skipping full flake update and MR creation."
-        exit 0
-      fi
+      # 1. When gated on nixpkgs, update nixpkgs first and short-circuit if unchanged or already in an open MR
+      if [ "$GATE_ON_NIXPKGS" = "true" ]; then
+        nix flake update nixpkgs 2>> update_summary.txt
 
-      # 3. Check existing open flake-update branches; short-circuit if nixpkgs has not advanced
-      git ls-remote --heads origin 'refs/heads/flake-update-*' > remote_heads.txt
-      if [ -s remote_heads.txt ]; then
-        NEW_NIXPKGS_REV=$(nix eval --impure --raw --expr 'let l = (builtins.fromJSON (builtins.readFile ./flake.lock)).nodes.nixpkgs.locked or {}; in l.rev or l.narHash or ""')
-        while read -r _ REF; do
-          [ -z "$REF" ] && continue
-          REMOTE_BRANCH="${REF#refs/heads/}"
-          echo "Checking existing flake update branch: $REMOTE_BRANCH"
-          git fetch --depth 1 origin "$REF":refs/remotes/origin/"$REMOTE_BRANCH" >/dev/null 2>&1 || true
-          if git show "origin/$REMOTE_BRANCH:flake.lock" > remote_flake.lock 2>/dev/null; then
-            REMOTE_NIXPKGS_REV=$(nix eval --impure --raw --expr 'let l = (builtins.fromJSON (builtins.readFile ./remote_flake.lock)).nodes.nixpkgs.locked or {}; in l.rev or l.narHash or ""' 2>/dev/null || true)
-            rm -f remote_flake.lock
-            if [ -n "$NEW_NIXPKGS_REV" ] && [ "$NEW_NIXPKGS_REV" = "$REMOTE_NIXPKGS_REV" ]; then
-              echo "Existing open branch '$REMOTE_BRANCH' already has nixpkgs revision $NEW_NIXPKGS_REV. Skipping full flake update and MR creation."
-              rm -f remote_heads.txt
-              exit 0
+        if ! grep -q "Updated input 'nixpkgs'" update_summary.txt; then
+          echo "nixpkgs has not updated. Skipping full flake update and MR creation."
+          exit 0
+        fi
+
+        git ls-remote --heads origin 'refs/heads/flake-update-*' > remote_heads.txt
+        if [ -s remote_heads.txt ]; then
+          NEW_NIXPKGS_REV=$(nix eval --impure --raw --expr 'let l = (builtins.fromJSON (builtins.readFile ./flake.lock)).nodes.nixpkgs.locked or {}; in l.rev or l.narHash or ""')
+          while read -r _ REF; do
+            [ -z "$REF" ] && continue
+            REMOTE_BRANCH="${REF#refs/heads/}"
+            echo "Checking existing flake update branch: $REMOTE_BRANCH"
+            git fetch --depth 1 origin "$REF":refs/remotes/origin/"$REMOTE_BRANCH" >/dev/null 2>&1 || true
+            if git show "origin/$REMOTE_BRANCH:flake.lock" > remote_flake.lock 2>/dev/null; then
+              REMOTE_NIXPKGS_REV=$(nix eval --impure --raw --expr 'let l = (builtins.fromJSON (builtins.readFile ./remote_flake.lock)).nodes.nixpkgs.locked or {}; in l.rev or l.narHash or ""' 2>/dev/null || true)
+              rm -f remote_flake.lock
+              if [ -n "$NEW_NIXPKGS_REV" ] && [ "$NEW_NIXPKGS_REV" = "$REMOTE_NIXPKGS_REV" ]; then
+                echo "Existing open branch '$REMOTE_BRANCH' already has nixpkgs revision $NEW_NIXPKGS_REV. Skipping full flake update and MR creation."
+                rm -f remote_heads.txt
+                exit 0
+              fi
             fi
-          fi
-        done < remote_heads.txt
+          done < remote_heads.txt
+        fi
+        rm -f remote_heads.txt
       fi
-      rm -f remote_heads.txt
 
-      # 4. Temporarily comment private inputs so nix flake update does not fail on private SSH inputs
+      # 2. Temporarily comment private inputs so nix flake update does not fail on private SSH inputs
       cp flake.lock flake.lock.orig
       in_block=0
       while IFS= read -r line; do
@@ -149,15 +149,43 @@ update-flake-mr:
         esac
       done < flake.nix > flake.nix.tmp && mv flake.nix.tmp flake.nix
 
-      # 5. nixpkgs advanced: update remaining public inputs and append to summary
+      # 3. Update remaining public inputs and append to summary
       nix flake update 2>> update_summary.txt
 
-      # 6. Restore private wallpapers input in flake.nix and preserve locked node in flake.lock
+      # 4. Restore private wallpapers input in flake.nix and preserve locked node in flake.lock
       git checkout flake.nix
+      if ! grep -q "Updated input '" update_summary.txt; then
+        echo "No public flake inputs have updated. Skipping MR creation."
+        mv flake.lock.orig flake.lock
+        exit 0
+      fi
       nix run nixpkgs#jq -- -s ".[0].nodes.wallpapers = .[1].nodes.wallpapers | .[0].nodes.root.inputs.wallpapers = \"wallpapers\" | .[0]" flake.lock flake.lock.orig > flake.lock.tmp && mv flake.lock.tmp flake.lock
       rm -f flake.lock.orig
 
-      # 7. Create branch and commit
+      # 5. For ungated full updates, short-circuit if an open flake-update branch already has identical public inputs
+      if [ "$GATE_ON_NIXPKGS" != "true" ]; then
+        git ls-remote --heads origin 'refs/heads/flake-update-*' > remote_heads.txt
+        if [ -s remote_heads.txt ]; then
+          while read -r _ REF; do
+            [ -z "$REF" ] && continue
+            REMOTE_BRANCH="${REF#refs/heads/}"
+            echo "Checking existing flake update branch: $REMOTE_BRANCH"
+            git fetch --depth 1 origin "$REF":refs/remotes/origin/"$REMOTE_BRANCH" >/dev/null 2>&1 || true
+            if git show "origin/$REMOTE_BRANCH:flake.lock" > remote_flake.lock 2>/dev/null; then
+              SAME_LOCK=$(nix eval --impure --raw --expr 'let a = builtins.removeAttrs (builtins.fromJSON (builtins.readFile ./flake.lock)).nodes [ "wallpapers" ]; b = builtins.removeAttrs (builtins.fromJSON (builtins.readFile ./remote_flake.lock)).nodes [ "wallpapers" ]; in if a == b then "1" else "0"' 2>/dev/null || echo "0")
+              rm -f remote_flake.lock
+              if [ "$SAME_LOCK" = "1" ]; then
+                echo "Existing open branch '$REMOTE_BRANCH' already has the same public flake inputs. Skipping MR creation."
+                rm -f remote_heads.txt
+                exit 0
+              fi
+            fi
+          done < remote_heads.txt
+        fi
+        rm -f remote_heads.txt
+      fi
+
+      # 6. Create branch and commit
       BRANCH_NAME="flake-update-$(date +%Y-%m-%d)"
       git checkout -b "$BRANCH_NAME"
       RAW_LINES=$(grep '•' update_summary.txt | grep -v "Removed input 'wallpapers'")
@@ -168,7 +196,7 @@ update-flake-mr:
       git add flake.lock
       git commit -m "chore(flake): update flake.lock"
 
-      # 8. Clean up any stale flake-update branches on remote (closes superseded MRs)
+      # 7. Clean up any stale flake-update branches on remote (closes superseded MRs)
       git ls-remote --heads origin 'refs/heads/flake-update-*' | while read -r _ REF; do
         REMOTE_BRANCH="${REF#refs/heads/}"
         if [ -n "$REMOTE_BRANCH" ] && [ "$REMOTE_BRANCH" != "$BRANCH_NAME" ]; then
@@ -177,7 +205,7 @@ update-flake-mr:
         fi
       done
 
-      # 9. Push with MR creation options
+      # 8. Push with MR creation options
       git push -f origin "$BRANCH_NAME" \
         -o merge_request.create \
         -o merge_request.target="$CI_DEFAULT_BRANCH" \
@@ -187,6 +215,20 @@ update-flake-mr:
         -o merge_request.label="dependencies" \
         -o merge_request.assignee_id="$GITLAB_USER_ID" \
         -o merge_request.squash=true
+
+update-flake-mr:
+  extends: .update-flake-base
+  variables:
+    GATE_ON_NIXPKGS: "true"
+  rules:
+    - if: $RUN_FLAKE_UPDATE == "true"
+
+update-flake-weekly-mr:
+  extends: .update-flake-base
+  variables:
+    GATE_ON_NIXPKGS: "false"
+  rules:
+    - if: $RUN_WEEKLY_FLAKE_UPDATE == "true"
 
 create-weekly-stable:
   stage: stable

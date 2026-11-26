@@ -182,7 +182,7 @@ flowchart LR
     dev["Local Development<br/>(git push)"] --> gitlab["GitLab Repository<br/>(Primary Source of Truth)"]
     subgraph gitlab_ci ["GitLab CI Pipeline"]
         gitlab --> test["verify-flake<br/>(nix fmt & flake check)"]
-        gitlab --> lock_bot["update-flake-mr<br/>(automated lock update)"]
+        gitlab --> lock_bot["update-flake-mr / update-flake-weekly-mr<br/>(automated lock updates)"]
         gitlab -- "docs/** on main" --> dispatch["notify-docs<br/>(dispatch to SYKwong/nix-docs)"]
     end
     dispatch -. "docs-updated" .-> nix_docs["SYKwong/nix-docs<br/>(Deploy to Cloudflare)"]
