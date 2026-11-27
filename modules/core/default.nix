@@ -8,6 +8,7 @@
     ./keyring.nix
     ./networking.nix
     ./no_password_rebuild.nix
+    ./oom_management.nix
     ./packages.nix
     ./security.nix
     ./shell.nix
