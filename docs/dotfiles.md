@@ -130,5 +130,14 @@ hl.window_rule({
 	},
 	float = true,
 	center = true,
+	dim_around = true,
 })
 ```
+
+### Opt-In `dim_around` for Floating Windows (`config/hypr/hyprland/windowrule.lua`)
+
+Background dimming (`dim_around = true`) is opt-in rather than applied globally to all floating windows, since dimming the surrounding desktop works poorly for floating media viewers, TUIs, and compatibility tools.
+
+- **`apply_centered_float` & `float_and_center`**: Both helpers center and size floating windows without enabling `dim_around` by default.
+- **Opt-In Rules (`dim_around = true`)**: Enabled explicitly for modal dialogs and focused utility popups—`noctalia`, `zen-popups`, `vpn` (`Nordvpn-gui`), `hyprland-file-chooser` (`xdg-desktop-portal-gtk`), `dolphin-confirmation-dialog`, and secondary LINE popout windows (`float_and_center(..., { dim_around = true })`).
+- **Un-Dimmed Floats**: Floating TUI wrappers (`tui-float.*`), media viewers (`qimgv`, `mpv`), Dolphin progress dialogs, and Wine/Proton tools (`gaming_float`) omit `dim_around`.
