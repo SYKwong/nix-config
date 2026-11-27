@@ -9,7 +9,7 @@ This guide covers the fleet-wide gaming architecture, Proton compatibility tool 
 
 ## Gaming Stack Architecture
 
-NixOS gaming configurations are declared in [`modules/gaming/default.nix`](https://gitlab.com/kylekwong/nix-config/-/blob/main/modules/gaming/default.nix) and imported across all hosts:
+NixOS gaming configurations are declared in [`modules/gaming/default.nix`](https://gitlab.com/kylekwong/nix-config/-/blob/main/modules/gaming/default.nix) and imported across all hosts (`custom.gaming.enable = true` by default). To opt a host out of the gaming stack, add `custom.gaming.enable = false;` to its `config.nix`:
 
 1. **Steam**: Installed via `programs.steam.enable = true` with local network game transfer firewall ports opened and Protontricks enabled.
 2. **Proton-GE (`extraCompatPackages`)**: Pre-bundles `proton-ge-bin` directly into Steam's compatibility dropdown without requiring manual GUI downloads.

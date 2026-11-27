@@ -16,7 +16,7 @@ modules/gaming/
 
 ## Architecture & Components
 
-Configuration is declared in [`default.nix`](./default.nix) and imported across all hosts via [`outputs.nix`](../../outputs.nix):
+Configuration is declared in [`default.nix`](./default.nix) and imported across all hosts via [`outputs.nix`](../../outputs.nix) (`custom.gaming.enable = true` by default). To disable the gaming stack on a specific host, set `custom.gaming.enable = false;` in that host's `config.nix`.
 
 1. **Steam**: Installed via `programs.steam.enable = true` with local network game transfer firewall ports opened and Protontricks enabled.
 2. **Proton-GE (`extraCompatPackages`)**: Pre-bundles `proton-ge-bin` directly into Steam's compatibility dropdown without requiring manual GUI downloads.
