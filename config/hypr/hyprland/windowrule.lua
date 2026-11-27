@@ -52,11 +52,10 @@ local function apply_centered_float(rule_name, match_criteria, extra_properties)
 		float = true,
 		center = true,
 		size = default_centered_float_size,
-		dim_around = true,
 	}, extra_properties)
 end
 
-local function float_and_center(window_address)
+local function float_and_center(window_address, options)
 	local window_param = "address:" .. tostring(window_address)
 	hl.dispatch(hl.dsp.window.float({ action = "set", window = window_param }))
 
@@ -81,15 +80,17 @@ local function float_and_center(window_address)
 	end
 
 	hl.dispatch(hl.dsp.window.center({ window = window_param }))
-	hl.dispatch(hl.dsp.window.set_prop({ prop = "dim_around", value = "1", window = window_param }))
+	if options and options.dim_around then
+		hl.dispatch(hl.dsp.window.set_prop({ prop = "dim_around", value = "1", window = window_param }))
+	end
 end
 
 apply_centered_float("float-wrapped-tui", { class = "tui-float.*" })
 apply_centered_float("media", { class = "^(qimgv|mpv)$" })
-apply_centered_float("noctalia", { class = "dev.noctalia.Noctalia" })
-apply_centered_float("zen-popups", { class = "zen-beta", initial_title = "^(Library|)" })
-apply_centered_float("vpn", { class = "Nordvpn-gui" })
-apply_centered_float("hyprland-file-chooser", { class = "xdg-desktop-portal-gtk" })
+apply_centered_float("noctalia", { class = "dev.noctalia.Noctalia" }, { dim_around = true })
+apply_centered_float("zen-popups", { class = "zen-beta", initial_title = "^(Library|)" }, { dim_around = true })
+apply_centered_float("vpn", { class = "Nordvpn-gui" }, { dim_around = true })
+apply_centered_float("hyprland-file-chooser", { class = "xdg-desktop-portal-gtk" }, { dim_around = true })
 
 -- Dolphin file job progress dialogs (pinned to corner without stealing focus)
 hl.window_rule({
@@ -112,6 +113,7 @@ hl.window_rule({
 	},
 	float = true,
 	center = true,
+	dim_around = true,
 })
 
 -- =============================================================================
@@ -149,7 +151,7 @@ hl.on("window.open", function(opened_window)
 		end
 
 		if line_window_count > 1 then
-			float_and_center(opened_window.address)
+			float_and_center(opened_window.address, { dim_around = true })
 		end
 	end
 end)
